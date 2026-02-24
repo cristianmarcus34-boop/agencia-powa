@@ -1,19 +1,26 @@
 'use client';
+
 import { useState, useRef, useEffect } from 'react';
 import { IoChatbubblesSharp, IoSend, IoClose } from 'react-icons/io5';
 import styles from './ChatPowa.module.css';
 
+// Definimos el tipo de mensaje para evitar errores de TS
+type Message = {
+  role: 'user' | 'bot';
+  text: string;
+};
+
 export default function ChatPowa() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<{ role: 'user' | 'bot'; text: string }[]>([
+  const [messages, setMessages] = useState<Message[]>([
     { role: 'bot', text: '¡Hola! Soy el asistente de Powa. ¿En qué puedo ayudarte hoy?' }
   ]);
   const [loading, setLoading] = useState(false);
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // --- APERTURA AUTOMÁTICA (Una sola vez por sesión) ---
+  // --- APERTURA AUTOMÁTICA ---
   useEffect(() => {
     const hasOpenedBefore = sessionStorage.getItem('powaChatAutoOpened');
     if (!hasOpenedBefore) {
@@ -25,7 +32,7 @@ export default function ChatPowa() {
     }
   }, []);
 
-  // --- SCROLL AL ÚLTIMO MENSAJE ---
+  // --- SCROLL AUTOMÁTICO ---
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -34,26 +41,37 @@ export default function ChatPowa() {
     if (isOpen) scrollToBottom();
   }, [messages, loading, isOpen]);
 
+  // --- FUNCIÓN DE ENVÍO ---
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || loading) return;
 
-    const userMsg = { role: 'user' as const, text: input };
+    const userMsg: Message = { role: 'user', text: input };
     setMessages(prev => [...prev, userMsg]);
+    const currentInput = input;
     setInput("");
     setLoading(true);
 
     try {
-      const res = await fetch('https://agencia-powa.vercel.app/api/chat', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input }), 
+        body: JSON.stringify({ message: currentInput }), // <--- CAMBIADO: Antes decía 'prompt', ahora dice 'message'
       });
-      
+
+      if (!res.ok) throw new Error("Error en la respuesta del servidor");
+
       const data = await res.json();
-      setMessages(prev => [...prev, { role: 'bot', text: data.text }]);
+
+      setMessages(prev => [...prev, {
+        role: 'bot',
+        text: data.text
+      }]);
     } catch (error) {
-      console.error("Error:", error);
-      setMessages(prev => [...prev, { role: 'bot', text: "Lo siento, mi conexión neuronal falló. ¿Intentamos de nuevo?" }]);
+      console.error("Error en el ChatPowa:", error);
+      setMessages(prev => [...prev, {
+        role: 'bot',
+        text: "Lo siento, mi conexión neuronal falló. ¿Intentamos de nuevo?"
+      }]);
     } finally {
       setLoading(false);
     }
@@ -61,10 +79,11 @@ export default function ChatPowa() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      {/* Botón Flotante */}
-      <button 
+      {/* Botón Flotante con efecto glassmorphism */}
+      <button
         onClick={() => setIsOpen(!isOpen)}
         className={styles.chatToggleButton}
+        aria-label="Abrir chat"
       >
         {isOpen ? <IoClose size={28} /> : <IoChatbubblesSharp size={28} />}
       </button>
@@ -72,15 +91,15 @@ export default function ChatPowa() {
       {/* Ventana de Chat */}
       {isOpen && (
         <div className={`${styles.chatWindow} animate-in fade-in zoom-in duration-300`}>
-          
+
           {/* Header */}
           <div className={styles.header}>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse shadow-[0_0_8px_#22d3ee]"></div>
-              <span className="tracking-wide">Powa Lab Assistant</span>
+              <span className="font-bold tracking-wide text-sm">Powa Lab Assistant</span>
             </div>
             <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white transition-colors">
-                <IoClose size={20} />
+              <IoClose size={20} />
             </button>
           </div>
 
@@ -93,8 +112,8 @@ export default function ChatPowa() {
             ))}
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-slate-800 text-cyan-400 px-3 py-2 rounded-2xl text-xs animate-pulse border border-slate-700">
-                  Powa está escribiendo...
+                <div className="bg-slate-800 text-cyan-400 px-3 py-2 rounded-2xl text-[10px] uppercase tracking-widest animate-pulse border border-slate-700">
+                  Powa está procesando...
                 </div>
               </div>
             )}
@@ -103,18 +122,18 @@ export default function ChatPowa() {
 
           {/* Área de Input */}
           <div className={styles.inputArea}>
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
               placeholder="Escribe tu consulta..."
-              className="flex-1 bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500 transition-colors"
+              className="flex-1 bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500 transition-all shadow-inner"
             />
-            <button 
+            <button
               onClick={sendMessage}
               disabled={loading || !input.trim()}
-              className="text-blue-500 hover:text-cyan-400 disabled:opacity-30 transition-all transform active:scale-90"
+              className="ml-2 text-cyan-500 hover:text-cyan-300 disabled:opacity-20 transition-all transform active:scale-90"
             >
               <IoSend size={22} />
             </button>
