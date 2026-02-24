@@ -4,48 +4,39 @@ export async function POST(req: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
   
   if (!apiKey) {
-    return NextResponse.json({ text: "Falta la API Key en Vercel." }, { status: 500 });
+    return NextResponse.json({ text: "Falta la API Key." }, { status: 500 });
   }
 
   try {
     const { message } = await req.json();
 
-    // PROBAMOS CON LA URL ESTABLE Y EL MODELO LATEST
+    // Probamos con v1beta y el nombre de modelo más genérico
+    // Si este falla, probaremos con 'gemini-pro'
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: `Eres PowaBot, asistente de la Agencia Digital Powa. Responde de forma amable y profesional: ${message}` }],
-            },
-          ],
+          contents: [{
+            parts: [{ text: `Eres PowaBot, asistente de Agencia Powa. Responde breve: ${message}` }]
+          }]
         }),
       }
     );
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Error detallado de Google:", errorData);
-      // Si falla el 1.5-flash-latest, intentamos el 1.5-pro por si tu cuenta tiene otra prioridad
-      throw new Error(errorData.error?.message || "Error en la comunicación");
+      console.error("Error crítico de Google:", data);
+      // Intento de rescate: Si falla el flash, probamos el pro original
+      return NextResponse.json({ text: "Error de modelo. Intenta cambiar gemini-1.5-flash por gemini-pro en el código." }, { status: 500 });
     }
 
-    const data = await response.json();
     const botText = data.candidates[0].content.parts[0].text;
-
     return NextResponse.json({ text: botText });
 
   } catch (error: any) {
-    console.error("DETALLE DEL ERROR:", error.message);
-    return NextResponse.json(
-      { text: "PowaBot está recalibrando sus sistemas. ¿Podés intentar de nuevo?" }, 
-      { status: 500 }
-    );
+    return NextResponse.json({ text: "Error de conexión." }, { status: 500 });
   }
 }
