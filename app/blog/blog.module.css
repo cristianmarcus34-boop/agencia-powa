@@ -1,0 +1,129 @@
+/* app/blog/blog.module.css */
+
+.blogPageWrapper {
+    background-color: var(--dark-powa);
+    min-height: 100vh;
+    padding-top: 100px; 
+    padding-bottom: 100px;
+    background-image: radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.08) 0%, transparent 50%);
+}
+
+.blogMainTitle {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+}
+
+.badgePowaAccent {
+    color: var(--accent-powa);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.blogCardPowa {
+    background: var(--dark-card) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 24px !important;
+    height: 100%;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    position: relative;
+    overflow: hidden;
+}
+
+.blogCardPowa:hover {
+    background: rgba(30, 41, 59, 0.9) !important;
+    border-color: var(--accent-powa) !important;
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.postCategory {
+    background: rgba(0, 242, 254, 0.1);
+    color: var(--accent-powa);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.postDate {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.postEmoji {
+    font-size: 2rem;
+    background: var(--glass-bg);
+    padding: 12px;
+    border-radius: 18px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.blogCardPowa:hover .postEmoji {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.postTitle {
+    font-size: 1.45rem;
+    color: var(--text-main);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-top: 10px;
+    transition: color 0.3s ease;
+}
+
+.blogCardPowa:hover .postTitle {
+    color: var(--accent-powa);
+}
+
+.postExcerpt {
+    color: #e2e8f0 !important; 
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-weight: 400;
+    opacity: 1 !important;
+}
+
+.btnReadMore {
+    background: transparent;
+    border: none;
+    color: var(--accent-powa);
+    font-weight: 700;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: 0.3s;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.iconArrow {
+    transition: transform 0.3s ease;
+    margin-left: 8px;
+}
+
+.blogCardPowa:hover .iconArrow {
+    transform: translateX(8px);
+    color: var(--primary-glow);
+}
+
+@media (max-width: 768px) {
+    .blogPageWrapper { padding-top: 80px; }
+    .blogMainTitle { font-size: 2.5rem; }
+    .postTitle { font-size: 1.25rem; }
+}

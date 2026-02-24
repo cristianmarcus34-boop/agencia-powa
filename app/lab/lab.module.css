@@ -1,0 +1,115 @@
+/* app/lab/lab.module.css */
+
+.labPageWrapper {
+    background-color: #0b0f19;
+    min-height: 100vh;
+    padding-top: 150px; 
+    padding-bottom: 50px;
+    color: white;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 212, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 114, 255, 0.05) 0%, transparent 40%);
+}
+
+/* --- Hero Section --- */
+.labHeroIcon {
+    font-size: 4rem;
+    color: #00d4ff;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.5));
+}
+
+.heroTitleMain {
+    font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    margin-bottom: 1rem;
+}
+
+/* Subtítulo del Hero */
+.heroSubtitleModern {
+    color: var(--text-muted) !important; /* Usamos tu variable del globals */
+    max-width: 700px;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+/* --- Herramientas (Acordeón) --- */
+.labAccordionItem {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    margin-bottom: 1.2rem;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    overflow: hidden;
+}
+
+.labAccordionItem:hover:not(.locked) {
+    border-color: rgba(0, 212, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.labAccordionItem.active {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 212, 255, 0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.labAccordionHeader {
+    padding: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Esta es la clave para que se vea bien */
+.labSubtitleCustom {
+    color: var(--text-muted) !important; /* Forzamos el color Slate 400 */
+    font-size: 0.9rem;
+    font-weight: 400;
+    display: block;
+    margin-top: 2px;
+    opacity: 1 !important; /* Evitamos cualquier transparencia heredada */
+}
+
+.iconCircle {
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 212, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #00d4ff;
+    font-size: 1.2rem;
+    transition: 0.3s;
+}
+
+.labAccordionItem.active .iconCircle {
+    background: #00d4ff;
+    color: #0b0f19;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+}
+
+/* --- Form & Buttons --- */
+.formControlPowa {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    padding: 12px 20px;
+}
+
+.btnPowaPrimary {
+    background: linear-gradient(45deg, #00d4ff, #0072ff);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 700;
+    transition: 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .labPageWrapper { padding-top: 120px; }
+}

@@ -1,26 +1,72 @@
-@import "tailwindcss";
+/* app/globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@300;400;500;700&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --primary-glow: #007bff;
+  --accent-powa: #00f2fe;
+  --dark-powa: #0f172a;
+  --dark-card: rgba(30, 41, 59, 0.7);
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-main: #f8fafc;
+  --text-muted: #5ce2db;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-main);
+  background-color: var(--dark-powa);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Scrollbar Global */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--dark-powa); }
+::-webkit-scrollbar-thumb { 
+  background: #1e293b; 
+  border-radius: 5px; 
+}
+::-webkit-scrollbar-thumb:hover { background: var(--primary-glow); }
+
+/* Utilidades compartidas */
+.text-gradient {
+  background: linear-gradient(90deg, #ffffff 20%, var(--accent-powa) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-powa-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 16px 36px;
+  background: linear-gradient(45deg, var(--primary-glow), var(--accent-powa));
+  color: var(--dark-powa) !important;
+  border-radius: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.btn-powa-primary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(0, 242, 254, 0.4);
+}
+
+.border-dashed { border: 2px dashed rgba(255,255,255,0.1) !important; }
+.cursor-pointer { cursor: pointer; }
+.animate-pulse { animation: pulse 1.5s infinite; }
+@keyframes pulse {
+  0% { opacity: 0.2; }
+  50% { opacity: 0.5; }
+  100% { opacity: 0.2; }
+}
+.animate-fade-in { animation: fadeIn 0.4s ease-out; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

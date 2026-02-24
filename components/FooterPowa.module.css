@@ -1,0 +1,54 @@
+.mainFooter {
+    padding: 3rem 0;
+    background-color: var(--dark-powa);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: auto;
+}
+
+.footerContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.copyright {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.socialWrapper {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.socialLink {
+    color: var(--text-muted);
+    font-size: 1.8rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+}
+
+.socialLink:hover {
+    color: var(--accent-powa);
+    transform: translateY(-5px) scale(1.1);
+}
+
+/* Efecto especial para Instagram */
+.instagram:hover {
+    color: #E1306C;
+    filter: drop-shadow(0 0 8px rgba(225, 48, 108, 0.4));
+}
+
+@media (max-width: 768px) {
+    .mainFooter {
+        padding: 2rem 0;
+    }
+    
+    .socialWrapper {
+        gap: 1.2rem;
+    }
+}

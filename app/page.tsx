@@ -1,65 +1,141 @@
-import Image from "next/image";
+'use client';
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useInView } from 'react-intersection-observer';
 
-export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+// Iconos
+import { FaCode, FaArrowRight, FaDatabase, FaMobileAlt, FaRocket } from 'react-icons/fa';
+import { HiOutlineArrowNarrowRight } from 'react-icons/hi';
+import { 
+  SiReact, SiNodedotjs, SiTypescript, SiNextdotjs, SiDocker, 
+  SiAmazonwebservices, SiPostgresql, SiOpenai
+} from 'react-icons/si';
+
+import styles from './page.module.css';
+
+export default function HomePage() {
+    const options = { triggerOnce: true, threshold: 0.1 };
+    const [refStack, inViewStack] = useInView(options);
+    const [refServices, inViewServices] = useInView(options);
+    const [refCta, inViewCta] = useInView(options);
+
+    const techStack = [
+        { icon: <SiReact color="#61DAFB" />, name: "React" },
+        { icon: <SiNextdotjs color="#ffffff" />, name: "Next.js" },
+        { icon: <SiNodedotjs color="#339933" />, name: "Node.js" },
+        { icon: <SiTypescript color="#3178C6" />, name: "TypeScript" },
+        { icon: <SiOpenai color="#ffffff" />, name: "AI Integration" },
+        { icon: <SiAmazonwebservices color="#FF9900" />, name: "AWS" },
+        { icon: <SiDocker color="#2496ED" />, name: "Docker" },
+        { icon: <SiPostgresql color="#4169E1" />, name: "PostgreSQL" },
+    ];
+
+    return (
+        <div className={styles.homepageWrapper}>
+            {/* --- HERO SECTION --- */}
+            <section className={styles.heroSectionModern}>
+                <div className={styles.heroBgGlow}></div>
+                <Container className="position-relative z-3">
+                    <Row className="align-items-center">
+                        <Col lg={7}>
+                            <div className={styles.badgePowa}>
+                                #1 Software & Tech Partners
+                            </div>
+                            <h1 className={styles.heroTitleMain}>
+                                Ingeniería <span className="text-gradient">Digital</span><br />
+                                que escala tu visión.
+                            </h1>
+                            <p className={styles.heroSubtitleModern}>
+                                En <strong>Powa</strong> no solo creamos webs; diseñamos ecosistemas tecnológicos.
+                                Construimos <strong>software robusto</strong> para marcas que lideran el mercado.
+                            </p>
+                            <div className="d-flex flex-wrap gap-3 mt-4">
+                                {/* Clase global btn-powa-primary definida en globals.css */}
+                                <Link href="/contact" className="btn-powa-primary text-decoration-none">
+                                    Iniciar Proyecto <FaRocket className="ms-2" />
+                                </Link>
+                                <Link href="/servicios" className={`${styles.btnPowaOutline} text-decoration-none`}>
+                                    Explorar Soluciones <HiOutlineArrowNarrowRight className="ms-2" />
+                                </Link>
+                            </div>
+                        </Col>
+                        <Col lg={5} className="d-none d-lg-block">
+                            <div className="position-relative">
+                                <Image 
+                                  src="/desarrollo-de-sitios-web.webp" 
+                                  alt="Software Development Powa" 
+                                  width={550} 
+                                  height={550}
+                                  className="rounded-4 shadow-lg"
+                                  priority
+                                />
+                                <div className={styles.codeBadge}>
+                                  <code>{"{ performance: '100%' }"}</code>
+                                </div>
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
+            </section>
+
+            {/* --- TECH STACK --- */}
+            <section className={styles.techStackSection} ref={refStack}>
+                <Container>
+                    <p className={styles.techLabel}>Tecnologías que dominamos</p>
+                    <div className={styles.stackSlider}>
+                        <div className={styles.stackTrack}>
+                            {[...techStack, ...techStack].map((tech, idx) => (
+                                <div key={idx} className={styles.stackItem}>
+                                    <div className={styles.techIconWrapper}>{tech.icon}</div>
+                                    <span className={styles.techName}>{tech.name}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </Container>
+            </section>
+
+            {/* --- SERVICES GRID --- */}
+            <section className={styles.homeServices} ref={refServices}>
+                <Container>
+                    <h2 className="text-center text-white mb-5" style={{fontSize: '2.5rem', fontWeight: '800'}}>
+                        Expertise <span className="text-gradient">Full Stack</span>
+                    </h2>
+                    <Row className="g-4 mt-4">
+                        {[
+                            { icon: <FaCode />, title: "Software a Medida", desc: "Sistemas escalables, dashboards y automatización inteligente." },
+                            { icon: <FaMobileAlt />, title: "Mobile & Apps", desc: "Experiencias nativas fluidas diseñadas para el usuario moderno." },
+                            { icon: <FaDatabase />, title: "Infraestructura", desc: "Arquitecturas en la nube, seguridad y bases de datos robustas." }
+                        ].map((item, idx) => (
+                            <Col md={4} key={idx}>
+                                <div className={styles.powaServiceCard}>
+                                    <div className={styles.iconBox}>{item.icon}</div>
+                                    <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+                                    <p className="text-slate-400 text-sm mb-4 leading-relaxed">{item.desc}</p>
+                                    <Link href="/servicios" className={styles.cardLink}>
+                                        Explorar <FaArrowRight className="ms-2" />
+                                    </Link>
+                                </div>
+                            </Col>
+                        ))}
+                    </Row>
+                </Container>
+            </section>
+
+            {/* --- CTA FINAL --- */}
+            <section className={styles.ctaHomeMinimal} ref={refCta}>
+                <Container>
+                    <div className={styles.ctaMinimalBox}>
+                        <h2 className="display-5 font-bold text-white mb-3" style={{fontWeight: '800'}}>¿Tienes un desafío tecnológico?</h2>
+                        <p className="text-blue-100 mb-5 text-lg opacity-75">Convirtamos tu visión en una ventaja competitiva real.</p>
+                        <Link href="/contact" className={styles.btnPowaWhite}>
+                            Agendar Asesoría Técnica
+                        </Link>
+                    </div>
+                </Container>
+            </section>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    );
 }

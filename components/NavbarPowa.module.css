@@ -1,0 +1,146 @@
+.navbarBase {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-bottom: 1px solid transparent;
+  z-index: 1050; /* Asegura que esté por encima de todo */
+}
+
+.navbarTransparent {
+  background-color: transparent;
+  padding: 1.5rem 0;
+}
+
+.navbarScrolled {
+  background-color: rgba(15, 23, 42, 0.85); /* Slate 900 con transparencia */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  padding: 0.7rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* --- SOLUCIÓN AL LOGO --- */
+.logoWrapper {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  overflow: hidden;
+  /* Quitamos el fondo blanco sólido y ponemos uno sutil */
+  background: rgba(255, 255, 255, 0.03); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px; /* Espacio para que el logo no toque los bordes */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.logoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Esta línea ayuda a que si el logo tiene fondo negro, se mezcle con la nav */
+  mix-blend-mode: screen; 
+  /* Si el fondo del logo es blanco, cambia 'screen' por 'multiply' */
+}
+
+.brandText {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  margin-left: 12px;
+  text-transform: uppercase;
+}
+
+/* --- LINKS --- */
+.navLink {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #94a3b8 !important; /* Slate 400 */
+  padding: 0.5rem 1.2rem !important;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.navLink:hover {
+  color: var(--accent-powa) !important;
+  transform: translateY(-1px);
+}
+
+.activeLink {
+  color: #ffffff !important;
+}
+
+.activeLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: var(--accent-powa);
+  border-radius: 2px;
+  box-shadow: 0 0 10px var(--accent-powa);
+}
+
+/* --- POWA LAB --- */
+.navLinkLab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: #fff !important;
+  font-size: 0.85rem;
+  padding: 0.5rem 1.2rem !important;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50px;
+  margin: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badgeSoon {
+  background: linear-gradient(45deg, #00f2fe, #4facfe);
+  font-size: 9px;
+  padding: 1px 7px;
+  border-radius: 20px;
+  color: #000;
+  font-weight: 900;
+}
+
+/* --- BOTÓN CONTACTO --- */
+.contactBtn {
+  background: linear-gradient(45deg, var(--accent-powa), #4facfe);
+  border: none;
+  color: #0f172a;
+  padding: 9px 25px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+
+.contactBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+}
+
+.toggle {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 991px) {
+  .navbarScrolled, .navbarTransparent {
+    background-color: #0f172a;
+    padding: 1rem 0;
+  }
+  
+  .navLinkLab {
+    margin: 10px 0;
+    justify-content: center;
+  }
+}

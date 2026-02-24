@@ -1,0 +1,126 @@
+/* app/about/about.module.css */
+.aboutWrapper {
+  background-color: var(--dark-powa);
+  min-height: 100vh;
+  padding-top: 100px;
+  overflow-x: hidden;
+}
+
+.aboutHeroSection {
+  position: relative;
+  z-index: 10;
+  margin-top: -10px;
+}
+
+.logoGlowContainer {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.aboutHeroLogo {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.4));
+  animation: floating 4s ease-in-out infinite;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.aboutHeaderTitle {
+  font-weight: 900;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  margin-bottom: 1.5rem;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  color: white;
+}
+
+.aboutIntroParagraph {
+  color: #94a3b8;
+  font-size: 1.15rem;
+  max-width: 800px;
+  line-height: 1.7;
+  margin-bottom: 50px;
+}
+
+/* Tarjetas Glass */
+.profileGlassCard {
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid var(--glass-border);
+  border-radius: 40px;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+  transition: all 0.5s ease;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  margin-bottom: 3rem;
+}
+
+.profileGlassCard:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent-powa);
+  box-shadow: 0 30px 60px rgba(0, 212, 255, 0.1);
+}
+
+.profileImgFrame {
+  height: 100%;
+  min-height: 400px;
+  position: relative;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.profileMainImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+  transition: transform 0.8s ease;
+}
+
+.imgMariana {
+  object-position: center 0% !important;
+  transform: scale(1.1);
+}
+
+.profileName {
+  font-weight: 800;
+  font-size: 2.2rem;
+  color: white;
+}
+
+.profileRole {
+  color: var(--accent-powa);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.expertiseTags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.expertiseTags span {
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  padding: 5px 15px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-powa);
+}
+
+@keyframes floating {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@media (max-width: 767px) {
+  .profileImgFrame { min-height: 300px; }
+  .profileName { font-size: 1.8rem; }
+}
