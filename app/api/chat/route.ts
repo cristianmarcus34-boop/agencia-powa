@@ -1,4 +1,3 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -10,30 +9,47 @@ export async function POST(req: Request) {
 
   try {
     const { message } = await req.json();
-    const genAI = new GoogleGenerativeAI(apiKey);
 
-    // CAMBIO CLAVE: Usamos el nombre del modelo con el prefijo "models/" 
-    // Esto ayuda al SDK a encontrar la ruta correcta en la API de Google.
-    const model = genAI.getGenerativeModel({ model: "models/gemini-1.5-flash" });
+    // Llamamos directamente a la API de Google (Versión estable v1)
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: `Eres PowaBot, asistente de la Agencia Digital Powa. Responde de forma amable y profesional: ${message}` }],
+            },
+          ],
+          generationConfig: {
+            maxOutputTokens: 800,
+            temperature: 0.7,
+          },
+        }),
+      }
+    );
 
-    // En lugar de startChat, usamos generateContent directamente para probar conexión pura
-    const promptConfig = {
-      contents: [{
-        role: 'user',
-        parts: [{ text: `Eres PowaBot, asistente de Agencia Digital Powa. Responde breve: ${message}` }],
-      }],
-    };
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error de Google API:", errorData);
+      throw new Error(errorData.error?.message || "Error en la comunicación con Google");
+    }
 
-    const result = await model.generateContent(promptConfig);
-    const response = await result.response;
-    const text = response.text();
+    const data = await response.json();
+    
+    // Extraemos el texto de la respuesta estructurada de Google
+    const botText = data.candidates[0].content.parts[0].text;
 
-    return NextResponse.json({ text });
+    return NextResponse.json({ text: botText });
 
   } catch (error: any) {
-    console.error("LOG DETALLADO:", error);
+    console.error("DETALLE DEL ERROR:", error.message);
     return NextResponse.json(
-      { text: `Error: ${error.message}` }, 
+      { text: "PowaBot está experimentando una sobrecarga sensorial. ¿Reintentamos?" }, 
       { status: 500 }
     );
   }
