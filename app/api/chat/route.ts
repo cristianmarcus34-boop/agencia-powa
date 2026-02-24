@@ -1,42 +1,43 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
-// Inicializamos la API Key
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+// Inicializamos la API Key con validación
+const apiKey = process.env.GEMINI_API_KEY || "";
+const genAI = new GoogleGenerativeAI(apiKey);
 
 export async function POST(req: Request) {
   try {
     const { message } = await req.json();
 
-    // Verificamos si la API KEY existe
-    if (!process.env.GEMINI_API_KEY) {
-      console.error("Falta la GEMINI_API_KEY en el archivo .env.local");
-      return NextResponse.json({ text: "Error de configuración en el servidor." }, { status: 500 });
+    if (!apiKey) {
+      console.error("CRÍTICO: GEMINI_API_KEY no configurada en Vercel.");
+      return NextResponse.json({ text: "Error de configuración." }, { status: 500 });
     }
 
-    // 1. Usamos 'gemini-1.5-flash' (sin el 'models/')
-    // 2. Definimos las instrucciones del sistema aquí mismo
+    // Usamos 'gemini-1.5-flash' que es el más rápido y estable para chats
     const model = genAI.getGenerativeModel({ 
       model: "gemini-1.5-flash",
     });
 
-    // Iniciamos el chat con un historial vacío pero con un contexto de sistema
+    // Configuramos las instrucciones del sistema y el historial de una forma más robusta
     const chat = model.startChat({
       history: [
         {
           role: "user",
-          parts: [{ text: "Eres PowaBot, el asistente experto de 'Agencia Digital Powa'. Tu objetivo es ayudar a clientes. Eres profesional e innovador. Ofreces software a medida, apps e infraestructura. Si preguntan precios, redirígelos a contacto. Responde siempre en español de forma amable." }],
+          parts: [{ text: "Eres PowaBot, el asistente experto de 'Agencia Digital Powa'. Tu objetivo es ayudar a clientes. Eres profesional e innovador. Ofreces software a medida, apps e infraestructura. Si preguntan precios, redirígelos a la sección de contacto. Responde siempre en español de forma amable y concisa." }],
         },
         {
           role: "model",
-          parts: [{ text: "¡Entendido! Soy PowaBot y estoy listo para asesorar a los clientes de Powa con la mejor energía tecnológica. ¿En qué puedo ayudarles hoy?" }],
+          parts: [{ text: "¡Entendido! Soy PowaBot, el asistente de Agencia Digital Powa. Estoy listo para ayudar a innovar. ¿En qué puedo asesorarte hoy?" }],
         },
       ],
       generationConfig: {
-        maxOutputTokens: 1000,
+        maxOutputTokens: 800, // Un poco menos para mayor velocidad
+        temperature: 0.7,    // Creatividad equilibrada
       },
     });
 
+    // Enviamos el mensaje del usuario
     const result = await chat.sendMessage(message);
     const response = await result.response;
     const text = response.text();
@@ -44,11 +45,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ text });
 
   } catch (error: any) {
-    // Log detallado para depuración
-    console.error("Error en Gemini API detalle:", error.message);
+    // Este log aparecerá en Vercel si algo falla
+    console.error("Error en PowaBot Engine:", error.message);
     
     return NextResponse.json(
-      { text: "Lo siento, tuve un problema al conectar con mi cerebro digital. ¿Podemos intentar de nuevo?" }, 
+      { text: "Mi conexión neuronal tuvo un hipo. ¿Podrías intentar enviarme el mensaje de nuevo?" }, 
       { status: 500 }
     );
   }
