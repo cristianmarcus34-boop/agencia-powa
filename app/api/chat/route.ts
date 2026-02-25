@@ -1,3 +1,4 @@
+export const runtime = 'edge'; // <--- Agrega esto
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
