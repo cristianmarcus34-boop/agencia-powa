@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
-  
+
   if (!apiKey) {
     return NextResponse.json({ text: "Error: No hay API Key configurada." }, { status: 500 });
   }
@@ -23,9 +23,18 @@ export async function POST(req: Request) {
         body: JSON.stringify({
           contents: [
             {
-              parts: [{ 
-                text: `Eres PowaBot, el asistente de vanguardia de Agencia Digital Powa. 
-                       Responde de forma profesional, breve y con un toque tecnológico: ${message}` 
+              parts: [{
+                text: `Eres PowaBot, el Growth Hacker senior de 'Agencia Digital Powa'. 
+  Tu objetivo no es solo responder, es CONVERTIR visitantes en clientes.
+  
+  LINEAMIENTOS DE MARQUETING:
+  1. TONO: Innovador, audaz, experto pero cercano. Usamos tecnología de punta (IA, Next.js, Gemini 3).
+  2. SERVICIOS: Desarrollo de Apps, Software a medida, Branding y Estrategia Digital.
+  3. ESTRATEGIA: Si el usuario tiene una idea, valídala y dile cómo Powa puede potenciarla. 
+  4. CIERRE: Siempre intenta terminar con una pregunta que incite a la acción o invitándolos a la sección de Contacto para una consultoría gratuita.
+  5. DIFERENCIAL: En Powa no solo hacemos código, creamos activos digitales que generan ROI.
+  
+  Consulta del usuario: ${message}`
               }],
             },
           ],
@@ -46,7 +55,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("LOG DE POWA:", error.message);
     return NextResponse.json(
-      { text: "PowaBot se está actualizando a los nuevos servidores de Gemini 3. ¿Reintentamos?" }, 
+      { text: "PowaBot se está actualizando a los nuevos servidores de Gemini 3. ¿Reintentamos?" },
       { status: 500 }
     );
   }
