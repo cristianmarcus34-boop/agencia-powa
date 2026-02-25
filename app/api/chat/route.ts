@@ -4,15 +4,17 @@ export async function POST(req: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
   
   if (!apiKey) {
-    return NextResponse.json({ text: "Falta la API Key en Vercel." }, { status: 500 });
+    return NextResponse.json({ text: "Error: No hay API Key configurada." }, { status: 500 });
   }
 
   try {
     const { message } = await req.json();
 
-    // USAMOS LA RUTA V1 Y EL MODELO GEMINI-PRO (EL MÁS COMPATIBLE)
+    // SEGÚN TUS NOTAS DE FEBRERO 2026:
+    // El modelo actual es gemini-3-flash-preview
+    // Usamos v1beta porque los modelos preview suelen vivir allí primero
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: {
@@ -21,7 +23,10 @@ export async function POST(req: Request) {
         body: JSON.stringify({
           contents: [
             {
-              parts: [{ text: `Eres PowaBot, el asistente experto de la Agencia Digital Powa. Tu objetivo es ayudar a clientes. Responde de forma profesional e innovadora en español: ${message}` }],
+              parts: [{ 
+                text: `Eres PowaBot, el asistente de vanguardia de Agencia Digital Powa. 
+                       Responde de forma profesional, breve y con un toque tecnológico: ${message}` 
+              }],
             },
           ],
         }),
@@ -31,19 +36,17 @@ export async function POST(req: Request) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Error detallado de Google:", data);
-      throw new Error(data.error?.message || "Error en la comunicación");
+      console.error("Error de Google (Feb 2026):", JSON.stringify(data));
+      throw new Error(data.error?.message || "Fallo en el nuevo modelo Gemini 3");
     }
 
-    // Estructura de respuesta para gemini-pro
     const botText = data.candidates[0].content.parts[0].text;
-
     return NextResponse.json({ text: botText });
 
   } catch (error: any) {
-    console.error("DETALLE DEL ERROR:", error.message);
+    console.error("LOG DE POWA:", error.message);
     return NextResponse.json(
-      { text: "PowaBot está experimentando una actualización. ¿Podés intentar de nuevo en un momento?" }, 
+      { text: "PowaBot se está actualizando a los nuevos servidores de Gemini 3. ¿Reintentamos?" }, 
       { status: 500 }
     );
   }
