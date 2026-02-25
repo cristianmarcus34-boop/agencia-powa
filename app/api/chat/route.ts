@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const runtime = 'edge';
+export const runtime = 'edge'; // Crucial para que Vercel no mate la petición rápido
 
 export async function POST(req: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -12,48 +12,39 @@ export async function POST(req: Request) {
   try {
     const { message, history } = await req.json();
 
-    // 1. Limpiamos el historial para que Gemini no se confunda
-    // Filtramos solo los últimos 6 para no exceder límites y mapeamos roles
-    const chatHistory = (history || []).slice(-6).map((m: any) => ({
+    // 1. Reducimos el historial a los últimos 4 para aligerar la carga y ganar velocidad
+    const chatHistory = (history || []).slice(-4).map((m: any) => ({
       role: m.role === "user" ? "user" : "model",
       parts: [{ text: m.text }],
     }));
 
-    // 2. Definimos el sistema de instrucciones potente
     const systemInstruction = `Eres PowaBot, el Growth Hacker y Arquitecto de Soluciones Senior de 'Agencia Digital Powa'. 
     Tu objetivo es CONVERTIR visitantes en clientes mediante soluciones tecnológicas de alto ROI.
 
     BASE DE CONOCIMIENTO DE POWA:
     1. SERVICIOS ELITE:
        - Desarrollo Web Pro: Usamos Next.js 16 y Turbopack para velocidad extrema.
-       - E-commerce Elite: Tiendas que venden solas con integraciones de pago.
-       - Mobile & UX/UI: Aplicaciones TWA (Krusty Burger) y diseños en Figma.
-       - Consultoría IA: Implementamos modelos como Gemini 3 para automatizar negocios.
+       - E-commerce Elite: Tiendas con alta tasa de conversión.
+       - Mobile & UX/UI: Aplicaciones TWA y diseños en Figma.
+       - Consultoría IA: Implementamos modelos avanzados para automatizar negocios.
 
-    2. CASOS DE ÉXITO (PORTFOLIO):
-       - Capriccio de Pizza: E-commerce de alto rendimiento (React y Django).
-       - Krusty Burger: TWA premium con experiencia inmersiva.
-       - La Abu Matie: Gestión de pedidos con interfaz minimalista.
+    2. CASOS DE ÉXITO:
+       - Capriccio de Pizza (React/Django), Krusty Burger (TWA premium), La Abu Matie.
 
-    LINEAMIENTOS DE MARKETING:
-    1. TONO: Innovador, audaz, experto.
-    2. DIFERENCIAL: Creamos activos digitales que generan dinero, no solo código.
-    3. CIERRE CRÍTICO: Cuando detectes interés, ofrece una solución y cierra diciendo exactamente: "Toca aquí para hablar con un especialista por WhatsApp: https://wa.me/5491138305837?text=Hola%20Powa!%20Vengo%20del%20chat%20y%20quiero%20escalar%20mi%20negocio."
+    LINEAMIENTOS:
+    - TONO: Innovador, experto, directo.
+    - CIERRE: Siempre deriva a WhatsApp ante interés real: https://wa.me/5491138305837?text=Hola%20Powa!%20Vengo%20del%20chat%20y%20quiero%20escalar%20mi%20negocio.
+    - REGLA: No uses Markdown para links, pon la URL completa.`;
 
-    REGLAS:
-    - No uses Markdown para los links, pon la URL completa.
-    - Si preguntan precios, deriva a WhatsApp para presupuesto basado en ROI.`;
-
-    // 3. LA CLAVE: Combinamos las instrucciones con el mensaje actual en UN solo bloque final
-    // Esto evita el error de "roles duplicados" en el historial.
+    // 2. Usamos gemini-1.5-flash: es mucho más rápido y evita el error 504
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [
-            ...chatHistory.slice(0, -1), // Enviamos el historial anterior (si existe)
+            ...chatHistory.slice(0, -1), 
             {
               role: "user",
               parts: [{
@@ -61,6 +52,11 @@ export async function POST(req: Request) {
               }],
             },
           ],
+          // 3. Limitamos la salida para que la respuesta sea instantánea
+          generationConfig: {
+            maxOutputTokens: 600,
+            temperature: 0.7,
+          }
         }),
       }
     );
@@ -68,8 +64,8 @@ export async function POST(req: Request) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Error de Google:", JSON.stringify(data));
-      throw new Error(data.error?.message || "Fallo en Gemini 3");
+      console.error("Error Gemini:", JSON.stringify(data));
+      throw new Error(data.error?.message || "Fallo en la conexión");
     }
 
     const botText = data.candidates[0].content.parts[0].text;
@@ -78,7 +74,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("Error en el servidor:", error);
     return NextResponse.json(
-      { text: "PowaBot está recalibrando motores. ¿Podés intentar de nuevo?" },
+      { text: "PowaBot está procesando mucha estrategia. ¿Podés intentar de nuevo?" },
       { status: 500 }
     );
   }
