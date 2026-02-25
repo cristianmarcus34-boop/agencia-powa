@@ -7,7 +7,7 @@ import {
   FaLightbulb, FaMobileAlt, FaChevronDown, FaRocket, FaWhatsapp
 } from 'react-icons/fa';
 import Link from 'next/link';
-import styles from './page.module.css';
+import styles from './servicios.module.css';
 
 // --- TIPADO ---
 interface ServiceProps {

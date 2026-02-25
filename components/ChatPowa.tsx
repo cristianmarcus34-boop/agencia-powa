@@ -49,29 +49,36 @@ export default function ChatPowa() {
   };
 
   const sendMessage = async () => {
-    if (!input.trim() || loading) return;
+  if (!input.trim() || loading) return;
 
-    const userMsg: Message = { role: 'user', text: input.trim() };
-    setMessages(prev => [...prev, userMsg]);
-    const currentInput = input;
-    setInput("");
-    setLoading(true);
+  const userMsg: Message = { role: 'user', text: input.trim() };
+  // Guardamos el historial incluyendo el nuevo mensaje del usuario
+  const newHistory = [...messages, userMsg];
+  
+  setMessages(newHistory);
+  const currentInput = input;
+  setInput("");
+  setLoading(true);
 
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: currentInput }), 
-      });
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      // ENVIAMOS EL HISTORIAL COMPLETO
+      body: JSON.stringify({ 
+        message: currentInput,
+        history: newHistory 
+      }), 
+    });
 
-      const data = await res.json();
-      setMessages(prev => [...prev, { role: 'bot', text: data.text }]);
-    } catch (error) {
-      setMessages(prev => [...prev, { role: 'bot', text: "Error de conexión. Reintenta." }]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const data = await res.json();
+    setMessages(prev => [...prev, { role: 'bot', text: data.text }]);
+  } catch (error) {
+    setMessages(prev => [...prev, { role: 'bot', text: "Error de conexión. Reintenta." }]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className={styles.chatContainer}>

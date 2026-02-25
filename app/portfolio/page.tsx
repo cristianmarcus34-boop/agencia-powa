@@ -9,8 +9,8 @@ import {
 } from 'react-icons/fa';
 import Link from 'next/link';
 import ProjectModal from '@/components/ProjectModal';
+import styles from './portfolio.module.css';
 
-// --- DEFINICIÓN DE TIPOS ---
 interface Project {
   title: string;
   icon: React.ReactNode;
@@ -21,12 +21,11 @@ interface Project {
   galleryImages: string[] | null;
 }
 
-// --- DATOS DE LOS PROYECTOS (AQUÍ ESTÁ EL FIX) ---
 const PROJECTS_DATA: Project[] = [
   {
     title: "Capriccio de Pizza (React)",
     icon: <FaReact />,
-    description: "E-commerce de alto rendimiento. Stack optimizado para conversión y tiempos de carga ultra rápidos en dispositivos móviles.",
+    description: "E-commerce de alto rendimiento. Stack optimizado para conversión y tiempos de carga ultra rápidos.",
     link: "https://capiccio-de-pizza.web.app/",
     tag: "E-COMMERCE SYSTEM",
     tech: ["React Architecture", "Firebase", "Bootstrap 5"],
@@ -35,7 +34,7 @@ const PROJECTS_DATA: Project[] = [
   {
     title: "Capriccio de Pizza (Django)",
     icon: <FaPython />,
-    description: "Motor robusto con Python/Django. Escalabilidad total y panel administrativo personalizado para gestión de stock y Big Data.",
+    description: "Motor robusto con Python/Django. Escalabilidad total y panel administrativo personalizado.",
     link: "https://capricciodepizza.onrender.com/",
     tag: "BACKEND ARCHITECTURE",
     tech: ["Django Engine", "Python", "PostgreSQL"],
@@ -44,7 +43,7 @@ const PROJECTS_DATA: Project[] = [
   {
     title: "La Abu Matie App",
     icon: <FaServer />,
-    description: "Sistema de gestión de pedidos digitales. Interfaz minimalista enfocada en la facilidad de uso y accesibilidad total.",
+    description: "Sistema de gestión de pedidos digitales. Interfaz minimalista enfocada en la facilidad de uso.",
     link: "https://la-abu-matie-app.web.app/",
     tag: "UI/UX SOLUTION",
     tech: ["React Core", "NoSQL", "User Experience"],
@@ -53,7 +52,7 @@ const PROJECTS_DATA: Project[] = [
   {
     title: "Krusty Burger App",
     icon: <FaMobileAlt />,
-    description: "TWA premium con notificaciones push, carrito avanzado y estética inmersiva. El futuro de los pedidos online.",
+    description: "TWA premium con notificaciones push y estética inmersiva. El futuro de los pedidos online.",
     link: "https://www.krustyburger.com.ar/",
     tag: "PREMIUM TWA ENGINE",
     tech: ["TWA Architecture", "Offline-Ready", "Mobile Core"],
@@ -81,19 +80,18 @@ export default function PortfolioPage() {
   };
 
   return (
-    <div className="portfolio-wrapper">
-      {/* --- HERO SECTION --- */}
-      <section className="portfolio-hero">
-        <div className="hero-bg-glow" />
+    <div className={styles.portfolioWrapper}>
+      <section className={styles.portfolioHero}>
+        <div className={styles.heroBgGlow} />
         <Container>
-          <header className="text-center pt-5">
-            <span className="badge-powa mb-3 inline-block px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-xs font-bold tracking-widest uppercase">
+          <header className="text-center">
+            <span className={styles.badgePowa}>
               ENGINEERING & DESIGN
             </span>
-            <h1 className="portfolio-title-main text-5xl md:text-7xl font-black mb-4">
+            <h1 className={styles.portfolioTitleMain}>
               Proyectos que redefinen<br />el estándar digital
             </h1>
-            <p className="portfolio-lead-text mx-auto mt-4 max-w-2xl text-slate-400 text-lg">
+            <p className={styles.portfolioLeadText}>
               Arquitecturas escalables y diseño funcional. No solo construimos sitios,
               desarrollamos el motor tecnológico de tu empresa.
             </p>
@@ -101,8 +99,7 @@ export default function PortfolioPage() {
         </Container>
       </section>
 
-      <Container className="pb-5 mt-[-40px] relative z-10">
-        {/* --- STATS SECTION --- */}
+      <Container className="pb-5 relative z-10">
         <Row className="text-center mb-5 g-4">
           {[
             { value: "+20", label: "Proyectos Live" },
@@ -111,37 +108,32 @@ export default function PortfolioPage() {
             { value: "+10", label: "Tecnologías" }
           ].map((stat, i) => (
             <Col xs={6} md={3} key={i}>
-              <div className="stat-card glass-card">
-                <h3 className="text-gradient font-bold text-3xl">{stat.value}</h3>
-                <p className="text-slate-500 text-sm mb-0">{stat.label}</p>
+              <div className={styles.statCard}>
+                <h3 className={styles.statValue}>{stat.value}</h3>
+                <p className={styles.statLabel}>{stat.label}</p>
               </div>
             </Col>
           ))}
         </Row>
 
-        <h2 className="portfolio-section-divider d-flex align-items-center mb-5 text-2xl font-bold text-white">
-          <FaCode className="me-3 text-blue-400" /> Desarrollo & Sistemas
+        <h2 className={styles.sectionDivider}>
+          <FaCode className="me-3" /> Desarrollo & Sistemas
         </h2>
 
-        {/* --- GRID DE PROYECTOS --- */}
         <Row className="g-4">
           {PROJECTS_DATA.map((project, index) => (
             <Col md={6} lg={4} key={index}>
-              <Card className="powa-project-card h-100 border-white/10 overflow-hidden group">
-                <div className="project-img-wrapper">
-                  <div className="project-tag absolute top-4 left-4 z-20">
+              <Card className={styles.powaProjectCard}>
+                <div className={styles.projectImgWrapper}>
+                  <div className={styles.projectTag}>
                     {project.tag}
                   </div>
-
-                  <div className="project-placeholder-icon text-5xl group-hover:scale-110 transition-transform duration-500">
+                  <div className={styles.projectIcon}>
                     {project.icon}
                   </div>
-                  <div className="abstract-glow absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-60"></div>
-
-                  <div className="project-overlay absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
+                  <div className={styles.projectOverlay}>
                     <Button
-                      variant="light"
-                      className="rounded-full font-bold px-4 py-2"
+                      className={styles.btnQuickView}
                       onClick={() => project.galleryImages ? handleShowModal(project) : window.open(project.link, '_blank')}
                     >
                       {project.galleryImages ? "Ver Detalles" : "Visitar Sitio"}
@@ -149,33 +141,31 @@ export default function PortfolioPage() {
                   </div>
                 </div>
 
-                <Card.Body className="d-flex flex-column p-4">
-                  <div className="tech-pills mb-3 d-flex flex-wrap gap-2">
+                <Card.Body className={styles.cardBody}>
+                  <div className={styles.techPills}>
                     {project.tech?.map((t, i) => (
-                      <span key={i} className="text-[10px] uppercase tracking-tighter">
-                        {t}
-                      </span>
+                      <span key={i}>{t}</span>
                     ))}
                   </div>
 
-                  <Card.Title className="text-xl font-bold mb-2 text-white">{project.title}</Card.Title>
+                  <Card.Title className={styles.cardTitle}>{project.title}</Card.Title>
 
-                  <Card.Text className="text-slate-400 text-sm flex-grow-1">
+                  <Card.Text className={styles.cardDescription}>
                     {project.description}
                   </Card.Text>
 
-                  <div className="d-flex gap-2 mt-4">
+                  <div className="d-flex gap-2 mt-auto pt-4">
                     <Button
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn-powa-primary flex-grow-1"
+                      className={styles.btnPowaPrimary}
                     >
                       Explorar Demo <FaExternalLinkAlt className="ms-2" size={12} />
                     </Button>
 
                     {project.galleryImages && (
-                      <Button onClick={() => handleShowModal(project)} className="btn-powa-outline-glow">
+                      <Button onClick={() => handleShowModal(project)} className={styles.btnPowaOutline}>
                         <FaImages />
                       </Button>
                     )}
@@ -186,13 +176,10 @@ export default function PortfolioPage() {
           ))}
         </Row>
 
-        {/* --- CTA BOX --- */}
-        <div className="cta-minimal-box text-center mt-5 py-5">
-          <h3 className="text-2xl font-bold mb-3 text-white">¿Tienes un desafío técnico?</h3>
-          <p className="text-slate-500 mb-4">Construyamos la solución que tu negocio necesita.</p>
-
-          {/* En Next.js moderno, el Link envuelve directamente el contenido o el componente */}
-          <Link href="/contact" className="btn btn-powa-primary btn-lg px-5 inline-flex items-center justify-center decoration-none">
+        <div className={styles.ctaBox}>
+          <h3>¿Tienes un desafío técnico?</h3>
+          <p>Construyamos la solución que tu negocio necesita.</p>
+          <Link href="/contact" className={styles.btnCtaLarge}>
             Iniciar Consulta <FaRocket className="ms-2" />
           </Link>
         </div>

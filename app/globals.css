@@ -1,6 +1,14 @@
 /* app/globals.css */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@300;400;500;700&display=swap');
 
+/* --- RESET Y COMPORTAMIENTO GLOBAL --- */
+html {
+  /* Desactivamos el smooth scroll global para evitar conflictos con Next.js */
+  scroll-behavior: auto !important;
+  /* Evita saltos visuales cuando aparece la scrollbar */
+  margin-right: calc(100vw - 100%);
+}
+
 :root {
   --primary-glow: #007bff;
   --accent-powa: #00f2fe;
@@ -19,16 +27,26 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  /* Mejora el renderizado de fuentes en pantallas oscuras */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Scrollbar Global */
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: var(--dark-powa); }
+/* Scrollbar Global Estilizada */
+::-webkit-scrollbar { 
+  width: 8px; 
+}
+::-webkit-scrollbar-track { 
+  background: var(--dark-powa); 
+}
 ::-webkit-scrollbar-thumb { 
   background: #1e293b; 
-  border-radius: 5px; 
+  border-radius: 10px; 
+  border: 2px solid var(--dark-powa);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--primary-glow); }
+::-webkit-scrollbar-thumb:hover { 
+  background: var(--primary-glow); 
+}
 
 /* Utilidades compartidas */
 .text-gradient {
@@ -41,32 +59,44 @@ body {
 .btn-powa-primary {
   display: inline-flex;
   align-items: center;
-  padding: 16px 36px;
+  padding: 14px 32px; /* Ajustado ligeramente para mejor equilibrio */
   background: linear-gradient(45deg, var(--primary-glow), var(--accent-powa));
   color: var(--dark-powa) !important;
-  border-radius: 14px;
+  border-radius: 12px;
   font-weight: 800;
   text-decoration: none;
   border: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .btn-powa-primary:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(0, 242, 254, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 242, 254, 0.3);
+  filter: brightness(1.1);
 }
 
 .border-dashed { border: 2px dashed rgba(255,255,255,0.1) !important; }
 .cursor-pointer { cursor: pointer; }
-.animate-pulse { animation: pulse 1.5s infinite; }
+
+/* Animaciones */
+.animate-pulse { animation: pulse 2s infinite; }
 @keyframes pulse {
-  0% { opacity: 0.2; }
-  50% { opacity: 0.5; }
-  100% { opacity: 0.2; }
+  0% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+  100% { opacity: 0.3; }
 }
-.animate-fade-in { animation: fadeIn 0.4s ease-out; }
+
+.animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fix para que los links no tengan subrayado por defecto */
+a {
+  text-decoration: none !important;
+  color: inherit;
 }

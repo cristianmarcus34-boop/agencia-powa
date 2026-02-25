@@ -1,118 +1,241 @@
-/* --- Reset y Contenedor --- */
-.portfolio-wrapper {
-  background-color: #020617 !important; /* Slate 950 */
+/* --- Contenedor Base --- */
+.portfolioWrapper {
+  background-color: #020617; /* Slate 950 */
   min-height: 100vh;
-  padding-top: 140px !important; /* Espacio para que la Navbar no lo tape */
-  color: #f1f5f9 !important;
+  padding-top: 100px;
+  color: #f1f5f9;
 }
 
-/* --- Hero Section --- */
-.portfolio-hero {
+.portfolioHero {
   position: relative;
-  padding: 60px 0 100px !important;
-  z-index: 1;
+  padding: 80px 0 60px;
 }
 
-.hero-bg-glow {
+.heroBgGlow {
   position: absolute;
-  top: -100px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 800px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
-  filter: blur(80px);
-  z-index: 0;
+  height: 500px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
   pointer-events: none;
 }
 
-.portfolio-title-main {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 900 !important;
-  color: #ffffff !important;
-  line-height: 1.1 !important;
-  background: linear-gradient(135deg, #fff 30%, #3b82f6 100%);
+.badgePowa {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.portfolioTitleMain {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  background: linear-gradient(to bottom, #ffffff, #94a3b8);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* --- Stats Section --- */
-.stat-card.glass-card {
-  background: rgba(15, 23, 42, 0.8) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  padding: 25px !important;
-  border-radius: 24px !important;
-  backdrop-filter: blur(12px);
+.portfolioLeadText {
+  max-width: 700px;
+  margin: 20px auto;
+  color: #94a3b8;
+  font-size: 1.1rem;
 }
 
-/* --- Tarjetas de Proyecto (FIX FONDO BLANCO) --- */
-.powa-project-card {
-  background-color: #0f172a !important; /* Slate 900 */
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 24px !important;
-  transition: all 0.4s ease !important;
+/* --- Stats --- */
+.statCard {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 24px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
 }
 
-.powa-project-card:hover {
-  border-color: rgba(59, 130, 246, 0.5) !important;
-  transform: translateY(-10px);
+.statValue {
+  color: #3b82f6;
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 5px;
 }
 
-/* Forzar el contenido interno a ser oscuro */
-.powa-project-card .card-body {
-  background: transparent !important;
-  color: #f1f5f9 !important;
-  padding: 24px !important;
-}
-
-.powa-project-card .card-title {
-  color: #ffffff !important;
-  font-weight: 800 !important;
-}
-
-.powa-project-card .card-text {
-  color: #94a3b8 !important;
-}
-
-/* --- Tech Pills --- */
-.tech-pills span {
-  background: rgba(59, 130, 246, 0.1) !important;
-  border: 1px solid rgba(59, 130, 246, 0.3) !important;
-  color: #93c5fd !important;
-  padding: 4px 10px !important;
-  font-size: 11px !important;
-  border-radius: 6px !important;
+.statLabel {
+  color: #64748b;
+  font-size: 0.8rem;
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* --- Project Visuals --- */
-.project-img-wrapper {
-  background: #1e293b !important;
-  height: 200px !important;
+/* --- Secciones --- */
+.sectionDivider {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 60px 0 40px;
+}
+
+/* --- TARJETAS POWA (EL CORAZÓN DEL DISEÑO) --- */
+.powaProjectCard {
+  background: #0f172a !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 24px !important;
+  height: 100%;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+}
+
+.powaProjectCard:hover {
+  transform: translateY(-10px);
+  border-color: #3b82f6 !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.1);
+}
+
+.projectImgWrapper {
+  height: 220px;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
 }
 
-.project-placeholder-icon {
-  font-size: 4.5rem !important;
-  color: rgba(59, 130, 246, 0.2) !important;
+.projectIcon {
+  font-size: 5rem;
+  color: rgba(59, 130, 246, 0.15);
+  transition: transform 0.5s ease;
+}
+
+.powaProjectCard:hover .projectIcon {
+  transform: scale(1.1) rotate(5deg);
+  color: rgba(59, 130, 246, 0.3);
+}
+
+.projectTag {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.projectOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.powaProjectCard:hover .projectOverlay {
+  opacity: 1;
+}
+
+.btnQuickView {
+  background: white;
+  color: black;
+  font-weight: 800;
+  border: none;
+  border-radius: 99px;
+  padding: 10px 24px;
+}
+
+.cardBody {
+  padding: 24px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTitle {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.cardDescription {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.techPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.techPills span {
+  font-size: 9px;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 3px 10px;
+  border-radius: 4px;
+  color: #64748b;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* --- Botones --- */
-.btn-powa-primary {
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+.btnPowaPrimary {
+  background: #2563eb !important;
   border: none !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  padding: 12px !important;
   border-radius: 12px !important;
-  font-weight: 700 !important;
-  padding: 12px 20px !important;
+  flex: 1;
 }
 
-.btn-powa-outline-glow {
+.btnPowaOutline {
   background: rgba(255, 255, 255, 0.05) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: white !important;
   border-radius: 12px !important;
+  width: 50px;
+}
+
+/* --- CTA --- */
+.ctaBox {
+  margin-top: 100px;
+  padding: 80px 40px;
+  background: linear-gradient(to bottom, rgba(30, 41, 59, 0.4), transparent);
+  border-radius: 40px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.btnCtaLarge {
+  display: inline-flex;
+  align-items: center;
+  background: white;
+  color: black;
+  padding: 18px 40px;
+  border-radius: 99px;
+  font-weight: 900;
+  text-decoration: none;
+  margin-top: 20px;
+  transition: transform 0.2s;
+}
+
+.btnCtaLarge:hover {
+  transform: scale(1.05);
+  color: black;
 }
