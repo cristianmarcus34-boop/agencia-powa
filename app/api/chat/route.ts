@@ -1,5 +1,6 @@
-export const runtime = 'edge'; // <--- Agrega esto
 import { NextResponse } from "next/server";
+
+export const runtime = 'edge';
 
 export async function POST(req: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -11,12 +12,40 @@ export async function POST(req: Request) {
   try {
     const { message, history } = await req.json();
 
-    // Mapeamos el historial para que Gemini mantenga la memoria de la charla
-    const formattedHistory = history.map((m: any) => ({
+    // 1. Limpiamos el historial para que Gemini no se confunda
+    // Filtramos solo los últimos 6 para no exceder límites y mapeamos roles
+    const chatHistory = (history || []).slice(-6).map((m: any) => ({
       role: m.role === "user" ? "user" : "model",
       parts: [{ text: m.text }],
     }));
 
+    // 2. Definimos el sistema de instrucciones potente
+    const systemInstruction = `Eres PowaBot, el Growth Hacker y Arquitecto de Soluciones Senior de 'Agencia Digital Powa'. 
+    Tu objetivo es CONVERTIR visitantes en clientes mediante soluciones tecnológicas de alto ROI.
+
+    BASE DE CONOCIMIENTO DE POWA:
+    1. SERVICIOS ELITE:
+       - Desarrollo Web Pro: Usamos Next.js 16 y Turbopack para velocidad extrema.
+       - E-commerce Elite: Tiendas que venden solas con integraciones de pago.
+       - Mobile & UX/UI: Aplicaciones TWA (Krusty Burger) y diseños en Figma.
+       - Consultoría IA: Implementamos modelos como Gemini 3 para automatizar negocios.
+
+    2. CASOS DE ÉXITO (PORTFOLIO):
+       - Capriccio de Pizza: E-commerce de alto rendimiento (React y Django).
+       - Krusty Burger: TWA premium con experiencia inmersiva.
+       - La Abu Matie: Gestión de pedidos con interfaz minimalista.
+
+    LINEAMIENTOS DE MARKETING:
+    1. TONO: Innovador, audaz, experto.
+    2. DIFERENCIAL: Creamos activos digitales que generan dinero, no solo código.
+    3. CIERRE CRÍTICO: Cuando detectes interés, ofrece una solución y cierra diciendo exactamente: "Toca aquí para hablar con un especialista por WhatsApp: https://wa.me/5491138305837?text=Hola%20Powa!%20Vengo%20del%20chat%20y%20quiero%20escalar%20mi%20negocio."
+
+    REGLAS:
+    - No uses Markdown para los links, pon la URL completa.
+    - Si preguntan precios, deriva a WhatsApp para presupuesto basado en ROI.`;
+
+    // 3. LA CLAVE: Combinamos las instrucciones con el mensaje actual en UN solo bloque final
+    // Esto evita el error de "roles duplicados" en el historial.
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`,
       {
@@ -24,37 +53,13 @@ export async function POST(req: Request) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [
+            ...chatHistory.slice(0, -1), // Enviamos el historial anterior (si existe)
             {
               role: "user",
               parts: [{
-                text: `Eres PowaBot, el Growth Hacker y Arquitecto de Soluciones Senior de 'Agencia Digital Powa'. 
-                Tu objetivo es CONVERTIR visitantes en clientes mediante soluciones tecnológicas de alto ROI.
-
-                BASE DE CONOCIMIENTO DE POWA:
-                1. SERVICIOS ELITE:
-                   - Desarrollo Web Pro: Usamos Next.js 16 y Turbopack para velocidad extrema.
-                   - E-commerce Elite: Tiendas que venden solas con integraciones de pago.
-                   - Mobile & UX/UI: Aplicaciones TWA (Krusty Burger) y diseños en Figma.
-                   - Consultoría IA: Implementamos modelos como Gemini 3 para automatizar negocios.
-
-                2. CASOS DE ÉXITO (PORTFOLIO):
-                   - Capriccio de Pizza: E-commerce de alto rendimiento (React y Django).
-                   - Krusty Burger: TWA premium con experiencia inmersiva.
-                   - La Abu Matie: Gestión de pedidos con interfaz minimalista.
-
-                LINEAMIENTOS DE MARKETING:
-                1. TONO: Innovador, audaz, experto.
-                2. DIFERENCIAL: Creamos activos digitales que generan dinero, no solo código.
-                3. CIERRE CRÍTICO: Cuando detectes interés, ofrece una solución y cierra diciendo exactamente: "Toca aquí para hablar con un especialista por WhatsApp: https://wa.me/5491138305837?text=Hola%20Powa!%20Vengo%20del%20chat%20y%20quiero%20escalar%20mi%20negocio."
-
-                REGLAS:
-                - No uses Markdown para los links, pon la URL completa.
-                - Si preguntan precios, deriva a WhatsApp para presupuesto basado en ROI.
-                
-                Consulta actual: ${message}`
+                text: `${systemInstruction}\n\nConsulta actual del usuario: ${message}`
               }],
             },
-            ...formattedHistory.slice(-6) // Enviamos los últimos 6 mensajes para mantener contexto sin saturar el token limit
           ],
         }),
       }
@@ -71,6 +76,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ text: botText });
 
   } catch (error: any) {
+    console.error("Error en el servidor:", error);
     return NextResponse.json(
       { text: "PowaBot está recalibrando motores. ¿Podés intentar de nuevo?" },
       { status: 500 }
