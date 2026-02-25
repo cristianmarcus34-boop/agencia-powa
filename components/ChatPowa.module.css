@@ -1,41 +1,54 @@
-/* ChatPowa.module.css */
+/* app/components/ChatPowa/ChatPowa.module.css */
 
-/* Contenedor principal: FIJO al viewport para que se vea en TODAS las páginas */
 .chatContainer {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 999999 !important; /* Prioridad máxima sobre cualquier elemento */
+  z-index: 999999 !important;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   font-family: sans-serif;
 }
 
+/* BOTÓN DEL ROBOT */
 .chatToggleButton {
-  background: linear-gradient(135deg, #2563eb, #4338ca);
-  color: white;
-  width: 60px;
-  height: 60px;
+  background: transparent; /* Quitamos el gradiente azul para que luzca el robot */
+  padding: 0;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 15px rgba(37, 99, 235, 0.3);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000000;
+  /* Efecto de resplandor cian */
+  filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.4));
 }
 
 .chatToggleButton:hover {
-  transform: scale(1.1) translateY(-5px);
-  box-shadow: 0 12px 40px rgba(0, 242, 254, 0.5);
+  transform: scale(1.1) rotate(5deg);
+  filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.7));
+}
+
+.robotIconImg {
+  border-radius: 50%;
+  object-fit: cover;
+  /* Animación sutil para que parezca vivo */
+  animation: robotFloat 3s ease-in-out infinite;
+}
+
+@keyframes robotFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 .chatWindow {
   position: absolute;
-  bottom: 80px;
+  bottom: 85px;
   right: 0;
   width: 320px;
   height: 550px;
@@ -51,20 +64,42 @@
 }
 
 @media (min-width: 768px) {
-  .chatWindow {
-    width: 384px;
-  }
+  .chatWindow { width: 384px; }
 }
 
 .header {
   background: linear-gradient(90deg, #1e293b, #0f172a);
   padding: 1rem;
   color: white;
-  font-weight: bold;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+}
+
+/* Estilo para el avatar pequeño en la cabecera */
+.headerAvatarContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.headerAvatar {
+  border-radius: 50%;
+  border: 1px solid rgba(0, 242, 254, 0.4);
+  background: #0f172a;
+}
+
+.onlineStatus {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #4ade80;
+  border: 1px solid #0f172a;
 }
 
 .messagesArea {
@@ -76,15 +111,6 @@
   gap: 1rem;
   background-image: radial-gradient(rgba(0, 242, 254, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
-}
-
-/* Scrollbar Estilo Powa Lab */
-.messagesArea::-webkit-scrollbar {
-  width: 5px;
-}
-.messagesArea::-webkit-scrollbar-thumb {
-  background: #2563eb;
-  border-radius: 10px;
 }
 
 .userBubble {
@@ -109,7 +135,6 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Botón de WhatsApp destacado */
 .whatsappButton {
   align-self: flex-start;
   background: #16a34a;
@@ -126,11 +151,6 @@
   transition: all 0.2s;
 }
 
-.whatsappButton:hover {
-  background: #15803d;
-  transform: scale(1.02);
-}
-
 .inputArea {
   padding: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -140,75 +160,32 @@
   align-items: center;
 }
 
-/* --- SOLUCIÓN AL TEXTO INVISIBLE --- */
 .inputArea input {
   flex: 1;
-  background: #1e293b !important; /* Fondo oscuro */
+  background: #1e293b !important;
   border: 1px solid #334155 !important;
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
   font-size: 0.875rem;
-  color: #ffffff !important; /* TEXTO BLANCO SIEMPRE */
+  color: #ffffff !important;
   outline: none;
-  transition: all 0.2s;
-}
-
-.inputArea input:focus {
-  border-color: #00f2fe !important;
-  box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
-}
-
-.inputArea input::placeholder {
-  color: #64748b;
-}
-
-.inputArea button {
-  background: none;
-  border: none;
-  color: #2563eb;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.inputArea button:hover:not(:disabled) {
-  color: #00f2fe;
-  transform: scale(1.1);
-}
-
-/* Status Online animado */
-.onlineStatus {
-  width: 8px;
-  height: 8px;
-  background: #4ade80;
-  border-radius: 50%;
-  box-shadow: 0 0 8px #4ade80;
 }
 
 .notificationBadge {
   position: absolute;
-  top: -2px;
-  right: -2px;
+  top: 5px;
+  right: 5px;
   width: 14px;
   height: 14px;
   background: #ef4444;
   border-radius: 50%;
-  border: 2px solid white;
+  border: 2px solid #0f172a;
   z-index: 1000001;
 }
 
-/* Animación de pulso para el botón de conversión */
-.animatePulse {
-  animation: pulse-green 2s infinite;
-}
-
-@keyframes pulse-green {
-  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6); }
-  70% { box-shadow: 0 0 0 12px rgba(34, 197, 94, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-}
-
-.botBubble a {
-  word-break: break-all;
-  color: #22d3ee;
-  text-decoration: underline;
+.loadingStatus {
+  font-size: 10px;
+  color: #00f2fe;
+  font-style: italic;
+  margin-left: 5px;
 }
