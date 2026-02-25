@@ -1,30 +1,61 @@
 /* app/faq/faq.module.css */
+
 .faqPageWrapper {
     background-color: var(--dark-powa);
     min-height: 100vh;
-    padding-top: 120px;
+    padding-top: 140px;
     padding-bottom: 100px;
     position: relative;
+    overflow: hidden;
+    /* Un brillo radial de fondo más potente para iluminar el contenido central */
+    background-image: radial-gradient(circle at 50% 20%, rgba(0, 242, 254, 0.1) 0%, transparent 50%);
 }
 
 .faqIconHeader {
-    font-size: 3rem;
+    font-size: 3.5rem;
     color: var(--accent-powa);
-    margin-bottom: 1rem;
-    filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.4));
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 0 25px rgba(0, 242, 254, 0.6));
 }
 
 .faqTitle {
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(2.2rem, 6vw, 4rem);
     font-weight: 900;
-    color: white;
-    line-height: 1.2;
+    letter-spacing: -0.04em;
+    color: #ffffff !important; /* Blanco puro garantizado */
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    /* Resplandor sutil para separar el texto del fondo negro */
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+    position: relative;
+    z-index: 2;
 }
 
+/* --- CLASE NUEVA: DEGRADADO CON BRILLO --- */
+.textGradient {
+    background: linear-gradient(90deg, #ffffff 0%, var(--accent-powa) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    filter: brightness(1.1) drop-shadow(0 0 10px rgba(0, 242, 254, 0.3));
+}
+
+/* --- CLASE NUEVA: DESCRIPCIÓN CON ALTA LEGIBILIDAD --- */
+.faqDescription {
+    color: #cbd5e1 !important; /* Slate 300: muchisimo más claro */
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    font-weight: 400;
+}
+
+/* --- ACORDEÓN MEJORADO --- */
 .customAccordion {
     --bs-accordion-bg: transparent;
     --bs-accordion-border-color: var(--glass-border);
-    --bs-accordion-btn-color: #cbd5e1;
+    --bs-accordion-btn-color: #f1f5f9; /* Blanco azulado muy claro */
     --bs-accordion-active-bg: rgba(0, 242, 254, 0.05);
     --bs-accordion-active-color: var(--accent-powa);
     --bs-accordion-btn-focus-box-shadow: none;
@@ -32,66 +63,88 @@
 
 .accordionItem {
     background: rgba(30, 41, 59, 0.4) !important;
+    backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border) !important;
-    border-radius: 16px !important;
+    border-radius: 20px !important;
     overflow: hidden;
-    margin-bottom: 1rem;
-    transition: all 0.3s ease;
+    margin-bottom: 1.2rem;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .accordionItem:hover {
-    border-color: rgba(0, 242, 254, 0.5) !important;
-    transform: translateY(-2px);
+    border-color: var(--accent-powa) !important;
+    background: rgba(30, 41, 59, 0.6) !important;
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .accordionHeader button {
     font-weight: 700;
-    padding: 1.5rem;
-    font-size: 1.1rem;
+    padding: 1.8rem;
+    font-size: 1.2rem;
+    font-family: 'Montserrat', sans-serif;
+    color: #f8fafc !important; /* Aseguramos que la pregunta sea blanca */
+}
+
+/* Flecha del acordeón */
+.accordionHeader button::after {
+    filter: brightness(0) invert(1); /* Hace la flecha blanca por defecto */
+}
+
+.accordionHeader button:not(.collapsed)::after {
+    filter: brightness(0) saturate(100%) invert(88%) sepia(50%) saturate(1000%) hue-rotate(140deg);
 }
 
 .accordionBody {
-    color: #94a3b8;
-    line-height: 1.7;
-    padding: 0 1.5rem 1.5rem;
+    color: #e2e8f0; /* Slate 200: más claro aún para la respuesta */
+    line-height: 1.8;
+    padding: 0 1.8rem 2.2rem;
+    font-size: 1.05rem;
 }
 
-/* WhatsApp Float */
+/* --- WHATSAPP FLOAT --- */
 .whatsappFloat {
     position: fixed;
     bottom: 40px;
     right: 40px;
-    background-color: #25d366;
-    color: #FFF;
-    border-radius: 50px;
-    padding: 12px 24px;
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    color: #FFF !important;
+    border-radius: 16px;
+    padding: 14px 28px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    font-weight: 700;
+    gap: 12px;
+    font-weight: 800;
     z-index: 100;
-    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
-    transition: all 0.3s ease;
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .whatsappFloat:hover {
-    transform: scale(1.05);
-    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.5);
-    color: white;
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 25px 50px rgba(37, 211, 102, 0.5);
+}
+
+/* --- ANIMACIÓN EXTRA --- */
+@keyframes pulseIcon {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 .floatIcon {
     font-size: 1.8rem;
+    animation: pulseIcon 2s infinite ease-in-out;
 }
 
 @media (max-width: 768px) {
-    .floatText {
-        display: none;
-    }
+    .faqTitle { margin-bottom: 1rem; }
+    .faqDescription { margin-bottom: 2rem; font-size: 1rem; }
     .whatsappFloat {
         padding: 15px;
         bottom: 20px;
         right: 20px;
+        border-radius: 50%;
     }
 }

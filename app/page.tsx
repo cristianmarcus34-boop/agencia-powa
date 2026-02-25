@@ -113,7 +113,7 @@ export default function HomePage() {
                                 <div className={styles.powaServiceCard}>
                                     <div className={styles.iconBox}>{item.icon}</div>
                                     <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-                                    <p className="text-slate-400 text-sm mb-4 leading-relaxed">{item.desc}</p>
+                                    <p className="text-slate-200 text-sm mb-4 leading-relaxed">{item.desc}</p>
                                     <Link href="/servicios" className={styles.cardLink}>
                                         Explorar <FaArrowRight className="ms-2" />
                                     </Link>

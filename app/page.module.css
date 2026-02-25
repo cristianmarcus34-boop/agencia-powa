@@ -1,10 +1,12 @@
 /* app/page.module.css */
+
 .homepageWrapper {
     background-color: var(--dark-powa);
     overflow-x: hidden;
     min-height: 100vh;
 }
 
+/* --- HERO SECTION --- */
 .heroSectionModern {
     position: relative;
     padding: 160px 0 100px;
@@ -43,19 +45,20 @@
     font-size: clamp(2.5rem, 6vw, 4.5rem);
     font-weight: 900;
     line-height: 1.1;
-    color: white;
+    color: #ffffff; /* Blanco Puro */
     margin-bottom: 1.5rem;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
 }
 
 .heroSubtitleModern {
     font-size: 1.15rem;
-    color: #94a3b8;
+    color: #cbd5e1; /* Slate 300: Mucho más legible que el anterior */
     max-width: 650px;
     line-height: 1.7;
     margin-bottom: 2.5rem;
 }
 
-/* Stack Tecnológico */
+/* --- TECH STACK --- */
 .techStackSection {
     padding: 80px 0;
     border-top: 1px solid var(--glass-border);
@@ -65,7 +68,7 @@
 
 .techLabel {
     text-align: center;
-    color: #64748b;
+    color: #94a3b8; /* Slate 400 para labels secundarios */
     font-size: 0.8rem;
     font-weight: 800;
     letter-spacing: 4px;
@@ -102,9 +105,10 @@
 .techIconWrapper {
     font-size: 2.5rem;
     margin-bottom: 10px;
+    color: #ffffff;
 }
 
-/* Services Grid */
+/* --- SERVICES GRID --- */
 .homeServices {
     padding: 100px 0;
     background: rgba(15, 23, 42, 0.5);
@@ -117,6 +121,8 @@
     padding: 45px 35px;
     height: 100%;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
 }
 
 .powaServiceCard:hover {
@@ -124,6 +130,14 @@
     transform: translateY(-12px);
     background: rgba(30, 41, 59, 0.7);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Forzamos el color del párrafo para que no se vea oscuro */
+.powaServiceCard p {
+    color: #e2e8f0 !important; /* Slate 200: Alta legibilidad */
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
 }
 
 .iconBox {
@@ -135,18 +149,19 @@
 .cardLink {
     text-decoration: none;
     color: var(--accent-powa);
-    font-weight: 600;
+    font-weight: 700;
     display: flex;
     align-items: center;
     transition: 0.3s;
+    margin-top: auto; /* Empuja el link al final de la card */
 }
 
 .cardLink:hover {
     color: white;
-    gap: 8px;
+    gap: 12px;
 }
 
-/* CTA */
+/* --- CTA SECTION --- */
 .ctaHomeMinimal {
     padding: 100px 0;
 }
@@ -172,14 +187,14 @@
     border-radius: 50%;
 }
 
-/* --- BOTÓN BLANCO CORREGIDO --- */
+/* --- BOTONES --- */
 .btnPowaWhite {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 16px 36px;
     background-color: #ffffff;
-    color: #1e3a8a !important; /* Azul oscuro para legibilidad */
+    color: #1e3a8a !important; 
     border-radius: 14px;
     font-weight: 800;
     text-decoration: none !important;
@@ -196,7 +211,6 @@
     background-color: #f8fafc;
 }
 
-/* --- BOTÓN OUTLINE CORREGIDO --- */
 .btnPowaOutline {
     display: inline-flex;
     align-items: center;

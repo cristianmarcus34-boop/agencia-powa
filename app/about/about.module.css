@@ -1,126 +1,260 @@
 /* app/about/about.module.css */
+
 .aboutWrapper {
   background-color: var(--dark-powa);
   min-height: 100vh;
-  padding-top: 100px;
+  padding-top: 120px;
   overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 15% 25%, rgba(0, 242, 254, 0.04) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0, 242, 254, 0.04) 0%, transparent 45%);
 }
 
+/* --- SECCIÓN HERO --- */
 .aboutHeroSection {
   position: relative;
   z-index: 10;
   margin-top: -10px;
+  margin-bottom: 80px;
 }
 
 .logoGlowContainer {
   position: relative;
   display: inline-block;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .aboutHeroLogo {
-  width: 220px;
-  height: 220px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   object-fit: cover;
-  filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.4));
+  filter: drop-shadow(0 0 30px rgba(0, 242, 254, 0.5));
   animation: floating 4s ease-in-out infinite;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badgePowa {
+  background: rgba(0, 242, 254, 0.1);
+  color: var(--accent-powa);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: inline-block;
 }
 
 .aboutHeaderTitle {
   font-weight: 900;
-  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
   margin-bottom: 1.5rem;
-  letter-spacing: -1.5px;
+  letter-spacing: -2px;
   line-height: 1.1;
-  color: white;
+  color: #ffffff !important;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+/* --- MEJORA INTRO PARAGRAPH --- */
+.aboutIntroContainer {
+  max-width: 850px;
+  margin: 0 auto;
+  position: relative;
+  padding: 0 15px;
 }
 
 .aboutIntroParagraph {
-  color: #94a3b8;
-  font-size: 1.15rem;
-  max-width: 800px;
+  color: #94a3b8; /* Slate 400 */
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
   line-height: 1.7;
-  margin-bottom: 50px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
-/* Tarjetas Glass */
+.aboutIntroParagraph strong {
+  color: #ffffff;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0, 242, 254, 0.3);
+}
+
+.aboutIntroParagraph span {
+  color: var(--accent-powa);
+  font-weight: 500;
+  text-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+}
+
+.aboutIntroContainer::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--accent-powa);
+  margin: 40px auto 0;
+  opacity: 0.4;
+  border-radius: 2px;
+}
+
+/* --- TARJETAS GLASS --- */
 .profileGlassCard {
-  background: rgba(30, 41, 59, 0.4);
-  border: 1px solid var(--glass-border);
+  background: rgba(30, 41, 59, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   border-radius: 40px;
   overflow: hidden;
-  backdrop-filter: blur(15px);
-  transition: all 0.5s ease;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  margin-bottom: 3rem;
+  backdrop-filter: blur(20px);
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+  margin-bottom: 4rem;
+  position: relative;
+}
+
+/* --- ANIMACIÓN SCROLL REVEAL --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s ease, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.revealActive {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
 .profileGlassCard:hover {
-  transform: translateY(-8px);
-  border-color: var(--accent-powa);
-  box-shadow: 0 30px 60px rgba(0, 212, 255, 0.1);
+  transform: translateY(-10px);
+  border-color: rgba(0, 242, 254, 0.5) !important;
+  box-shadow: 0 40px 80px rgba(0, 212, 255, 0.15);
+  background: rgba(30, 41, 59, 0.5);
 }
 
 .profileImgFrame {
   height: 100%;
-  min-height: 400px;
+  min-height: 450px;
   position: relative;
   overflow: hidden;
-  background: #0f172a;
+  background: #0a0f1d;
 }
 
 .profileMainImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.9;
-  transition: transform 0.8s ease;
+  opacity: 1;
+  transition: transform 1.2s ease;
+}
+
+.profileGlassCard:hover .profileMainImg {
+  transform: scale(1.05);
 }
 
 .imgMariana {
-  object-position: center 0% !important;
-  transform: scale(1.1);
+  object-position: center 15% !important;
+}
+
+/* --- LOGO ESQUINA ADAPTATIVO (Ajustado) --- */
+.cornerLogo {
+  position: absolute;
+  bottom: 0px; /* Al ras de la esquina */
+  right: 0px;  /* Al ras de la esquina */
+  width: 50px;
+  height: 50px;
+  z-index: 10;
+  filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.6));
+  border-radius: 50%;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+.profileGlassCard:hover .cornerLogo {
+  transform: rotate(360deg) scale(1.15);
 }
 
 .profileName {
   font-weight: 800;
-  font-size: 2.2rem;
-  color: white;
+  font-size: 2.5rem;
+  color: #ffffff !important;
+  letter-spacing: -0.5px;
 }
 
 .profileRole {
   color: var(--accent-powa);
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  display: block;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.4));
+}
+
+.profileBio {
+  color: #e2e8f0 !important;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-top: 1.5rem;
+  font-weight: 400;
+}
+
+.profileBio strong {
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: underline rgba(0, 242, 254, 0.3) 2px;
 }
 
 .expertiseTags {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-top: 25px;
+  margin-top: 30px;
 }
 
 .expertiseTags span {
-  background: rgba(0, 212, 255, 0.1);
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  padding: 5px 15px;
+  background: rgba(0, 242, 254, 0.08);
+  border: 1px solid rgba(0, 242, 254, 0.2);
+  padding: 6px 18px;
   border-radius: 50px;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  color: var(--accent-powa);
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.profileGlassCard:hover .expertiseTags span {
+  background: var(--accent-powa);
+  color: var(--dark-powa);
+  border-color: var(--accent-powa);
 }
 
 @keyframes floating {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
+  50% { transform: translateY(-15px); }
+}
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 991px) {
+  .profileImgFrame { min-height: 380px; }
+  .profileName { font-size: 2.1rem; }
+  .cornerLogo { 
+    width: 45px; 
+    height: 45px; 
+    bottom: 0px; 
+    right: 0px; 
+  }
 }
 
 @media (max-width: 767px) {
-  .profileImgFrame { min-height: 300px; }
+  .aboutWrapper { padding-top: 80px; }
+  .aboutHeroSection { margin-bottom: 50px; }
+  .profileGlassCard { border-radius: 30px; }
   .profileName { font-size: 1.8rem; }
+  .profileImgFrame { min-height: 320px; }
+  .aboutIntroParagraph { font-size: 1.1rem; line-height: 1.6; }
+  
+  .cornerLogo { 
+    width: 40px; 
+    height: 40px; 
+    bottom: 0px; 
+    right: 0px; 
+  }
 }
