@@ -34,7 +34,10 @@ export const metadata: Metadata = {
     icon: "/favicon.ico", // El archivo que pusiste en public
     shortcut: "/favicon.ico",
     apple: "/favicon.ico", // Para que se vea bien en dispositivos móviles
-  }
+  },
+  verification: {
+    google: "VvJGBIv8ZsOakwktbJC0PxehMBx4ZfTAxxZf_rSEreI",
+  },
 };
 
 export default function RootLayout({
