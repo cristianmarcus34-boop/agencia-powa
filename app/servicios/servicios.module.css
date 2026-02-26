@@ -1,3 +1,4 @@
+/* --- WRAPPER Y HEADER --- */
 .servicesWrapper {
   background-color: var(--dark-powa);
   min-height: 100vh;
@@ -20,17 +21,14 @@
 }
 
 .titleMain {
-  font-size: 3.5rem; /* O el tamaño que ya tengas */
+  font-size: 3.5rem;
   font-weight: 800;
-  color: #ffffff; /* Blanco puro */
+  color: #ffffff;
   line-height: 1.2;
   margin-bottom: 1.5rem;
-  
-  /* Opcional: Un sombreado suave para que no se pierda en fondos complejos */
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
-/* Asegúrate de que tu degradado siga resaltando */
 .text-gradient {
   background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
   background-clip: text;
@@ -45,10 +43,11 @@
   line-height: 1.6;
 }
 
-/* --- CARDS --- */
+/* --- CARDS (Optimización de Visibilidad) --- */
 .serviceCard {
-  background: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  /* Fondo más sólido para mejorar el contraste del texto */
+  background: rgba(30, 41, 59, 0.8); 
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
   padding: 40px 30px;
   height: 100%;
@@ -56,8 +55,8 @@
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  transition: all 0.4s ease;
-  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(12px);
 }
 
 .serviceCard::before {
@@ -67,13 +66,14 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 242, 254, 0.08), transparent 40%);
+  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 242, 254, 0.12), transparent 40%);
   pointer-events: none;
 }
 
 .serviceCard:hover {
   border-color: var(--accent-powa);
   transform: translateY(-10px);
+  background: rgba(30, 41, 59, 0.95); /* Se vuelve más sólido al hover */
 }
 
 .iconBox {
@@ -103,44 +103,61 @@
 }
 
 .cardDescription {
-  color: #94a3b8;
+  color: #cbd5e1; /* Gris más claro para legibilidad */
   font-size: 0.95rem;
   line-height: 1.6;
 }
 
+/* --- SECCIÓN EXPANDIBLE (Solución al problema de oscuridad) --- */
 .fullDescription {
   max-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: all 0.5s ease;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #ffffff; /* Texto blanco puro */
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 .fullDescription.visible {
-  max-height: 200px;
+  max-height: 300px;
   opacity: 1;
   margin-top: 15px;
   padding-top: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(0, 242, 254, 0.3); /* Línea divisoria de marca */
 }
 
+.fullDescription p {
+  margin-bottom: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Sombra para resaltar sobre el fondo */
+}
+
+/* --- BOTÓN DE ACCIÓN --- */
 .actionBtn {
   background: none;
   border: none;
   color: var(--accent-powa);
   font-weight: 800;
-  font-size: 0.75rem;
-  letter-spacing: 1px;
+  font-size: 0.8rem;
+  letter-spacing: 1.5px;
   padding: 20px 0 0 0;
   display: flex;
   align-items: center;
   cursor: pointer;
   margin-top: auto;
+  text-transform: uppercase;
+  transition: 0.3s;
 }
 
-.iconChevron { transition: transform 0.3s ease; }
+.actionBtn:hover {
+  filter: brightness(1.2);
+  gap: 8px; /* Pequeño efecto de movimiento */
+}
+
+.iconChevron { transition: transform 0.4s ease; }
 .rotate180 { transform: rotate(180deg); }
 
-/* --- CTA --- */
+/* --- CTA FINAL --- */
 .footerCta {
   margin-top: 80px;
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
@@ -150,34 +167,39 @@
   text-align: center;
 }
 
-.ctaTitle { font-size: 2rem; font-weight: 900; color: white; margin-bottom: 1rem; }
-.ctaText { color: #94a3b8; margin-bottom: 2.5rem; }
+.ctaTitle { font-size: 2.2rem; font-weight: 900; color: white; margin-bottom: 1rem; }
+.ctaText { color: #94a3b8; margin-bottom: 2.5rem; font-size: 1.1rem; }
 
 .ctaActions { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
 
 .btnPowaMain {
   background: var(--accent-powa);
   color: var(--dark-powa) !important;
-  padding: 14px 30px;
+  padding: 14px 35px;
   border-radius: 12px;
   font-weight: 800;
   text-decoration: none;
   transition: 0.3s;
+  border: none;
 }
 
 .btnPowaOutline {
   border: 2px solid var(--accent-powa);
   color: white !important;
-  padding: 12px 30px;
+  padding: 12px 35px;
   border-radius: 12px;
   font-weight: 700;
   text-decoration: none;
   transition: 0.3s;
 }
 
-.btnPowaMain:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 242, 254, 0.3); }
+.btnPowaMain:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3); }
+.btnPowaOutline:hover { background: rgba(0, 242, 254, 0.1); transform: translateY(-3px); }
 
+/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
+  .titleMain { font-size: 2.5rem; }
   .footerCta { padding: 40px 20px; }
-  .btnPowaMain, .btnPowaOutline { width: 100%; }
+  .btnPowaMain, .btnPowaOutline { width: 100%; text-align: center; }
+  .serviceCard { padding: 30px 20px; }
 }
