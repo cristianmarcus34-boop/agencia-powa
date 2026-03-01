@@ -34,7 +34,7 @@ export default function HomePage() {
 
     return (
         <div className={styles.homepageWrapper}>
-            {/* --- JSON-LD: Datos Estructurados con Coordenadas Reales --- */}
+            {/* --- JSON-LD --- */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
@@ -53,8 +53,8 @@ export default function HomePage() {
                         },
                         "geo": {
                             "@type": "GeoCoordinates",
-                            "latitude": "-34.776333", // Latitud convertida
-                            "longitude": "-58.292194" // Longitud convertida
+                            "latitude": "-34.776333",
+                            "longitude": "-58.292194"
                         },
                         "areaServed": ["Quilmes", "San Francisco Solano", "Villa La Florida", "Bernal", "Zona Sur"]
                     })
@@ -89,13 +89,20 @@ export default function HomePage() {
                         </Col>
                         <Col lg={5} className="d-none d-lg-block">
                             <div className="position-relative">
+                                {/* SOLUCIÓN AL ASPECT RATIO: width y height ahora coinciden con la proporción real (1.5) */}
                                 <Image 
                                   src="/desarrollo-de-sitios-web.webp" 
                                   alt="Software y Páginas Web en Villa La Florida Quilmes" 
-                                  width={550} 
-                                  height={550}
+                                  width={640} 
+                                  height={427}
                                   className="rounded-4 shadow-lg"
                                   priority
+                                  style={{
+                                      width: '100%',
+                                      height: 'auto',
+                                      maxWidth: '550px', // Mantenemos el tamaño visual que querías
+                                      objectFit: 'cover'
+                                  }}
                                 />
                                 <div className={styles.codeBadge}>
                                   <code>{"{ location: 'Villa La Florida, AR' }"}</code>
@@ -162,7 +169,7 @@ export default function HomePage() {
                 </Container>
             </section>
 
-            {/* --- SEO FOOTER TEXT (El "mapa de palabras" para Google) --- */}
+            {/* --- SEO FOOTER TEXT --- */}
             <section className="py-5 bg-darker">
                 <Container>
                     <div className="text-center opacity-50 text-white" style={{fontSize: '0.85rem'}}>
