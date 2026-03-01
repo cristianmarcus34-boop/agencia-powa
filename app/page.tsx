@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 
 // Iconos
-import { FaCode, FaArrowRight, FaDatabase, FaMobileAlt, FaRocket } from 'react-icons/fa';
+import { FaCode, FaArrowRight, FaDatabase, FaMobileAlt, FaRocket, FaMapMarkerAlt } from 'react-icons/fa';
 import { HiOutlineArrowNarrowRight } from 'react-icons/hi';
 import { 
   SiReact, SiNodedotjs, SiTypescript, SiNextdotjs, SiDocker, 
@@ -29,11 +29,38 @@ export default function HomePage() {
         { icon: <SiOpenai color="#ffffff" />, name: "AI Integration" },
         { icon: <SiAmazonwebservices color="#FF9900" />, name: "AWS" },
         { icon: <SiDocker color="#2496ED" />, name: "Docker" },
-        { icon: <SiPostgresql color="#4169E1" />, name: "PostgreSQL" },
+        { icon: <SiPostgresql color="#4169E1" />, name: "Postgres" },
     ];
 
     return (
         <div className={styles.homepageWrapper}>
+            {/* --- JSON-LD: Datos Estructurados con Coordenadas Reales --- */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "ProfessionalService",
+                        "name": "Powa Digital",
+                        "url": "https://agencia-powa.vercel.app",
+                        "image": "https://agencia-powa.vercel.app/desarrollo-de-sitios-web.webp",
+                        "description": "Agencia de software y desarrollo web líder en Villa La Florida, San Francisco Solano y Quilmes.",
+                        "address": {
+                            "@type": "PostalAddress",
+                            "addressLocality": "Quilmes",
+                            "addressRegion": "Buenos Aires",
+                            "addressCountry": "AR"
+                        },
+                        "geo": {
+                            "@type": "GeoCoordinates",
+                            "latitude": "-34.776333", // Latitud convertida
+                            "longitude": "-58.292194" // Longitud convertida
+                        },
+                        "areaServed": ["Quilmes", "San Francisco Solano", "Villa La Florida", "Bernal", "Zona Sur"]
+                    })
+                }}
+            />
+
             {/* --- HERO SECTION --- */}
             <section className={styles.heroSectionModern}>
                 <div className={styles.heroBgGlow}></div>
@@ -41,23 +68,22 @@ export default function HomePage() {
                     <Row className="align-items-center">
                         <Col lg={7}>
                             <div className={styles.badgePowa}>
-                                #1 Software & Tech Partners
+                                <FaMapMarkerAlt className="me-2" /> Agencia Tech en Villa La Florida & Solano
                             </div>
                             <h1 className={styles.heroTitleMain}>
-                                Ingeniería <span className="text-gradient">Digital</span><br />
-                                que escala tu visión.
+                                Expertos en <span className="text-gradient">Desarrollo Web</span><br />
+                                y Software en Quilmes.
                             </h1>
                             <p className={styles.heroSubtitleModern}>
-                                En <strong>Powa</strong> no solo creamos webs; diseñamos ecosistemas tecnológicos.
-                                Construimos <strong>software robusto</strong> para marcas que lideran el mercado.
+                                Impulsamos el crecimiento de empresas en <strong>Villa La Florida, San Francisco Solano</strong> y toda la <strong>Zona Sur</strong>. 
+                                Desarrollamos <strong>ecosistemas digitales</strong> a medida con ingeniería de clase mundial.
                             </p>
                             <div className="d-flex flex-wrap gap-3 mt-4">
-                                {/* Clase global btn-powa-primary definida en globals.css */}
                                 <Link href="/contact" className="btn-powa-primary text-decoration-none">
                                     Iniciar Proyecto <FaRocket className="ms-2" />
                                 </Link>
                                 <Link href="/servicios" className={`${styles.btnPowaOutline} text-decoration-none`}>
-                                    Explorar Soluciones <HiOutlineArrowNarrowRight className="ms-2" />
+                                    Soluciones para Negocios <HiOutlineArrowNarrowRight className="ms-2" />
                                 </Link>
                             </div>
                         </Col>
@@ -65,14 +91,14 @@ export default function HomePage() {
                             <div className="position-relative">
                                 <Image 
                                   src="/desarrollo-de-sitios-web.webp" 
-                                  alt="Software Development Powa" 
+                                  alt="Software y Páginas Web en Villa La Florida Quilmes" 
                                   width={550} 
                                   height={550}
                                   className="rounded-4 shadow-lg"
                                   priority
                                 />
                                 <div className={styles.codeBadge}>
-                                  <code>{"{ performance: '100%' }"}</code>
+                                  <code>{"{ location: 'Villa La Florida, AR' }"}</code>
                                 </div>
                             </div>
                         </Col>
@@ -83,7 +109,7 @@ export default function HomePage() {
             {/* --- TECH STACK --- */}
             <section className={styles.techStackSection} ref={refStack}>
                 <Container>
-                    <p className={styles.techLabel}>Tecnologías que dominamos</p>
+                    <h2 className={styles.techLabel}>Tecnologías de Vanguardia para la Zona Sur</h2>
                     <div className={styles.stackSlider}>
                         <div className={styles.stackTrack}>
                             {[...techStack, ...techStack].map((tech, idx) => (
@@ -101,13 +127,25 @@ export default function HomePage() {
             <section className={styles.homeServices} ref={refServices}>
                 <Container>
                     <h2 className="text-center text-white mb-5" style={{fontSize: '2.5rem', fontWeight: '800'}}>
-                        Expertise <span className="text-gradient">Full Stack</span>
+                        Expertise en <span className="text-gradient">Ingeniería Digital</span>
                     </h2>
                     <Row className="g-4 mt-4">
                         {[
-                            { icon: <FaCode />, title: "Software a Medida", desc: "Sistemas escalables, dashboards y automatización inteligente." },
-                            { icon: <FaMobileAlt />, title: "Mobile & Apps", desc: "Experiencias nativas fluidas diseñadas para el usuario moderno." },
-                            { icon: <FaDatabase />, title: "Infraestructura", desc: "Arquitecturas en la nube, seguridad y bases de datos robustas." }
+                            { 
+                                icon: <FaCode />, 
+                                title: "Webs en Villa La Florida", 
+                                desc: "Diseño y desarrollo de sitios ultra rápidos para destacar en el mercado local de Quilmes." 
+                            },
+                            { 
+                                icon: <FaMobileAlt />, 
+                                title: "Apps en San Fco. Solano", 
+                                desc: "Aplicaciones móviles diseñadas para conectar negocios de Zona Sur con sus clientes." 
+                            },
+                            { 
+                                icon: <FaDatabase />, 
+                                title: "Automatización Industrial", 
+                                desc: "Software robusto para optimizar procesos en pymes y fábricas de la zona." 
+                            }
                         ].map((item, idx) => (
                             <Col md={4} key={idx}>
                                 <div className={styles.powaServiceCard}>
@@ -124,14 +162,25 @@ export default function HomePage() {
                 </Container>
             </section>
 
+            {/* --- SEO FOOTER TEXT (El "mapa de palabras" para Google) --- */}
+            <section className="py-5 bg-darker">
+                <Container>
+                    <div className="text-center opacity-50 text-white" style={{fontSize: '0.85rem'}}>
+                        <p><strong>Powa Digital</strong>: Innovación en software y <strong>desarrollo web en San Francisco Solano</strong>, <strong>Villa La Florida</strong> y <strong>Quilmes</strong>. 
+                        Servicios profesionales de tecnología para toda la <strong>Zona Sur</strong> de Buenos Aires. 
+                        Ubicación técnica: 34°46'34.8"S 58°17'31.9"W.</p>
+                    </div>
+                </Container>
+            </section>
+
             {/* --- CTA FINAL --- */}
             <section className={styles.ctaHomeMinimal} ref={refCta}>
                 <Container>
                     <div className={styles.ctaMinimalBox}>
-                        <h2 className="display-5 font-bold text-white mb-3" style={{fontWeight: '800'}}>¿Tienes un desafío tecnológico?</h2>
-                        <p className="text-blue-100 mb-5 text-lg opacity-75">Convirtamos tu visión en una ventaja competitiva real.</p>
+                        <h2 className="display-5 font-bold text-white mb-3" style={{fontWeight: '800'}}>¿Tu negocio está en Florida o Solano?</h2>
+                        <p className="text-blue-100 mb-5 text-lg opacity-75">Hagamos que tu presencia digital sea tan fuerte como tu presencia física.</p>
                         <Link href="/contact" className={styles.btnPowaWhite}>
-                            Agendar Asesoría Técnica
+                            Agendar Visita o Asesoría
                         </Link>
                     </div>
                 </Container>

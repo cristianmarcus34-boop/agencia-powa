@@ -10,14 +10,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // 3. Componentes
 import { ToastContainer } from 'react-toastify';
-import ChatPowa from "@/components/ChatPowa"; // Asegúrate de que la ruta sea correcta
+import ChatPowa from "@/components/ChatPowa"; 
 import NavbarPowa from "@/components/NavbarPowa";
 import FooterPowa from "@/components/FooterPowa";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: 'swap',
+  display: 'swap', // Ayuda a que el texto sea visible mientras carga la fuente
 });
 
 const geistMono = Geist_Mono({
@@ -26,17 +26,30 @@ const geistMono = Geist_Mono({
   display: 'swap',
 });
 
-// METADATA ACTUALIZADA CON EL NUEVO FAVICON
+// METADATA 100% OPTIMIZADA PARA SEO LOCAL (Quilmes, Florida, Solano)
 export const metadata: Metadata = {
-  title: "Powa Digital | Ingeniería de Software & Growth",
-  description: "Desarrollo Full Stack, IA y soluciones tecnológicas de alto impacto.",
+  title: {
+    default: "Powa Digital | Agencia de Desarrollo Web en Quilmes",
+    template: "%s | Powa Digital"
+  },
+  description: "Ingeniería de software y diseño web en Villa La Florida, San Francisco Solano y Quilmes. Expertos en Next.js, IA y soluciones tecnológicas de alto impacto en Zona Sur.",
+  keywords: ["Desarrollo web Quilmes", "Software Villa La Florida", "Agencia Digital San Francisco Solano", "Programación Zona Sur", "Páginas Web Quilmes", "Next.js Argentina"],
   icons: {
-    icon: "/favicon.ico", // El archivo que pusiste en public
+    icon: "/favicon.ico",
     shortcut: "/favicon.ico",
-    apple: "/favicon.ico", // Para que se vea bien en dispositivos móviles
+    apple: "/favicon.ico",
   },
   verification: {
     google: "VvJGBIv8ZsOakwktbJC0PxehMBx4ZfTAxxZf_rSEreI",
+  },
+  // OpenGraph ayuda a que cuando compartas tu link en WhatsApp/LinkedIn se vea profesional
+  openGraph: {
+    title: "Powa Digital | Ingeniería de Software en Zona Sur",
+    description: "Desarrollo de ecosistemas digitales en Quilmes, Solano y Florida.",
+    url: "https://agencia-powa.vercel.app",
+    siteName: "Powa Digital",
+    locale: "es_AR",
+    type: "website",
   },
 };
 
@@ -48,21 +61,15 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* Navegación fija en la parte superior */}
         <NavbarPowa />
         
-        {/* Contenedor principal */}
         <main className="min-h-[80vh]">
           {children}
         </main>
 
-        {/* El "Bot" de Chat inteligente de Powa con sonido y robot */}
         <ChatPowa />
-        
-        {/* Footer al final */}
         <FooterPowa />
         
-        {/* Notificaciones globales */}
         <ToastContainer 
           position="bottom-right" 
           theme="dark" 
