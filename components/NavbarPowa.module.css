@@ -1,7 +1,7 @@
 .navbarBase {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border-bottom: 1px solid transparent;
-  z-index: 1050; /* Asegura que esté por encima de todo */
+  z-index: 1050;
 }
 
 .navbarTransparent {
@@ -10,37 +10,37 @@
 }
 
 .navbarScrolled {
-  background-color: rgba(15, 23, 42, 0.85); /* Slate 900 con transparencia */
+  /* Aumentamos un poco la opacidad para mejorar el contraste del texto sobre el fondo */
+  background-color: rgba(15, 23, 42, 0.95); 
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   padding: 0.7rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
-/* --- SOLUCIÓN AL LOGO --- */
+/* --- SOLUCIÓN AL LOGO (Aspect Ratio Fix) --- */
 .logoWrapper {
-  width: 45px;
-  height: 45px;
+  /* Dimensiones fijas para evitar el error de aspect ratio de Lighthouse */
+  width: 48px; 
+  height: 48px;
   border-radius: 12px;
   overflow: hidden;
-  /* Quitamos el fondo blanco sólido y ponemos uno sutil */
-  background: rgba(255, 255, 255, 0.03); 
+  background: rgba(255, 255, 255, 0.05); 
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px; /* Espacio para que el logo no toque los bordes */
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px; 
+  border: 1px solid rgba(255, 255, 255, 0.15);
   transition: all 0.3s ease;
 }
 
 .logoImage {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  /* Esta línea ayuda a que si el logo tiene fondo negro, se mezcle con la nav */
-  mix-blend-mode: screen; 
-  /* Si el fondo del logo es blanco, cambia 'screen' por 'multiply' */
+  object-fit: contain; /* Evita que el logo se estire */
+  /* Quitamos mix-blend-mode si no es estrictamente necesario para evitar carga visual */
+  mix-blend-mode: normal; 
 }
 
 .brandText {
@@ -48,23 +48,24 @@
   font-weight: 800;
   font-size: 1.15rem;
   letter-spacing: -0.5px;
-  color: #ffffff;
+  color: #ffffff; /* Blanco puro para contraste 100% */
   margin-left: 12px;
   text-transform: uppercase;
 }
 
-/* --- LINKS --- */
+/* --- LINKS (Mejora de Contraste para Accesibilidad) --- */
 .navLink {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #94a3b8 !important; /* Slate 400 */
+  /* Slate 300 (#cbd5e1) es más claro que el 400 y pasa el test de contraste */
+  color: #cbd5e1 !important; 
   padding: 0.5rem 1.2rem !important;
   transition: all 0.3s ease;
   position: relative;
 }
 
 .navLink:hover {
-  color: var(--accent-powa) !important;
+  color: #00f2fe !important; /* Usamos el cian brillante de Powa */
   transform: translateY(-1px);
 }
 
@@ -80,9 +81,9 @@
   transform: translateX(-50%);
   width: 20px;
   height: 2px;
-  background: var(--accent-powa);
+  background: #00f2fe;
   border-radius: 2px;
-  box-shadow: 0 0 10px var(--accent-powa);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
 }
 
 /* --- POWA LAB --- */
@@ -91,30 +92,30 @@
   align-items: center;
   gap: 8px;
   font-weight: 700;
-  color: #fff !important;
+  color: #ffffff !important;
   font-size: 0.85rem;
   padding: 0.5rem 1.2rem !important;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 50px;
   margin: 0 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .badgeSoon {
-  background: linear-gradient(45deg, #00f2fe, #4facfe);
+  background: #00f2fe; /* Color sólido para mejor legibilidad que gradiente */
   font-size: 9px;
-  padding: 1px 7px;
+  padding: 2px 8px;
   border-radius: 20px;
-  color: #000;
+  color: #0f172a; /* Texto oscuro sobre fondo claro */
   font-weight: 900;
 }
 
 /* --- BOTÓN CONTACTO --- */
 .contactBtn {
-  background: linear-gradient(45deg, var(--accent-powa), #4facfe);
+  background: linear-gradient(45deg, #00f2fe, #4facfe);
   border: none;
-  color: #0f172a;
-  padding: 9px 25px;
+  color: #0f172a; /* Azul oscuro para contraste máximo sobre el cian */
+  padding: 10px 25px;
   border-radius: 50px;
   font-weight: 800;
   font-size: 0.85rem;
@@ -135,7 +136,7 @@
 
 @media (max-width: 991px) {
   .navbarScrolled, .navbarTransparent {
-    background-color: #0f172a;
+    background-color: #0f172a; /* Fondo sólido en móvil para legibilidad */
     padding: 1rem 0;
   }
   
