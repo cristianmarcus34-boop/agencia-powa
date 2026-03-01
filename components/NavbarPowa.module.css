@@ -1,3 +1,5 @@
+/* app/components/Navbar/NavbarPowa.module.css */
+
 .navbarBase {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border-bottom: 1px solid transparent;
@@ -10,27 +12,27 @@
 }
 
 .navbarScrolled {
-  /* Aumentamos un poco la opacidad para mejorar el contraste del texto sobre el fondo */
-  background-color: rgba(15, 23, 42, 0.95); 
+  /* Fondo sólido y oscuro para que el texto blanco/cian resalte perfectamente */
+  background-color: rgba(10, 15, 26, 0.98); 
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-  padding: 0.7rem 0;
+  padding: 0.6rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
 }
 
-/* --- SOLUCIÓN AL LOGO (Aspect Ratio Fix) --- */
+/* --- SOLUCIÓN AL LOGO (Aspect Ratio & Delivery) --- */
 .logoWrapper {
-  /* Dimensiones fijas para evitar el error de aspect ratio de Lighthouse */
-  width: 48px; 
-  height: 48px;
-  border-radius: 12px;
+  /* Tamaño fijo optimizado para el logo 40x40 o 48x48 */
+  width: 44px; 
+  height: 44px;
+  border-radius: 10px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.05); 
+  background: rgba(255, 255, 255, 0.03); 
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px; 
+  padding: 4px; 
   border: 1px solid rgba(255, 255, 255, 0.15);
   transition: all 0.3s ease;
 }
@@ -38,39 +40,38 @@
 .logoImage {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Evita que el logo se estire */
-  /* Quitamos mix-blend-mode si no es estrictamente necesario para evitar carga visual */
-  mix-blend-mode: normal; 
+  object-fit: contain; /* Mantiene la proporción sin estirar */
 }
 
 .brandText {
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
-  font-size: 1.15rem;
-  letter-spacing: -0.5px;
-  color: #ffffff; /* Blanco puro para contraste 100% */
+  font-size: 1.1rem;
+  letter-spacing: -0.3px;
+  color: #ffffff; /* Contraste máximo */
   margin-left: 12px;
   text-transform: uppercase;
 }
 
-/* --- LINKS (Mejora de Contraste para Accesibilidad) --- */
+/* --- LINKS (Optimización de Contraste WCAG) --- */
 .navLink {
   font-size: 0.85rem;
   font-weight: 600;
-  /* Slate 300 (#cbd5e1) es más claro que el 400 y pasa el test de contraste */
-  color: #cbd5e1 !important; 
-  padding: 0.5rem 1.2rem !important;
+  /* Slate 200 (#e2e8f0) es el ideal para fondos oscuros: pasa AAA de accesibilidad */
+  color: #e2e8f0 !important; 
+  padding: 0.5rem 1.1rem !important;
   transition: all 0.3s ease;
   position: relative;
 }
 
 .navLink:hover {
-  color: #00f2fe !important; /* Usamos el cian brillante de Powa */
+  color: #22d3ee !important; /* Cyan 400: Más vibrante y accesible que el cian pálido */
   transform: translateY(-1px);
 }
 
 .activeLink {
   color: #ffffff !important;
+  font-weight: 700;
 }
 
 .activeLink::after {
@@ -79,11 +80,11 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 20px;
+  width: 16px;
   height: 2px;
-  background: #00f2fe;
+  background: #22d3ee;
   border-radius: 2px;
-  box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.6);
 }
 
 /* --- POWA LAB --- */
@@ -95,53 +96,73 @@
   color: #ffffff !important;
   font-size: 0.85rem;
   padding: 0.5rem 1.2rem !important;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 50px;
-  margin: 0 10px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  margin: 0 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.navLinkLab:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #22d3ee;
 }
 
 .badgeSoon {
-  background: #00f2fe; /* Color sólido para mejor legibilidad que gradiente */
-  font-size: 9px;
-  padding: 2px 8px;
+  background: #22d3ee; 
+  font-size: 8px;
+  padding: 1px 7px;
   border-radius: 20px;
-  color: #0f172a; /* Texto oscuro sobre fondo claro */
+  color: #0f172a; /* Texto oscuro sobre fondo claro: Contraste perfecto */
   font-weight: 900;
+  text-transform: uppercase;
 }
 
 /* --- BOTÓN CONTACTO --- */
 .contactBtn {
-  background: linear-gradient(45deg, #00f2fe, #4facfe);
+  background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 100%);
   border: none;
-  color: #0f172a; /* Azul oscuro para contraste máximo sobre el cian */
-  padding: 10px 25px;
-  border-radius: 50px;
+  color: #0f172a; /* Contraste oscuro sobre fondo brillante */
+  padding: 9px 22px;
+  border-radius: 12px;
   font-weight: 800;
   font-size: 0.85rem;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
 
 .contactBtn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(34, 211, 238, 0.3);
+  filter: brightness(1.1);
 }
 
+/* --- RESPONSIVE / MOBILE --- */
 .toggle {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
+  padding: 0.5rem;
 }
 
 @media (max-width: 991px) {
-  .navbarScrolled, .navbarTransparent {
-    background-color: #0f172a; /* Fondo sólido en móvil para legibilidad */
-    padding: 1rem 0;
+  .navbarBase {
+    background-color: #0a0f1a !important; /* Fondo sólido en móvil para evitar transparencias raras */
   }
   
+  .navbarTransparent, .navbarScrolled {
+    padding: 0.8rem 0;
+  }
+
   .navLinkLab {
-    margin: 10px 0;
+    margin: 15px 0;
     justify-content: center;
+    width: 100%;
+  }
+
+  .contactBtn {
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
   }
 }

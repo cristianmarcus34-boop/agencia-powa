@@ -2,24 +2,24 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image'; // Importación necesaria
 import { usePathname } from 'next/navigation';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import styles from './NavbarPowa.module.css';
 
 export default function NavbarPowa() {
   const [scrolled, setScrolled] = useState(false);
-  const [expanded, setExpanded] = useState(false); // Estado para controlar el colapso
+  const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true }); // Mejora performance
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Función para cerrar el menú
   const closeMenu = () => setExpanded(false);
 
   const navLinks = [
@@ -33,8 +33,8 @@ export default function NavbarPowa() {
 
   return (
     <Navbar
-      expanded={expanded} // Sincronizamos con el estado
-      onToggle={(nextExpand) => setExpanded(nextExpand)} // Permite abrir/cerrar manual
+      expanded={expanded}
+      onToggle={(nextExpand) => setExpanded(nextExpand)}
       expand="lg"
       fixed="top"
       variant="dark"
@@ -45,13 +45,18 @@ export default function NavbarPowa() {
           as={Link} 
           href="/" 
           className="d-flex align-items-center"
-          onClick={closeMenu} // Cierra al hacer clic en el logo
+          onClick={closeMenu}
         >
           <div className={styles.logoWrapper}>
-            <img
+            {/* SOLUCIÓN AL LOGO: Next.js optimiza el tamaño y el formato aquí */}
+            <Image
               src="/logo-agenciadigitalpowa-cuadrado.jpg"
-              alt="Powa Logo"
+              alt="Logo Powa Digital"
+              width={40} // Tamaño visual real
+              height={40} // Tamaño visual real
               className={styles.logoImage}
+              priority // Carga esta imagen primero (LCP)
+              quality={80}
             />
           </div>
           <span className={styles.brandText}>
@@ -61,7 +66,8 @@ export default function NavbarPowa() {
 
         <Navbar.Toggle 
           aria-controls="responsive-navbar-nav" 
-          className={styles.toggle} 
+          className={styles.toggle}
+          aria-label="Abrir menú de navegación" // Mejora Accesibilidad
         />
 
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -72,34 +78,31 @@ export default function NavbarPowa() {
                 as={Link}
                 href={link.path}
                 className={`${styles.navLink} ${pathname === link.path ? styles.activeLink : ''}`}
-                onClick={closeMenu} // Cierra al navegar
+                onClick={closeMenu}
               >
                 {link.name}
               </Nav.Link>
             ))}
 
-            {/* Link Especial: Powa Lab */}
             <Nav.Link
               as={Link}
               href="/lab"
               className={styles.navLinkLab}
-              onClick={closeMenu} // Cierra al navegar
+              onClick={closeMenu}
             >
               Powa Lab
               <span className={styles.badgeSoon}>Nuevo</span>
             </Nav.Link>
 
-            {/* Botón de Contacto Destacado */}
             <Link 
               href="/contact" 
               className="ms-lg-3 text-decoration-none"
-              onClick={closeMenu} // Cierra al navegar
+              onClick={closeMenu}
             >
               <button className={styles.contactBtn}>
                 Contacto
               </button>
             </Link>
-            
           </Nav>
         </Navbar.Collapse>
       </Container>
