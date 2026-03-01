@@ -18,7 +18,7 @@ export default function FooterPowa() {
               © {currentYear} <span className="text-gradient fw-bold">Agencia Digital Powa</span>
             </p>
             <div className={styles.locationInfo}>
-              <FaMapMarkerAlt className="text-cyan-400 me-2" />
+              <FaMapMarkerAlt className={styles.locationIcon} />
               <span>Villa La Florida • San Francisco Solano • Quilmes, AR</span>
             </div>
           </Col>
@@ -27,16 +27,16 @@ export default function FooterPowa() {
           <Col md={6}>
             <div className={styles.footerRight}>
               <div className={styles.socialWrapper}>
-                <a href="https://github.com/CristianMarcus" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="GitHub">
+                <a href="https://github.com/CristianMarcus" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Visitar perfil de GitHub de Powa Digital">
                   <FaGithub />
                 </a>
-                <a href="https://www.linkedin.com/in/cristian-marcus2025/" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="LinkedIn">
+                <a href="https://www.linkedin.com/in/cristian-marcus2025/" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Visitar perfil de LinkedIn de Powa Digital">
                   <FaLinkedin />
                 </a>
-                <a href="https://www.instagram.com/agenciadigitalpowa" target="_blank" rel="noopener noreferrer" className={`${styles.socialLink} ${styles.instagram}`} aria-label="Instagram">
+                <a href="https://www.instagram.com/agenciadigitalpowa" target="_blank" rel="noopener noreferrer" className={`${styles.socialLink} ${styles.instagram}`} aria-label="Seguir en Instagram a Powa Digital">
                   <FaInstagram />
                 </a>
-                <a href="mailto:cristianmarcus34@gmail.com" className={styles.socialLink} aria-label="Email">
+                <a href="mailto:cristianmarcus34@gmail.com" className={styles.socialLink} aria-label="Enviar correo electrónico a Powa Digital">
                   <FaEnvelope />
                 </a>
               </div>
@@ -44,9 +44,12 @@ export default function FooterPowa() {
           </Col>
         </Row>
 
-        {/* Mini Texto SEO (invisible pero legible para Google) */}
+        {/* Marcado SEO: Ahora con mejor contraste para Lighthouse */}
         <div className={styles.seoTagline}>
-          Software Factory y Consultoría IT en Zona Sur. Expertos en transformación digital para comercios y empresas de Quilmes y alrededores.
+          <p>
+            <strong>Software Factory y Consultoría IT en Zona Sur</strong>. 
+            Expertos en transformación digital para comercios y empresas de <strong>Quilmes</strong> y alrededores.
+          </p>
         </div>
       </Container>
     </footer>
