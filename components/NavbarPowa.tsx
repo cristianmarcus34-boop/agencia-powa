@@ -49,7 +49,7 @@ export default function NavbarPowa() {
         >
           <div className={styles.logoWrapper}>
             <img
-              src="/logo-agenciadigitalpowa-cuadrado.png"
+              src="/logo-agenciadigitalpowa-cuadrado.jpg"
               alt="Powa Logo"
               className={styles.logoImage}
             />
