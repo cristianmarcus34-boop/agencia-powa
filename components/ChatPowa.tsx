@@ -14,15 +14,32 @@ export default function ChatPowa() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'bot', text: '¡Hola! Soy el estratega de Powa. 🚀 ¿Listo para escalar tu negocio con tecnología de vanguardia?' }
+    { 
+      role: 'bot', 
+      text: '¡Hola! Soy el estratega de Powa. 🚀 Estamos impulsando negocios en Quilmes y el mundo con tecnología de punta. ¿En qué puedo ayudarte hoy?' 
+    }
   ]);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Función para reproducir el sonido del robot
+  // --- NUEVA FUNCIÓN: Genera el link de WhatsApp con el contexto de la charla ---
+  const getWhatsAppLink = () => {
+    // Buscamos el último mensaje que escribió el usuario para saber qué le interesa
+    const lastUserMsg = [...messages].reverse().find(m => m.role === 'user')?.text;
+    
+    const intro = "¡Hola Powa! 👋 Vengo del chat de la web.";
+    const context = lastUserMsg 
+      ? ` Estaba consultando sobre: "${lastUserMsg.substring(0, 70)}${lastUserMsg.length > 70 ? '...' : ''}"`
+      : " Me gustaría recibir asesoría personalizada para mi proyecto.";
+    
+    const fullMessage = `${intro}${context} ¿Podemos hablar?`;
+    
+    return `https://wa.me/5491138305837?text=${encodeURIComponent(fullMessage)}`;
+  };
+
   const playRobotSound = () => {
     const audio = new Audio('/sonido-robot.mp3');
-    audio.volume = 0.4; // Ajusta el volumen a tu gusto
+    audio.volume = 0.4;
     audio.play().catch(() => console.log("Audio play blocked until interaction"));
   };
 
@@ -31,8 +48,9 @@ export default function ChatPowa() {
     if (!hasOpenedBefore) {
       const timer = setTimeout(() => {
         setIsOpen(true);
+        playRobotSound();
         sessionStorage.setItem('powaChatAutoOpened', 'true');
-      }, 4000);
+      }, 5000); 
       return () => clearTimeout(timer);
     }
   }, []);
@@ -45,7 +63,6 @@ export default function ChatPowa() {
     if (isOpen) scrollToBottom();
   }, [messages, loading, isOpen]);
 
-  // Manejador para abrir/cerrar con sonido
   const handleToggleChat = () => {
     if (!isOpen) playRobotSound();
     setIsOpen(!isOpen);
@@ -95,7 +112,7 @@ export default function ChatPowa() {
       const data = await res.json();
       setMessages(prev => [...prev, { role: 'bot', text: data.text }]);
     } catch (error) {
-      setMessages(prev => [...prev, { role: 'bot', text: "Error de conexión. Reintenta." }]);
+      setMessages(prev => [...prev, { role: 'bot', text: "Lo siento, hubo un problema técnico. ¿Prefieres contactarnos por WhatsApp?" }]);
     } finally {
       setLoading(false);
     }
@@ -103,16 +120,15 @@ export default function ChatPowa() {
 
   return (
     <div className={styles.chatContainer}>
-      {!isOpen && <div className={styles.notificationBadge}></div>}
+      {!isOpen && <div className={styles.notificationBadge}>1</div>}
       
-      {/* BOTÓN CON EL ROBOT Y SONIDO */}
-      <button onClick={handleToggleChat} className={styles.chatToggleButton}>
+      <button onClick={handleToggleChat} className={styles.chatToggleButton} aria-label="Abrir Chat de Ayuda">
         {isOpen ? (
           <IoClose size={28} />
         ) : (
           <Image 
             src="/chatrobot.png" 
-            alt="Powa Bot" 
+            alt="Powa Bot Ayuda" 
             width={70} 
             height={70} 
             className={styles.robotIconImg}
@@ -128,16 +144,16 @@ export default function ChatPowa() {
               <div className={styles.headerAvatarContainer}>
                 <Image 
                   src="/chatrobot.png" 
-                  alt="Avatar" 
+                  alt="Avatar Powa AI" 
                   width={30} 
                   height={30} 
                   className={styles.headerAvatar}
                 />
                 <div className={styles.onlineStatus}></div>
               </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-[11px] text-white">POWA AI LAB</span>
-                <span className="text-[9px] text-cyan-300">Online - Growth Hacker</span>
+              <div className="flex flex-col text-start">
+                <span className="font-bold text-[11px] text-white tracking-wider">POWA AI LAB</span>
+                <span className="text-[9px] text-cyan-300 uppercase font-semibold">Soporte Local Zona Sur</span>
               </div>
             </div>
             <button onClick={() => setIsOpen(false)} className="text-white/50 hover:text-white transition-colors">
@@ -151,18 +167,20 @@ export default function ChatPowa() {
                 <div className={m.role === 'user' ? styles.userBubble : styles.botBubble}>
                   {renderText(m.text)}
                 </div>
-                {m.role === 'bot' && m.text.includes('wa.me') && (
+                {/* BOTÓN DINÁMICO CON LINK INTELIGENTE */}
+                {m.role === 'bot' && (m.text.toLowerCase().includes('whatsapp') || m.text.toLowerCase().includes('contacto')) && (
                   <a 
-                    href="https://wa.me/5491138305837?text=Hola%20Powa!%20Vengo%20del%20chat"
+                    href={getWhatsAppLink()}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className={styles.whatsappButton}
                   >
-                    🟢 HABLAR POR WHATSAPP
+                    🟢 HABLAR CON UN ESPECIALISTA
                   </a>
                 )}
               </div>
             ))}
-            {loading && <div className={styles.loadingStatus}>Analizando estrategia...</div>}
+            {loading && <div className={styles.loadingStatus}>Analizando tu proyecto...</div>}
             <div ref={messagesEndRef} />
           </div>
 
@@ -172,9 +190,10 @@ export default function ChatPowa() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-              placeholder="¿Qué proyecto tienes?"
+              placeholder="¿Cómo escalamos tu proyecto?"
+              aria-label="Mensaje para el chat"
             />
-            <button onClick={sendMessage} disabled={loading || !input.trim()}>
+            <button onClick={sendMessage} disabled={loading || !input.trim()} aria-label="Enviar mensaje">
               <IoSend size={20} />
             </button>
           </div>

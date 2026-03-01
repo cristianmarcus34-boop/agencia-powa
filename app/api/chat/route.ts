@@ -1,65 +1,64 @@
 import { NextResponse } from "next/server";
 
-// Importante para evitar Timeouts en Vercel y usar streaming o respuestas rápidas
+// Usamos 'edge' para que la respuesta sea instantánea desde el nodo más cercano al usuario
 export const runtime = 'edge'; 
 
 export async function POST(req: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    return NextResponse.json({ text: "Error: No hay API Key configurada." }, { status: 500 });
+    return NextResponse.json({ text: "Error: Configuración de IA pendiente." }, { status: 500 });
   }
 
   try {
     const { message, history } = await req.json();
 
-    // 1. Mapeo y limpieza del historial (filtramos los últimos 4 para máxima velocidad)
-    const chatHistory = (history || []).slice(-4).map((m: any) => ({
+    // 1. Limpieza de historial para optimizar tokens y velocidad
+    const chatHistory = (history || []).slice(-6).map((m: any) => ({
       role: m.role === "user" ? "user" : "model",
       parts: [{ text: m.text }],
     }));
 
+    // 2. SYSTEM INSTRUCTION: El cerebro de Powa Digital
     const systemInstruction = `Eres PowaBot, el Growth Hacker y Arquitecto de Soluciones Senior de 'Agencia Digital Powa'. 
-    Tu objetivo es CONVERTIR visitantes en clientes mediante soluciones tecnológicas de alto ROI.
+    Tu objetivo es asesorar a clientes de TODO EL MUNDO y convertirlos en casos de éxito mediante tecnología de alto impacto.
 
-    BASE DE CONOCIMIENTO DE POWA:
-    1. SERVICIOS ELITE:
-       - Desarrollo Web Pro: Usamos Next.js 16 y Turbopack para velocidad extrema.
-       - E-commerce Elite: Tiendas con alta tasa de conversión e integraciones de pago.
-       - Mobile & UX/UI: Aplicaciones TWA (Krusty Burger) y diseños en Figma.
-       - Consultoría IA: Implementamos modelos como Gemini 3 para automatizar procesos.
+    FILOSOFÍA POWA:
+    - No vendemos "páginas web", construimos ACTIVOS DIGITALES que generan dinero y escalabilidad.
+    - Ubicación: Nuestra base de ingeniería está en Buenos Aires (Zona Sur / Quilmes), pero operamos de forma global con clientes en cualquier país.
+    
+    SERVICIOS DE ELITE:
+    - Desarrollo Web: Next.js 16, React 19 y arquitecturas "Serverless" para velocidad de carga < 1s.
+    - E-commerce & Scalability: Sistemas de venta masiva con integraciones de pago complejas.
+    - Inteligencia Artificial: Automatización de procesos y chatbots avanzados (como yo).
+    - Mobile: Aplicaciones nativas y PWA de alto rendimiento.
 
-    2. CASOS DE ÉXITO:
-       - Capriccio de Pizza (React/Django), Krusty Burger (TWA premium), La Abu Matie.
+    CASOS DE ÉXITO REFERENTES:
+    - Capriccio de Pizza, Krusty Burger (TWA Premium), La Abu Matie.
 
-    LINEAMIENTOS DE MARKETING:
-    - TONO: Innovador, audaz, experto.
-    - DIFERENCIAL: Creamos activos digitales que generan dinero, no solo código.
-    - CIERRE CRÍTICO: Ante interés real, ofrece solución y cierra con: "Toca aquí para hablar con un especialista por WhatsApp: https://wa.me/5491138305837?text=Hola%20Powa!%20Vengo%20del%20chat%20y%20quiero%20escalar%20mi%20negocio."
+    LINEAMIENTOS DE RESPUESTA:
+    - TONO: Profesional, audaz, experto y con visión de negocio.
+    - CIERRE DE VENTA: Si el usuario muestra interés real o pregunta cómo empezar, DEBES incluir el link de WhatsApp: https://wa.me/5491138305837?text=Hola%20Powa!%20Vengo%20del%20chat%20y%20quiero%20potenciar%20mi%20negocio.
+    - REGLA CRÍTICA: No uses Markdown para los links (ej: [link](url)), escribe la URL completa directamente para que el componente del frontend la detecte.
+    - PRECIOS: No des presupuestos fijos. Explica que cada solución es a medida para maximizar el ROI y deriva a una breve reunión o WhatsApp.`;
 
-    REGLAS TÉCNICAS:
-    - No uses Markdown para los links, pon la URL completa.
-    - Si preguntan precios, deriva a WhatsApp para presupuesto basado en ROI.`;
-
-    // 2. Endpoint actualizado a Gemini 3 Flash Preview (v1beta según docs de Feb 2026)
+    // 3. Llamada a Gemini 3 Flash (Modelo de producción estable en 2026)
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [
-            ...chatHistory.slice(0, -1), // Historial previo si existe
+            ...chatHistory,
             {
               role: "user",
-              parts: [{
-                text: `${systemInstruction}\n\nConsulta actual del usuario: ${message}`
-              }],
+              parts: [{ text: `${systemInstruction}\n\nConsulta del usuario: ${message}` }],
             },
           ],
           generationConfig: {
-            maxOutputTokens: 800,
-            temperature: 0.7,
+            maxOutputTokens: 1000,
+            temperature: 0.75, // Balance entre creatividad y precisión técnica
             topP: 0.95,
           }
         }),
@@ -69,23 +68,21 @@ export async function POST(req: Request) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Error Gemini API:", JSON.stringify(data));
-      // Si el error es por el nombre del modelo, intentamos con gemini-1.5-flash como backup
-      throw new Error(data.error?.message || "Fallo en la comunicación con la IA");
+      console.error("Gemini API Error:", data);
+      throw new Error(data.error?.message || "Error en el motor de IA");
     }
 
-    // Validación de la estructura de respuesta
     if (!data.candidates || !data.candidates[0].content) {
-      throw new Error("Respuesta de IA vacía o malformada");
+      throw new Error("La IA no devolvió resultados.");
     }
 
     const botText = data.candidates[0].content.parts[0].text;
     return NextResponse.json({ text: botText });
 
   } catch (error: any) {
-    console.error("Error Crítico Servidor:", error.message);
+    console.error("Critical API Error:", error.message);
     return NextResponse.json(
-      { text: "PowaBot está recalibrando motores. ¿Podés intentar de nuevo en unos segundos?" },
+      { text: "Estoy recalibrando mis circuitos de Growth. ¿Podrías repetirme eso o prefieres hablar directamente por WhatsApp?" },
       { status: 500 }
     );
   }
