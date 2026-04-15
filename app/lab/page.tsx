@@ -4,18 +4,20 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import ImageOptimizer from '@/components/ImageOptimizer';
 import RoiCalculator from '@/components/RoiCalculator';
+import VideoCompressor from '@/components/VideoCompressor'; // Nuevo componente
 import { 
   FaFlask, FaChevronDown, FaChevronUp, 
-  FaLock, FaPaperPlane, FaCalculator, FaImages 
+  FaPaperPlane, FaCalculator, FaImages, FaVideo 
 } from 'react-icons/fa';
 
 // Importamos el CSS Module
 import styles from './lab.module.css';
 
 export default function LabPage() {
-  const [activeTool, setActiveTool] = useState<'optimizer' | 'roi' | null>('optimizer');
+  // Extendemos el tipo para incluir 'video'
+  const [activeTool, setActiveTool] = useState<'optimizer' | 'roi' | 'video' | null>('optimizer');
 
-  const toggleTool = (tool: 'optimizer' | 'roi') => {
+  const toggleTool = (tool: 'optimizer' | 'roi' | 'video') => {
     setActiveTool(activeTool === tool ? null : tool);
   };
 
@@ -46,7 +48,6 @@ export default function LabPage() {
                   </div>
                   <div>
                     <h4 className="mb-0 text-white">Image Optimizer v1.0</h4>
-                    {/* CAMBIO: Usamos la clase del módulo para legibilidad */}
                     <small className={styles.labSubtitleCustom}>
                       Reducción de peso sin pérdida de fidelidad
                     </small>
@@ -74,7 +75,6 @@ export default function LabPage() {
                   </div>
                   <div>
                     <h4 className="mb-0 text-white">ROI Business Metrics</h4>
-                    {/* CAMBIO: Usamos la clase del módulo para legibilidad */}
                     <small className={styles.labSubtitleCustom}>
                       Calculadora de rentabilidad publicitaria
                     </small>
@@ -90,30 +90,37 @@ export default function LabPage() {
               )}
             </div>
 
-            {/* --- TOOL 3: LOCKED (Coming Soon) --- */}
-            <div className={`${styles.labAccordionItem} ${styles.locked}`}>
-              <div className={styles.labAccordionHeader}>
-                <div className="d-flex align-items-center opacity-50">
+            {/* --- TOOL 3: VIDEO COMPRESSOR (UNLOCKED) --- */}
+            <div className={`${styles.labAccordionItem} ${activeTool === 'video' ? styles.active : ''}`}>
+              <div className={styles.labAccordionHeader} onClick={() => toggleTool('video')}>
+                <div className="d-flex align-items-center">
                   <div className={`${styles.iconCircle} me-3`}>
-                    <FaLock />
+                    <FaVideo />
                   </div>
                   <div>
                     <h4 className="mb-0 text-white">Video Core Engine</h4>
-                    {/* CAMBIO: Usamos la clase del módulo para legibilidad */}
                     <small className={styles.labSubtitleCustom}>
-                      Compresión de video ultra-rápida
+                      Compresión de video ultra-rápida (WASM)
                     </small>
                   </div>
                 </div>
-                <span className={styles.lockedBadgeMini}>Próximamente</span>
+                {activeTool === 'video' ? <FaChevronUp /> : <FaChevronDown />}
               </div>
+              
+              {activeTool === 'video' && (
+                <div className={`${styles.labAccordionBody} animate-fade-in`}>
+                  <div className={`${styles.infoBoxLab} mb-4`}>
+                    <strong>⚙️ Tecnología Powa:</strong> Utilizamos WebAssembly para procesar el video directamente en tu hardware, garantizando 100% de privacidad.
+                  </div>
+                  <VideoCompressor />
+                </div>
+              )}
             </div>
 
             {/* --- FEEDBACK SECTION --- */}
             <div className="mt-5 p-4 rounded-4 text-center animate-fade-in" 
                  style={{background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.1)'}}>
               <h5 className="text-white mb-3">¿Necesitás una herramienta a medida?</h5>
-              {/* CAMBIO: Quitamos text-muted y usamos la clase del módulo */}
               <p className={`small mb-4 ${styles.labSubtitleCustom}`}>
                 Estamos expandiendo el laboratorio. Decinos qué proceso te gustaría automatizar.
               </p>
@@ -134,7 +141,7 @@ export default function LabPage() {
         </Row>
 
         <footer className={`mt-5 text-center small pb-5 ${styles.labSubtitleCustom}`}>
-          &copy; 2026 Powa Lab // Todos los datos se procesan localmente en tu navegador.
+          &copy; {new Date().getFullYear()} Powa Lab // Todos los datos se procesan localmente en tu navegador.
         </footer>
       </Container>
     </div>

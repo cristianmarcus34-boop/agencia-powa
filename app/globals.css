@@ -1,12 +1,11 @@
 /* app/globals.css */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@300;400;500;700&display=swap');
 
 /* --- RESET Y COMPORTAMIENTO GLOBAL --- */
 html {
-  /* Desactivamos el smooth scroll global para evitar conflictos con Next.js */
+  /* Desactivamos el smooth scroll global para evitar conflictos con el routing de Next.js */
   scroll-behavior: auto !important;
-  /* Evita saltos visuales cuando aparece la scrollbar */
-  margin-right: calc(100vw - 100%);
+  /* Evita saltos visuales de contenido al aparecer/desaparecer la scrollbar de forma nativa */
+  scrollbar-gutter: stable;
 }
 
 :root {
@@ -21,18 +20,19 @@ html {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  /* Prioridad a las fuentes variables de Next.js (Geist) definidas en el layout */
+  font-family: var(--font-geist-sans), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text-main);
   background-color: var(--dark-powa);
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  /* Mejora el renderizado de fuentes en pantallas oscuras */
+  /* Optimización de renderizado de texto */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Scrollbar Global Estilizada */
+/* Scrollbar Global Estilizada (Webkit) */
 ::-webkit-scrollbar { 
   width: 8px; 
 }
@@ -48,18 +48,22 @@ body {
   background: var(--primary-glow); 
 }
 
-/* Utilidades compartidas */
+/* --- UTILIDADES COMPARTIDAS --- */
+
 .text-gradient {
   background: linear-gradient(90deg, #ffffff 20%, var(--accent-powa) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  /* Asegura el renderizado correcto en motores Webkit */
+  display: inline-block; 
 }
 
 .btn-powa-primary {
   display: inline-flex;
   align-items: center;
-  padding: 14px 32px; /* Ajustado ligeramente para mejor equilibrio */
+  justify-content: center;
+  padding: 14px 32px;
   background: linear-gradient(45deg, var(--primary-glow), var(--accent-powa));
   color: var(--dark-powa) !important;
   border-radius: 12px;
@@ -70,6 +74,8 @@ body {
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  /* Efecto de profundidad sutil */
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 .btn-powa-primary:hover {
@@ -78,25 +84,55 @@ body {
   filter: brightness(1.1);
 }
 
-.border-dashed { border: 2px dashed rgba(255,255,255,0.1) !important; }
-.cursor-pointer { cursor: pointer; }
+.border-dashed { 
+  border: 2px dashed rgba(255, 255, 255, 0.1) !important; 
+}
 
-/* Animaciones */
-.animate-pulse { animation: pulse 2s infinite; }
+.cursor-pointer { 
+  cursor: pointer; 
+}
+
+/* --- ANIMACIONES --- */
+
+.animate-pulse { 
+  animation: pulse 2s infinite; 
+}
+
 @keyframes pulse {
   0% { opacity: 0.3; }
   50% { opacity: 0.7; }
   100% { opacity: 0.3; }
 }
 
-.animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+.animate-fade-in { 
+  animation: fadeIn 0.5s ease-out forwards; 
 }
 
-/* Fix para que los links no tengan subrayado por defecto */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(15px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* --- FIXES DE ELEMENTOS --- */
+
 a {
   text-decoration: none !important;
   color: inherit;
+  transition: opacity 0.2s ease;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevención de conflictos con el modal de Bootstrap y el scroll */
+body.modal-open {
+  padding-right: 0 !important;
 }

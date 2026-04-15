@@ -56,7 +56,7 @@ export default function NavbarPowa() {
               height={40} // Tamaño visual real
               className={styles.logoImage}
               priority // Carga esta imagen primero (LCP)
-              quality={80}
+              quality={75}
             />
           </div>
           <span className={styles.brandText}>
