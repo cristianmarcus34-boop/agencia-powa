@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // 2. Estilos Globales Propios
 import "./globals.css";
 
-// 3. Componentes
+// 3. Componentes globales y Loading centralizado
 import { ToastContainer } from 'react-toastify';
 import ChatPowa from "@/components/ChatPowa"; 
 import NavbarPowa from "@/components/NavbarPowa";
@@ -90,7 +90,8 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* Componente de carga inicial */}
+        
+        {/* El LoadingScreen ahora cubre absolutamente todo desde el root */}
         <LoadingScreen />
 
         {/* JSON-LD para Branding Inmediato */}

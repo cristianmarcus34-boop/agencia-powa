@@ -1,28 +1,39 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import Image from 'next/image'; // Importación necesaria
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import styles from './NavbarPowa.module.css';
+
+// Definimos la interfaz para los links
+interface NavLinkItem {
+  name: string;
+  path: string;
+}
 
 export default function NavbarPowa() {
   const [scrolled, setScrolled] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
 
+  // Optimizamos el scroll con useCallback para evitar recrear la función
+  const handleScroll = useCallback(() => {
+    const isScrolled = window.scrollY > 20;
+    if (isScrolled !== scrolled) {
+      setScrolled(isScrolled);
+    }
+  }, [scrolled]);
+
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true }); // Mejora performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [handleScroll]);
 
   const closeMenu = () => setExpanded(false);
 
-  const navLinks = [
+  const navLinks: NavLinkItem[] = [
     { name: 'Inicio', path: '/' },
     { name: 'Servicios', path: '/servicios' },
     { name: 'Portafolio', path: '/portfolio' },
@@ -48,30 +59,29 @@ export default function NavbarPowa() {
           onClick={closeMenu}
         >
           <div className={styles.logoWrapper}>
-            {/* SOLUCIÓN AL LOGO: Next.js optimiza el tamaño y el formato aquí */}
             <Image
               src="/logo-agenciadigitalpowa-cuadrado.jpg"
-              alt="Logo Powa Digital"
-              width={40} // Tamaño visual real
-              height={40} // Tamaño visual real
+              alt="Powa Digital Logo"
+              width={40}
+              height={40}
               className={styles.logoImage}
-              priority // Carga esta imagen primero (LCP)
-              quality={75}
+              priority
+              quality={85} // Un poquito más de calidad para el logo
             />
           </div>
           <span className={styles.brandText}>
-            Agencia Digital <span className="text-gradient">Powa</span>
+            Powa <span className="text-gradient">Digital</span>
           </span>
         </Navbar.Brand>
 
+        {/* Custom Hamburger Icon (opcional para más estilo) */}
         <Navbar.Toggle 
           aria-controls="responsive-navbar-nav" 
           className={styles.toggle}
-          aria-label="Abrir menú de navegación" // Mejora Accesibilidad
         />
 
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="ms-auto align-items-center gap-1">
+          <Nav className="ms-auto align-items-center">
             {navLinks.map((link) => (
               <Nav.Link
                 key={link.path}
@@ -84,23 +94,25 @@ export default function NavbarPowa() {
               </Nav.Link>
             ))}
 
+            <div className={styles.navDivider}></div>
+
             <Nav.Link
               as={Link}
               href="/lab"
               className={styles.navLinkLab}
               onClick={closeMenu}
             >
-              Powa Lab
-              <span className={styles.badgeSoon}>Nuevo</span>
+              Lab
+              <span className={styles.badgeSoon}>Beta</span>
             </Nav.Link>
 
             <Link 
               href="/contact" 
-              className="ms-lg-3 text-decoration-none"
+              className="ms-lg-2 text-decoration-none"
               onClick={closeMenu}
             >
               <button className={styles.contactBtn}>
-                Contacto
+                Empezar Proyecto
               </button>
             </Link>
           </Nav>

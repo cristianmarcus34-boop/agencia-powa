@@ -1,10 +1,8 @@
 import type { NextConfig } from "next";
 
-const nextConfig: any = { // Usamos 'any' aquí para evitar que TS bloquee el despliegue
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+const nextConfig: NextConfig = {
   typescript: {
+    // Esto sigue siendo válido si necesitas ignorar errores en el build
     ignoreBuildErrors: true,
   },
   async headers() {

@@ -1,72 +1,72 @@
 'use client';
-import React from 'react';
+
+import React, { useMemo } from 'react';
 import { Container, Accordion, Row, Col } from 'react-bootstrap';
-import { FaQuestionCircle, FaCode, FaBolt, FaShieldAlt, FaWhatsapp } from 'react-icons/fa';
+import { FaCode, FaBolt, FaShieldAlt, FaWhatsapp } from 'react-icons/fa';
 import styles from './faq.module.css';
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
 
 export default function FaqPage() {
   const whatsappNumber = "5491138305837";
-  const message = encodeURIComponent("¡Hola Powa! Estuve viendo la sección de soporte y tengo una consulta...");
+  const message = encodeURIComponent("Hola Powa, me interesa realizar una auditoría técnica para mi próximo desarrollo.");
 
-  const faqs = [
+  const faqs: FAQItem[] = useMemo(() => [
     {
       question: "¿Qué tipo de soluciones digitales desarrollan?",
-      answer: "Construimos herramientas a la medida de tu negocio, no al revés. Desde Landing Pages de alto impacto diseñadas para vender, hasta plataformas complejas que automatizan tu trabajo. Al trabajar con código puro (Next.js), eliminamos las limitaciones de las plantillas: tu web será exactamente como la imaginás, sin errores técnicos y lista para crecer."
+      answer: "Diseñamos e implementamos ecosistemas digitales a la medida de los objetivos de su empresa. Nos especializamos en landings de conversión optimizada y plataformas SaaS complejas. Al desarrollar con arquitectura pura sobre Next.js, eliminamos las restricciones estructurales de las plantillas genéricas: su producto final será exactamente como lo proyecta, con un código limpio, seguro y arquitecturado para escalar verticalmente."
     },
     {
-      question: "¿Sus desarrollos están optimizados para generar ventas?",
-      answer: "Absolutamente. Una web que tarda en cargar pierde clientes. Nosotros eliminamos esa fricción usando tecnología de alto rendimiento. Aplicamos estrategias de Experiencia de Usuario (UX) para guiar al visitante hacia el contacto de forma natural, convirtiendo las visitas en ventas reales para tu empresa."
+      question: "¿Sus desarrollos están optimizados para la conversión y ventas?",
+      answer: "Absolutamente. El rendimiento técnico está directamente correlacionado con la tasa de conversión. Cada milisegundo de latencia reduce drásticamente el volumen de transacciones. Minimizamos la fricción mediante la optimización estricta del Core Web Vitals y la aplicación de patrones de diseño UX avanzados que guían al usuario orgánicamente hacia la acción comercial."
     },
     {
-      question: "¿Las webs son compatibles con Google Ads y Meta?",
-      answer: "Sí, y es nuestra mayor fortaleza. Google y Facebook penalizan las webs lentas cobrándote más por cada clic. Nuestras aplicaciones son 'Ads-Ready': al ser técnicamente perfectas, tu 'Puntaje de Calidad' sube y tu costo por publicidad baja. Obtenés más clientes con el mismo presupuesto."
+      question: "¿Las plataformas son compatibles con ecosistemas de adquisición (Ads & Meta)?",
+      answer: "Sí, es uno de nuestros pilares de ingeniería. Los algoritmos de Google Ads y Meta penalizan las experiencias de carga ineficientes incrementando el Costo por Clic (CPC). Nuestras soluciones implementan Server-Side Rendering (SSR), garantizando una indexación técnica perfecta que eleva el Quality Score de sus campañas, permitiéndole adquirir más clientes con el mismo presupuesto publicitario."
     },
     {
-      question: "¿Por qué usan Next.js en lugar de WordPress?",
-      answer: "WordPress es como un auto usado con accesorios pegados: termina siendo pesado, lento y vulnerable. En Powa construimos 'de fábrica' con Next.js. Tu web carga de forma instantánea y es prácticamente imposible de hackear. El resultado es una experiencia fluida que Google premia con mejores posiciones y que tus clientes aman usar."
+      question: "¿Por qué priorizan arquitecturas en Next.js por sobre sistemas monolíticos como WordPress?",
+      answer: "Los CMS tradicionales como WordPress presentan serias deficiencias en seguridad, dependencia de plugins de terceros y sobrecarga de procesamiento en cliente. Next.js nos permite compilar sitios estáticos e híbridos de velocidad ultra-instantánea. Al desacoplar el frontend, reducimos la superficie de ataque a niveles prácticamente nulos, entregando un activo robusto que Google posiciona prioritariamente."
     },
     {
-      question: "¿Cuál es el tiempo estimado de entrega?",
-      answer: "El plazo promedio es de 4 a 6 semanas. No usamos soluciones rápidas: cada proyecto atraviesa un ciclo de estrategia, diseño profesional en Figma y programación a medida. Entregamos un activo digital de élite diseñado para durar años, no una página que debas rehacer en pocos meses."
+      question: "¿Cuál es el cronograma estimado de entrega?",
+      answer: "Nuestros ciclos promedio varían entre 4 y 6 semanas. No operamos con soluciones prefabricadas; cada desarrollo atraviesa etapas rigurosas de consultoría estratégica, diseño modular de alta fidelidad en Figma e ingeniería frontend a medida. Entregamos soluciones tecnológicas de nivel corporativo concebidas para perdurar en el tiempo."
     },
     {
-      question: "¿Una vez finalizado, el código me pertenece?",
-      answer: "Totalmente. Al ser un desarrollo a medida, el código es propiedad de tu empresa. No te atamos a suscripciones mensuales obligatorias ni a plataformas cerradas. Te entregamos un producto independiente, escalable y con total libertad de gestión."
+      question: "¿Una vez finalizado el proyecto, la propiedad intelectual me pertenece?",
+      answer: "Totalmente. Al tratarse de ingeniería de software a medida, el 100% de los derechos de propiedad intelectual y el código fuente pertenecen a su empresa. No implementamos contratos de permanencia obligatorios ni dependencia tecnológica. Entregamos un activo digital autónomo, auditable y de libre gestión."
     },
     {
-      question: "¿Qué sucede si necesito actualizar o escalar mi web?",
-      answer: "Nuestra arquitectura es modular. Esto significa que si mañana necesitás agregar un sistema de reservas, un área de clientes o una IA, podemos hacerlo sin necesidad de reconstruir la web desde cero. Tu inversión está protegida porque el sitio está diseñado para crecer junto a tu facturación."
+      question: "¿Qué viabilidad existe para escalar o iterar la plataforma en el futuro?",
+      answer: "La escalabilidad está integrada nativamente en nuestro proceso gracias a una arquitectura modular de componentes. Si en etapas posteriores requiere integrar pasarelas complejas, flujos automatizados de IA o portales de autenticación de clientes, la infraestructura base permite la expansión limpia sin necesidad de reescribir código existente, protegiendo su inversión de capital."
     },
     {
-      question: "¿Ofrecen soporte y mantenimiento post-lanzamiento?",
-      answer: "Sí, nuestro compromiso no termina con el despliegue. Ofrecemos planes de monitoreo preventivo, actualizaciones de seguridad y optimización continua. Nos convertimos en tu socio tecnológico para que vos te ocupes de tu negocio mientras nosotros nos aseguramos de que tu web rinda al 100% las 24 horas."
+      question: "¿Proveen servicios de soporte y acuerdos de nivel de servicio (SLA)?",
+      answer: "Sí. El despliegue a producción es solo el inicio de la relación técnica. Ofrecemos planes avanzados de mantenimiento preventivo, monitoreo continuo de infraestructura, auditorías periódicas de seguridad y optimizaciones de rendimiento en tiempo real, garantizando la continuidad operativa de su negocio 24/7."
     },
     {
-      question: "¿Cuál es la inversión necesaria para un proyecto con Powa?",
-      answer: "No tenemos precios de 'plantilla' porque no entregamos trabajos genéricos. La inversión se define según los objetivos de tu negocio, la complejidad técnica y las funciones requeridas. Nuestro enfoque es maximizar el retorno de tu inversión: cada peso invertido se refleja en velocidad, seguridad y una imagen profesional de élite que te permite cobrar más por tus propios servicios."
+      question: "¿Cuál es la inversión requerida para iniciar un desarrollo con Powa?",
+      answer: "Cada desarrollo se presupuesta de forma personalizada tras una fase de análisis de requerimientos técnicos y funcionales. No competimos por precio, sino por valor arquitectónico. Nuestro enfoque está estructurado hacia el retorno de la inversión (ROI): asegurar velocidad de carga superior, seguridad corporativa y un posicionamiento estético premium que habilite a su marca a competir en el segmento más alto de su mercado."
     }
-  ];
+  ], []);
 
   return (
     <div className={styles.faqPageWrapper}>
       <Container>
         {/* Header */}
-        <div className="text-center mb-5">
-          <div className={`${styles.faqIconHeader} animate-pulse`}>
-            <FaQuestionCircle />
-          </div>
-
-          {/* Agregamos una clase extra de Bootstrap para forzar color si fuera necesario */}
-          <h1 className={`${styles.faqTitle} text-white`}>
-            Dudas comunes sobre <br />
-            <span className={styles.textGradient}>diseño web profesional</span>
+        <header className={`${styles.faqHeader} text-center`}>
+          <span className={styles.badgeCategory}>RECURSOS & SOPORTE</span>
+          <h1 className={styles.faqTitle}>
+            Preguntas frecuentes sobre <br />
+            <span className={styles.textGradient}>ingeniería web premium</span>
           </h1>
-
-          {/* Cambiamos la clase del párrafo a la nueva faqDescription */}
           <p className={styles.faqDescription}>
-            Despejá tus dudas sobre cómo trabajamos con tecnologías de vanguardia como React y Node.js.
+            Respuestas técnicas detalladas sobre nuestra metodología de desarrollo, arquitectura de software y optimización estratégica.
           </p>
-        </div>
+        </header>
 
         {/* Acordeón */}
         <Row className="justify-content-center">
@@ -79,11 +79,13 @@ export default function FaqPage() {
                   className={styles.accordionItem}
                 >
                   <Accordion.Header className={styles.accordionHeader}>
-                    <span className="text-blue-400 me-3">0{index + 1}.</span>
+                    <span className={styles.itemNumber}>{(index + 1).toString().padStart(2, '0')}</span>
                     {faq.question}
                   </Accordion.Header>
                   <Accordion.Body className={styles.accordionBody}>
-                    {faq.answer}
+                    <div className={styles.bodyContent}>
+                      {faq.answer}
+                    </div>
                   </Accordion.Body>
                 </Accordion.Item>
               ))}
@@ -91,26 +93,29 @@ export default function FaqPage() {
           </Col>
         </Row>
 
-        {/* Stack sutil */}
-        <div className="text-center mt-5 pt-5 opacity-40">
-          <p className="small tracking-widest text-uppercase mb-4 text-white">Tecnología de Grado Empresarial</p>
-          <div className="d-flex justify-content-center gap-5 fs-2 text-white">
-            <FaCode />
-            <FaBolt />
-            <FaShieldAlt />
+        {/* Enterprise Badges */}
+        <footer className={styles.faqFooter}>
+          <p className={styles.footerLabel}>ESTÁNDARES DE INFRAESTRUCTURA EMPRESARIAL</p>
+          <div className={styles.techIconsGrid}>
+            <div className={styles.iconWrapper} title="Código Limpio"><FaCode /></div>
+            <div className={styles.iconWrapper} title="Rendimiento Crítico"><FaBolt /></div>
+            <div className={styles.iconWrapper} title="Seguridad Perimetral"><FaShieldAlt /></div>
           </div>
-        </div>
+        </footer>
       </Container>
 
-      {/* BOTÓN WHATSAPP FLOTANTE */}
+      {/* WhatsApp Flotante */}
       <a
         href={`https://wa.me/${whatsappNumber}?text=${message}`}
         className={styles.whatsappFloat}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Contactar a soporte técnico vía WhatsApp"
       >
-        <FaWhatsapp className={styles.floatIcon} />
-        <span className={styles.floatText}>¿Tenés otra duda?</span>
+        <div className={styles.pulseContainer}>
+          <FaWhatsapp className={styles.floatIcon} />
+        </div>
+        <span className={styles.floatText}>CONSULTA TÉCNICA DIRECTA</span>
       </a>
     </div>
   );

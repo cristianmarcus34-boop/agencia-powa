@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import {
   FaLaptopCode, FaShoppingCart, FaTools, FaSearchDollar,
@@ -10,26 +10,34 @@ import Link from 'next/link';
 import styles from './servicios.module.css';
 
 // --- TIPADO ---
-interface ServiceProps {
+interface ServiceData {
   icon: React.ReactNode;
   title: string;
   description: string;
   fullDescription: string;
+  stack: string[];
+}
+
+interface ServiceCardProps extends ServiceData {
   index: number;
 }
 
-// --- TARJETA CON EFECTO SPOTLIGHT ---
-const ServiceCardItem = ({ icon, title, description, fullDescription, index }: ServiceProps) => {
+// --- TARJETA CON EFECTO SPOTLIGHT REFINADO ---
+const ServiceCardItem = ({ icon, title, description, fullDescription, stack, index }: ServiceCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
+    const card = cardRef.current;
+    if (!card) return;
+    
+    const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    cardRef.current.style.setProperty('--mouse-x', `${x}px`);
-    cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+    
+    // Seteamos las variables directamente en el estilo para evitar re-renders de React
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
   };
 
   return (
@@ -39,116 +47,119 @@ const ServiceCardItem = ({ icon, title, description, fullDescription, index }: S
       className={styles.serviceCard}
       style={{ animationDelay: `${index * 0.1}s` }}
     >
-      <div className={styles.iconBox}>
-        {icon}
-      </div>
-
-      <h3 className={styles.cardTitle}>{title}</h3>
-
-      <div className={styles.descriptionContainer}>
-        <p className={styles.cardDescription}>
-          {description}
-        </p>
-        <div className={`${styles.fullDescription} ${isExpanded ? styles.visible : ''}`}>
-          <p>{fullDescription}</p>
+      <div className={styles.cardInner}>
+        <div className={styles.iconBox}>
+          {icon}
         </div>
-      </div>
 
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className={styles.actionBtn}
-      >
-        <span>{isExpanded ? 'VER MENOS' : 'DESCUBRIR MÁS'}</span>
-        <FaChevronDown className={`${styles.iconChevron} ${isExpanded ? styles.rotate180 : ''} ms-2`} />
-      </button>
+        <h3 className={styles.cardTitle}>{title}</h3>
+
+        <div className={styles.descriptionContainer}>
+          <p className={styles.cardDescription}>{description}</p>
+          
+          <div className={`${styles.expandableContent} ${isExpanded ? styles.visible : ''}`}>
+            <p className={styles.fullDescription}>{fullDescription}</p>
+            <div className={styles.techStack}>
+              {stack.map((tech) => (
+                <span key={tech} className={styles.techBadge}>{tech}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className={styles.actionBtn}
+          aria-expanded={isExpanded}
+        >
+          <span>{isExpanded ? 'COLAPSAR' : 'EXPLORAR SOLUCIÓN'}</span>
+          <FaChevronDown className={`${styles.iconChevron} ${isExpanded ? styles.rotate180 : ''}`} />
+        </button>
+      </div>
     </div>
   );
 };
 
-// --- PÁGINA PRINCIPAL ---
 export default function ServicesPage() {
-  const services = [
+  const services: ServiceData[] = useMemo(() => [
     {
       icon: <FaLaptopCode />,
-      title: "Desarrollo Web Pro",
-      description: "Aplicaciones a medida con arquitectura escalable y alto rendimiento.",
-      fullDescription: "Especialistas en Next.js y React. Creamos plataformas diseñadas para soportar miles de usuarios con seguridad de nivel bancario."
+      title: "Sistemas Web Escalables",
+      description: "Arquitecturas modernas diseñadas para el alto rendimiento y SEO.",
+      fullDescription: "Implementamos arquitecturas desacopladas con Next.js y Supabase. Nos enfocamos en Core Web Vitals y seguridad SSR para garantizar tiempos de carga menores a 1s.",
+      stack: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind"]
     },
     {
       icon: <FaMobileAlt />,
-      title: "Mobile & UX/UI",
-      description: "Diseños que enamoran a primera vista y funcionan en cualquier pantalla.",
-      fullDescription: "Optimizamos el Customer Journey para maximizar conversiones utilizando prototipado avanzado en Figma."
+      title: "Mobile Architecture",
+      description: "Apps nativas y cross-platform con experiencias de usuario fluidas.",
+      fullDescription: "Desarrollo con React Native / Expo o Kotlin Nativo. Gestión de estado compleja, persistencia de datos local y sincronización en tiempo real.",
+      stack: ["Expo", "React Native", "SQLite", "Firebase"]
     },
     {
       icon: <FaShoppingCart />,
-      title: "E-commerce Elite",
-      description: "Tiendas online diseñadas para vender masivamente sin fricciones.",
-      fullDescription: "Integraciones con pasarelas de pago y automatización de stock. Tu tienda será una máquina de ventas 24/7."
+      title: "E-commerce Engine",
+      description: "Infraestructura robusta para procesar ventas masivas sin fricción.",
+      fullDescription: "Automatización de inventario, integración avanzada con pasarelas de pago y sistemas de facturación automática. Escalabilidad garantizada en eventos de alto tráfico.",
+      stack: ["Stripe", "MercadoPago", "Headless CMS"]
     },
     {
       icon: <FaSearchDollar />,
-      title: "Crecimiento SEO",
-      description: "Posicionamos tu marca donde tus clientes buscan: la cima de Google.",
-      fullDescription: "SEO técnico profundo y optimización de Core Web Vitals para tráfico orgánico sostenible."
+      title: "Data & Growth SEO",
+      description: "Estrategias basadas en datos para dominar los resultados de búsqueda.",
+      fullDescription: "No solo keywords. Hacemos SEO técnico, auditoría de logs, schema markup avanzado y optimización de arquitectura de información.",
+      stack: ["Search Console", "Analytics", "Semrush"]
     },
     {
       icon: <FaTools />,
-      title: "Soporte Continuo",
-      description: "Mantenimiento proactivo para que nunca sufras caídas de sistema.",
-      fullDescription: "Monitoreo 24/7, backups automáticos y actualizaciones de seguridad constantes."
+      title: "DevOps & Soporte",
+      description: "Mantenimiento proactivo y despliegue continuo (CI/CD).",
+      fullDescription: "Configuración de pipelines, Dockerización de servicios y monitoreo de salud del servidor 24/7. Tu código siempre actualizado y seguro.",
+      stack: ["Docker", "Vercel", "GitHub Actions"]
     },
     {
       icon: <FaLightbulb />,
-      title: "Consultoría IT",
-      description: "Transformamos tu modelo de negocio con tecnología de vanguardia.",
-      fullDescription: "Analizamos procesos para implementar IA y automatizaciones que reduzcan costos y aumenten márgenes."
+      title: "Consultoría Estratégica",
+      description: "Transformamos ideas en productos mínimos viables (MVP) rentables.",
+      fullDescription: "Asesoramiento en la elección del stack tecnológico y modelado de procesos de negocio para maximizar el ROI de tu inversión digital.",
+      stack: ["MVP Strategy", "UI/UX Audit", "Cloud Infra"]
     }
-  ];
+  ], []);
 
   return (
     <div className={styles.servicesWrapper}>
       <Container>
-        <header className="text-center mb-5">
-          <span className={styles.badgePowa}>
-            NUESTRO TOOLKIT
-          </span>
+        <header className="text-center mb-5 animate-fade-in">
+          <span className={styles.badgePowa}>NUESTRO TOOLKIT TÉCNICO</span>
           <h1 className={styles.titleMain}>
-            Soluciones de <span className="text-gradient">Alto Impacto</span>
+            Ingeniería de <span className="text-gradient">Alto Impacto</span>
           </h1>
           <p className={styles.subtitle}>
-            En Powa Digital, tu proyecto no es un gasto, es una <strong>inversión estratégica</strong> enfocada al ROI y la eficiencia operativa.
+            En Powa Digital, transformamos la complejidad técnica en 
+            <strong> ventajas competitivas</strong> para tu modelo de negocio.
           </p>
         </header>
 
         <Row className="g-4">
           {services.map((service, index) => (
             <Col key={index} xs={12} md={6} lg={4}>
-              <ServiceCardItem
-                icon={service.icon}
-                title={service.title}
-                description={service.description}
-                fullDescription={service.fullDescription}
-                index={index}
-              />
+              <ServiceCardItem {...service} index={index} />
             </Col>
           ))}
         </Row>
 
-        {/* --- CTA FINAL --- */}
         <div className={styles.footerCta}>
-          <div className={styles.ctaContentWrapper}>
-            <h2 className={styles.ctaTitle}>¿Listo para escalar tu infraestructura digital?</h2>
+          <div className={styles.ctaGlass}>
+            <h2 className={styles.ctaTitle}>¿Listo para escalar tu infraestructura?</h2>
             <p className={styles.ctaText}>
-              No dejes tu crecimiento al azar. Combinamos diseño de vanguardia con
-              arquitectura técnica sólida para potenciar tu negocio.
+              Agendemos una breve consultoría técnica para analizar los cuellos de botella de tu plataforma actual.
             </p>
             <div className={styles.ctaActions}>
               <Link href="/contact" className={styles.btnPowaMain}>
                 INICIAR PROYECTO <FaRocket className="ms-2" />
               </Link>
               <a href="https://wa.me/5491138305837" target="_blank" rel="noopener noreferrer" className={styles.btnPowaOutline}>
-                WHATSAPP <FaWhatsapp className="ms-2" />
+                HABLAR POR WHATSAPP <FaWhatsapp className="ms-2" />
               </a>
             </div>
           </div>

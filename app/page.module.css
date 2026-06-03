@@ -29,24 +29,18 @@
     pointer-events: none;
 }
 
-/* Mejora: Contenedor para manejar la proporción de la imagen (Aspect Ratio) */
 .heroImageContainer {
     position: relative;
     border-radius: 1.5rem;
     overflow: hidden;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-.heroImageContainer img {
-    object-fit: cover; /* Evita que la imagen se estire */
-    width: 100%;
-    height: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .badgePowa {
     display: inline-block;
     padding: 6px 16px;
-    background: rgba(0, 242, 254, 0.15); /* Aumentada opacidad para contraste */
+    background: rgba(0, 242, 254, 0.15);
     color: var(--accent-powa);
     border-radius: 50px;
     font-size: 13px;
@@ -56,45 +50,100 @@
 }
 
 .heroTitleMain {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(2.5rem, 6vw, 4rem);
     font-weight: 900;
     line-height: 1.1;
     color: #ffffff; 
     margin-bottom: 1.5rem;
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
 }
 
 .heroSubtitleModern {
-    font-size: 1.15rem;
-    color: #f1f5f9; /* Cambiado a Slate 100 para máximo contraste (Accesibilidad) */
+    font-size: 1.2rem;
+    color: #cbd5e1;
     max-width: 650px;
     line-height: 1.7;
     margin-bottom: 2.5rem;
 }
 
+/* --- SECTIONS COMMON --- */
+.sectionTitle {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 800;
+}
+
+.sectionSubtitle {
+    color: #94a3b8;
+    font-size: 1.1rem;
+}
+
+/* --- PROCESS SECTION (SENIOR LOOK) --- */
+.processSection {
+    padding: 100px 0;
+    background: linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.5));
+}
+
+.processCard {
+    background: rgba(30, 41, 59, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 40px;
+    border-radius: 24px;
+    position: relative;
+    height: 100%;
+    transition: 0.3s;
+}
+
+.processCard:hover {
+    background: rgba(30, 41, 59, 0.5);
+    border-color: var(--accent-powa);
+}
+
+.stepNumber {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 3rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.03);
+}
+
+.processIcon {
+    font-size: 2rem;
+    color: var(--accent-powa);
+    margin-bottom: 20px;
+}
+
+.processCard h3 {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.processCard p {
+    color: #94a3b8;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
 /* --- TECH STACK --- */
 .techStackSection {
-    padding: 80px 0;
-    border-top: 1px solid var(--glass-border);
-    border-bottom: 1px solid var(--glass-border);
-    background: rgba(15, 23, 42, 0.3);
+    padding: 60px 0;
+    background: rgba(15, 23, 42, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .techLabel {
     text-align: center;
-    color: #cbd5e1; /* Subido de 400 a 300 para legibilidad */
-    font-size: 0.8rem;
+    color: #64748b;
+    font-size: 0.75rem;
     font-weight: 800;
-    letter-spacing: 4px;
-    margin-bottom: 50px;
+    letter-spacing: 3px;
+    margin-bottom: 40px;
     text-transform: uppercase;
 }
 
-.stackSlider {
-    overflow: hidden;
-    width: 100%;
-}
-
+.stackSlider { overflow: hidden; width: 100%; }
 .stackTrack {
     display: flex;
     gap: 60px;
@@ -111,71 +160,35 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 100px;
-    transition: all 0.3s ease;
-    filter: grayscale(1);
-    opacity: 0.7;
+    opacity: 0.6;
+    transition: 0.3s;
 }
 
-.stackItem:hover {
-    filter: grayscale(0);
-    opacity: 1;
-    transform: translateY(-5px);
-}
-
-.techIconWrapper {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-}
-
-.techName {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #ffffff;
-}
+.stackItem:hover { opacity: 1; transform: translateY(-5px); }
+.techIconWrapper { font-size: 2.2rem; margin-bottom: 8px; }
+.techName { font-size: 0.8rem; color: #ffffff; font-weight: 600; }
 
 /* --- SERVICES GRID --- */
-.homeServices {
-    padding: 100px 0;
-    background: rgba(15, 23, 42, 0.5);
-}
+.homeServices { padding: 100px 0; }
 
 .powaServiceCard {
-    background: rgba(30, 41, 59, 0.6); /* Más sólido para contraste */
+    background: rgba(30, 41, 59, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
-    padding: 45px 35px;
+    padding: 40px;
     height: 100%;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    display: flex;
-    flex-direction: column;
+    transition: all 0.3s ease;
 }
 
 .powaServiceCard:hover {
     border-color: var(--accent-powa);
-    transform: translateY(-12px);
-    background: rgba(30, 41, 59, 0.9);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    background: rgba(30, 41, 59, 0.6);
+    transform: translateY(-10px);
 }
 
-.powaServiceCard h3 {
-    color: #ffffff;
-    font-weight: 800;
-}
-
-.powaServiceCard p {
-    color: #f8fafc !important; /* Blanco humo: Legibilidad perfecta */
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-    opacity: 1 !important; /* Eliminamos opacidades bajas */
-}
-
-.iconBox {
-    font-size: 2.5rem;
-    color: var(--accent-powa);
-    margin-bottom: 25px;
-}
+.iconBox { font-size: 2.5rem; color: var(--accent-powa); margin-bottom: 20px; }
+.powaServiceCard h3 { color: white; font-weight: 700; margin-bottom: 15px; }
+.powaServiceCard p { color: #cbd5e1; font-size: 0.95rem; line-height: 1.6; }
 
 .cardLink {
     text-decoration: none;
@@ -183,80 +196,39 @@
     font-weight: 700;
     display: flex;
     align-items: center;
-    transition: 0.3s;
-    margin-top: auto;
-}
-
-.cardLink:hover {
-    color: white;
-    gap: 12px;
+    margin-top: 20px;
 }
 
 /* --- CTA SECTION --- */
-.ctaHomeMinimal {
-    padding: 100px 0;
-}
-
+.ctaHomeMinimal { padding: 80px 0; }
 .ctaMinimalBox {
-    background: linear-gradient(135deg, #1d4ed8 0%, #3730a3 100%); /* Colores un poco más oscuros para contraste con el blanco */
+    background: linear-gradient(135deg, #1e40af 0%, #312e81 100%);
     padding: 80px 40px;
     border-radius: 40px;
-    position: relative;
-    overflow: hidden;
     text-align: center;
 }
 
-.ctaMinimalBox h2 {
-    color: #ffffff;
-}
-
-.ctaMinimalBox p {
-    color: #ffffff !important;
-    opacity: 0.95 !important;
-    font-weight: 500;
-}
-
-/* --- BOTONES --- */
 .btnPowaWhite {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px 36px;
-    background-color: #ffffff;
-    color: #1e3a8a !important; 
-    border-radius: 14px;
+    padding: 16px 32px;
+    background: white;
+    color: #1e3a8a !important;
+    border-radius: 12px;
     font-weight: 800;
-    text-decoration: none !important;
-    border: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    position: relative;
-    z-index: 2;
+    text-decoration: none;
+    transition: 0.3s;
 }
 
-.btnPowaOutline {
-    display: inline-flex;
-    align-items: center;
-    padding: 16px 36px;
-    background: transparent;
-    color: white !important;
-    border: 2px solid #ffffff; /* Blanco sólido para mejor contraste visual */
-    border-radius: 14px;
-    font-weight: 700;
-    text-decoration: none !important;
-    transition: all 0.3s ease;
-}
+.btnPowaWhite:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 
 .codeBadge {
     position: absolute;
     bottom: 20px;
     right: 20px;
-    background: rgba(15, 23, 42, 0.9);
-    backdrop-filter: blur(8px);
-    padding: 12px 20px;
-    border-radius: 12px;
-    border: 1px solid var(--glass-border);
+    background: rgba(15, 23, 42, 0.8);
+    padding: 8px 16px;
+    border-radius: 8px;
     color: var(--accent-powa);
-    font-family: var(--font-geist-mono);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    border: 1px solid rgba(255,255,255,0.1);
 }
