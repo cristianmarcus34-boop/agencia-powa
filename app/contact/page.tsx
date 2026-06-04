@@ -8,26 +8,41 @@ import {
 } from 'react-icons/fa';
 import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'react-toastify';
-
 import styles from './contact.module.css';
 
-// Definimos la estructura estricta de los datos del formulario
+// Definición estricta del contrato de datos del Formulario
 interface ContactFormData {
-    services: string[];
+    services: string[]; // Guardará los IDs de los servicios elegidos
     name: string;
     email: string;
     message: string;
-    budget: string;
+    budget?: string;    // Opcional por la naturaleza condicional
 }
 
+interface FormServiceItem {
+    id: string;
+    label: string;
+    requiresBudget: boolean;
+}
+
+// Estructuración limpia de servicios para evitar romper lógica por cambios en el texto
+const AVAILABLE_SERVICES: FormServiceItem[] = [
+    { id: 'web', label: 'Sistemas Web Escalables', requiresBudget: true },
+    { id: 'mobile', label: 'Desarrollo Mobile Nativo', requiresBudget: true },
+    { id: 'cloud', label: 'Gestión de Datos & Cloud', requiresBudget: true },
+    { id: 'automation', label: 'Automatización de Procesos', requiresBudget: false },
+    { id: 'ia', label: 'Integración de IA', requiresBudget: true },
+    { id: 'support', label: 'Soporte & Evolución', requiresBudget: false }
+];
+
 export default function ContactPage() {
-    const { 
-        register, 
-        handleSubmit, 
-        reset, 
-        control, 
-        unregister, 
-        formState: { errors, isSubmitting } 
+    const {
+        register,
+        handleSubmit,
+        reset,
+        control,
+        unregister,
+        formState: { errors, isSubmitting }
     } = useForm<ContactFormData>({
         defaultValues: {
             services: [],
@@ -41,18 +56,19 @@ export default function ContactPage() {
     const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_URL;
     const WHATSAPP_LINK = `https://wa.me/5491138305837?text=Hola%20Powa%20Digital!%20Me%20gustaría%20consultar%20por%20un%20proyecto...`;
 
-    // Escuchamos los servicios seleccionados
-    const selectedServices = useWatch({
+    // Escuchamos de forma reactiva los servicios seleccionados (obtenemos array de IDs)
+    const selectedServiceIds = useWatch({
         control,
         name: 'services',
         defaultValue: [],
     });
 
-    // Mostramos presupuesto si eligen soluciones de desarrollo o IA
-    const servicesWithBudget = ['Sistemas Web Escalables', 'Desarrollo Mobile Nativo', 'Gestión de Datos & Cloud', 'Integración de IA'];
-    const shouldShowBudget = selectedServices.some(s => servicesWithBudget.includes(s));
+    // Evaluamos si alguno de los servicios tildados requiere presupuesto en base a su ID estable
+    const shouldShowBudget = AVAILABLE_SERVICES
+        .filter(service => selectedServiceIds.includes(service.id))
+        .some(service => service.requiresBudget);
 
-    // Limpieza de campos condicionales si dejan de estar seleccionados
+    // Limpieza profunda del árbol si deja de requerirse el presupuesto
     useEffect(() => {
         if (!shouldShowBudget) {
             unregister('budget');
@@ -66,13 +82,23 @@ export default function ContactPage() {
         }
 
         try {
+            // Mapeamos los IDs estables a los labels legibles antes de enviar a Formspree
+            const readableServices = data.services.map(
+                id => AVAILABLE_SERVICES.find(s => s.id === id)?.label || id
+            );
+
+            const payload = {
+                ...data,
+                services: readableServices
+            };
+
             const response = await fetch(FORMSPREE_URL, {
                 method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json', 
-                    'Accept': 'application/json' 
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify(payload),
             });
 
             if (response.ok) {
@@ -82,8 +108,6 @@ export default function ContactPage() {
                 toast.error('❌ Hubo un problema al enviar. Inténtalo de nuevo.');
             }
         } catch {
-            // Al no poner (error), TypeScript y ESLint entienden que 
-            // solo te interesa manejar la consecuencia del fallo.
             toast.error('❌ Error de conexión con el servidor.');
         }
     };
@@ -123,7 +147,7 @@ export default function ContactPage() {
                                             <Form.Control
                                                 type="email"
                                                 className={`${styles.powaInput} ${errors.email ? styles.inputError : ''}`}
-                                                {...register('email', { 
+                                                {...register('email', {
                                                     required: 'El email es obligatorio',
                                                     pattern: {
                                                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -140,22 +164,15 @@ export default function ContactPage() {
                                 <Form.Group className="mb-4">
                                     <Form.Label className="small-label">¿QUÉ SOLUCIONES NECESITÁS?</Form.Label>
                                     <div className={styles.servicesGrid}>
-                                        {[
-                                            'Sistemas Web Escalables', 
-                                            'Desarrollo Mobile Nativo', 
-                                            'Gestión de Datos & Cloud', 
-                                            'Automatización de Procesos', 
-                                            'Integración de IA', 
-                                            'Soporte & Evolución'
-                                        ].map((service) => (
-                                            <div key={service} className={styles.powaCheckbox}>
+                                        {AVAILABLE_SERVICES.map((service, index) => (
+                                            <div key={service.id} className={styles.powaCheckbox}>
                                                 <input
                                                     type="checkbox"
-                                                    id={service}
-                                                    value={service}
+                                                    id={`service-cb-${service.id}-${index}`}
+                                                    value={service.id}
                                                     {...register('services')}
                                                 />
-                                                <label htmlFor={service}>{service}</label>
+                                                <label htmlFor={`service-cb-${service.id}-${index}`}>{service.label}</label>
                                             </div>
                                         ))}
                                     </div>
@@ -166,8 +183,8 @@ export default function ContactPage() {
                                         <Col md={12}>
                                             <Form.Group>
                                                 <Form.Label className="small-label">PRESUPUESTO ESTIMADO (USD)</Form.Label>
-                                                <Form.Select 
-                                                    className={styles.powaInput} 
+                                                <Form.Select
+                                                    className={styles.powaInput}
                                                     {...register('budget', { required: 'Por favor selecciona un rango' })}
                                                 >
                                                     <option value="">Selecciona un rango...</option>
@@ -207,7 +224,6 @@ export default function ContactPage() {
                     {/* COLUMNA INFORMACIÓN & CONFIANZA */}
                     <Col lg={5}>
                         <div className="d-flex flex-column gap-4">
-                            {/* Tarjetas de Contacto */}
                             <div className={styles.infoCardModern}>
                                 <div className={styles.iconCircle}><FaEnvelope /></div>
                                 <div>
@@ -234,7 +250,6 @@ export default function ContactPage() {
                                 </div>
                             </div>
 
-                            {/* Bloque de Garantías / Confianza */}
                             <div className={styles.trustBlock}>
                                 <h4 className="text-white mb-4 fw-bold style-heading">¿Qué pasa después?</h4>
                                 <ul className="list-unstyled d-flex flex-column gap-3">

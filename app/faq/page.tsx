@@ -17,19 +17,19 @@ export default function FaqPage() {
   const faqs: FAQItem[] = useMemo(() => [
     {
       question: "¿Qué tipo de soluciones digitales desarrollan?",
-      answer: "Diseñamos e implementamos ecosistemas digitales a la medida de los objetivos de su empresa. Nos especializamos en landings de conversión optimizada y plataformas SaaS complejas. Al desarrollar con arquitectura pura sobre Next.js, eliminamos las restricciones estructurales de las plantillas genéricas: su producto final será exactamente como lo proyecta, con un código limpio, seguro y arquitecturado para escalar verticalmente."
+      answer: "Diseñamos e implementamos ecosistemas digitales a la medida de los objetivos de tu empresa. Nos especializamos en landings de conversión optimizada y plataformas SaaS complejas. Al desarrollar con arquitectura pura sobre Next.js, eliminamos las restricciones estructurales de las plantillas genéricas: tu producto final será exactamente como lo proyectás, con un código limpio, seguro y arquitecturado para escalar verticalmente."
     },
     {
       question: "¿Sus desarrollos están optimizados para la conversión y ventas?",
-      answer: "Absolutamente. El rendimiento técnico está directamente correlacionado con la tasa de conversión. Cada milisegundo de latencia reduce drásticamente el volumen de transacciones. Minimizamos la fricción mediante la optimización estricta del Core Web Vitals y la aplicación de patrones de diseño UX avanzados que guían al usuario orgánicamente hacia la acción comercial."
+      answer: "Absolutamente. El rendimiento técnico está directamente correlacionado con tu tasa de conversión. Cada milisegundo de latencia reduce drásticamente tu volumen de transacciones. Minimizamos la fricción mediante la optimización estricta de los Core Web Vitals y la aplicación de patrones de diseño UX avanzados que guían al usuario orgánicamente hacia la acción comercial."
     },
     {
       question: "¿Las plataformas son compatibles con ecosistemas de adquisición (Ads & Meta)?",
-      answer: "Sí, es uno de nuestros pilares de ingeniería. Los algoritmos de Google Ads y Meta penalizan las experiencias de carga ineficientes incrementando el Costo por Clic (CPC). Nuestras soluciones implementan Server-Side Rendering (SSR), garantizando una indexación técnica perfecta que eleva el Quality Score de sus campañas, permitiéndole adquirir más clientes con el mismo presupuesto publicitario."
+      answer: "Sí, es uno de nuestros pilares de ingeniería. Los algoritmos de Google Ads y Meta penalizan las experiencias de carga ineficientes incrementando tu Costo por Clic (CPC). Nuestras soluciones implementan Server-Side Rendering (SSR), garantizando una indexación técnica perfecta que eleva el Quality Score de tus campañas, permitiéndote adquirir más clientes con el mismo presupuesto publicitario."
     },
     {
       question: "¿Por qué priorizan arquitecturas en Next.js por sobre sistemas monolíticos como WordPress?",
-      answer: "Los CMS tradicionales como WordPress presentan serias deficiencias en seguridad, dependencia de plugins de terceros y sobrecarga de procesamiento en cliente. Next.js nos permite compilar sitios estáticos e híbridos de velocidad ultra-instantánea. Al desacoplar el frontend, reducimos la superficie de ataque a niveles prácticamente nulos, entregando un activo robusto que Google posiciona prioritariamente."
+      answer: "Los CMS tradicionales como WordPress presentan serias deficiencias en seguridad, dependencia de plugins de terceros y sobrecarga de procesamiento en el cliente. Next.js nos permite compilar sitios estáticos e híbridos de velocidad ultra-instantánea. Al desacoplar el frontend, reducimos la superficie de ataque a niveles prácticamente nulos, entregando un activo robusto que Google posiciona prioritariamente."
     },
     {
       question: "¿Cuál es el cronograma estimado de entrega?",
@@ -37,19 +37,19 @@ export default function FaqPage() {
     },
     {
       question: "¿Una vez finalizado el proyecto, la propiedad intelectual me pertenece?",
-      answer: "Totalmente. Al tratarse de ingeniería de software a medida, el 100% de los derechos de propiedad intelectual y el código fuente pertenecen a su empresa. No implementamos contratos de permanencia obligatorios ni dependencia tecnológica. Entregamos un activo digital autónomo, auditable y de libre gestión."
+      answer: "Totalmente. Al tratarse de ingeniería de software a medida, el 100% de los derechos de propiedad intelectual y el código fuente le pertenecen a tu empresa. No implementamos contratos de permanencia obligatorios ni dependencia tecnológica. Te entregamos un activo digital autónomo, auditable y de libre gestión."
     },
     {
       question: "¿Qué viabilidad existe para escalar o iterar la plataforma en el futuro?",
-      answer: "La escalabilidad está integrada nativamente en nuestro proceso gracias a una arquitectura modular de componentes. Si en etapas posteriores requiere integrar pasarelas complejas, flujos automatizados de IA o portales de autenticación de clientes, la infraestructura base permite la expansión limpia sin necesidad de reescribir código existente, protegiendo su inversión de capital."
+      answer: "La escalabilidad está integrada nativamente en nuestro proceso gracias a una arquitectura modular de componentes. Si en etapas posteriores requerís integrar pasarelas complejas, flujos automatizados de IA o portales de autenticación de clientes, la infraestructura base permite la expansión limpia sin necesidad de reescribir código existente, protegiendo tu inversión de capital."
     },
     {
       question: "¿Proveen servicios de soporte y acuerdos de nivel de servicio (SLA)?",
-      answer: "Sí. El despliegue a producción es solo el inicio de la relación técnica. Ofrecemos planes avanzados de mantenimiento preventivo, monitoreo continuo de infraestructura, auditorías periódicas de seguridad y optimizaciones de rendimiento en tiempo real, garantizando la continuidad operativa de su negocio 24/7."
+      answer: "Sí. El despliegue a producción es solo el inicio de la relación técnica. Ofrecemos planes avanzados de mantenimiento preventivo, monitoreo continuo de infraestructura, auditorías periódicas de seguridad y optimizaciones de rendimiento en tiempo real, garantizando la continuidad operativa de tu negocio 24/7."
     },
     {
       question: "¿Cuál es la inversión requerida para iniciar un desarrollo con Powa?",
-      answer: "Cada desarrollo se presupuesta de forma personalizada tras una fase de análisis de requerimientos técnicos y funcionales. No competimos por precio, sino por valor arquitectónico. Nuestro enfoque está estructurado hacia el retorno de la inversión (ROI): asegurar velocidad de carga superior, seguridad corporativa y un posicionamiento estético premium que habilite a su marca a competir en el segmento más alto de su mercado."
+      answer: "Cada desarrollo se presupuesta de forma personalizada tras una fase de análisis de requerimientos técnicos y funcionales. No competimos por precio, sino por valor arquitectónico. Nuestro enfoque está estructurado hacia el retorno de la inversión (ROI): asegurar velocidad de carga superior, seguridad corporativa y un posicionamiento estético premium que habilite a tu marca a competir en el segmento más alto de tu mercado."
     }
   ], []);
 

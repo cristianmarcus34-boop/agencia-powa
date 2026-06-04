@@ -7,7 +7,6 @@ import { usePathname } from 'next/navigation';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import styles from './NavbarPowa.module.css';
 
-// Definimos la interfaz para los links
 interface NavLinkItem {
   name: string;
   path: string;
@@ -18,7 +17,6 @@ export default function NavbarPowa() {
   const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
 
-  // Optimizamos el scroll con useCallback para evitar recrear la función
   const handleScroll = useCallback(() => {
     const isScrolled = window.scrollY > 20;
     if (isScrolled !== scrolled) {
@@ -49,13 +47,15 @@ export default function NavbarPowa() {
       expand="lg"
       fixed="top"
       variant="dark"
+      suppressHydrationWarning // <--- Agrega esto acá
       className={`${styles.navbarBase} ${scrolled ? styles.navbarScrolled : styles.navbarTransparent}`}
     >
       <Container>
+        {/* SOLUCIÓN HIDRATACIÓN BRAND: Usamos Navbar.Brand con 'as={Link}' nativo de React-Bootstrap */}
         <Navbar.Brand 
-          as={Link} 
+          as={Link}
           href="/" 
-          className="d-flex align-items-center"
+          className="d-flex align-items-center text-decoration-none" 
           onClick={closeMenu}
         >
           <div className={styles.logoWrapper}>
@@ -66,7 +66,7 @@ export default function NavbarPowa() {
               height={40}
               className={styles.logoImage}
               priority
-              quality={85} // Un poquito más de calidad para el logo
+              quality={85}
             />
           </div>
           <span className={styles.brandText}>
@@ -74,7 +74,6 @@ export default function NavbarPowa() {
           </span>
         </Navbar.Brand>
 
-        {/* Custom Hamburger Icon (opcional para más estilo) */}
         <Navbar.Toggle 
           aria-controls="responsive-navbar-nav" 
           className={styles.toggle}
@@ -82,6 +81,7 @@ export default function NavbarPowa() {
 
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ms-auto align-items-center">
+            {/* SOLUCIÓN HIDRATACIÓN NAV LINKS: Usamos Nav.Link con 'as={Link}' para evitar tags anidados conflictivos */}
             {navLinks.map((link) => (
               <Nav.Link
                 key={link.path}
@@ -96,6 +96,7 @@ export default function NavbarPowa() {
 
             <div className={styles.navDivider}></div>
 
+            {/* SOLUCIÓN HIDRATACIÓN LAB: Pasado a Nav.Link con comportamiento de Link de Next */}
             <Nav.Link
               as={Link}
               href="/lab"
@@ -106,15 +107,17 @@ export default function NavbarPowa() {
               <span className={styles.badgeSoon}>Beta</span>
             </Nav.Link>
 
-            <Link 
-              href="/contact" 
-              className="ms-lg-2 text-decoration-none"
+            {/* BOTÓN CONTACTO: Convertido a Nav.Link estructural para que maneje bien las clases custom sin romper atributos */}
+            <Nav.Link
+              as={Link}
+              href="/contact"
+              className="ms-lg-2 p-0 text-decoration-none"
               onClick={closeMenu}
             >
-              <button className={styles.contactBtn}>
+              <span className={styles.contactBtn} role="button">
                 Empezar Proyecto
-              </button>
-            </Link>
+              </span>
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
