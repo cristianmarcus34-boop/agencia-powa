@@ -14,6 +14,8 @@ import ChatPowa from "@/components/ChatPowa";
 import NavbarPowa from "@/components/NavbarPowa";
 import FooterPowa from "@/components/FooterPowa";
 import LoadingScreen from "@/components/LoadingScreen";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -123,6 +125,8 @@ export default function RootLayout({
           hideProgressBar={false}
           closeOnClick
         />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
