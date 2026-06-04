@@ -146,7 +146,7 @@ export default function HomePage() {
                             </h1>
                             <p className={styles.heroSubtitleModern}>
                                 No solo creamos webs; desarrollamos la infraestructura digital que tu empresa necesita para escalar.
-                                Ingeniería Senior aplicada a negocios de <strong>Quilmes, Solano y Florida.</strong>
+                                Ingeniería Senior aplicada a negocios de <strong>Todo el Mundo.</strong>
                             </p>
                             <div className="d-flex flex-wrap gap-3 mt-4">
                                 <Link href="/contact" className="btn-powa-primary text-decoration-none">
