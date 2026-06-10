@@ -3,16 +3,18 @@
 import React, { useState, useMemo } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import {
-  FaCode, 
+  FaCode,
   FaRocket,
-  FaReact, 
-  FaPython, 
-  FaMobileAlt, 
+  FaReact,
+  FaPython,
+  FaMobileAlt,
   FaServer,
-  FaImages, 
+  FaImages,
   FaChevronRight
 } from 'react-icons/fa';
 import Link from 'next/link';
+import GimnasioDemo from '@/components/demos/GimnasioDemo';
+import ReservaDemo from '@/components/demos/ReservaDemo';
 import ProjectModal from '@/components/ProjectModal';
 import styles from './portfolio.module.css';
 
@@ -25,6 +27,7 @@ interface Project {
   tech: string[];
   galleryImages: string[] | null;
   featured?: boolean;
+  demoComponent?: React.ReactNode;
 }
 
 const PROJECTS_DATA: Project[] = [
@@ -69,6 +72,27 @@ const PROJECTS_DATA: Project[] = [
     tag: "ADMIN DASHBOARD",
     tech: ["Material UI", "Realtime DB", "NoSQL"],
     galleryImages: null
+  },
+  {
+    title: "Gimnasio & Nutrición",
+    icon: <FaMobileAlt />,
+    description: "Ecosistema para gestión de centros fitness con integración nutricional.",
+    link: "#",
+    tag: "FITNESS APP",
+    tech: ["Next.js", "Supabase", "Tailwind"],
+    galleryImages: null,
+    demoComponent: <GimnasioDemo />
+  },
+  // Dentro de tu array PROJECTS_DATA en page.tsx
+  {
+    title: "Powa Schedule",
+    icon: <FaServer />, // Puedes elegir otro icono si quieres
+    description: "Sistema de gestión de turnos y consultorías con disponibilidad en tiempo real.",
+    link: "#",
+    tag: "SAAS TOOL",
+    tech: ["Next.js", "Supabase", "React"],
+    galleryImages: null,
+    demoComponent: <ReservaDemo /> // <--- AQUÍ LE DICES QUÉ COMPONENTE USAR
   }
 ];
 
@@ -91,7 +115,7 @@ export default function PortfolioPage() {
   return (
     <div className={styles.portfolioWrapper}>
       <div className={styles.ambientGlow} />
-      
+
       <Container className={styles.heroSection}>
         <header className="text-center">
           <div className={styles.badgeWrapper}>
@@ -107,7 +131,6 @@ export default function PortfolioPage() {
       </Container>
 
       <Container className="pb-5">
-        {/* Stats Bento Grid */}
         <Row className="mb-5 g-3">
           {stats.map((stat, i) => (
             <Col xs={6} md={3} key={i}>
@@ -133,13 +156,13 @@ export default function PortfolioPage() {
                 <div className={styles.projectTop}>
                   <div className={styles.projectTag}>{project.tag}</div>
                   <div className={styles.projectIcon}>{project.icon}</div>
-                  
+
                   <div className={styles.overlayActions}>
-                    <Button 
+                    <Button
                       className={styles.glassButton}
-                      onClick={() => project.galleryImages ? handleShowModal(project) : window.open(project.link, '_blank')}
+                      onClick={() => (project.galleryImages || project.demoComponent) ? handleShowModal(project) : window.open(project.link, '_blank')}
                     >
-                      {project.galleryImages ? "Ver Arquitectura" : "Ver Demo"}
+                      {project.demoComponent ? "Ver Demo" : (project.galleryImages ? "Ver Arquitectura" : "Explorar")}
                     </Button>
                   </div>
                 </div>
@@ -150,11 +173,11 @@ export default function PortfolioPage() {
                   </div>
                   <h3 className={styles.cardTitle}>{project.title}</h3>
                   <p className={styles.cardDescription}>{project.description}</p>
-                  
+
                   <div className={styles.cardFooter}>
-                    <Button 
-                      variant="link" 
-                      href={project.link} 
+                    <Button
+                      variant="link"
+                      href={project.link}
                       target="_blank"
                       className={styles.linkAction}
                     >
@@ -172,7 +195,6 @@ export default function PortfolioPage() {
           ))}
         </Row>
 
-        {/* CTA Section */}
         <section className={styles.ctaWrapper}>
           <div className={styles.ctaInner}>
             <h3 className={styles.ctaTitle}>¿Necesitas escalar tu infraestructura digital?</h3>
