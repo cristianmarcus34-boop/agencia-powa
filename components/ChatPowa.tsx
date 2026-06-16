@@ -250,9 +250,9 @@ export default function ChatPowa() {
               aria-label="Mensaje para el chat"
               disabled={!profile || loading}
             />
-            <button 
-              onClick={sendMessage} 
-              disabled={loading || !input.trim() || !profile} 
+            <button
+              onClick={sendMessage}
+              disabled={loading || !input.trim() || !profile}
               aria-label="Enviar mensaje"
               className={styles.sendButton}
             >

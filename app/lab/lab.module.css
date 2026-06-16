@@ -1,57 +1,265 @@
 /* app/lab/lab.module.css */
 
+/* ===== VARIABLES ===== */
+:root {
+    --dark-powa: #0b0f19;
+    --cyan-powa: #00d4ff;
+    --emerald-powa: #10b981;
+    --gold-powa: #f59e0b;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+}
+
+/* ===== WRAPPER ===== */
 .labPageWrapper {
-    background-color: #0b0f19;
+    background-color: var(--dark-powa);
     min-height: 100vh;
-    padding-top: 150px; 
+    padding-top: 150px;
     padding-bottom: 50px;
-    color: white;
-    background-image: 
+    color: #ffffff;
+    position: relative;
+    overflow-x: hidden;
+    background-image:
         radial-gradient(circle at 10% 20%, rgba(0, 212, 255, 0.05) 0%, transparent 40%),
         radial-gradient(circle at 90% 80%, rgba(0, 114, 255, 0.05) 0%, transparent 40%);
 }
 
-/* --- Hero Section --- */
+/* ===== GLOW AMBIENTAL ===== */
+.ambientGlow {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+    background: radial-gradient(circle at 50% 0%, rgba(0, 212, 255, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.ambientGlowSecondary {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle at 100% 100%, rgba(0, 114, 255, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ===== HERO SECTION ===== */
+.heroBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.12);
+    border-radius: 50px;
+    color: var(--cyan-powa);
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+}
+
+.heroBadgeIcon {
+    font-size: 0.8rem;
+}
+
+.heroIconWrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+
 .labHeroIcon {
     font-size: 4rem;
-    color: #00d4ff;
-    margin-bottom: 20px;
-    filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.5));
+    color: var(--cyan-powa);
+    filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.3));
+    position: relative;
+    z-index: 2;
+    animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-10px) scale(1.05);
+    }
+}
+
+.heroPulseRing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 212, 255, 0.1);
+    animation: pulseRing 2s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes pulseRing {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
 }
 
 .heroTitleMain {
-    font-weight: 800;
-    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: 900;
+    font-size: clamp(2.5rem, 6vw, 3.8rem);
     margin-bottom: 1rem;
+    letter-spacing: -1.5px;
+    color: #ffffff;
 }
 
-/* Subtítulo del Hero */
+.textGradient {
+    background: linear-gradient(135deg, #ffffff 30%, var(--cyan-powa) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .heroSubtitleModern {
-    color: var(--text-muted) !important; /* Usamos tu variable del globals */
+    color: var(--slate-400);
     max-width: 700px;
-    line-height: 1.6;
+    margin: 0 auto;
+    line-height: 1.7;
     font-size: 1.1rem;
 }
 
-/* --- Herramientas (Acordeón) --- */
+.heroSubtitleModern strong {
+    color: #ffffff;
+}
+
+/* ===== LAB STATS ===== */
+.labStats {
+    margin-top: 2rem;
+}
+
+.labStatCard {
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    padding: 20px 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.labStatCard:hover {
+    border-color: rgba(0, 212, 255, 0.2);
+    transform: translateY(-4px);
+}
+
+.labStatIcon {
+    font-size: 1.5rem;
+    color: var(--cyan-powa);
+    margin-bottom: 6px;
+}
+
+.labStatValue {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #ffffff;
+}
+
+.labStatLabel {
+    font-size: 0.75rem;
+    color: var(--slate-400);
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+/* ===== SECTION DIVIDER ===== */
+.sectionDivider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 3rem 0 2rem;
+}
+
+.dividerLine {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.06), transparent);
+    max-width: 100px;
+}
+
+.dividerText {
+    color: var(--slate-500);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* ===== TOOL STATUS ===== */
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.toolStatus {
+    font-size: 0.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 50px;
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--emerald-powa);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.labAccordionItem.active .toolStatus {
+    background: rgba(0, 212, 255, 0.15);
+    color: var(--cyan-powa);
+    border-color: rgba(0, 212, 255, 0.2);
+}
+
+/* ===== ACCORDION ===== */
 .labAccordionItem {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.04);
     border-radius: 20px;
     margin-bottom: 1.2rem;
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     overflow: hidden;
 }
 
-.labAccordionItem:hover:not(.locked) {
-    border-color: rgba(0, 212, 255, 0.3);
+.labAccordionItem:hover {
+    border-color: rgba(0, 212, 255, 0.15);
     transform: translateY(-2px);
 }
 
 .labAccordionItem.active {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(0, 212, 255, 0.5);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(0, 212, 255, 0.3);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
@@ -61,55 +269,1004 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: all 0.3s ease;
 }
 
-/* Esta es la clave para que se vea bien */
+.labAccordionHeader:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.labAccordionBody {
+    padding: 0 1.5rem 1.5rem;
+    animation: fadeInContent 0.3s ease;
+}
+
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .labSubtitleCustom {
-    color: var(--text-muted) !important; /* Forzamos el color Slate 400 */
-    font-size: 0.9rem;
+    color: var(--slate-400) !important;
+    font-size: 0.85rem;
     font-weight: 400;
     display: block;
     margin-top: 2px;
-    opacity: 1 !important; /* Evitamos cualquier transparencia heredada */
 }
 
+/* ===== ICON CIRCLE ===== */
 .iconCircle {
     width: 50px;
     height: 50px;
-    background: rgba(0, 212, 255, 0.1);
-    border-radius: 12px;
+    background: rgba(0, 212, 255, 0.06);
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #00d4ff;
+    color: var(--cyan-powa);
     font-size: 1.2rem;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 212, 255, 0.05);
 }
 
 .labAccordionItem.active .iconCircle {
-    background: #00d4ff;
-    color: #0b0f19;
-    box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+    background: var(--cyan-powa);
+    color: var(--dark-powa);
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
+    border-color: var(--cyan-powa);
+    transform: scale(1.05);
 }
 
-/* --- Form & Buttons --- */
-.formControlPowa {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
-    padding: 12px 20px;
-}
-
-.btnPowaPrimary {
-    background: linear-gradient(45deg, #00d4ff, #0072ff);
-    border: none;
-    padding: 12px 25px;
+/* ===== INFO BOX ===== */
+.infoBoxLab {
+    background: rgba(0, 212, 255, 0.04);
+    border: 1px solid rgba(0, 212, 255, 0.08);
     border-radius: 12px;
-    color: white;
+    padding: 16px 20px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: var(--slate-300);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.infoBoxLab strong {
+    color: #ffffff;
+}
+
+.infoIcon {
+    color: var(--cyan-powa);
+    font-size: 1.2rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+/* ============================================
+   TOOL CONTAINER (para todos los componentes)
+   ============================================ */
+.toolContainer {
+    margin-top: 0.5rem;
+}
+
+.toolGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.toolSection {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.toolSectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.toolSectionHeader h4 {
+    color: #ffffff;
+    font-size: 1rem;
     font-weight: 700;
-    transition: 0.3s ease;
+    margin: 0;
+}
+
+.toolSectionIcon {
+    color: var(--cyan-powa);
+    font-size: 1.1rem;
+}
+
+.toolActions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+/* ===== SVG OPTIMIZER ===== */
+.uploadArea {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.uploadButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(0, 212, 255, 0.06);
+    border: 1px solid rgba(0, 212, 255, 0.1);
+    border-radius: 10px;
+    color: var(--cyan-powa);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.uploadButton:hover {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: rgba(0, 212, 255, 0.2);
+}
+
+.fileInput {
+    display: none;
+}
+
+.uploadOr {
+    color: var(--slate-500);
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.codeEditor {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    color: #e2e8f0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    padding: 12px;
+    resize: vertical;
+    min-height: 180px;
+    transition: all 0.3s ease;
+}
+
+.codeEditor:focus {
+    outline: none;
+    border-color: rgba(0, 212, 255, 0.2);
+}
+
+.codeEditor::placeholder {
+    color: var(--slate-500);
+}
+
+.sizeInfo {
+    color: var(--slate-400);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.statsRow {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.savingBadge {
+    display: inline-block;
+    padding: 2px 12px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 50px;
+    color: var(--emerald-powa);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.optimizedBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    background: rgba(16, 185, 129, 0.15);
+    border-radius: 50px;
+    color: var(--emerald-powa);
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+
+.actionRow {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.btnPowaPrimarySmall {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: linear-gradient(135deg, var(--cyan-powa), #0072ff);
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btnPowaPrimarySmall:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 212, 255, 0.2);
+}
+
+.btnPowaOutlineSmall {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: var(--slate-400);
+    font-weight: 700;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btnPowaOutlineSmall:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== WEB VITALS ANALYZER ===== */
+.urlInputWrapper {
+    margin-bottom: 1rem;
+}
+
+.inputGroup {
+    display: flex;
+    gap: 12px;
+}
+
+.inputGroup .formControlPowa {
+    flex: 1;
+}
+
+.inputGroup .btnPowaPrimary {
+    width: auto;
+    padding: 12px 24px;
+}
+
+.errorMessage {
+    color: #ef4444;
+    font-size: 0.85rem;
+    margin-top: 8px;
+}
+
+.loadingContainer {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.loadingSpinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 212, 255, 0.1);
+    border-top-color: var(--cyan-powa);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loadingContainer p {
+    color: var(--slate-400);
+}
+
+.vitalsContainer {
+    margin-top: 1rem;
+}
+
+.vitalsHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.vitalsHeader h4 {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.vitalsIcon {
+    color: var(--cyan-powa);
+    font-size: 1.3rem;
+}
+
+.vitalsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.vitalCard {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.vitalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.vitalName {
+    color: var(--slate-300);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.vitalValue {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+}
+
+.vitalNumber {
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.vitalStatus {
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.statusGood {
+    color: var(--emerald-powa);
+}
+
+.statusWarning {
+    color: var(--gold-powa);
+}
+
+.statusPoor {
+    color: #ef4444;
+}
+
+.vitalMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.vitalDesc {
+    color: var(--slate-500);
+    font-size: 0.7rem;
+}
+
+.vitalGood {
+    color: var(--slate-600);
+    font-size: 0.65rem;
+}
+
+.vitalsFooter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+    color: var(--slate-500);
+    font-size: 0.75rem;
+}
+
+.vitalsFooterIcon {
+    color: var(--cyan-powa);
+    font-size: 0.9rem;
+}
+
+/* ===== SCHEMA GENERATOR ===== */
+.schemaGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.schemaForm {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.formGroup label {
+    color: var(--slate-300);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.formGroup .formControlPowa {
+    width: 100%;
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.formHelper {
+    color: var(--slate-500);
+    font-size: 0.7rem;
+}
+
+.schemaOutput {
+    min-height: 200px;
+}
+
+.codeBlock {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 16px;
+    overflow-x: auto;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.codeBlock code {
+    color: #e2e8f0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.schemaActions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.iconButton {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    color: var(--slate-400);
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.iconButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--slate-500);
+}
+
+.emptyIcon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    color: var(--slate-600);
+}
+
+.emptyState p {
+    margin: 0;
+}
+
+/* ===== FONT OPTIMIZER ===== */
+.fontGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.fontForm {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.fontOutput {
+    min-height: 200px;
+}
+
+/* ============================================
+   FEEDBACK SECTION - CORREGIDO
+   ============================================ */
+.feedbackSection {
+    margin-top: 3rem;
+    padding: 40px 32px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.feedbackHeader {
+    margin-bottom: 1.5rem;
+}
+
+.feedbackIcon {
+    color: var(--gold-powa);
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.feedbackHeader h5 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.feedbackSubtext {
+    color: var(--slate-400);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.feedbackForm {
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.feedbackForm .row {
+    align-items: center;
+}
+
+.feedbackForm .form-control {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    color: #ffffff !important;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.feedbackForm .form-control::placeholder {
+    color: var(--slate-500);
+}
+
+.feedbackForm .form-control:focus {
+    border-color: rgba(0, 212, 255, 0.3) !important;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.05) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.feedbackSuccess {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px 24px;
+    background: rgba(16, 185, 129, 0.06);
+    border: 1px solid rgba(16, 185, 129, 0.15);
+    border-radius: 12px;
+    color: var(--emerald-powa);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.successIcon {
+    font-size: 1.3rem;
+}
+
+.successText {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* ============================================
+   TECH STATS - CORREGIDO
+   ============================================ */
+.techStatsSection {
+    margin-top: 2.5rem;
+    padding: 24px 28px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+}
+
+.techStatsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.techStatItem {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.techStatItem:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.techStatIcon {
+    font-size: 1.4rem;
+    color: var(--cyan-powa);
+    flex-shrink: 0;
+}
+
+.techStatItem>div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.techStatLabel {
+    font-size: 0.65rem;
+    color: var(--slate-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.techStatValue {
+    font-size: 0.9rem;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* ============================================
+   FOOTER - CORREGIDO
+   ============================================ */
+.labFooter {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    text-align: center;
+    color: var(--slate-500);
+    font-size: 0.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px 12px;
+}
+
+.footerDot {
+    color: var(--slate-600);
+    font-size: 0.5rem;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 992px) {
+    .techStatsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .toolGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .schemaGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .fontGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .vitalsGrid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 768px) {
-    .labPageWrapper { padding-top: 120px; }
+    .labPageWrapper {
+        padding-top: 120px;
+    }
+
+    .heroTitleMain {
+        font-size: 2.2rem;
+    }
+
+    .heroSubtitleModern {
+        font-size: 1rem;
+    }
+
+    .labAccordionHeader {
+        padding: 1.2rem;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .labAccordionBody {
+        padding: 0 1.2rem 1.2rem;
+    }
+
+    .headerRight {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .toolStatus {
+        font-size: 0.5rem;
+        padding: 2px 10px;
+    }
+
+    .labStats .col-6 {
+        padding: 0 6px;
+    }
+
+    .labStatCard {
+        padding: 14px 10px;
+    }
+
+    .labStatValue {
+        font-size: 1.1rem;
+    }
+
+    /* Feedback - Responsive */
+    .feedbackSection {
+        padding: 28px 20px;
+    }
+
+    .feedbackForm .row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .feedbackForm .col-md-3,
+    .feedbackForm .col-md-4,
+    .feedbackForm .col-md-5 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .feedbackForm .btnPowaPrimary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .feedbackSuccess {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px;
+    }
+
+    /* Tech Stats - Responsive */
+    .techStatsGrid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .techStatItem {
+        padding: 12px 14px;
+    }
+
+    .techStatValue {
+        font-size: 0.8rem;
+    }
+
+    .techStatLabel {
+        font-size: 0.6rem;
+    }
+
+    /* Footer */
+    .footerDot {
+        display: none;
+    }
+
+    .labFooter {
+        flex-direction: column;
+        gap: 4px;
+        font-size: 0.7rem;
+    }
+
+    /* Otros */
+    .comingSoonCard {
+        padding: 18px 16px;
+    }
+
+    .inputGroup {
+        flex-direction: column;
+    }
+
+    .inputGroup .btnPowaPrimary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .formRow {
+        grid-template-columns: 1fr;
+    }
+
+    .toolSection {
+        padding: 16px;
+    }
+
+    .codeEditor {
+        min-height: 120px;
+        font-size: 0.75rem;
+    }
+
+    .vitalValue {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .schemaActions {
+        flex-direction: column;
+    }
+
+    .schemaActions button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .actionRow {
+        flex-direction: column;
+    }
+
+    .actionRow button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .labPageWrapper {
+        padding-top: 100px;
+    }
+
+    .heroTitleMain {
+        font-size: 1.8rem;
+    }
+
+    .labHeroIcon {
+        font-size: 3rem;
+    }
+
+    .heroPulseRing {
+        width: 90px;
+        height: 90px;
+    }
+
+    .heroBadge {
+        font-size: 0.55rem;
+        padding: 4px 12px;
+    }
+
+    .labAccordionHeader {
+        padding: 1rem;
+    }
+
+    .labAccordionBody {
+        padding: 0 1rem 1rem;
+    }
+
+    .iconCircle {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .infoBoxLab {
+        font-size: 0.85rem;
+        padding: 14px 16px;
+        flex-direction: column;
+    }
+
+    .labStats .col-6 {
+        padding: 0 4px;
+    }
+
+    .labStatCard {
+        padding: 12px 8px;
+    }
+
+    .labStatValue {
+        font-size: 1rem;
+    }
+
+    .labStatLabel {
+        font-size: 0.65rem;
+    }
+
+    .feedbackSection {
+        padding: 20px 14px;
+    }
+
+    .feedbackHeader h5 {
+        font-size: 1rem;
+    }
+
+    .feedbackSubtext {
+        font-size: 0.85rem;
+    }
+
+    .techStatsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .toolSection {
+        padding: 12px;
+    }
+
+    .toolSectionHeader h4 {
+        font-size: 0.9rem;
+    }
+
+    .vitalCard {
+        padding: 12px;
+    }
+
+    .vitalNumber {
+        font-size: 1rem;
+    }
+
+    .codeBlock {
+        padding: 12px;
+        max-height: 250px;
+    }
+
+    .codeBlock code {
+        font-size: 0.65rem;
+    }
 }

@@ -33,19 +33,22 @@ body {
 }
 
 /* Scrollbar Global Estilizada (Webkit) */
-::-webkit-scrollbar { 
-  width: 8px; 
+::-webkit-scrollbar {
+  width: 8px;
 }
-::-webkit-scrollbar-track { 
-  background: var(--dark-powa); 
+
+::-webkit-scrollbar-track {
+  background: var(--dark-powa);
 }
-::-webkit-scrollbar-thumb { 
-  background: #1e293b; 
-  border-radius: 10px; 
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 10px;
   border: 2px solid var(--dark-powa);
 }
-::-webkit-scrollbar-thumb:hover { 
-  background: var(--primary-glow); 
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-glow);
 }
 
 /* --- UTILIDADES COMPARTIDAS --- */
@@ -56,7 +59,7 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   /* Asegura el renderizado correcto en motores Webkit */
-  display: inline-block; 
+  display: inline-block;
 }
 
 .btn-powa-primary {
@@ -84,38 +87,47 @@ body {
   filter: brightness(1.1);
 }
 
-.border-dashed { 
-  border: 2px dashed rgba(255, 255, 255, 0.1) !important; 
+.border-dashed {
+  border: 2px dashed rgba(255, 255, 255, 0.1) !important;
 }
 
-.cursor-pointer { 
-  cursor: pointer; 
+.cursor-pointer {
+  cursor: pointer;
 }
 
 /* --- ANIMACIONES --- */
 
-.animate-pulse { 
-  animation: pulse 2s infinite; 
+.animate-pulse {
+  animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0% { opacity: 0.3; }
-  50% { opacity: 0.7; }
-  100% { opacity: 0.3; }
+  0% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 0.3;
+  }
 }
 
-.animate-fade-in { 
-  animation: fadeIn 0.5s ease-out forwards; 
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
 @keyframes fadeIn {
-  from { 
-    opacity: 0; 
-    transform: translateY(15px); 
+  from {
+    opacity: 0;
+    transform: translateY(15px);
   }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -135,4 +147,29 @@ img {
 /* Prevención de conflictos con el modal de Bootstrap y el scroll */
 body.modal-open {
   padding-right: 0 !important;
+
+
+  /* ============================================
+   CHAT POWA - AJUSTE GLOBAL DE POSICIONAMIENTO
+   ============================================ */
+
+  /* Asegura que el chat flotante no se superponga con el footer */
+  .chat-container {
+    bottom: 120px !important;
+    /* Aumentado para dar espacio al footer */
+  }
+
+  /* En móviles, ajustamos dinámicamente */
+  @media (max-width: 768px) {
+    .chat-container {
+      bottom: 100px !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .chat-container {
+      bottom: 85px !important;
+    }
+  }
+
 }

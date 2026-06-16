@@ -1,10 +1,13 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Button, Spinner } from 'react-bootstrap';
 import {
     FaEnvelope, FaMapMarkerAlt, FaPaperPlane, FaWhatsapp,
-    FaBolt, FaUserCheck, FaShieldAlt, FaClock
+    FaBolt, FaUserCheck, FaShieldAlt, FaClock,
+    FaStar, FaCheckCircle, FaRocket, FaAward,
+    FaQuoteRight, FaUsers, FaCode, FaChartLine,
+    FaCloudUploadAlt // ✅ IMPORTADO CORRECTAMENTE
 } from 'react-icons/fa';
 import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -12,37 +15,40 @@ import styles from './contact.module.css';
 
 // Definición estricta del contrato de datos del Formulario
 interface ContactFormData {
-    services: string[]; // Guardará los IDs de los servicios elegidos
+    services: string[];
     name: string;
     email: string;
     message: string;
-    budget?: string;    // Opcional por la naturaleza condicional
+    budget?: string;
 }
 
 interface FormServiceItem {
     id: string;
     label: string;
     requiresBudget: boolean;
+    icon?: React.ReactNode;
 }
 
-// Estructuración limpia de servicios para evitar romper lógica por cambios en el texto
+// Estructuración limpia de servicios
 const AVAILABLE_SERVICES: FormServiceItem[] = [
-    { id: 'web', label: 'Sistemas Web Escalables', requiresBudget: true },
-    { id: 'mobile', label: 'Desarrollo Mobile Nativo', requiresBudget: true },
-    { id: 'cloud', label: 'Gestión de Datos & Cloud', requiresBudget: true },
-    { id: 'automation', label: 'Automatización de Procesos', requiresBudget: false },
-    { id: 'ia', label: 'Integración de IA', requiresBudget: true },
-    { id: 'support', label: 'Soporte & Evolución', requiresBudget: false }
+    { id: 'web', label: 'Sistemas Web Escalables', requiresBudget: true, icon: <FaCode /> },
+    { id: 'mobile', label: 'Desarrollo Mobile Nativo', requiresBudget: true, icon: <FaRocket /> },
+    { id: 'cloud', label: 'Gestión de Datos & Cloud', requiresBudget: true, icon: <FaCloudUploadAlt /> },
+    { id: 'automation', label: 'Automatización de Procesos', requiresBudget: false, icon: <FaBolt /> },
+    { id: 'ia', label: 'Integración de IA', requiresBudget: true, icon: <FaChartLine /> },
+    { id: 'support', label: 'Soporte & Evolución', requiresBudget: false, icon: <FaShieldAlt /> }
 ];
 
 export default function ContactPage() {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const {
         register,
         handleSubmit,
         reset,
         control,
         unregister,
-        formState: { errors, isSubmitting }
+        formState: { errors }
     } = useForm<ContactFormData>({
         defaultValues: {
             services: [],
@@ -56,19 +62,16 @@ export default function ContactPage() {
     const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_URL;
     const WHATSAPP_LINK = `https://wa.me/5491138305837?text=Hola%20Powa%20Digital!%20Me%20gustaría%20consultar%20por%20un%20proyecto...`;
 
-    // Escuchamos de forma reactiva los servicios seleccionados (obtenemos array de IDs)
     const selectedServiceIds = useWatch({
         control,
         name: 'services',
         defaultValue: [],
     });
 
-    // Evaluamos si alguno de los servicios tildados requiere presupuesto en base a su ID estable
     const shouldShowBudget = AVAILABLE_SERVICES
         .filter(service => selectedServiceIds.includes(service.id))
         .some(service => service.requiresBudget);
 
-    // Limpieza profunda del árbol si deja de requerirse el presupuesto
     useEffect(() => {
         if (!shouldShowBudget) {
             unregister('budget');
@@ -81,8 +84,9 @@ export default function ContactPage() {
             return;
         }
 
+        setIsSubmitting(true);
+
         try {
-            // Mapeamos los IDs estables a los labels legibles antes de enviar a Formspree
             const readableServices = data.services.map(
                 id => AVAILABLE_SERVICES.find(s => s.id === id)?.label || id
             );
@@ -109,41 +113,61 @@ export default function ContactPage() {
             }
         } catch {
             toast.error('❌ Error de conexión con el servidor.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
+    // Testimonios
+    const testimonials = [
+        { quote: "Powa transformó nuestra idea en un producto real en tiempo récord. Su equipo es excepcional.", author: "Carlos R.", role: "CEO, FintechPro" },
+        { quote: "La atención y el expertise técnico superaron nuestras expectativas. Recomendados.", author: "Laura M.", role: "CMO, EcomStore" }
+    ];
+
     return (
         <div className={styles.contactWrapper}>
+            {/* ===== GLOW AMBIENTAL ===== */}
+            <div className={styles.ambientGlow} />
+            <div className={styles.ambientGlowSecondary} />
+
             <Container>
+                {/* ===== HEADER ===== */}
                 <header className="text-center mb-5">
-                    <span className="badge-powa mb-3">HABLEMOS DE TU PROYECTO</span>
-                    <h1 className={`${styles.contactTitleMain} text-gradient`}>¿Listo para potenciar tu negocio?</h1>
-                    <p className={`${styles.contactLeadText} mx-auto max-w-2xl`}>
+                    <span className={styles.badgePowa}>HABLEMOS DE TU PROYECTO</span>
+                    <h1 className={styles.contactTitleMain}>
+                        ¿Listo para <span className={styles.textGradient}>potenciar</span> tu negocio?
+                    </h1>
+                    <p className={styles.contactLeadText}>
                         No buscamos ser solo tu proveedor, sino tu <strong>partner tecnológico</strong>.
                     </p>
                 </header>
 
                 <Row className="g-5">
-                    {/* COLUMNA FORMULARIO */}
+                    {/* ===== COLUMNA FORMULARIO ===== */}
                     <Col lg={7}>
                         <div className={styles.contactFormGlass}>
-                            <h3 className="mb-4 text-white fw-bold">Inicia tu transformación</h3>
+                            <div className={styles.formHeader}>
+                                <FaRocket className={styles.formHeaderIcon} />
+                                <h3 className={styles.formTitle}>Inicia tu transformación</h3>
+                                <p className={styles.formSubtitle}>Completá el formulario y empecemos a construir juntos.</p>
+                            </div>
+
                             <Form onSubmit={handleSubmit(onSubmit)}>
                                 <Row>
                                     <Col md={6}>
                                         <Form.Group className="mb-4">
-                                            <Form.Label className="small-label">NOMBRE</Form.Label>
+                                            <Form.Label className={styles.formLabel}>NOMBRE</Form.Label>
                                             <Form.Control
                                                 className={`${styles.powaInput} ${errors.name ? styles.inputError : ''}`}
                                                 {...register('name', { required: 'El nombre es obligatorio' })}
-                                                placeholder="Tu nombre"
+                                                placeholder="Tu nombre completo"
                                             />
                                             {errors.name && <span className={styles.errorMessage}>{errors.name.message}</span>}
                                         </Form.Group>
                                     </Col>
                                     <Col md={6}>
                                         <Form.Group className="mb-4">
-                                            <Form.Label className="small-label">EMAIL</Form.Label>
+                                            <Form.Label className={styles.formLabel}>EMAIL</Form.Label>
                                             <Form.Control
                                                 type="email"
                                                 className={`${styles.powaInput} ${errors.email ? styles.inputError : ''}`}
@@ -162,7 +186,7 @@ export default function ContactPage() {
                                 </Row>
 
                                 <Form.Group className="mb-4">
-                                    <Form.Label className="small-label">¿QUÉ SOLUCIONES NECESITÁS?</Form.Label>
+                                    <Form.Label className={styles.formLabel}>¿QUÉ SOLUCIONES NECESITÁS?</Form.Label>
                                     <div className={styles.servicesGrid}>
                                         {AVAILABLE_SERVICES.map((service, index) => (
                                             <div key={service.id} className={styles.powaCheckbox}>
@@ -171,8 +195,12 @@ export default function ContactPage() {
                                                     id={`service-cb-${service.id}-${index}`}
                                                     value={service.id}
                                                     {...register('services')}
+                                                    className={styles.checkboxInput}
                                                 />
-                                                <label htmlFor={`service-cb-${service.id}-${index}`}>{service.label}</label>
+                                                <label htmlFor={`service-cb-${service.id}-${index}`}>
+                                                    <span className={styles.serviceIcon}>{service.icon}</span>
+                                                    {service.label}
+                                                </label>
                                             </div>
                                         ))}
                                     </div>
@@ -182,7 +210,7 @@ export default function ContactPage() {
                                     <Row className={`${styles.animateFadeIn} mb-4`}>
                                         <Col md={12}>
                                             <Form.Group>
-                                                <Form.Label className="small-label">PRESUPUESTO ESTIMADO (USD)</Form.Label>
+                                                <Form.Label className={styles.formLabel}>PRESUPUESTO ESTIMADO (USD)</Form.Label>
                                                 <Form.Select
                                                     className={styles.powaInput}
                                                     {...register('budget', { required: 'Por favor selecciona un rango' })}
@@ -199,36 +227,41 @@ export default function ContactPage() {
                                 )}
 
                                 <Form.Group className="mb-4">
-                                    <Form.Label className="small-label">MENSAJE / DETALLES DEL PROYECTO</Form.Label>
+                                    <Form.Label className={styles.formLabel}>MENSAJE / DETALLES DEL PROYECTO</Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={4}
-                                        className={`${styles.powaInput} ${errors.message ? styles.inputError : ''}`}
+                                        className={`${styles.powaInput} ${styles.textareaPowa} ${errors.message ? styles.inputError : ''}`}
                                         {...register('message', { required: 'Cuéntanos un poco sobre tu idea' })}
                                         placeholder="Describí brevemente los alcances, objetivos o ideas de tu software..."
                                     />
                                     {errors.message && <span className={styles.errorMessage}>{errors.message.message}</span>}
                                 </Form.Group>
 
-                                <Button type="submit" className="btn-powa-primary w-100 py-3" disabled={isSubmitting}>
+                                <Button type="submit" className={styles.btnPowaPrimary} disabled={isSubmitting}>
                                     {isSubmitting ? (
                                         <Spinner animation="border" size="sm" />
                                     ) : (
                                         <><FaPaperPlane className="me-2" /> ACTIVAR PROYECTO</>
                                     )}
                                 </Button>
+
+                                <p className={styles.formFooterText}>
+                                    🔒 Tus datos están seguros. No compartimos tu información con terceros.
+                                </p>
                             </Form>
                         </div>
                     </Col>
 
-                    {/* COLUMNA INFORMACIÓN & CONFIANZA */}
+                    {/* ===== COLUMNA INFORMACIÓN ===== */}
                     <Col lg={5}>
                         <div className="d-flex flex-column gap-4">
+                            {/* ===== CONTACTO DIRECTO ===== */}
                             <div className={styles.infoCardModern}>
                                 <div className={styles.iconCircle}><FaEnvelope /></div>
                                 <div>
                                     <h5 className="text-white mb-0">Escríbenos</h5>
-                                    <small className="text-slate-400">cristianmarcus34@gmail.com</small>
+                                    <small className={styles.infoText}>cristianmarcus34@gmail.com</small>
                                 </div>
                             </div>
 
@@ -246,42 +279,67 @@ export default function ContactPage() {
                                 <div className={styles.iconCircle}><FaMapMarkerAlt /></div>
                                 <div>
                                     <h5 className="text-white mb-0">Ubicación</h5>
-                                    <small className="text-slate-400">Buenos Aires, Argentina.</small>
+                                    <small className={styles.infoText}>Buenos Aires, Argentina</small>
                                 </div>
                             </div>
 
+                            {/* ===== TESTIMONIOS ===== */}
+                            <div className={styles.testimonialsBlock}>
+                                <h4 className={styles.testimonialsTitle}>
+                                    <FaStar className={styles.testimonialsIcon} />
+                                    Lo que dicen nuestros clientes
+                                </h4>
+                                {testimonials.map((t, i) => (
+                                    <div key={i} className={styles.testimonialItem}>
+                                        <FaQuoteRight className={styles.testimonialQuote} />
+                                        <p className={styles.testimonialText}>"{t.quote}"</p>
+                                        <div className={styles.testimonialAuthor}>
+                                            <strong>{t.author}</strong>
+                                            <span>{t.role}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* ===== BLOQUE DE CONFIANZA ===== */}
                             <div className={styles.trustBlock}>
-                                <h4 className="text-white mb-4 fw-bold style-heading">¿Qué pasa después?</h4>
-                                <ul className="list-unstyled d-flex flex-column gap-3">
-                                    <li className="d-flex align-items-start gap-3">
+                                <h4 className={styles.trustTitle}>¿Qué pasa después?</h4>
+                                <ul className={styles.trustList}>
+                                    <li>
                                         <div className={styles.trustIcon}><FaClock /></div>
                                         <div>
-                                            <strong className="text-white d-block">Respuesta rápida</strong>
-                                            <span className="text-slate-400 evaluation-text">Te respondemos en menos de 24 horas hábiles para coordinar una llamada.</span>
+                                            <strong>Respuesta rápida</strong>
+                                            <span>Te respondemos en menos de 24 horas hábiles.</span>
                                         </div>
                                     </li>
-                                    <li className="d-flex align-items-start gap-3">
+                                    <li>
                                         <div className={styles.trustIcon}><FaUserCheck /></div>
                                         <div>
-                                            <strong className="text-white d-block">Asesoramiento Técnico Senior</strong>
-                                            <span className="text-slate-400 evaluation-text">Hablás directo con desarrolladores, sin intermediarios comerciales.</span>
+                                            <strong>Asesoramiento Técnico Senior</strong>
+                                            <span>Hablás directo con desarrolladores, sin intermediarios.</span>
                                         </div>
                                     </li>
-                                    <li className="d-flex align-items-start gap-3">
+                                    <li>
                                         <div className={styles.trustIcon}><FaShieldAlt /></div>
                                         <div>
-                                            <strong className="text-white d-block">Acuerdo de Confidencialidad (NDA)</strong>
-                                            <span className="text-slate-400 evaluation-text">Tus ideas de negocio y propiedad intelectual están 100% protegidas con nosotros.</span>
+                                            <strong>Acuerdo de Confidencialidad (NDA)</strong>
+                                            <span>Tus ideas están 100% protegidas.</span>
                                         </div>
                                     </li>
-                                    <li className="d-flex align-items-start gap-3">
+                                    <li>
                                         <div className={styles.trustIcon}><FaBolt /></div>
                                         <div>
-                                            <strong className="text-white d-block">Desarrollo Ágil</strong>
-                                            <span className="text-slate-400 evaluation-text">Planificamos entregas iterativas para que veas tu software funcionando desde el primer mes.</span>
+                                            <strong>Desarrollo Ágil</strong>
+                                            <span>Entregas iterativas desde el primer mes.</span>
                                         </div>
                                     </li>
                                 </ul>
+                            </div>
+
+                            {/* ===== BADGE DE CONFIANZA ===== */}
+                            <div className={styles.trustBadge}>
+                                <FaAward className={styles.trustBadgeIcon} />
+                                <span>+50 proyectos entregados con éxito</span>
                             </div>
                         </div>
                     </Col>

@@ -1,25 +1,72 @@
 /* app/contact/contact.module.css */
 
+/* ===== VARIABLES ===== */
+:root {
+    --dark-powa: #0a0f1a;
+    --cyan-powa: #22d3ee;
+    --emerald-powa: #10b981;
+    --gold-powa: #f59e0b;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+}
+
+/* ===== WRAPPER ===== */
 .contactWrapper {
     background-color: var(--dark-powa);
     min-height: 100vh;
     padding-top: clamp(100px, 15vh, 140px);
-    /* Adaptativo */
     padding-bottom: 80px;
     position: relative;
     overflow: hidden;
 }
 
-/* --- DECORACIONES DE FONDO (Toque Senior) --- */
-.contactWrapper::before {
-    content: '';
+/* ===== GLOW AMBIENTAL ===== */
+.ambientGlow {
     position: absolute;
-    top: -10%;
-    right: -10%;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+    background: radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.ambientGlowSecondary {
+    position: absolute;
+    bottom: 0;
+    right: 0;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(34, 211, 238, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle at 100% 100%, rgba(14, 165, 233, 0.04) 0%, transparent 70%);
     pointer-events: none;
+    z-index: 1;
+}
+
+/* ===== HEADER ===== */
+.badgePowa {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(34, 211, 238, 0.08);
+    color: var(--cyan-powa);
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: 1px solid rgba(34, 211, 238, 0.12);
+    margin-bottom: 1.5rem;
+}
+
+.textGradient {
+    background: linear-gradient(135deg, #ffffff 30%, var(--cyan-powa) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .contactTitleMain {
@@ -28,30 +75,77 @@
     margin-bottom: 1.2rem;
     letter-spacing: -1px;
     line-height: 1.1;
+    color: #ffffff;
 }
 
 .contactLeadText {
-    color: #94a3b8;
+    color: var(--slate-400);
     font-size: 1.15rem;
     line-height: 1.7;
-    margin-bottom: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-/* --- GLASSMORPHISM EVOLUCIONADO --- */
+.contactLeadText strong {
+    color: #ffffff;
+}
+
+/* ===== FORMULARIO ===== */
 .contactFormGlass {
     background: rgba(15, 23, 42, 0.6);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     padding: clamp(1.5rem, 5vw, 3.5rem);
     border-radius: 28px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
-/* --- INPUTS REFINADOS --- */
+.formHeader {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.formHeaderIcon {
+    font-size: 2rem;
+    color: var(--cyan-powa);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.formTitle {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 0.3rem;
+}
+
+.formSubtitle {
+    color: var(--slate-400);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.formLabel {
+    color: var(--slate-300);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.formFooterText {
+    color: var(--slate-500);
+    font-size: 0.75rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* ===== INPUTS ===== */
 .powaInput {
     background: rgba(10, 15, 26, 0.5) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
     color: #f8fafc !important;
     padding: 14px 18px !important;
     border-radius: 14px !important;
@@ -61,105 +155,177 @@
 
 .powaInput:focus {
     background: rgba(10, 15, 26, 0.8) !important;
-    border-color: #22d3ee !important;
-    box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.15) !important;
+    border-color: var(--cyan-powa) !important;
+    box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.1) !important;
     transform: translateY(-1px);
 }
 
 .powaInput::placeholder {
-    color: #475569;
+    color: var(--slate-500);
 }
 
-/* --- GRID DE SERVICIOS (UX MEJORADA) --- */
+.powaInput option {
+    background: var(--dark-powa);
+    color: #ffffff;
+}
+
+.textareaPowa {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* ===== ERRORES ===== */
+.errorMessage {
+    display: block;
+    color: #f87171;
+    font-size: 0.75rem;
+    margin-top: 6px;
+    font-weight: 500;
+}
+
+.inputError {
+    border-color: rgba(248, 113, 113, 0.4) !important;
+}
+
+.inputError:focus {
+    border-color: #f87171 !important;
+    box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.1) !important;
+}
+
+/* ===== BOTÓN PRINCIPAL ===== */
+.btnPowaPrimary {
+    background: linear-gradient(135deg, var(--cyan-powa), #0891b2) !important;
+    border: none !important;
+    padding: 16px 32px !important;
+    border-radius: 14px !important;
+    color: #0a0f1a !important;
+    font-weight: 800 !important;
+    font-size: 1rem !important;
+    transition: all 0.3s ease !important;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btnPowaPrimary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(34, 211, 238, 0.25);
+}
+
+.btnPowaPrimary:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ===== SERVICES GRID ===== */
 .servicesGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 14px;
-    margin-top: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    margin-top: 0.5rem;
 }
 
-/* Utilidad estricta para ocultar el checkbox nativo manteniendo accesibilidad por teclado */
-.powaCheckbox :global(.visually-hidden) {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    padding: 0 !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important;
-    border: 0 !important;
+.powaCheckbox {
+    position: relative;
+}
+
+.powaCheckbox input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .powaCheckbox label {
     display: flex;
     align-items: center;
+    gap: 8px;
     justify-content: center;
-    min-height: 54px;
-    padding: 12px;
+    min-height: 48px;
+    padding: 10px 12px;
     background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.25s ease;
-    color: #64748b;
+    color: var(--slate-500);
     user-select: none;
 }
 
 .powaCheckbox label:hover {
     background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(34, 211, 238, 0.3);
-    color: #e2e8f0;
+    border-color: rgba(34, 211, 238, 0.2);
+    color: var(--slate-300);
 }
 
 .powaCheckbox input:checked+label {
-    background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(14, 165, 233, 0.1) 100%);
-    border-color: #22d3ee;
-    color: #22d3ee;
-    box-shadow: 0 4px 15px rgba(34, 211, 238, 0.1);
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(14, 165, 233, 0.08));
+    border-color: var(--cyan-powa);
+    color: var(--cyan-powa);
+    box-shadow: 0 4px 15px rgba(34, 211, 238, 0.05);
 }
 
-/* --- SIDEBAR & TRUST CARDS --- */
+.serviceIcon {
+    font-size: 0.9rem;
+    opacity: 0.5;
+}
+
+.powaCheckbox input:checked+label .serviceIcon {
+    opacity: 1;
+}
+
+/* ===== INFO CARDS ===== */
 .infoCardModern {
     display: flex;
     align-items: center;
     gap: 18px;
     background: rgba(30, 41, 59, 0.2);
-    padding: 22px;
+    padding: 20px 22px;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.04);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
 }
 
 .infoCardModern:hover {
     transform: scale(1.02) translateX(5px);
-    background: rgba(30, 41, 59, 0.4);
-    border-color: rgba(34, 211, 238, 0.4);
+    background: rgba(30, 41, 59, 0.35);
+    border-color: rgba(34, 211, 238, 0.2);
+}
+
+.infoText {
+    color: var(--slate-400);
 }
 
 .iconCircle {
     flex-shrink: 0;
     width: 48px;
     height: 48px;
-    background: rgba(34, 211, 238, 0.1);
-    color: #22d3ee;
+    background: rgba(34, 211, 238, 0.08);
+    color: var(--cyan-powa);
     border-radius: 14px;
-    /* Squircle para look moderno */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.infoCardModern:hover .iconCircle {
+    background: rgba(34, 211, 238, 0.15);
 }
 
 .whatsappBorder {
-    border-color: rgba(37, 211, 102, 0.2) !important;
+    border-color: rgba(37, 211, 102, 0.15) !important;
 }
 
 .whatsappBg {
-    background: rgba(37, 211, 102, 0.1);
+    background: rgba(37, 211, 102, 0.08);
     color: #25d366;
 }
 
@@ -168,57 +334,139 @@
     font-weight: 600;
 }
 
-/* --- BLOQUE DE CONFIANZA --- */
+/* ===== TESTIMONIOS ===== */
+.testimonialsBlock {
+    background: rgba(30, 41, 59, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 20px;
+    padding: 24px;
+}
+
+.testimonialsTitle {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+}
+
+.testimonialsIcon {
+    color: var(--gold-powa);
+}
+
+.testimonialItem {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.testimonialItem:last-child {
+    border-bottom: none;
+}
+
+.testimonialQuote {
+    color: var(--gold-powa);
+    font-size: 0.8rem;
+    opacity: 0.5;
+    margin-bottom: 4px;
+}
+
+.testimonialText {
+    color: var(--slate-300);
+    font-size: 0.85rem;
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.testimonialAuthor {
+    margin-top: 6px;
+}
+
+.testimonialAuthor strong {
+    color: #ffffff;
+    font-size: 0.8rem;
+    display: block;
+}
+
+.testimonialAuthor span {
+    color: var(--slate-500);
+    font-size: 0.7rem;
+}
+
+/* ===== TRUST BLOCK ===== */
 .trustBlock {
-    margin-top: 1rem;
-    padding: 2rem;
-    border-radius: 24px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+    background: rgba(30, 41, 59, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 20px;
+    padding: 24px;
+}
+
+.trustTitle {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.trustList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.trustList li {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.trustList li:last-child {
+    border-bottom: none;
 }
 
 .trustIcon {
-    color: #22d3ee;
-    font-size: 1.1rem;
-    margin-top: 3px;
+    flex-shrink: 0;
+    color: var(--cyan-powa);
+    font-size: 1rem;
+    margin-top: 2px;
 }
 
-/* --- VALIDACIÓN DE ERRORES --- */
-.errorMessage {
+.trustList li strong {
     display: block;
-    color: #f87171;
-    font-size: 0.75rem;
-    margin-top: 6px;
-    margin-left: 4px;
-    font-weight: 500;
+    color: #ffffff;
+    font-size: 0.85rem;
 }
 
-.inputError {
-    border-color: rgba(248, 113, 113, 0.5) !important;
+.trustList li span {
+    color: var(--slate-400);
+    font-size: 0.8rem;
+    line-height: 1.4;
 }
 
-/* --- RESPONSIVE --- */
-@media (max-width: 991px) {
-    .contactFormGlass {
-        padding: 2rem 1.5rem;
-    }
-
-    .servicesGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+/* ===== TRUST BADGE ===== */
+.trustBadge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    background: rgba(245, 158, 11, 0.04);
+    border: 1px solid rgba(245, 158, 11, 0.08);
+    border-radius: 14px;
+    color: var(--gold-powa);
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 
-@media (max-width: 576px) {
-    .servicesGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .contactTitleMain {
-        font-size: 1.8rem;
-    }
+.trustBadgeIcon {
+    font-size: 1.2rem;
 }
 
+/* ===== ANIMACIONES ===== */
 .animateFadeIn {
-    animation: fadeIn 0.5s ease forwards;
+    animation: fadeIn 0.4s ease forwards;
 }
 
 @keyframes fadeIn {
@@ -230,5 +478,155 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 992px) {
+    .contactFormGlass {
+        padding: 2rem 1.5rem;
+    }
+
+    .servicesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .contactWrapper {
+        padding-top: 100px;
+    }
+
+    .contactTitleMain {
+        font-size: 2rem;
+    }
+
+    .contactLeadText {
+        font-size: 1rem;
+    }
+
+    .servicesGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .powaCheckbox label {
+        font-size: 0.7rem;
+        padding: 8px 10px;
+        min-height: 40px;
+    }
+
+    .infoCardModern {
+        padding: 16px 18px;
+    }
+
+    .trustBlock {
+        padding: 20px;
+    }
+
+    .testimonialsBlock {
+        padding: 20px;
+    }
+
+    .trustBadge {
+        font-size: 0.75rem;
+        padding: 12px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contactWrapper {
+        padding-top: 80px;
+        padding-bottom: 60px;
+    }
+
+    .contactTitleMain {
+        font-size: 1.6rem;
+    }
+
+    .badgePowa {
+        font-size: 0.6rem;
+        padding: 4px 12px;
+    }
+
+    .contactFormGlass {
+        padding: 1.5rem 1rem;
+        border-radius: 20px;
+    }
+
+    .servicesGrid {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+
+    .powaCheckbox label {
+        font-size: 0.65rem;
+        padding: 6px 8px;
+        min-height: 36px;
+        border-radius: 10px;
+    }
+
+    .serviceIcon {
+        font-size: 0.75rem;
+    }
+
+    .formTitle {
+        font-size: 1.2rem;
+    }
+
+    .formSubtitle {
+        font-size: 0.8rem;
+    }
+
+    .iconCircle {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        border-radius: 12px;
+    }
+
+    .infoCardModern {
+        padding: 14px 16px;
+        gap: 14px;
+        border-radius: 16px;
+    }
+
+    .trustBlock {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .testimonialsBlock {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .trustBadge {
+        font-size: 0.7rem;
+        padding: 10px 14px;
+        border-radius: 12px;
+    }
+
+    .btnPowaPrimary {
+        font-size: 0.85rem !important;
+        padding: 14px 20px !important;
+    }
+
+    .trustList li {
+        padding: 8px 0;
+    }
+
+    .trustList li strong {
+        font-size: 0.8rem;
+    }
+
+    .trustList li span {
+        font-size: 0.75rem;
+    }
+
+    .testimonialText {
+        font-size: 0.8rem;
     }
 }

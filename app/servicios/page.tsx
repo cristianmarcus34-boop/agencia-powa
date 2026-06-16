@@ -4,7 +4,9 @@ import React, { useState, useRef } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import {
   FaLaptopCode, FaShoppingCart, FaTools, FaSearchDollar,
-  FaLightbulb, FaMobileAlt, FaChevronDown, FaRocket, FaWhatsapp
+  FaLightbulb, FaMobileAlt, FaChevronDown, FaRocket, FaWhatsapp,
+  FaShieldAlt, FaClock, FaCheckCircle, FaStar, FaAward,
+  FaHandshake, FaCloudUploadAlt, FaBrain, FaChartLine
 } from 'react-icons/fa';
 import Link from 'next/link';
 import styles from './servicios.module.css';
@@ -15,6 +17,7 @@ interface ServiceData {
   description: string;
   fullDescription: string;
   stack: string[];
+  benefits: string[];
 }
 
 interface ProcessStep {
@@ -33,43 +36,79 @@ const SERVICES_DATA: ServiceData[] = [
     icon: <FaLaptopCode />,
     title: "Plataformas Web de Alta Conversión",
     description: "Sistemas ultra-rápidos que transforman visitas en clientes estables sin perder ventas.",
-    fullDescription: "La lentitud mata el negocio. Desarrollamos con arquitectura Next.js y Supabase para garantizar cargas menores a 1 segundo. Cada milisegundo ganado reduce el abandono del carrito y escala de forma orgánica tu posicionamiento en Google (SEO), blindando tu embudo de ventas frente a la competencia.",
-    stack: ["Next.js", "TypeScript", "PostgreSQL", "Core Web Vitals"]
+    fullDescription: "La lentitud mata el negocio. Desarrollamos con arquitectura Next.js y Supabase para garantizar cargas menores a 1 segundo. Cada milisegundo ganado reduce el abandono del carrito y escala de forma orgánica tu posicionamiento en Google (SEO), blindando tu embudo de ventas frente a la competencia. Nuestras plataformas están diseñadas para soportar picos de tráfico sin degradar la experiencia del usuario.",
+    stack: ["Next.js", "TypeScript", "PostgreSQL", "Core Web Vitals"],
+    benefits: [
+      "🚀 Carga en < 1 segundo",
+      "📈 SEO optimizado para Google",
+      "🛡️ Escalable para tráfico masivo",
+      "💻 Experiencia desktop y mobile"
+    ]
   },
   {
     icon: <FaMobileAlt />,
-    title: "Desarrollo Mobile de Próxima Generation",
+    title: "Desarrollo Mobile de Próxima Generación",
     description: "Aplicaciones nativas robustas y fluidas para fidelizar a tu audiencia en iOS y Android.",
-    fullDescription: "Creamos experiencias mobile 100% nativas mediante Expo y React Native. Diseñamos sistemas con sincronización en tiempo real y persistencia de datos local (funcionamiento offline), asegurando que tus usuarios interactúen con tu marca de manera fluida, sin interrupciones ni pantallas colgadas.",
-    stack: ["Expo Native", "React Native", "SQLite", "Real-time Sync"]
+    fullDescription: "Creamos experiencias mobile 100% nativas mediante Expo y React Native. Diseñamos sistemas con sincronización en tiempo real y persistencia de datos local (funcionamiento offline), asegurando que tus usuarios interactúen con tu marca de manera fluida, sin interrupciones ni pantallas colgadas. Ideal para apps de delivery, e-commerce y servicios on-demand.",
+    stack: ["Expo Native", "React Native", "SQLite", "Real-time Sync"],
+    benefits: [
+      "📱 Funciona offline sin interrupciones",
+      "🔄 Sincronización en tiempo real",
+      "📦 Apps ligeras y optimizadas",
+      "🔐 Seguridad de datos en dispositivo"
+    ]
   },
   {
     icon: <FaShoppingCart />,
     title: "E-commerce de Rendimiento Masivo",
     description: "Infraestructura Headless diseñada para vender 24/7, incluso en picos de Hot Sale.",
-    fullDescription: "Olvidate de las caídas de servidor y las plantillas lentas. Implementamos pasarelas avanzadas (MercadoPago / Stripe), automatización de stock en tiempo real y facturación directa. Diseñamos arquitecturas modulares preparadas para resistir campañas de tráfico masivo sin perder un solo centavo.",
-    stack: ["MercadoPago / Stripe", "Headless Commerce", "Automation Pipelines"]
+    fullDescription: "Olvidate de las caídas de servidor y las plantillas lentas. Implementamos pasarelas avanzadas (MercadoPago / Stripe), automatización de stock en tiempo real y facturación directa. Diseñamos arquitecturas modulares preparadas para resistir campañas de tráfico masivo sin perder un solo centavo. Gestión de inventario, envíos y analytics todo en un solo ecosistema.",
+    stack: ["MercadoPago / Stripe", "Headless Commerce", "Automation Pipelines"],
+    benefits: [
+      "💳 Pasarelas de pago integradas",
+      "📦 Stock en tiempo real",
+      "📊 Analytics de conversión",
+      "🚀 Resiste picos de tráfico"
+    ]
   },
   {
     icon: <FaSearchDollar />,
     title: "Ingeniería SEO & Captación Orgánica",
     description: "Estrategias de posicionamiento técnico para dominar las búsquedas donde está tu dinero.",
-    fullDescription: "El SEO no es solo escribir blogs. Realizamos auditorías profundas de logs, estructuración de datos enriquecidos (Schema Markup) y optimización de arquitectura web para que los algoritmos de búsqueda te pongan arriba. Atraemos tráfico calificado directo a tu flujo de caja, disminuyendo tu dependencia de la pauta paga.",
-    stack: ["Technical SEO", "Schema Markup", "Data Analytics", "Semrush"]
+    fullDescription: "El SEO no es solo escribir blogs. Realizamos auditorías profundas de logs, estructuración de datos enriquecidos (Schema Markup) y optimización de arquitectura web para que los algoritmos de búsqueda te pongan arriba. Atraemos tráfico calificado directo a tu flujo de caja, disminuyendo tu dependencia de la pauta paga. Monitoreo constante de posicionamiento y ajustes estratégicos.",
+    stack: ["Technical SEO", "Schema Markup", "Data Analytics", "Semrush"],
+    benefits: [
+      "📊 Auditoría SEO completa",
+      "🔍 Posicionamiento en primeras posiciones",
+      "📈 Reducción de costo por adquisición",
+      "📅 Reportes mensuales de avance"
+    ]
   },
   {
     icon: <FaTools />,
     title: "DevOps & Continuidad de Negocio",
     description: "Mantenimiento proactivo y monitoreo en la nube para que tu plataforma nunca se caiga.",
-    fullDescription: "El software que no se monitorea es un riesgo financiero. Automatizamos el despliegue continuo (CI/CD) con Docker y Vercel, gestionando auditorías de seguridad constantes y copias de seguridad automáticas. Tu plataforma estará respaldada las 24 horas por ingeniería especializada para que te enfoques en crecer.",
-    stack: ["Docker", "Vercel Enterprise", "CI/CD Git Automation"]
+    fullDescription: "El software que no se monitorea es un riesgo financiero. Automatizamos el despliegue continuo (CI/CD) con Docker y Vercel, gestionando auditorías de seguridad constantes y copias de seguridad automáticas. Tu plataforma estará respaldada las 24 horas por ingeniería especializada para que te enfoques en crecer. SLA de disponibilidad 99.9%.",
+    stack: ["Docker", "Vercel Enterprise", "CI/CD Git Automation"],
+    benefits: [
+      "⚡ Deploy automatizado",
+      "🛡️ Auditorías de seguridad constantes",
+      "📦 Copias de seguridad automáticas",
+      "📊 Monitoreo 24/7"
+    ]
   },
   {
     icon: <FaLightbulb />,
     title: "Consultoría de Producto & MVP",
     description: "Validamos tus ideas de negocio con el menor riesgo técnico y financiero posible.",
-    fullDescription: "Elegir el stack equivocado al inicio puede costar miles de dólares. Te guiamos en el modelado y lanzamiento de Productos Mínimos Viables (MVP) orientados a resultados de mercado rápidos. Diseñamos con escalabilidad modular: invertís exactamente lo que tu negocio necesita para validar y traccionar.",
-    stack: ["MVP Architecture", "UI/UX Audit", "Cloud Cost Optimization"]
+    fullDescription: "Elegir el stack equivocado al inicio puede costar miles de dólares. Te guiamos en el modelado y lanzamiento de Productos Mínimos Viables (MVP) orientados a resultados de mercado rápidos. Diseñamos con escalabilidad modular: invertís exactamente lo que tu negocio necesita para validar y traccionar. Acompañamiento post-lanzamiento para iterar basado en feedback real.",
+    stack: ["MVP Architecture", "UI/UX Audit", "Cloud Cost Optimization"],
+    benefits: [
+      "🧪 Validación de mercado rápida",
+      "💰 Inversión ajustada a objetivos",
+      "📊 Feedback de usuarios reales",
+      "🔄 Iteración continua"
+    ]
   }
 ];
 
@@ -97,18 +136,18 @@ const PROCESS_STEPS: ProcessStep[] = [
 ];
 
 const ServiceCardItem = ({ service, index }: ServiceCardProps) => {
-  const { icon, title, description, fullDescription, stack } = service;
+  const { icon, title, description, fullDescription, stack, benefits } = service;
   const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current;
     if (!card) return;
-    
+
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     card.style.setProperty('--mouse-x', `${x}px`);
     card.style.setProperty('--mouse-y', `${y}px`);
   };
@@ -117,7 +156,7 @@ const ServiceCardItem = ({ service, index }: ServiceCardProps) => {
     <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      className={styles.serviceCard}
+      className={`${styles.serviceCard} ${isExpanded ? styles.expanded : ''}`}
       style={{ animationDelay: `${index * 0.1}s` }}
     >
       <div className={styles.cardInner}>
@@ -129,15 +168,24 @@ const ServiceCardItem = ({ service, index }: ServiceCardProps) => {
 
         <div className={styles.descriptionContainer}>
           <p className={styles.cardDescription}>{description}</p>
-          
-          <div 
+
+          <div
             id={`service-desc-${index}`}
             className={`${styles.expandableContent} ${isExpanded ? styles.visible : ''}`}
             aria-hidden={!isExpanded}
           >
-            {/* El div interno es mandatorio para que la transición de CSS Grid funcione perfecto */}
             <div>
               <p className={styles.fullDescription}>{fullDescription}</p>
+
+              {/* Beneficios destacados */}
+              <div className={styles.benefitsList}>
+                {benefits.map((benefit, idx) => (
+                  <span key={idx} className={styles.benefitItem}>
+                    {benefit}
+                  </span>
+                ))}
+              </div>
+
               <div className={styles.techStack}>
                 {stack.map((tech) => (
                   <span key={tech} className={styles.techBadge}>{tech}</span>
@@ -162,23 +210,49 @@ const ServiceCardItem = ({ service, index }: ServiceCardProps) => {
 };
 
 export default function ServicesPage() {
+  // Stats de impacto
+  const impactStats = [
+    { value: "99.9%", label: "Uptime Garantizado", icon: <FaClock /> },
+    { value: "<1s", label: "Tiempo de Carga", icon: <FaRocket /> },
+    { value: "50+", label: "Proyectos Entregados", icon: <FaAward /> },
+    { value: "100%", label: "Propiedad Intelectual", icon: <FaShieldAlt /> }
+  ];
+
   return (
     <main className={styles.servicesWrapper}>
       <Container>
-        {/* HERO SECTION */}
+        {/* ===== HERO SECTION ===== */}
         <header className="text-center mb-5">
           <span className={styles.badgePowa}>NUESTRO TOOLKIT TÉCNICO</span>
           <h1 className={styles.titleMain}>
-            Ingeniería de <span className={styles.textGradient || 'text-gradient'}>Alto Impacto</span>
+            Ingeniería de <span className={styles.textGradient}>Alto Impacto</span>
           </h1>
           <p className={styles.subtitle}>
-            En Powa Digital, transformamos la complejidad técnica en 
+            En Powa Digital, transformamos la complejidad técnica en
             <strong> ventajas competitivas</strong> para tu modelo de negocio.
           </p>
         </header>
 
-        {/* CARDS DE SERVICIOS */}
+        {/* ===== STATS DE IMPACTO ===== */}
+        <Row className="g-4 mb-5">
+          {impactStats.map((stat, index) => (
+            <Col key={index} xs={6} md={3}>
+              <div className={styles.statCard}>
+                <div className={styles.statIcon}>{stat.icon}</div>
+                <div className={styles.statValue}>{stat.value}</div>
+                <div className={styles.statLabel}>{stat.label}</div>
+              </div>
+            </Col>
+          ))}
+        </Row>
+
+        {/* ===== CARDS DE SERVICIOS ===== */}
         <section aria-label="Nuestros Servicios Técnicos Extensivos" className="mb-5">
+          <div className={styles.sectionDivider}>
+            <FaStar className={styles.dividerIcon} />
+            <span>SOLUCIONES TÉCNICAS PREMIUM</span>
+            <FaStar className={styles.dividerIcon} />
+          </div>
           <Row className="g-4">
             {SERVICES_DATA.map((service, index) => (
               <Col key={index} xs={12} md={6} lg={4}>
@@ -188,31 +262,104 @@ export default function ServicesPage() {
           </Row>
         </section>
 
-        {/* SECCIÓN: EL PROCESO TÉCNICO BLINDADO */}
+        {/* ===== SECCIÓN: EL PROCESO TÉCNICO BLINDADO ===== */}
         <section aria-label="Nuestro Proceso de Trabajo" className="my-5 pt-4">
           <div className="text-center mb-5">
             <span className={styles.badgePowa}>METODOLOGÍA SENIOR</span>
-            <h2 className={styles.titleMain}>Cómo protegemos tu desarrollo</h2>
+            <h2 className={styles.titleMain}>Cómo protegemos <span className={styles.textGradient}>tu desarrollo</span></h2>
+            <p className={styles.subtitle} style={{ marginBottom: 0 }}>
+              Un proceso transparente que elimina la incertidumbre y garantiza resultados.
+            </p>
           </div>
           <Row className="g-4">
             {PROCESS_STEPS.map((step, index) => (
               <Col key={index} xs={12} sm={6} lg={3}>
-                {/* Reutiliza dinámicamente la lógica del cardInner para mantener coherencia estética visual */}
-                <div className={styles.serviceCard} style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className={styles.cardInner} style={{ padding: '30px 24px' }}>
-                    <div className={styles.itemNumber || 'text-muted mb-2 fw-mono'} style={{ fontSize: '1.5rem', color: 'rgba(34, 211, 238, 0.4)', fontFamily: 'monospace' }}>
-                      {step.phase}
-                    </div>
-                    <h4 className={styles.cardTitle} style={{ fontSize: '1.2rem' }}>{step.title}</h4>
-                    <p className={styles.cardDescription} style={{ fontSize: '0.9rem', marginBottom: 0 }}>{step.desc}</p>
+                <div className={`${styles.processCard}`} style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className={styles.processNumber}>{step.phase}</div>
+                  <div className={styles.processIconWrapper}>
+                    {index === 0 && <FaSearchDollar />}
+                    {index === 1 && <FaCloudUploadAlt />}
+                    {index === 2 && <FaShieldAlt />}
+                    {index === 3 && <FaRocket />}
                   </div>
+                  <h4 className={styles.processTitle}>{step.title}</h4>
+                  <p className={styles.processDesc}>{step.desc}</p>
                 </div>
               </Col>
             ))}
           </Row>
         </section>
 
-        {/* BANNER ESTRATÉGICO DE REDIRECCIÓN A FAQ */}
+        {/* ===== SECCIÓN: ¿POR QUÉ ELEGIRNOS? ===== */}
+        <section className="my-5">
+          <div className={styles.whyUsSection}>
+            <Row className="align-items-center g-4">
+              <Col lg={6}>
+                <span className={styles.badgePowa}>VENTAJAS COMPETITIVAS</span>
+                <h2 className={styles.titleMain} style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)' }}>
+                  ¿Por qué <span className={styles.textGradient}>Powa</span>?
+                </h2>
+                <div className={styles.whyUsList}>
+                  <div className={styles.whyUsItem}>
+                    <FaCheckCircle className={styles.whyUsIcon} />
+                    <div>
+                      <h4>Arquitectura Escalable</h4>
+                      <p>Diseñamos sistemas que crecen con tu negocio, sin necesidad de reescribir código.</p>
+                    </div>
+                  </div>
+                  <div className={styles.whyUsItem}>
+                    <FaCheckCircle className={styles.whyUsIcon} />
+                    <div>
+                      <h4>Propiedad Intelectual 100%</h4>
+                      <p>El código es tuyo. No hay dependencia tecnológica ni contratos de permanencia.</p>
+                    </div>
+                  </div>
+                  <div className={styles.whyUsItem}>
+                    <FaCheckCircle className={styles.whyUsIcon} />
+                    <div>
+                      <h4>Entregas Parciales</h4>
+                      <p>Ves resultados cada 15 días. No esperas al final del proyecto para validar.</p>
+                    </div>
+                  </div>
+                  <div className={styles.whyUsItem}>
+                    <FaCheckCircle className={styles.whyUsIcon} />
+                    <div>
+                      <h4>Soporte 24/7</h4>
+                      <p>Tu plataforma monitoreada constantemente con respuesta garantizada en SLA.</p>
+                    </div>
+                  </div>
+                </div>
+              </Col>
+              <Col lg={6}>
+                <div className={styles.whyUsVisual}>
+                  <div className={styles.whyUsBadge}>
+                    <FaAward className={styles.whyUsBadgeIcon} />
+                    <div>
+                      <strong>5+ años</strong>
+                      <span>de experiencia en software</span>
+                    </div>
+                  </div>
+                  <div className={styles.whyUsBadge}>
+                    <FaHandshake className={styles.whyUsBadgeIcon} />
+                    <div>
+                      <strong>30+</strong>
+                      <span>clientes satisfechos</span>
+                    </div>
+                  </div>
+                  <div className={styles.whyUsBadge}>
+                    <FaBrain className={styles.whyUsBadgeIcon} />
+                    <div>
+                      <strong>50+</strong>
+                      <span>proyectos entregados</span>
+                    </div>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        </section>
+
+        {/* ===== BANNER ESTRATÉGICO DE REDIRECCIÓN A FAQ ===== */}
         <section className="my-5">
           <div className={styles.ctaGlass} style={{ padding: '50px 40px', textAlign: 'left' }}>
             <Row className="align-items-center g-4">
@@ -233,21 +380,27 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* SECTION CTA FINAL */}
+        {/* ===== SECTION CTA FINAL ===== */}
         <section className={styles.footerCta} aria-label="Llamado a la acción">
           <div className={styles.ctaGlass}>
-            <h2 className={styles.ctaTitle}>¿Listo para escalar tu infraestructura?</h2>
+            <div className={styles.ctaGlow} />
+            <h2 className={styles.ctaTitle}>¿Listo para escalar tu <span className={styles.textGradient}>infraestructura</span>?</h2>
             <p className={styles.ctaText}>
               Agendemos una breve consultoría técnica para analizar los cuellos de botella de tu plataforma actual.
             </p>
+            <div className={styles.ctaTrustBadges}>
+              <span>🔒 Sin compromiso</span>
+              <span>⚡ Respuesta en 24hs</span>
+              <span>📋 Diagnóstico gratuito</span>
+            </div>
             <div className={styles.ctaActions}>
               <Link href="/contact" className={`text-decoration-none ${styles.btnPowaMain}`}>
                 INICIAR PROYECTO <FaRocket className="ms-2" />
               </Link>
-              <a 
-                href="https://wa.me/5491138305837" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://wa.me/5491138305837"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`text-decoration-none ${styles.btnPowaOutline}`}
               >
                 HABLAR POR WHATSAPP <FaWhatsapp className="ms-2" />
