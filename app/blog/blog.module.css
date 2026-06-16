@@ -1,12 +1,27 @@
+/* ===== VARIABLES GLOBALES ===== */
+:root {
+    --dark-powa: #020617;
+    --cyan-powa: #22d3ee;
+    --emerald-powa: #10b981;
+    --gold-powa: #f59e0b;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+}
+
+/* ===== WRAPPER PRINCIPAL ===== */
 .blogPageWrapper {
-    background-color: #020617; /* Slate 950 como base oscura */
+    background-color: var(--dark-powa);
     min-height: 100vh;
-    padding-top: 120px; 
+    padding-top: 120px;
     padding-bottom: 100px;
     position: relative;
     overflow: hidden;
 }
 
+/* ===== GLOW AMBIENTAL ===== */
 .ambientGlow {
     position: absolute;
     top: 0;
@@ -19,6 +34,18 @@
     z-index: 1;
 }
 
+.ambientGlowSecondary {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ===== HEADER ===== */
 .blogMainTitle {
     font-size: clamp(2.8rem, 7vw, 4.2rem);
     font-weight: 900;
@@ -29,14 +56,14 @@
 }
 
 .textGradient {
-    background: linear-gradient(135deg, #ffffff 30%, #22d3ee 100%);
+    background: linear-gradient(135deg, #ffffff 30%, var(--cyan-powa) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .badgePowaAccent {
-    color: #22d3ee;
+    color: var(--cyan-powa);
     font-size: 0.75rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -52,12 +79,171 @@
 .heroSubtitleModern {
     max-width: 600px;
     margin: 0 auto;
-    color: #94a3b8;
+    color: var(--slate-400);
     font-size: 1.15rem;
     line-height: 1.6;
 }
 
-/* --- TARJETAS INSIGHTS (BENTO / GLASSMORPHISM) --- */
+/* ===== CONTADOR DE POSTS ===== */
+.postCounter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 1.5rem;
+    padding: 8px 20px;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    color: var(--slate-400);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.counterIcon {
+    color: var(--cyan-powa);
+}
+
+/* ===== FILTROS Y BÚSQUEDA ===== */
+.filtersWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 24px;
+    background: rgba(15, 23, 42, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+}
+
+.searchWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--slate-500);
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 12px 16px 12px 42px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.searchInput::placeholder {
+    color: var(--slate-500);
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: rgba(34, 211, 238, 0.3);
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.05);
+}
+
+.categoryFilters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filterButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    color: var(--slate-400);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.filterButton:hover {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.activeFilter {
+    background: rgba(15, 23, 42, 0.8) !important;
+    border-color: var(--cyan-powa) !important;
+    color: var(--cyan-powa) !important;
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.05);
+}
+
+/* ===== RESULTADOS ===== */
+.resultsCount {
+    text-align: center;
+    color: var(--slate-500);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* ===== EMPTY STATE ===== */
+.emptyState {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(15, 23, 42, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+}
+
+.emptyIcon {
+    font-size: 3rem;
+    color: var(--slate-600);
+    margin-bottom: 1rem;
+}
+
+.emptyTitle {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.emptyText {
+    color: var(--slate-400);
+    margin-bottom: 1.5rem;
+}
+
+.emptyButton {
+    padding: 10px 28px;
+    background: rgba(34, 211, 238, 0.1);
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    border-radius: 10px;
+    color: var(--cyan-powa);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.emptyButton:hover {
+    background: rgba(34, 211, 238, 0.15);
+    transform: translateY(-2px);
+}
+
+/* ===== TARJETAS DE POSTS ===== */
 .blogCardPowa {
     background: rgba(15, 23, 42, 0.4) !important;
     border: 1px solid rgba(255, 255, 255, 0.06) !important;
@@ -65,6 +251,7 @@
     transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
     backdrop-filter: blur(12px);
     position: relative;
+    opacity: 0;
 }
 
 .blogCardPowa:hover {
@@ -74,9 +261,27 @@
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(34, 211, 238, 0.05);
 }
 
+/* ===== ANIMACIONES ===== */
+:global(.fadeInUp) {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== POST CATEGORY ===== */
 .postCategory {
     background: rgba(34, 211, 238, 0.08);
-    color: #22d3ee;
+    color: var(--cyan-powa);
     padding: 6px 14px;
     border-radius: 6px;
     font-size: 0.7rem;
@@ -86,13 +291,14 @@
 }
 
 .postDate {
-    color: #64748b;
+    color: var(--slate-500);
     font-size: 0.8rem;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
 }
 
+/* ===== POST EMOJI ===== */
 .postEmoji {
     font-size: 1.8rem;
     background: rgba(255, 255, 255, 0.03);
@@ -112,6 +318,7 @@
     border-color: rgba(34, 211, 238, 0.2);
 }
 
+/* ===== POST TITLE ===== */
 .postTitle {
     font-size: 1.4rem;
     color: #ffffff;
@@ -121,19 +328,40 @@
 }
 
 .blogCardPowa:hover .postTitle {
-    color: #22d3ee;
+    color: var(--cyan-powa);
 }
 
+/* ===== POST EXCERPT ===== */
 .postExcerpt {
-    color: #94a3b8; 
+    color: var(--slate-400);
     font-size: 0.95rem;
     line-height: 1.6;
     margin-top: 16px;
     margin-bottom: 0;
 }
 
+/* ===== POST META ===== */
+.postMeta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    color: var(--slate-500);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.metaIcon {
+    font-size: 0.7rem;
+    color: var(--slate-600);
+}
+
+/* ===== BOTÓN LEER MÁS ===== */
 .btnReadMore {
-    color: #64748b;
+    color: var(--slate-500);
     font-weight: 800;
     display: inline-flex;
     align-items: center;
@@ -144,7 +372,7 @@
 }
 
 .blogCardPowa:hover .btnReadMore {
-    color: #22d3ee;
+    color: var(--cyan-powa);
 }
 
 .iconArrow {
@@ -155,9 +383,434 @@
     transform: translateX(6px);
 }
 
+/* ============================================
+   PÁGINA DE POST INDIVIDUAL
+   ============================================ */
+
+/* ===== BACK LINK ===== */
+.backLink {
+    color: var(--slate-400);
+    font-weight: 700;
+    font-size: 0.9rem;
+    align-items: center;
+    transition: color 0.3s ease;
+    text-decoration: none !important;
+}
+
+.backLink:hover {
+    color: var(--cyan-powa);
+}
+
+/* ===== POST HEADER ===== */
+.postHeader {
+    margin-bottom: 2rem;
+}
+
+.postFullTitle {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    color: #ffffff;
+    line-height: 1.15;
+    margin: 1rem 0;
+}
+
+.postMetaInfo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 12px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.metaItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--slate-400);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.metaItem .metaIcon {
+    color: var(--cyan-powa);
+    font-size: 0.9rem;
+}
+
+/* ===== ARTÍCULO ===== */
+.articleContainer {
+    position: relative;
+    padding: 2rem 0;
+}
+
+.articleHeroEmoji {
+    font-size: 4rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+/* ===== CONTENIDO DINÁMICO ===== */
+.postDynamicContent {
+    color: var(--slate-300);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.postDynamicContent h2 {
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+}
+
+.postDynamicContent h3 {
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+}
+
+.postDynamicContent p {
+    margin-bottom: 1.2rem;
+}
+
+.postDynamicContent ul,
+.postDynamicContent ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.2rem;
+}
+
+.postDynamicContent li {
+    margin-bottom: 0.5rem;
+}
+
+.postDynamicContent code {
+    background: rgba(15, 23, 42, 0.6);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: var(--cyan-powa);
+}
+
+.postDynamicContent blockquote {
+    border-left: 4px solid var(--cyan-powa);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    background: rgba(34, 211, 238, 0.03);
+    border-radius: 0 8px 8px 0;
+    color: var(--slate-300);
+    font-style: italic;
+}
+
+.postDynamicContent a {
+    color: var(--cyan-powa);
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.postDynamicContent a:hover {
+    color: #ffffff;
+}
+
+.postDynamicContent img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+}
+
+/* ===== COMPARTIR ===== */
+.shareSection {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.shareLabel {
+    color: var(--slate-500);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.shareButtons {
+    display: flex;
+    gap: 8px;
+}
+
+.shareButton {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    color: var(--slate-400);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.shareButton:hover {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(34, 211, 238, 0.3);
+    color: var(--cyan-powa);
+    transform: translateY(-2px);
+}
+
+.shareButton.copied {
+    border-color: var(--emerald-powa);
+    color: var(--emerald-powa);
+}
+
+/* ===== CTA FINAL ===== */
+.postCtaBox {
+    margin-top: 3rem;
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.6), rgba(34, 211, 238, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    text-align: center;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.4s;
+}
+
+.ctaContent {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.ctaWhatsappIcon {
+    font-size: 3rem;
+    color: #25d366;
+    margin-bottom: 1rem;
+}
+
+.btnCtaWhatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: #ffffff !important;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 30px rgba(37, 211, 102, 0.2);
+}
+
+.btnCtaWhatsapp:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(37, 211, 102, 0.3);
+}
+
+/* ===== ERROR 404 ===== */
+.error404 {
+    padding: 40px;
+}
+
+.errorEmoji {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 1.5rem;
+}
+
+.btnPowaErrorLink {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 28px;
+    background: rgba(34, 211, 238, 0.1);
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    border-radius: 10px;
+    color: var(--cyan-powa);
+    font-weight: 700;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+}
+
+.btnPowaErrorLink:hover {
+    background: rgba(34, 211, 238, 0.15);
+    transform: translateY(-2px);
+    color: var(--cyan-powa);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 992px) {
+    .postFullTitle {
+        font-size: 2.2rem;
+    }
+
+    .filtersWrapper {
+        padding: 16px 18px;
+    }
+}
+
 @media (max-width: 768px) {
-    .blogPageWrapper { padding-top: 80px; }
-    .blogMainTitle { font-size: 2.6rem; }
-    .postTitle { font-size: 1.25rem; }
-    .postEmoji { font-size: 1.5rem; padding: 8px; }
+    .blogPageWrapper {
+        padding-top: 80px;
+    }
+
+    .blogMainTitle {
+        font-size: 2.6rem;
+    }
+
+    .postTitle {
+        font-size: 1.25rem;
+    }
+
+    .postEmoji {
+        font-size: 1.5rem;
+        padding: 8px;
+    }
+
+    .filtersWrapper {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .searchInput {
+        font-size: 0.9rem;
+        padding: 10px 14px 10px 38px;
+    }
+
+    .filterButton {
+        font-size: 0.7rem;
+        padding: 5px 10px;
+    }
+
+    .postFullTitle {
+        font-size: 1.8rem;
+    }
+
+    .postMetaInfo {
+        gap: 12px;
+    }
+
+    .metaItem {
+        font-size: 0.8rem;
+    }
+
+    .postCtaBox {
+        padding: 28px 20px;
+    }
+
+    .postDynamicContent {
+        font-size: 0.95rem;
+    }
+
+    .postDynamicContent h2 {
+        font-size: 1.4rem;
+    }
+
+    .postDynamicContent h3 {
+        font-size: 1.2rem;
+    }
+
+    .shareSection {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .blogMainTitle {
+        font-size: 2rem;
+    }
+
+    .heroSubtitleModern {
+        font-size: 1rem;
+    }
+
+    .filterButton {
+        font-size: 0.65rem;
+        padding: 4px 8px;
+        gap: 4px;
+    }
+
+    .filterButton svg {
+        font-size: 0.7rem;
+    }
+
+    .postFullTitle {
+        font-size: 1.5rem;
+    }
+
+    .postMetaInfo {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btnCtaWhatsapp {
+        width: 100%;
+        justify-content: center;
+        font-size: 0.9rem;
+        padding: 12px 24px;
+    }
+
+    .shareButton {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+
+    .postCtaBox {
+        padding: 24px 16px;
+    }
+
+    /* ===== LIMPIAR BÚSQUEDA ===== */
+    .clearSearch {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.05);
+        border: none;
+        border-radius: 50%;
+        color: var(--slate-500);
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.8rem;
+    }
+
+    .clearSearch:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+    }
+
+    /* ===== RESULTADOS COUNT MEJORADO ===== */
+    .resultsCount {
+        text-align: center;
+        color: var(--slate-500);
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding: 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .resultsCount strong {
+        color: var(--slate-300);
+    }
 }

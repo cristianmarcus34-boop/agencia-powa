@@ -1,3 +1,18 @@
+/* ===== VARIABLES GLOBALES ===== */
+:root {
+    --dark-powa: #0a0f1a;
+    --cyan-powa: #22d3ee;
+    --emerald-powa: #10b981;
+    --gold-powa: #f59e0b;
+    --purple-powa: #8b5cf6;
+    --pink-powa: #f472b6;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+}
+
+/* ===== WRAPPER PRINCIPAL ===== */
 .faqPageWrapper {
     background-color: var(--dark-powa);
     min-height: 100vh;
@@ -9,17 +24,17 @@
         radial-gradient(circle at 0% 100%, rgba(14, 165, 233, 0.03) 0%, transparent 40%);
 }
 
+/* ===== HEADER ===== */
 .faqHeader {
-    margin-bottom: 5rem;
+    margin-bottom: 2.5rem;
 }
 
 .badgeCategory {
     display: inline-block;
     padding: 6px 14px;
     background: rgba(34, 211, 238, 0.05);
-    color: #22d3ee;
+    color: var(--cyan-powa);
     border-radius: 6px;
-    /* Bordes más sobrios/rectos para aire más corporativo */
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 3px;
@@ -37,22 +52,113 @@
 }
 
 .textGradient {
-    background: linear-gradient(135deg, #ffffff 30%, #22d3ee 100%);
+    background: linear-gradient(135deg, #ffffff 30%, var(--cyan-powa) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .faqDescription {
-    color: #64748b;
-    /* Slate 400: más sobrio y fino */
+    color: var(--slate-500);
     max-width: 620px;
     margin: 0 auto;
     font-size: 1.1rem;
     line-height: 1.6;
 }
 
-/* --- OVERRIDE DEL ACORDEÓN DE BOOTSTRAP (Estilo Pro) --- */
+/* ===== FILTROS POR CATEGORÍA ===== */
+.categoryFilters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 16px 0 8px;
+    margin-bottom: 0.5rem;
+}
+
+.filterButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    color: var(--slate-400);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.filterButton:hover {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.activeFilter {
+    background: rgba(15, 23, 42, 0.8) !important;
+    border-color: var(--cyan-powa) !important;
+    color: var(--cyan-powa) !important;
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.05);
+}
+
+/* ===== TRUST BADGES ===== */
+.trustBadges {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 1.5rem 0 2.5rem;
+}
+
+.trustBadge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: #e2e8f0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.trustBadge:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.trustBadge:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.trustBadge:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.trustBadge:nth-child(4) {
+    animation-delay: 0.25s;
+}
+
+.trustBadge:hover {
+    border-color: rgba(34, 211, 238, 0.25);
+    transform: translateY(-2px);
+    background: rgba(15, 23, 42, 0.6);
+}
+
+.trustIcon {
+    color: var(--emerald-powa);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+/* ===== ACORDEÓN ===== */
 .customAccordion {
     --bs-accordion-bg: transparent;
     --bs-accordion-border-color: transparent;
@@ -60,69 +166,272 @@
     --bs-accordion-btn-focus-box-shadow: none;
 }
 
+/* ===== ITEMS ===== */
 .accordionItem {
     background: rgba(15, 23, 42, 0.4) !important;
     border: 1px solid rgba(255, 255, 255, 0.04) !important;
     border-radius: 16px !important;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity: 0;
 }
 
 .accordionItem:hover {
     border-color: rgba(34, 211, 238, 0.25) !important;
     background: rgba(15, 23, 42, 0.6) !important;
-    transform: translateX(4px);
-    /* Movimiento sutil de lectura lateral */
+    transform: translateX(6px) scale(1.002);
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.4);
 }
 
-/* Inyección de estilos limpios sobre los botones nativos */
+/* ===== COLORES POR CATEGORÍA (bordes laterales) ===== */
+.category-trust {
+    border-left: 3px solid transparent !important;
+}
+
+.category-trust:hover {
+    border-left-color: var(--gold-powa) !important;
+}
+
+.category-process {
+    border-left: 3px solid transparent !important;
+}
+
+.category-process:hover {
+    border-left-color: var(--cyan-powa) !important;
+}
+
+.category-technical {
+    border-left: 3px solid transparent !important;
+}
+
+.category-technical:hover {
+    border-left-color: var(--purple-powa) !important;
+}
+
+.category-business {
+    border-left: 3px solid transparent !important;
+}
+
+.category-business:hover {
+    border-left-color: var(--emerald-powa) !important;
+}
+
+.category-postlaunch {
+    border-left: 3px solid transparent !important;
+}
+
+.category-postlaunch:hover {
+    border-left-color: var(--pink-powa) !important;
+}
+
+/* ===== ITEMS DESTACADOS (mitigación de riesgos) ===== */
+.highlightedItem {
+    background: rgba(245, 158, 11, 0.05) !important;
+    border-color: rgba(245, 158, 11, 0.15) !important;
+}
+
+.highlightedItem:hover {
+    background: rgba(245, 158, 11, 0.08) !important;
+    border-color: rgba(245, 158, 11, 0.4) !important;
+}
+
+/* ===== ANIMACIÓN GLOBAL PARA LOS ITEMS ===== */
+:global(.fadeInUp) {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== ANIMACIÓN PARA ÍCONOS DEL FOOTER ===== */
+:global(.fadeInIcons) {
+    animation: fadeInIcons 0.6s ease forwards;
+}
+
+@keyframes fadeInIcons {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ===== ESTRELLA DESTACADA ===== */
+.starIcon {
+    color: var(--gold-powa);
+    font-size: 0.9rem;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+/* ===== CATEGORY BADGE EN HEADER ===== */
+.categoryBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    border: 1px solid;
+    border-radius: 6px;
+    margin-right: 12px;
+    background: rgba(15, 23, 42, 0.4);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+/* ===== HEADER DEL ACORDEÓN ===== */
+.headerLeft {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: 100%;
+}
+
 .accordionHeader :global(.accordion-button) {
     color: #e2e8f0 !important;
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 700;
-    padding: 24px 32px;
+    padding: 20px 24px;
     letter-spacing: -0.3px;
     transition: color 0.2s ease;
     background: transparent !important;
     box-shadow: none !important;
+    display: flex;
+    align-items: center;
 }
 
 .accordionHeader :global(.accordion-button:not(.collapsed)) {
-    color: #22d3ee !important;
+    color: var(--cyan-powa) !important;
 }
 
-/* Modificamos la flecha nativa usando SVG inline moderno en vez de filtros invertidos */
+/* ===== FLECHA SVG PERSONALIZADA ===== */
 .accordionHeader :global(.accordion-button::after) {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2364748b'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C</svg>") !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2364748b'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E") !important;
     background-size: 1.1rem;
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .accordionHeader :global(.accordion-button:not(.collapsed)::after) {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2322d3ee'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C</svg>") !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2322d3ee'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E") !important;
 }
 
+/* ===== NÚMERO DEL ITEM ===== */
 .itemNumber {
-    color: rgba(34, 211, 238, 0.4);
+    color: rgba(34, 211, 238, 0.3);
     font-family: monospace;
-    font-size: 0.95rem;
-    margin-right: 16px;
+    font-size: 0.8rem;
+    margin-right: 12px;
     font-weight: 500;
+    flex-shrink: 0;
+    min-width: 28px;
 }
 
+/* ===== BODY DEL ACORDEÓN ===== */
 .accordionBody {
-    padding: 0 32px 28px 60px !important;
-    /* Alineado perfecto abajo del texto (no del número) */
+    padding: 0 24px 24px 24px !important;
 }
 
 .bodyContent {
-    color: #94a3b8;
-    font-size: 1rem;
+    color: var(--slate-400);
+    font-size: 0.95rem;
     line-height: 1.7;
 }
 
-/* --- ENTERPRISE FOOTER --- */
+/* ===== EMPTY STATE ===== */
+.emptyState {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--slate-500);
+}
+
+.emptyIcon {
+    font-size: 2.5rem;
+    color: var(--slate-600);
+    margin-bottom: 1rem;
+}
+
+.emptyState p {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* ===== CTA FINAL ===== */
+.finalCTA {
+    text-align: center;
+    padding: 48px 32px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.6), rgba(34, 211, 238, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.6s;
+}
+
+.ctaIcon {
+    font-size: 3rem;
+    color: var(--emerald-powa);
+    margin-bottom: 1.5rem;
+}
+
+.ctaTitle {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.ctaText {
+    color: var(--slate-400);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.ctaButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 36px;
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: #ffffff !important;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 30px rgba(37, 211, 102, 0.2);
+}
+
+.ctaButton:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(37, 211, 102, 0.3);
+}
+
+.ctaButtonIcon {
+    font-size: 1.3rem;
+}
+
+/* ===== FOOTER ===== */
 .faqFooter {
     margin-top: 6rem;
     text-align: center;
@@ -145,25 +454,27 @@
 .iconWrapper {
     font-size: 1.5rem;
     color: rgba(255, 255, 255, 0.15);
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
     cursor: help;
+    opacity: 0;
 }
 
 .iconWrapper:hover {
     color: rgba(34, 211, 238, 0.6);
+    transform: translateY(-4px) scale(1.1);
 }
 
-/* --- WHATSAPP FLOATING BADGE (SaaS Style) --- */
+/* ===== WHATSAPP FLOTANTE ===== */
 .whatsappFloat {
     position: fixed;
     bottom: 40px;
     right: 40px;
     background: rgba(15, 23, 42, 0.75);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: #ffffff !important;
     border-radius: 14px;
-    /* Formato Squircle moderno, no circular clásico */
     padding: 12px 20px;
     display: flex;
     align-items: center;
@@ -178,7 +489,7 @@
 }
 
 .whatsappFloat:hover {
-    transform: translateY(-4px);
+    transform: translateY(-4px) scale(1.02);
     border-color: rgba(37, 211, 102, 0.4);
     box-shadow: 0 20px 40px -5px rgba(37, 211, 102, 0.15);
 }
@@ -196,34 +507,235 @@
     font-size: 1.1rem;
 }
 
+.floatIcon {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+}
+
 .floatText {
     font-weight: 800;
     color: #f8fafc;
 }
 
-@media (max-width: 768px) {
-    .faqPageWrapper {
-        padding-top: 120px;
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+    .categoryFilters {
+        gap: 6px;
+    }
+
+    .filterButton {
+        font-size: 0.7rem;
+        padding: 6px 12px;
     }
 
     .accordionHeader :global(.accordion-button) {
-        padding: 20px;
-        font-size: 1.05rem;
+        font-size: 1rem;
+        padding: 18px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .faqPageWrapper {
+        padding-top: 120px;
+        padding-bottom: 80px;
+    }
+
+    .trustBadges {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .trustBadge {
+        padding: 12px 16px;
+        font-size: 0.75rem;
+    }
+
+    .categoryFilters {
+        gap: 6px;
+        padding: 12px 0 4px;
+    }
+
+    .filterButton {
+        font-size: 0.7rem;
+        padding: 6px 10px;
+        gap: 4px;
+    }
+
+    .filterButton svg {
+        font-size: 0.8rem;
+    }
+
+    .accordionHeader :global(.accordion-button) {
+        padding: 16px 18px;
+        font-size: 0.95rem;
     }
 
     .accordionBody {
-        padding: 0 20px 20px 20px !important;
+        padding: 0 16px 16px 16px !important;
+    }
+
+    .bodyContent {
+        font-size: 0.9rem;
+    }
+
+    .categoryBadge {
+        font-size: 0.55rem;
+        padding: 3px 8px;
+        margin-right: 8px;
+    }
+
+    .itemNumber {
+        font-size: 0.7rem;
+        min-width: 22px;
+        margin-right: 8px;
+    }
+
+    .starIcon {
+        font-size: 0.7rem;
+        margin-right: 4px;
+    }
+
+    .finalCTA {
+        padding: 32px 20px;
+    }
+
+    .ctaTitle {
+        font-size: 1.2rem;
+    }
+
+    .ctaButton {
+        padding: 14px 24px;
+        font-size: 0.95rem;
+        width: 100%;
+        justify-content: center;
     }
 
     .whatsappFloat {
         bottom: 20px;
         right: 20px;
         padding: 12px;
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        justify-content: center;
+    }
+
+    .whatsappFloat:hover {
+        transform: none;
     }
 
     .floatText {
         display: none;
     }
 
-    /* En responsive se vuelve un botón icónico minimalista */
+    .pulseContainer {
+        width: 100%;
+        height: 100%;
+        background: transparent;
+    }
+
+    .floatIcon {
+        font-size: 1.6rem;
+    }
+
+    .techIconsGrid {
+        gap: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .faqTitle {
+        font-size: 2rem;
+    }
+
+    .badgeCategory {
+        font-size: 9px;
+        letter-spacing: 2px;
+    }
+
+    .trustBadges {
+        grid-template-columns: 1fr;
+    }
+
+    .categoryFilters {
+        gap: 4px;
+    }
+
+    .filterButton {
+        font-size: 0.65rem;
+        padding: 5px 8px;
+        gap: 3px;
+        border-radius: 8px;
+    }
+
+    .filterButton svg {
+        font-size: 0.7rem;
+    }
+
+    .accordionHeader :global(.accordion-button) {
+        font-size: 0.85rem;
+        padding: 14px 16px;
+    }
+
+    .itemNumber {
+        font-size: 0.65rem;
+        min-width: 18px;
+        margin-right: 6px;
+    }
+
+    .categoryBadge {
+        font-size: 0.5rem;
+        padding: 2px 6px;
+        margin-right: 6px;
+        gap: 3px;
+    }
+
+    .categoryBadge svg {
+        font-size: 0.6rem;
+    }
+
+    .accordionBody {
+        padding: 0 12px 12px 12px !important;
+    }
+
+    .bodyContent {
+        font-size: 0.85rem;
+        line-height: 1.6;
+    }
+
+    .whatsappFloat {
+        bottom: 16px;
+        right: 16px;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+    }
+
+    .floatIcon {
+        font-size: 1.4rem;
+    }
+
+    .ctaTitle {
+        font-size: 1rem;
+    }
+
+    .ctaText {
+        font-size: 0.9rem;
+    }
+
+    .ctaButton {
+        font-size: 0.85rem;
+        padding: 12px 20px;
+    }
 }
