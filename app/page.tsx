@@ -22,6 +22,7 @@ import {
 } from 'react-icons/si';
 
 import styles from './page.module.css';
+import HeroWrapper from '../components/hero3d/HeroWrapper';
 
 export default function HomePage() {
     const options = { triggerOnce: true, threshold: 0.1 };
@@ -173,72 +174,72 @@ export default function HomePage() {
 
     return (
         <div className={styles.homepageWrapper}>
-            {/* --- HERO SECTION --- */}
-            <section className={styles.heroSectionModern}>
-                <div className={styles.heroBgGlow}></div>
-                <div className={styles.heroBgGlowSecondary}></div>
-                <Container className="position-relative z-3">
-                    <Row className="align-items-center">
-                        <Col lg={7}>
-                            <div className={styles.badgePowa}>
-                                <FaMapMarkerAlt className="me-2" /> Hub Tecnológico en Quilmes & Zona Sur
-                            </div>
-                            <h1 className={styles.heroTitleMain}>
-                                Transformamos Ideas en <span className={styles.textGradient}>Software de Alto Impacto.</span>
-                            </h1>
-                            <p className={styles.heroSubtitleModern}>
-                                No solo creamos webs; desarrollamos la <strong>infraestructura digital</strong> que tu empresa necesita para escalar.
-                                Ingeniería Senior aplicada a negocios de <strong>Todo el Mundo.</strong>
-                            </p>
-                            <div className="d-flex flex-wrap gap-3 mt-4">
-                                <Link href="/contact" className={`${styles.btnPowaPrimary} text-decoration-none`}>
-                                    Consultoría Gratuita <FaRocket className="ms-2" />
-                                </Link>
-                                <Link href="/servicios" className={`${styles.btnPowaOutline} text-decoration-none`}>
-                                    Nuestras Soluciones <HiOutlineArrowNarrowRight className="ms-2" />
-                                </Link>
-                            </div>
+            {/* --- HERO SECTION (CON 3D) --- */}
+            <HeroWrapper>
+                <section className={styles.heroSectionModern}>
+                    <Container className="position-relative z-3">
+                        <Row className="align-items-center">
+                            <Col lg={7}>
+                                <div className={styles.badgePowa}>
+                                    <FaMapMarkerAlt className="me-2" /> Hub Tecnológico en Quilmes & Zona Sur
+                                </div>
+                                <h1 className={styles.heroTitleMain}>
+                                    Transformamos Ideas en <span className={styles.textGradient}>Software de Alto Impacto.</span>
+                                </h1>
+                                <p className={styles.heroSubtitleModern}>
+                                    No solo creamos webs; desarrollamos la <strong>infraestructura digital</strong> que tu empresa necesita para escalar.
+                                    Ingeniería Senior aplicada a negocios de <strong>Todo el Mundo.</strong>
+                                </p>
+                                <div className="d-flex flex-wrap gap-3 mt-4">
+                                    <Link href="/contact" className={`${styles.btnPowaPrimary} text-decoration-none`}>
+                                        Consultoría Gratuita <FaRocket className="ms-2" />
+                                    </Link>
+                                    <Link href="/servicios" className={`${styles.btnPowaOutline} text-decoration-none`}>
+                                        Nuestras Soluciones <HiOutlineArrowNarrowRight className="ms-2" />
+                                    </Link>
+                                </div>
 
-                            {/* Trust Badges */}
-                            <div className={styles.heroTrustBadges}>
-                                <span className={styles.trustBadge}>
-                                    <FaShieldAlt className={styles.trustBadgeIcon} />
-                                    100% Propiedad Intelectual
-                                </span>
-                                <span className={styles.trustBadge}>
-                                    <FaClock className={styles.trustBadgeIcon} />
-                                    Entregas Parciales
-                                </span>
-                                <span className={styles.trustBadge}>
-                                    <FaWhatsapp className={styles.trustBadgeIcon} />
-                                    Soporte 24/7
-                                </span>
-                            </div>
-                        </Col>
-                        <Col lg={5} className="d-none d-lg-block">
-                            <div className={styles.heroImageContainer}>
-                                <Image
-                                    src="/desarrollo-de-sitios-web.webp"
-                                    alt="Ingeniería de Software Powa Digital"
-                                    width={640}
-                                    height={427}
-                                    className="rounded-4 shadow-lg"
-                                    priority
-                                />
-                                <div className={styles.codeBadge}>
-                                    ={'{'}
-                                    <code>{"const stack = ['Next.js', 'Supabase', 'AI'];"}</code>
-                                    {'}'}
+                                {/* Trust Badges */}
+                                <div className={styles.heroTrustBadges}>
+                                    <span className={styles.trustBadge}>
+                                        <FaShieldAlt className={styles.trustBadgeIcon} />
+                                        100% Propiedad Intelectual
+                                    </span>
+                                    <span className={styles.trustBadge}>
+                                        <FaClock className={styles.trustBadgeIcon} />
+                                        Entregas Parciales
+                                    </span>
+                                    <span className={styles.trustBadge}>
+                                        <FaWhatsapp className={styles.trustBadgeIcon} />
+                                        Soporte 24/7
+                                    </span>
                                 </div>
-                                <div className={styles.floatingBadge}>
-                                    <FaStar className={styles.floatingBadgeIcon} />
-                                    <span>4.9/5 - Clientes</span>
+                            </Col>
+                            <Col lg={5} className="d-none d-lg-block">
+                                <div className={styles.heroImageContainer}>
+                                    <Image
+                                        src="/desarrollo-de-sitios-web.webp"
+                                        alt="Ingeniería de Software Powa Digital"
+                                        width={640}
+                                        height={427}
+                                        className="rounded-4 shadow-lg"
+                                        priority
+                                    />
+                                    <div className={styles.codeBadge}>
+                                        ={'{'}
+                                        <code>{"const stack = ['Next.js', 'Supabase', 'IA'];"}</code>
+                                        {'}'}
+                                    </div>
+                                    <div className={styles.floatingBadge}>
+                                        <FaStar className={styles.floatingBadgeIcon} />
+                                        <span>4.9/5 - Clientes</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
+                            </Col>
+                        </Row>
+                    </Container>
+                </section>
+            </HeroWrapper>
 
             {/* --- TECH STACK (INFINITE SCROLL) --- */}
             <section className={styles.techStackSection} ref={refStack}>

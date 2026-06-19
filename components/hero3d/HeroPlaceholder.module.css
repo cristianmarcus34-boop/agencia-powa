@@ -1,0 +1,186 @@
+.heroBg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, #0d1f1a 0%, #0a0a0a 70%);
+    z-index: 0;
+    overflow: hidden;
+}
+
+.particleField {
+    position: absolute;
+    inset: 0;
+}
+
+.pseudoParticles {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: transparent;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    will-change: transform, opacity;
+}
+
+/* Capa 1: partículas grandes, primer plano, movimiento amplio y rápido con easing orgánico */
+.layer1 {
+    box-shadow:
+        -120px -80px 1px rgba(0, 255, 204, 0.9),
+        150px -60px 1px rgba(0, 255, 204, 0.8),
+        -80px 100px 1px rgba(0, 255, 204, 0.7),
+        100px 90px 1px rgba(0, 255, 204, 0.85),
+        -200px 20px 1px rgba(0, 255, 204, 0.75),
+        200px -30px 1px rgba(0, 255, 204, 0.8),
+        -40px -150px 1px rgba(0, 255, 204, 0.9),
+        60px 150px 1px rgba(0, 255, 204, 0.7),
+        0px -200px 1px rgba(0, 255, 204, 0.65),
+        0px 200px 1px rgba(0, 255, 204, 0.75),
+        -160px 40px 1px rgba(0, 255, 204, 0.6),
+        180px 110px 1px rgba(0, 255, 204, 0.7),
+        -90px -190px 1px rgba(0, 255, 204, 0.8),
+        130px -170px 1px rgba(0, 255, 204, 0.75);
+    animation: orbit1 7s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite;
+}
+
+/* Capa 2: partículas medianas, movimiento curvilíneo con rebote suave */
+.layer2 {
+    box-shadow:
+        -60px -40px 0px 1px rgba(0, 255, 204, 0.5),
+        80px -100px 0px 1px rgba(0, 255, 204, 0.55),
+        -150px -20px 0px 1px rgba(0, 255, 204, 0.45),
+        170px 50px 0px 1px rgba(0, 255, 204, 0.5),
+        -90px 80px 0px 1px rgba(0, 255, 204, 0.6),
+        30px 180px 0px 1px rgba(0, 255, 204, 0.4),
+        110px -140px 0px 1px rgba(0, 255, 204, 0.5),
+        -180px -90px 0px 1px rgba(0, 255, 204, 0.55),
+        50px 60px 0px 1px rgba(0, 255, 204, 0.45),
+        -30px -30px 0px 1px rgba(0, 255, 204, 0.5);
+    animation: orbit2 9s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite reverse;
+}
+
+/* Capa 3: partículas pequeñas, alta velocidad, rotación amplia con escala pulsante */
+.layer3 {
+    width: 2px;
+    height: 2px;
+    box-shadow:
+        -30px -120px 0px rgba(0, 255, 204, 1),
+        40px -180px 0px rgba(0, 255, 204, 0.9),
+        -180px 60px 0px rgba(0, 255, 204, 0.85),
+        120px -80px 0px rgba(0, 255, 204, 0.95),
+        -110px -60px 0px rgba(0, 255, 204, 0.8),
+        90px 130px 0px rgba(0, 255, 204, 0.9),
+        200px 160px 0px rgba(0, 255, 204, 0.7),
+        -200px -150px 0px rgba(0, 255, 204, 0.85),
+        10px -60px 0px rgba(0, 255, 204, 0.9),
+        -140px 20px 0px rgba(0, 255, 204, 0.75);
+    animation: orbit3 6s cubic-bezier(0.35, 0.1, 0.65, 0.9) infinite 1s;
+}
+
+/* Capa 4: micro-partículas blancas, deriva lenta de fondo */
+.layer4 {
+    width: 1px;
+    height: 1px;
+    box-shadow:
+        70px -20px 0px rgba(255, 255, 255, 0.9),
+        -100px 140px 0px rgba(255, 255, 255, 0.7),
+        190px 30px 0px rgba(255, 255, 255, 0.8),
+        -70px -110px 0px rgba(255, 255, 255, 0.6),
+        150px 170px 0px rgba(255, 255, 255, 0.75),
+        -20px 200px 0px rgba(255, 255, 255, 0.65),
+        220px -100px 0px rgba(255, 255, 255, 0.7),
+        -190px -60px 0px rgba(255, 255, 255, 0.55);
+    animation: drift 11s linear infinite 3s;
+}
+
+/* Capa 5 (nueva): partículas ultra-lejanas, movimiento de fondo muy lento */
+.layer5 {
+    width: 1px;
+    height: 1px;
+    box-shadow:
+        40px 30px 0px rgba(0, 255, 204, 0.4),
+        -130px -70px 0px rgba(0, 255, 204, 0.35),
+        160px -120px 0px rgba(0, 255, 204, 0.3),
+        -50px 160px 0px rgba(0, 255, 204, 0.25),
+        200px 80px 0px rgba(0, 255, 204, 0.2),
+        -170px 20px 0px rgba(0, 255, 204, 0.3);
+    animation: drift 14s linear infinite 5s;
+}
+
+/* Keyframes con trayectorias elípticas compuestas */
+@keyframes orbit1 {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(1) translateX(0px) translateY(0px);
+    }
+
+    20% {
+        transform: translate(-48%, -53%) scale(1.06) translateX(30px) translateY(-20px);
+    }
+
+    40% {
+        transform: translate(-53%, -47%) scale(0.94) translateX(-15px) translateY(25px);
+    }
+
+    60% {
+        transform: translate(-47%, -52%) scale(1.05) translateX(-30px) translateY(-15px);
+    }
+
+    80% {
+        transform: translate(-52%, -48%) scale(0.96) translateX(20px) translateY(15px);
+    }
+}
+
+@keyframes orbit2 {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(1) translateX(0px) translateY(0px);
+    }
+
+    25% {
+        transform: translate(-54%, -46%) scale(0.92) translateX(-40px) translateY(30px);
+    }
+
+    50% {
+        transform: translate(-46%, -54%) scale(1.08) translateX(25px) translateY(-35px);
+    }
+
+    75% {
+        transform: translate(-52%, -48%) scale(0.95) translateX(-30px) translateY(-20px);
+    }
+}
+
+@keyframes orbit3 {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg) translateX(0px);
+    }
+
+    33% {
+        transform: translate(-49%, -51%) scale(1.04) rotate(8deg) translateX(30px);
+    }
+
+    66% {
+        transform: translate(-51%, -49%) scale(0.97) rotate(-4deg) translateX(-25px);
+    }
+}
+
+@keyframes drift {
+    0% {
+        transform: translate(-50%, -50%) translateX(0px);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) translateX(50px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) translateX(0px);
+        opacity: 0.5;
+    }
+}
