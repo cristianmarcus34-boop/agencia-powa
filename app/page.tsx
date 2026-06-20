@@ -168,7 +168,7 @@ export default function HomePage() {
     const stats = [
         { value: "50+", label: "Proyectos Entregados", icon: <FaRocket /> },
         { value: "30+", label: "Clientes Satisfechos", icon: <FaUsers /> },
-        { value: "5+", label: "Años de Experiencia", icon: <FaClock /> },
+        { value: "17+", label: "Años de Experiencia", icon: <FaClock /> },
         { value: "100%", label: "Propiedad Intelectual", icon: <FaLock /> }
     ];
 
@@ -218,7 +218,7 @@ export default function HomePage() {
                             <Col lg={5} className="d-none d-lg-block">
                                 <div className={styles.heroImageContainer}>
                                     <Image
-                                        src="/desarrollo-de-sitios-web.webp"
+                                        src="/logo-agenciadigitalpowa-redondo.png"
                                         alt="Ingeniería de Software Powa Digital"
                                         width={640}
                                         height={427}

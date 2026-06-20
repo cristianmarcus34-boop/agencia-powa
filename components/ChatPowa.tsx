@@ -25,7 +25,6 @@ export default function ChatPowa() {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Genera el link de WhatsApp con el contexto de la charla
   const getWhatsAppLink = useCallback(() => {
     const lastUserMsg = [...messages].reverse().find(m => m.role === 'user')?.text;
     const intro = "¡Hola Powa! 👋 Vengo del chat de la web.";
@@ -43,17 +42,20 @@ export default function ChatPowa() {
     audio.play().catch(() => console.log("Audio play blocked until interaction"));
   };
 
-  useEffect(() => {
-    const hasOpenedBefore = sessionStorage.getItem('powaChatAutoOpened');
-    if (!hasOpenedBefore) {
-      const timer = setTimeout(() => {
-        setIsOpen(true);
-        playRobotSound();
-        sessionStorage.setItem('powaChatAutoOpened', 'true');
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, []);
+  // ❌ AUTOAPERTURA DESHABILITADA
+  // Si más adelante querés volver a activarla, descomentá este bloque
+  //
+  // useEffect(() => {
+  //   const hasOpenedBefore = sessionStorage.getItem('powaChatAutoOpened');
+  //   if (!hasOpenedBefore) {
+  //     const timer = setTimeout(() => {
+  //       setIsOpen(true);
+  //       playRobotSound();
+  //       sessionStorage.setItem('powaChatAutoOpened', 'true');
+  //     }, 5000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -169,7 +171,6 @@ export default function ChatPowa() {
 
       {isOpen && (
         <div className={styles.chatWindow}>
-          {/* Header mapeado 100% con CSS Modules */}
           <div className={styles.header}>
             <div className={styles.headerInfo}>
               <div className={styles.headerAvatarContainer}>
@@ -199,7 +200,6 @@ export default function ChatPowa() {
                   {renderText(m.text)}
                 </div>
 
-                {/* Perfiles de selección */}
                 {i === 0 && !profile && !loading && (
                   <div className={styles.profileOptionsContainer}>
                     <button
@@ -223,7 +223,6 @@ export default function ChatPowa() {
                   </div>
                 )}
 
-                {/* Botón de WhatsApp integrado */}
                 {m.role === 'bot' && (m.text.toLowerCase().includes('whatsapp') || m.text.toLowerCase().includes('contacto')) && (
                   <a
                     href={getWhatsAppLink()}

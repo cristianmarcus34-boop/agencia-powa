@@ -19,7 +19,7 @@ export default function FooterPowa() {
             </p>
             <div className={styles.locationInfo}>
               <FaMapMarkerAlt className={styles.locationIcon} />
-              <span>Villa La Florida • San Francisco Solano • Quilmes, AR</span>
+              <span>Quilmes, Argentina</span>
             </div>
           </Col>
 
@@ -47,8 +47,9 @@ export default function FooterPowa() {
         {/* Marcado SEO: Ahora con mejor contraste para Lighthouse */}
         <div className={styles.seoTagline}>
           <p>
-            <strong>Software Factory y Consultoría IT en Zona Sur</strong>. 
-            Expertos en transformación digital para comercios y empresas de <strong>Quilmes</strong> y alrededores.
+            <strong>Software Factory &amp; Consultoría IT con base en Zona Sur.</strong><br />
+            Diseñamos, desarrollamos y escalamos productos digitales de alto impacto para empresas y comercios de <strong>Latinoamérica y el mundo</strong>.
+            Combinamos ingeniería de software senior, arquitectura cloud-native e inteligencia artificial para entregar soluciones robustas, seguras y preparadas para expandirse a cualquier mercado.
           </p>
         </div>
       </Container>
