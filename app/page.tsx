@@ -219,21 +219,13 @@ export default function HomePage() {
                                 <div className={styles.heroImageContainer}>
                                     <Image
                                         src="/logo-agenciadigitalpowa-redondo.png"
-                                        alt="Ingeniería de Software Powa Digital"
+                                        alt="Agencia Digital Powa - Logo"
                                         width={640}
                                         height={427}
                                         className="rounded-4 shadow-lg"
                                         priority
                                     />
-                                    <div className={styles.codeBadge}>
-                                        ={'{'}
-                                        <code>{"const stack = ['Next.js', 'Supabase', 'IA'];"}</code>
-                                        {'}'}
-                                    </div>
-                                    <div className={styles.floatingBadge}>
-                                        <FaStar className={styles.floatingBadgeIcon} />
-                                        <span>4.9/5 - Clientes</span>
-                                    </div>
+
                                 </div>
                             </Col>
                         </Row>

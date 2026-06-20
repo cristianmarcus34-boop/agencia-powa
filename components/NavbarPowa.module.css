@@ -13,7 +13,7 @@
 
 .navbarScrolled {
   /* Fondo sólido y oscuro para que el texto blanco/cian resalte perfectamente */
-  background-color: rgba(10, 15, 26, 0.98); 
+  background-color: rgba(10, 15, 26, 0.98);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   padding: 0.6rem 0;
@@ -24,15 +24,15 @@
 /* --- SOLUCIÓN AL LOGO (Aspect Ratio & Delivery) --- */
 .logoWrapper {
   /* Tamaño fijo optimizado para el logo */
-  width: 44px; 
+  width: 44px;
   height: 44px;
   border-radius: 10px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.03); 
+  background: rgba(255, 255, 255, 0.03);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px; 
+  padding: 4px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -47,15 +47,18 @@
 .logoImage {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Mantiene la proporción sin estirar */
+  object-fit: cover;
+  /* Mantiene la proporción sin estirar */
 }
 
 .brandText {
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
-  font-size: 1.2rem; /* Un toque más grande para balancear el logo */
+  font-size: 1.2rem;
+  /* Un toque más grande para balancear el logo */
   letter-spacing: -0.5px;
-  color: #ffffff; /* Contraste máximo */
+  color: #ffffff;
+  /* Contraste máximo */
   margin-left: 12px;
   text-transform: uppercase;
 }
@@ -65,14 +68,15 @@
   font-size: 0.85rem;
   font-weight: 600;
   /* Slate 200 (#e2e8f0) es el ideal para fondos oscuros: pasa AAA de accesibilidad */
-  color: #e2e8f0 !important; 
+  color: #e2e8f0 !important;
   padding: 0.5rem 1.1rem !important;
   transition: all 0.3s ease;
   position: relative;
 }
 
 .navLink:hover {
-  color: #22d3ee !important; /* Cyan 400: Más vibrante y accesible que el cian pálido */
+  color: #22d3ee !important;
+  /* Cyan 400: Más vibrante y accesible que el cian pálido */
   transform: translateY(-1px);
 }
 
@@ -124,11 +128,12 @@
 }
 
 .badgeSoon {
-  background: #22d3ee; 
+  background: #22d3ee;
   font-size: 8px;
   padding: 1px 7px;
   border-radius: 20px;
-  color: #0f172a; /* Texto oscuro sobre fondo claro: Contraste perfecto */
+  color: #0f172a;
+  /* Texto oscuro sobre fondo claro: Contraste perfecto */
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -137,11 +142,13 @@
 .contactBtn {
   background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 100%);
   border: none;
-  color: #0f172a; /* Contraste oscuro sobre fondo brillante */
+  color: #0f172a;
+  /* Contraste oscuro sobre fondo brillante */
   padding: 9px 22px;
   border-radius: 12px;
   font-weight: 800;
-  font-size: 0.75rem; /* Más compacto y estilizado estilo tech */
+  font-size: 0.75rem;
+  /* Más compacto y estilizado estilo tech */
   letter-spacing: 0.5px;
   text-transform: uppercase;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -162,17 +169,48 @@
   padding: 0.5rem;
 }
 
+.brandTextStack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  line-height: 1.2;
+}
+
+.brandName {
+  font-family: var(--font-orbitron), 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  color: #22d3ee;
+  text-transform: uppercase;
+}
+
+.brandTagline {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
 @media (max-width: 991px) {
   .navbarBase {
-    background-color: #0a0f1a !important; /* Fondo sólido en móvil para evitar transparencias raras */
+    background-color: #0a0f1a !important;
+    /* Fondo sólido en móvil para evitar transparencias raras */
   }
-  
-  .navbarTransparent, .navbarScrolled {
+
+  .navbarTransparent,
+  .navbarScrolled {
     padding: 0.8rem 0;
   }
 
   .navDivider {
-    display: none; /* Ocultamos la barra separadora en el menú vertical desplegable */
+    display: none;
+    /* Ocultamos la barra separadora en el menú vertical desplegable */
   }
 
   .navLinkLab {

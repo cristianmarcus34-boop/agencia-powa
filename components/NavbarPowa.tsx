@@ -52,30 +52,31 @@ export default function NavbarPowa() {
     >
       <Container>
         {/* SOLUCIÓN HIDRATACIÓN BRAND: Usamos Navbar.Brand con 'as={Link}' nativo de React-Bootstrap */}
-        <Navbar.Brand 
+        <Navbar.Brand
           as={Link}
-          href="/" 
-          className="d-flex align-items-center text-decoration-none" 
+          href="/"
+          className="d-flex align-items-center text-decoration-none"
           onClick={closeMenu}
         >
           <div className={styles.logoWrapper}>
             <Image
-              src="/logo-agenciadigitalpowa-cuadrado.jpg"
+              src="/logo-agenciadigitalpowa-redondo.png"
               alt="Powa Digital Logo"
-              width={40}
-              height={40}
+              width={50}
+              height={50}
               className={styles.logoImage}
               priority
               quality={85}
             />
           </div>
-          <span className={styles.brandText}>
-            Powa <span className="text-gradient">Digital</span>
-          </span>
+          <div className={styles.brandTextStack}>
+            <span className={styles.brandName}>Powa</span>
+            <span className={styles.brandTagline}>Agencia Digital</span>
+          </div>
         </Navbar.Brand>
 
-        <Navbar.Toggle 
-          aria-controls="responsive-navbar-nav" 
+        <Navbar.Toggle
+          aria-controls="responsive-navbar-nav"
           className={styles.toggle}
         />
 

@@ -10,12 +10,20 @@ import "./globals.css";
 
 // 3. Componentes globales y Loading centralizado
 import { ToastContainer } from 'react-toastify';
-import ChatPowa from "@/components/ChatPowa"; 
+import ChatPowa from "@/components/ChatPowa";
 import NavbarPowa from "@/components/NavbarPowa";
 import FooterPowa from "@/components/FooterPowa";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Orbitron } from 'next/font/google';
+
+const orbitron = Orbitron({
+  subsets: ['latin'],
+  variable: '--font-orbitron',
+  weight: ['700', '900'],
+  display: 'swap',
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,11 +51,11 @@ export const metadata: Metadata = {
   },
   description: "Agencia de software y diseño web en Villa La Florida, San Francisco Solano y Quilmes. Creamos ecosistemas digitales de alto impacto con Next.js e IA.",
   keywords: [
-    "Desarrollo web Quilmes", 
-    "Software Villa La Florida", 
-    "Agencia Digital San Francisco Solano", 
-    "Programación Zona Sur", 
-    "Páginas Web Quilmes", 
+    "Desarrollo web Quilmes",
+    "Software Villa La Florida",
+    "Agencia Digital San Francisco Solano",
+    "Programación Zona Sur",
+    "Páginas Web Quilmes",
     "Next.js Argentina"
   ],
   applicationName: "Powa Digital",
@@ -90,9 +98,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className="scroll-smooth">
+    <html lang="es" className={`${orbitron.variable}`}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        
+
         {/* El LoadingScreen ahora cubre absolutamente todo desde el root */}
         <LoadingScreen />
 
@@ -110,17 +118,17 @@ export default function RootLayout({
         />
 
         <NavbarPowa />
-        
+
         <main className="min-h-[80vh]">
           {children}
         </main>
 
         <ChatPowa />
         <FooterPowa />
-        
-        <ToastContainer 
-          position="bottom-right" 
-          theme="dark" 
+
+        <ToastContainer
+          position="bottom-right"
+          theme="dark"
           autoClose={4000}
           hideProgressBar={false}
           closeOnClick
