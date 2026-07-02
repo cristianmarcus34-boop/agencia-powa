@@ -40,7 +40,6 @@ const AVAILABLE_SERVICES: FormServiceItem[] = [
 
 export default function ContactPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitSuccess, setSubmitSuccess] = useState(false);
 
     const {
         register,
@@ -59,6 +58,7 @@ export default function ContactPage() {
         }
     });
 
+    // ✅ URL DE FORMSPREE (verificá que sea correcta)
     const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_URL || 'https://formspree.io/f/mzzgoaon';
     const WHATSAPP_LINK = `https://wa.me/5491138305837?text=Hola%20Powa%20Digital!%20Me%20gustaría%20consultar%20por%20un%20proyecto...`;
 
@@ -78,52 +78,59 @@ export default function ContactPage() {
         }
     }, [shouldShowBudget, unregister]);
 
-    const onSubmit = async (data: ContactFormData) => {
+    // ✅ MÉTODO SIMPLE: Envío con form + redirección manual
+    const onSubmit = (data: ContactFormData) => {
         if (!FORMSPREE_URL) {
-            toast.error('❌ Error de configuración. Contactá al administrador.');
+            toast.error('❌ Error de configuración.');
             return;
         }
 
         setIsSubmitting(true);
-        setSubmitSuccess(false);
 
         try {
             const readableServices = data.services.map(
                 id => AVAILABLE_SERVICES.find(s => s.id === id)?.label || id
             );
 
-            const formData = new FormData();
-            formData.append('name', data.name);
-            formData.append('email', data.email);
-            formData.append('message', data.message);
-            formData.append('budget', data.budget || 'No especificado');
-            formData.append('services', readableServices.join(', '));
-            formData.append('_subject', 'Nuevo proyecto desde agenciadigitalpowa.com');
-            formData.append('_captcha', 'false');
+            // ✅ Crear form oculto
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = FORMSPREE_URL;
 
-            const response = await fetch(FORMSPREE_URL, {
-                method: 'POST',
-                body: formData,
-                redirect: 'manual',
+            const fields = {
+                name: data.name,
+                email: data.email,
+                message: data.message,
+                budget: data.budget || 'No especificado',
+                services: readableServices.join(', '),
+                _subject: 'Nuevo proyecto desde agenciadigitalpowa.com',
+                _captcha: 'false'
+            };
+
+            Object.entries(fields).forEach(([key, value]) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
             });
 
-            // ✅ Si la respuesta es exitosa (200, 302, o cualquier ok)
-            if (response.status === 200 || response.status === 302 || response.ok) {
-                setSubmitSuccess(true);
-                toast.success('🎉 ¡Mensaje enviado! Te contactaremos pronto.');
-                reset();
+            document.body.appendChild(form);
 
-                // ✅ Redirigir después de un pequeño delay para que se vea el toast
-                setTimeout(() => {
-                    window.location.href = 'https://agencia-powa.vercel.app/gracias';
-                }, 1500);
-            } else {
-                const result = await response.json();
-                toast.error(`❌ Error: ${result.error || 'Intenta nuevamente.'}`);
-            }
+            // ✅ Enviar y redirigir manualmente
+            form.submit();
+
+            // ✅ Redirigir a gracias después del envío
+            setTimeout(() => {
+                window.location.href = 'https://agencia-powa.vercel.app/gracias';
+            }, 2000);
+
+            toast.success('🎉 ¡Mensaje enviado!');
+            reset();
+
         } catch (error) {
             console.error('Error:', error);
-            toast.error('❌ Error de conexión con el servidor.');
+            toast.error('❌ Error al enviar el formulario.');
         } finally {
             setIsSubmitting(false);
         }
