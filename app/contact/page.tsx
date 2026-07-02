@@ -77,7 +77,6 @@ export default function ContactPage() {
         }
     }, [shouldShowBudget, unregister]);
 
-    // ✅ NUEVO: Envío con fetch + redirección manual
     const onSubmit = async (data: ContactFormData) => {
         if (!FORMSPREE_URL) {
             toast.error('❌ Error de configuración. Contactá al administrador.');
@@ -100,16 +99,18 @@ export default function ContactPage() {
             formData.append('_subject', 'Nuevo proyecto desde agenciadigitalpowa.com');
             formData.append('_captcha', 'false');
 
+            // ✅ FETCH CON REDIRECT: 'manual'
             const response = await fetch(FORMSPREE_URL, {
                 method: 'POST',
                 body: formData,
+                redirect: 'manual',
             });
 
-            if (response.ok) {
+            if (response.status === 200 || response.status === 302 || response.ok) {
                 toast.success('🎉 ¡Mensaje enviado! Te contactaremos pronto.');
                 reset();
-                // ✅ REDIRECCIÓN MANUAL
-                window.location.href = 'https://agencia-powa.vercel.app/gracias';
+                // ✅ Redirigir manualmente con window.location.replace
+                window.location.replace('https://agencia-powa.vercel.app/gracias');
             } else {
                 const result = await response.json();
                 toast.error(`❌ Error: ${result.error || 'Intenta nuevamente.'}`);
