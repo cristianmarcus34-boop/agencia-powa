@@ -27,7 +27,14 @@ export default function FooterPowa() {
           <Col md={6}>
             <div className={styles.footerRight}>
               <div className={styles.socialWrapper}>
-                <a href="https://github.com/CristianMarcus" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Visitar perfil de GitHub de Powa Digital">
+                <a
+                  href="https://wa.me/5491138305837"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.socialLink}
+                  aria-label="Consultar por WhatsApp"
+                  title="Consultar por WhatsApp"
+                >
                   <FaGithub />
                 </a>
                 <a href="https://www.linkedin.com/in/cristian-marcus2025/" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Visitar perfil de LinkedIn de Powa Digital">

@@ -1432,4 +1432,31 @@
     .diagnosticoBeneficios li {
         font-size: 0.8rem;
     }
+
+    .trustBadgeLink {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--slate-400);
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-decoration: none !important;
+        transition: all 0.3s ease;
+        padding: 6px 12px;
+        border-radius: 8px;
+        background: rgba(34, 211, 238, 0.05);
+        border: 1px solid rgba(34, 211, 238, 0.08);
+    }
+
+    .trustBadgeLink:hover {
+        color: var(--cyan-powa);
+        background: rgba(34, 211, 238, 0.1);
+        border-color: rgba(34, 211, 238, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .trustBadgeLink .trustBadgeIcon {
+        color: var(--cyan-powa);
+        font-size: 0.9rem;
+    }
 }

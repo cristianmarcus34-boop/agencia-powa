@@ -232,6 +232,11 @@ export default function HomePage() {
                                         <FaWhatsapp className={styles.trustBadgeIcon} />
                                         Soporte 24/7
                                     </span>
+                                    {/* ✅ NUEVO: Enlace a Planes de Mantenimiento */}
+                                    <Link href="/planes" className={styles.trustBadgeLink}>
+                                        <FaShieldAlt className={styles.trustBadgeIcon} />
+                                        Planes de Mantenimiento
+                                    </Link>
                                 </div>
                             </Col>
                             <Col lg={5} className="d-none d-lg-block">
@@ -609,6 +614,10 @@ export default function HomePage() {
                                 </Link>
                                 <Link href="/faq" className={styles.btnCtaSecondary}>
                                     Ver Preguntas Frecuentes
+                                </Link>
+                                {/* ✅ NUEVO: Enlace directo a Planes de Mantenimiento */}
+                                <Link href="/planes" className={styles.btnCtaSecondary}>
+                                    Ver Planes de Mantenimiento
                                 </Link>
                             </div>
                             <div className={styles.ctaTrustBadges}>

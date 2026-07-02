@@ -1,14 +1,17 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { Container, Accordion, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import Accordion from 'react-bootstrap/Accordion';
+import Link from 'next/link';
 import {
   FaCode, FaBolt, FaShieldAlt, FaWhatsapp,
   FaCheckCircle, FaClock, FaLock, FaHandshake,
   FaRocket, FaStar, FaUsers, FaShieldVirus,
   FaMobileAlt, FaPlug, FaCloudUploadAlt, FaChartLine,
   FaUserTie, FaFileContract, FaQuestionCircle,
-  FaSearch, FaFilter, FaTags
+  FaSearch, FaFilter, FaTags, FaServer, FaDatabase,
+  FaArrowRight
 } from 'react-icons/fa';
 import Script from 'next/script';
 import styles from './faq.module.css';
@@ -21,6 +24,7 @@ interface FAQItem {
   readonly category: 'trust' | 'process' | 'technical' | 'business' | 'postlaunch';
   readonly highlighted?: boolean;
   readonly icon?: React.ReactNode;
+  readonly link?: string;
 }
 
 interface Category {
@@ -40,6 +44,8 @@ const TECH_ICONS: readonly { icon: React.ReactNode; label: string; tooltip: stri
   { icon: <FaCode />, label: 'Clean Code', tooltip: 'Código Limpio y Arquitecturado' },
   { icon: <FaBolt />, label: 'Performance', tooltip: 'Rendimiento Crítico Optimizado' },
   { icon: <FaShieldAlt />, label: 'Security', tooltip: 'Seguridad Perimetral Avanzada' },
+  { icon: <FaServer />, label: 'Infraestructura', tooltip: 'Arquitectura Escalable y Resiliente' },
+  { icon: <FaDatabase />, label: 'Data', tooltip: 'Modelado y Gestión de Datos' },
 ] as const;
 
 const CATEGORIES: Category[] = [
@@ -228,16 +234,18 @@ export default function FaqPage() {
     {
       id: 'postlaunch-2',
       category: 'postlaunch',
+      highlighted: true,
       question: "¿Qué costos adicionales puedo esperar después del desarrollo?",
       icon: <FaFileContract />,
-      answer: "Somos 100% transparentes. Costos fijos incluidos: hosting/AWS por 3 meses, dominio .com por 1 año, SSL, herramientas de analytics. Costos opcionales: mantenimiento mensual desde $200/mes, marketing digital, integraciones premium, creación de contenido. Nuestro compromiso: documento detallado antes de firmar. Sin sorpresas."
+      answer: "🔍 Somos 100% transparentes. No hay costos ocultos.\n\n✅ Todo lo que ya pagaste incluye: hosting, SSL y analytics.\n\n📌 Solo costos fijos:\n• Dominio .com: ~$15/año (a tu nombre, lo comprás vos o te lo gestionamos)\n\n📌 Costos opcionales (solo si los contratás):\n• Mantenimiento: desde $100/mes\n• Marketing digital: según campaña\n• Integraciones premium: según necesidad\n• Contenido: según volumen\n\n💡 El hosting en Vercel es gratuito siempre que el tráfico no supere los 100 GB/mes y las funciones no superen 1M de ejecuciones mensuales. Si el proyecto crece más allá de eso, recomendamos migrar a un plan de pago por $20/mes.\n\nTe entregamos un documento detallado antes de firmar. Si no lo ves en el papel, no te lo cobramos."
     },
     {
       id: 'postlaunch-3',
       category: 'postlaunch',
       question: "¿Proveen servicios de soporte y acuerdos de nivel de servicio (SLA)?",
       icon: <FaUsers />,
-      answer: "Sí. El despliegue a producción es solo el inicio de la relación técnica. Ofrecemos planes avanzados de mantenimiento preventivo, monitoreo continuo de infraestructura, auditorías periódicas de seguridad y optimizaciones de rendimiento en tiempo real, garantizando la continuidad operativa de tu negocio 24/7."
+      answer: "Sí. El despliegue a producción es solo el inicio de la relación técnica. Ofrecemos planes avanzados de mantenimiento preventivo, monitoreo continuo de infraestructura, auditorías periódicas de seguridad y optimizaciones de rendimiento en tiempo real, garantizando la continuidad operativa de tu negocio 24/7.",
+      link: "/planes"
     }
   ], []);
 
@@ -386,6 +394,12 @@ export default function FaqPage() {
                       >
                         <div className={styles.bodyContent}>
                           {faq.answer}
+                          {faq.link && (
+                            <Link href={faq.link} className={styles.faqLink}>
+                              <FaArrowRight className={styles.faqLinkIcon} />
+                              Ver planes de mantenimiento
+                            </Link>
+                          )}
                         </div>
                       </Accordion.Body>
                     </Accordion.Item>
@@ -445,8 +459,6 @@ export default function FaqPage() {
             </div>
           </footer>
         </Container>
-
-
       </div>
     </>
   );
