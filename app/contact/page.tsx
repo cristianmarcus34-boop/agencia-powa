@@ -58,7 +58,6 @@ export default function ContactPage() {
         }
     });
 
-    // ✅ ACTUALIZAR CON TU URL DE FORMSPREE
     const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_URL || 'https://formspree.io/f/mzzgoaon';
     const WHATSAPP_LINK = `https://wa.me/5491138305837?text=Hola%20Powa%20Digital!%20Me%20gustaría%20consultar%20por%20un%20proyecto...`;
 
@@ -78,8 +77,8 @@ export default function ContactPage() {
         }
     }, [shouldShowBudget, unregister]);
 
-    // ✅ NUEVO: Envío directo con formulario HTML (sin fetch)
-    const onSubmit = (data: ContactFormData) => {
+    // ✅ NUEVO: Envío con fetch + redirección manual
+    const onSubmit = async (data: ContactFormData) => {
         if (!FORMSPREE_URL) {
             toast.error('❌ Error de configuración. Contactá al administrador.');
             return;
@@ -92,47 +91,40 @@ export default function ContactPage() {
                 id => AVAILABLE_SERVICES.find(s => s.id === id)?.label || id
             );
 
-            // ✅ Crear formulario oculto y enviar directamente
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = FORMSPREE_URL;
+            const formData = new FormData();
+            formData.append('name', data.name);
+            formData.append('email', data.email);
+            formData.append('message', data.message);
+            formData.append('budget', data.budget || 'No especificado');
+            formData.append('services', readableServices.join(', '));
+            formData.append('_subject', 'Nuevo proyecto desde agenciadigitalpowa.com');
+            formData.append('_captcha', 'false');
 
-            const fields = {
-                name: data.name,
-                email: data.email,
-                message: data.message,
-                budget: data.budget || 'No especificado',
-                services: readableServices.join(', '),
-                _subject: 'Nuevo proyecto desde agenciadigitalpowa.com',
-                _captcha: 'false',
-                _redirect: 'https://agencia-powa.vercel.app/gracias'
-            };
-
-            Object.entries(fields).forEach(([key, value]) => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = key;
-                input.value = value;
-                form.appendChild(input);
+            const response = await fetch(FORMSPREE_URL, {
+                method: 'POST',
+                body: formData,
             });
 
-            document.body.appendChild(form);
-            form.submit();
-
-            toast.success('🎉 ¡Mensaje enviado! Te contactaremos pronto.');
-            reset();
-
+            if (response.ok) {
+                toast.success('🎉 ¡Mensaje enviado! Te contactaremos pronto.');
+                reset();
+                // ✅ REDIRECCIÓN MANUAL
+                window.location.href = 'https://agencia-powa.vercel.app/gracias';
+            } else {
+                const result = await response.json();
+                toast.error(`❌ Error: ${result.error || 'Intenta nuevamente.'}`);
+            }
         } catch (error) {
             console.error('Error:', error);
-            toast.error('❌ Error al enviar el formulario.');
+            toast.error('❌ Error de conexión con el servidor.');
         } finally {
             setIsSubmitting(false);
         }
     };
 
     const testimonials = [
-        { quote: "Powa transformó nuestra idea en un producto real en tiempo récord. Su equipo es excepcional.", author: "Carlos R.", role: "CEO, FintechPro" },
-        { quote: "La atención y el expertise técnico superaron nuestras expectativas. Recomendados.", author: "Laura M.", role: "CMO, EcomStore" }
+        { quote: "Powa transformó nuestra idea en un producto real en tiempo récord.", author: "Carlos R.", role: "CEO, FintechPro" },
+        { quote: "La atención y el expertise técnico superaron nuestras expectativas.", author: "Laura M.", role: "CMO, EcomStore" }
     ];
 
     return (
