@@ -77,7 +77,8 @@ export default function ContactPage() {
         }
     }, [shouldShowBudget, unregister]);
 
-    const onSubmit = async (data: ContactFormData) => {
+    // ✅ MÉTODO SIMPLE: Envío con form tradicional (sin fetch)
+    const onSubmit = (data: ContactFormData) => {
         if (!FORMSPREE_URL) {
             toast.error('❌ Error de configuración. Contactá al administrador.');
             return;
@@ -90,32 +91,43 @@ export default function ContactPage() {
                 id => AVAILABLE_SERVICES.find(s => s.id === id)?.label || id
             );
 
-            const formData = new FormData();
-            formData.append('name', data.name);
-            formData.append('email', data.email);
-            formData.append('message', data.message);
-            formData.append('budget', data.budget || 'No especificado');
-            formData.append('services', readableServices.join(', '));
-            formData.append('_subject', 'Nuevo proyecto desde agenciadigitalpowa.com');
-            formData.append('_captcha', 'false');
+            // ✅ Crear form oculto
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = FORMSPREE_URL;
 
-            const response = await fetch(FORMSPREE_URL, {
-                method: 'POST',
-                body: formData,
-                redirect: 'manual',
+            const fields = {
+                name: data.name,
+                email: data.email,
+                message: data.message,
+                budget: data.budget || 'No especificado',
+                services: readableServices.join(', '),
+                _subject: 'Nuevo proyecto desde agenciadigitalpowa.com',
+                _captcha: 'false'
+            };
+
+            Object.entries(fields).forEach(([key, value]) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
             });
 
-            if (response.status === 200 || response.status === 302 || response.ok) {
-                toast.success('🎉 ¡Mensaje enviado! Te contactaremos pronto.');
-                reset();
+            document.body.appendChild(form);
+            form.submit();
+
+            toast.success('🎉 ¡Mensaje enviado! Te contactaremos pronto.');
+            reset();
+
+            // ✅ Redirigir a gracias después del envío
+            setTimeout(() => {
                 window.location.href = 'https://agencia-powa.vercel.app/gracias';
-            } else {
-                const result = await response.json();
-                toast.error(`❌ Error: ${result.error || 'Intenta nuevamente.'}`);
-            }
+            }, 1500);
+
         } catch (error) {
             console.error('Error:', error);
-            toast.error('❌ Error de conexión con el servidor.');
+            toast.error('❌ Error al enviar el formulario.');
         } finally {
             setIsSubmitting(false);
         }
