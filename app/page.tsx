@@ -232,7 +232,7 @@ export default function HomePage() {
                                         <FaWhatsapp className={styles.trustBadgeIcon} />
                                         Soporte 24/7
                                     </span>
-                                    {/* ✅ NUEVO: Enlace a Planes de Mantenimiento */}
+                                    {/* ✅ NUEVO: Enlace a Planes de Mantenimient */}
                                     <Link href="/planes" className={styles.trustBadgeLink}>
                                         <FaShieldAlt className={styles.trustBadgeIcon} />
                                         Planes de Mantenimiento
