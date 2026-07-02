@@ -1,19 +1,19 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Form, Button, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import Spinner from 'react-bootstrap/Spinner';
 import {
     FaEnvelope, FaMapMarkerAlt, FaPaperPlane, FaWhatsapp,
     FaBolt, FaUserCheck, FaShieldAlt, FaClock,
-    FaStar, FaCheckCircle, FaRocket, FaAward,
-    FaQuoteRight, FaUsers, FaCode, FaChartLine,
-    FaCloudUploadAlt // ✅ IMPORTADO CORRECTAMENTE
+    FaStar, FaRocket, FaAward,
+    FaQuoteRight, FaCode, FaChartLine,
+    FaCloudUploadAlt
 } from 'react-icons/fa';
 import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import styles from './contact.module.css';
 
-// Definición estricta del contrato de datos del Formulario
 interface ContactFormData {
     services: string[];
     name: string;
@@ -29,7 +29,6 @@ interface FormServiceItem {
     icon?: React.ReactNode;
 }
 
-// Estructuración limpia de servicios
 const AVAILABLE_SERVICES: FormServiceItem[] = [
     { id: 'web', label: 'Sistemas Web Escalables', requiresBudget: true, icon: <FaCode /> },
     { id: 'mobile', label: 'Desarrollo Mobile Nativo', requiresBudget: true, icon: <FaRocket /> },
@@ -59,7 +58,8 @@ export default function ContactPage() {
         }
     });
 
-    const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_URL;
+    // ✅ ACTUALIZAR CON TU URL DE FORMSPREE
+    const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_URL || 'https://formspree.io/f/mzzgoaon';
     const WHATSAPP_LINK = `https://wa.me/5491138305837?text=Hola%20Powa%20Digital!%20Me%20gustaría%20consultar%20por%20un%20proyecto...`;
 
     const selectedServiceIds = useWatch({
@@ -78,9 +78,10 @@ export default function ContactPage() {
         }
     }, [shouldShowBudget, unregister]);
 
-    const onSubmit = async (data: ContactFormData) => {
+    // ✅ NUEVO: Envío directo con formulario HTML (sin fetch)
+    const onSubmit = (data: ContactFormData) => {
         if (!FORMSPREE_URL) {
-            toast.error('❌ Configuración incompleta en el servidor.');
+            toast.error('❌ Error de configuración. Contactá al administrador.');
             return;
         }
 
@@ -91,34 +92,44 @@ export default function ContactPage() {
                 id => AVAILABLE_SERVICES.find(s => s.id === id)?.label || id
             );
 
-            const payload = {
-                ...data,
-                services: readableServices
+            // ✅ Crear formulario oculto y enviar directamente
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = FORMSPREE_URL;
+
+            const fields = {
+                name: data.name,
+                email: data.email,
+                message: data.message,
+                budget: data.budget || 'No especificado',
+                services: readableServices.join(', '),
+                _subject: 'Nuevo proyecto desde agenciadigitalpowa.com',
+                _captcha: 'false',
+                _redirect: 'https://agencia-powa.vercel.app/gracias'
             };
 
-            const response = await fetch(FORMSPREE_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(payload),
+            Object.entries(fields).forEach(([key, value]) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
             });
 
-            if (response.ok) {
-                toast.success('🎉 ¡Mensaje enviado! Nos contactaremos pronto.');
-                reset();
-            } else {
-                toast.error('❌ Hubo un problema al enviar. Inténtalo de nuevo.');
-            }
-        } catch {
-            toast.error('❌ Error de conexión con el servidor.');
+            document.body.appendChild(form);
+            form.submit();
+
+            toast.success('🎉 ¡Mensaje enviado! Te contactaremos pronto.');
+            reset();
+
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('❌ Error al enviar el formulario.');
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    // Testimonios
     const testimonials = [
         { quote: "Powa transformó nuestra idea en un producto real en tiempo récord. Su equipo es excepcional.", author: "Carlos R.", role: "CEO, FintechPro" },
         { quote: "La atención y el expertise técnico superaron nuestras expectativas. Recomendados.", author: "Laura M.", role: "CMO, EcomStore" }
@@ -126,12 +137,10 @@ export default function ContactPage() {
 
     return (
         <div className={styles.contactWrapper}>
-            {/* ===== GLOW AMBIENTAL ===== */}
             <div className={styles.ambientGlow} />
             <div className={styles.ambientGlowSecondary} />
 
             <Container>
-                {/* ===== HEADER ===== */}
                 <header className="text-center mb-5">
                     <span className={styles.badgePowa}>HABLEMOS DE TU PROYECTO</span>
                     <h1 className={styles.contactTitleMain}>
@@ -143,7 +152,6 @@ export default function ContactPage() {
                 </header>
 
                 <Row className="g-5">
-                    {/* ===== COLUMNA FORMULARIO ===== */}
                     <Col lg={7}>
                         <div className={styles.contactFormGlass}>
                             <div className={styles.formHeader}>
@@ -253,10 +261,8 @@ export default function ContactPage() {
                         </div>
                     </Col>
 
-                    {/* ===== COLUMNA INFORMACIÓN ===== */}
                     <Col lg={5}>
                         <div className="d-flex flex-column gap-4">
-                            {/* ===== CONTACTO DIRECTO ===== */}
                             <div className={styles.infoCardModern}>
                                 <div className={styles.iconCircle}><FaEnvelope /></div>
                                 <div>
@@ -283,7 +289,6 @@ export default function ContactPage() {
                                 </div>
                             </div>
 
-                            {/* ===== TESTIMONIOS ===== */}
                             <div className={styles.testimonialsBlock}>
                                 <h4 className={styles.testimonialsTitle}>
                                     <FaStar className={styles.testimonialsIcon} />
@@ -301,7 +306,6 @@ export default function ContactPage() {
                                 ))}
                             </div>
 
-                            {/* ===== BLOQUE DE CONFIANZA ===== */}
                             <div className={styles.trustBlock}>
                                 <h4 className={styles.trustTitle}>¿Qué pasa después?</h4>
                                 <ul className={styles.trustList}>
@@ -336,7 +340,6 @@ export default function ContactPage() {
                                 </ul>
                             </div>
 
-                            {/* ===== BADGE DE CONFIANZA ===== */}
                             <div className={styles.trustBadge}>
                                 <FaAward className={styles.trustBadgeIcon} />
                                 <span>+50 proyectos entregados con éxito</span>
