@@ -1,5 +1,3 @@
-/* servicios.module.css */
-
 /* ===== VARIABLES ===== */
 :root {
   --dark-powa: #0a0f1a;
@@ -442,6 +440,83 @@
 }
 
 /* ============================================
+   NEGOCIOS DIGITALES
+   ============================================ */
+.negocioCard {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 32px 28px;
+  height: 100%;
+  transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.negocioCard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(34, 211, 238, 0.6);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(34, 211, 238, 0.05);
+}
+
+.negocioIcon {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+}
+
+.negocioTitle {
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.negocioDesc {
+  color: var(--slate-400);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.negocioFeatures {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.negocioFeatures li {
+  color: var(--slate-400);
+  font-size: 0.85rem;
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.negocioFeatures li::before {
+  content: "▸";
+  color: var(--cyan-powa);
+  font-weight: 700;
+}
+
+.negocioLink {
+  color: var(--cyan-powa);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none !important;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.negocioLink:hover {
+  color: #ffffff;
+  gap: 12px;
+}
+
+/* ============================================
    CTA GLASS
    ============================================ */
 .ctaGlass {
@@ -622,6 +697,10 @@
   .processCard {
     padding: 24px 20px;
   }
+
+  .negocioCard {
+    padding: 24px 20px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -655,5 +734,17 @@
 
   .whyUsItem p {
     font-size: 0.85rem;
+  }
+
+  .negocioIcon {
+    font-size: 2.2rem;
+  }
+
+  .negocioTitle {
+    font-size: 1.1rem;
+  }
+
+  .negocioFeatures li {
+    font-size: 0.8rem;
   }
 }

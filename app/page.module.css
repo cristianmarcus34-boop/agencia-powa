@@ -32,7 +32,6 @@
     display: flex;
     align-items: center;
     background: transparent;
-    /* El fondo lo da el placeholder/3D */
     width: 100%;
     z-index: 1;
 }
@@ -150,48 +149,12 @@
     position: relative;
     border-radius: 1.5rem;
     overflow: hidden;
-
-    border: 0
+    border: 0;
 }
 
 .heroImageContainer img {
     width: 100%;
     height: auto;
-}
-
-.codeBadge {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(12px);
-    padding: 10px 18px;
-    border-radius: 10px;
-    color: var(--cyan-powa);
-    font-size: 0.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    font-family: monospace;
-}
-
-.floatingBadge {
-    position: absolute;
-    top: 20px;
-    left: -15px;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(12px);
-    padding: 10px 16px;
-    border-radius: 12px;
-    color: #ffffff;
-    font-size: 0.8rem;
-    font-weight: 700;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.floatingBadgeIcon {
-    color: var(--gold-powa);
 }
 
 /* ============================================
@@ -889,6 +852,203 @@
 }
 
 /* ============================================
+   🎯 DIAGNÓSTICO GRATUITO
+   ============================================ */
+.diagnosticoSection {
+    padding: 80px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.diagnosticoCard {
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.6), rgba(34, 211, 238, 0.05));
+    border: 1px solid rgba(34, 211, 238, 0.15);
+    border-radius: 32px;
+    padding: 60px 50px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+}
+
+.diagnosticoGlow {
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(34, 211, 238, 0.08), transparent 70%);
+    pointer-events: none;
+}
+
+.diagnosticoBadge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.diagnosticoTitle {
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 900;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.diagnosticoDesc {
+    color: var(--slate-400);
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    max-width: 90%;
+}
+
+.diagnosticoBeneficios {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.diagnosticoBeneficios li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--slate-300);
+    font-size: 0.95rem;
+}
+
+.diagnosticoCheck {
+    color: #10b981;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+/* Formulario */
+.diagnosticoFormWrapper {
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px;
+    padding: 32px 28px;
+    backdrop-filter: blur(12px);
+}
+
+.diagnosticoFormHeader {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.diagnosticoFormIcon {
+    font-size: 2.5rem;
+    color: var(--cyan-powa);
+    margin-bottom: 8px;
+}
+
+.diagnosticoFormHeader h4 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.diagnosticoFormHeader p {
+    color: var(--slate-400);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.diagnosticoInputGroup {
+    display: flex;
+    gap: 12px;
+}
+
+.diagnosticoInput {
+    flex: 1;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    min-width: 0;
+}
+
+.diagnosticoInput::placeholder {
+    color: var(--slate-500);
+}
+
+.diagnosticoInput:focus {
+    outline: none;
+    border-color: rgba(34, 211, 238, 0.4);
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.05);
+}
+
+.diagnosticoButton {
+    padding: 14px 28px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #22d3ee, #06b6d4);
+    color: #0f172a;
+    font-weight: 800;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.diagnosticoButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(34, 211, 238, 0.3);
+}
+
+.diagnosticoSuccess {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 1rem;
+    padding: 12px 16px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 12px;
+    color: #34d399;
+    font-weight: 500;
+    animation: fadeInUp 0.4s ease;
+}
+
+.diagnosticoSuccessIcon {
+    font-size: 1.2rem;
+}
+
+.diagnosticoFooter {
+    text-align: center;
+    color: var(--slate-500);
+    font-size: 0.75rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
    CTA FINAL
    ============================================ */
 .ctaHomeMinimal {
@@ -1046,6 +1206,23 @@
     .budgetMatchContainer {
         padding: 40px 30px;
     }
+
+    .diagnosticoCard {
+        padding: 40px 30px;
+    }
+
+    .diagnosticoDesc {
+        max-width: 100%;
+    }
+
+    .diagnosticoInputGroup {
+        flex-direction: column;
+    }
+
+    .diagnosticoButton {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1107,10 +1284,6 @@
         font-size: 1.1rem;
     }
 
-    .floatingBadge {
-        display: none;
-    }
-
     /* Budget Responsive */
     .budgetMatchSection {
         padding: 60px 0;
@@ -1155,6 +1328,28 @@
         font-size: 0.9rem;
         padding: 14px 20px;
     }
+
+    /* Diagnóstico Responsive */
+    .diagnosticoSection {
+        padding: 50px 0;
+    }
+
+    .diagnosticoCard {
+        padding: 30px 20px;
+        border-radius: 24px;
+    }
+
+    .diagnosticoTitle {
+        font-size: 1.8rem;
+    }
+
+    .diagnosticoFormWrapper {
+        padding: 24px 18px;
+    }
+
+    .diagnosticoBeneficios li {
+        font-size: 0.85rem;
+    }
 }
 
 @media (max-width: 576px) {
@@ -1190,7 +1385,6 @@
         font-size: 0.9rem;
     }
 
-    /* Budget Responsive Mobile */
     .budgetMatchContainer {
         padding: 24px 16px;
         border-radius: 20px;
@@ -1210,5 +1404,32 @@
 
     .budgetItemLabel {
         font-size: 0.75rem;
+    }
+
+    /* Diagnóstico Mobile */
+    .diagnosticoCard {
+        padding: 24px 16px;
+    }
+
+    .diagnosticoTitle {
+        font-size: 1.5rem;
+    }
+
+    .diagnosticoFormHeader h4 {
+        font-size: 1.1rem;
+    }
+
+    .diagnosticoInput {
+        font-size: 0.9rem;
+        padding: 12px 14px;
+    }
+
+    .diagnosticoButton {
+        font-size: 0.8rem;
+        padding: 12px 20px;
+    }
+
+    .diagnosticoBeneficios li {
+        font-size: 0.8rem;
     }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -25,6 +25,24 @@ import styles from './page.module.css';
 import HeroWrapper from '../components/hero3d/HeroWrapper';
 
 export default function HomePage() {
+    // ===== STATE PARA DIAGNÓSTICO =====
+    const [diagnosticoEmail, setDiagnosticoEmail] = useState('');
+    const [diagnosticoEnviado, setDiagnosticoEnviado] = useState(false);
+
+    const handleDiagnosticoSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (diagnosticoEmail) {
+            setDiagnosticoEnviado(true);
+            // Aquí iría la lógica para enviar el email
+            console.log('Email para diagnóstico:', diagnosticoEmail);
+            setTimeout(() => {
+                setDiagnosticoEnviado(false);
+                setDiagnosticoEmail('');
+            }, 5000);
+        }
+    };
+
+    // ===== HOOKS DE IN VIEW =====
     const options = { triggerOnce: true, threshold: 0.1 };
     const [refStack] = useInView(options);
     const [refServices] = useInView(options);
@@ -35,6 +53,7 @@ export default function HomePage() {
     const [refTestimonials] = useInView(options);
     const [refStats] = useInView(options);
 
+    // ===== DATA =====
     const techStack = [
         { id: "react", icon: <SiReact color="#61DAFB" />, name: "React" },
         { id: "nextjs", icon: <SiNextdotjs color="#ffffff" />, name: "Next.js" },
@@ -225,7 +244,6 @@ export default function HomePage() {
                                         className="rounded-4 shadow-lg"
                                         priority
                                     />
-
                                 </div>
                             </Col>
                         </Row>
@@ -398,6 +416,111 @@ export default function HomePage() {
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+                </Container>
+            </section>
+
+            {/* ===== 🎯 DIAGNÓSTICO GRATUITO ===== */}
+            <section className={styles.diagnosticoSection}>
+                <Container>
+                    <div className={styles.diagnosticoCard}>
+                        <div className={styles.diagnosticoGlow} />
+                        <Row className="align-items-center g-4">
+                            <Col lg={7}>
+                                <div className={styles.diagnosticoContent}>
+                                    <span className={styles.diagnosticoBadge}>🎯 GRATUITO</span>
+                                    <h2 className={styles.diagnosticoTitle}>
+                                        ¿Tu plataforma está <br />
+                                        <span className={styles.textGradient}>funcionando al máximo?</span>
+                                    </h2>
+                                    <p className={styles.diagnosticoDesc}>
+                                        Obtené un <strong>diagnóstico técnico gratuito</strong> en 24hs.
+                                        Analizamos velocidad, seguridad, SEO y escalabilidad de tu sitio actual.
+                                    </p>
+                                    <ul className={styles.diagnosticoBeneficios}>
+                                        <li>
+                                            <FaCheckCircle className={styles.diagnosticoCheck} />
+                                            <span>Análisis de performance y velocidad</span>
+                                        </li>
+                                        <li>
+                                            <FaCheckCircle className={styles.diagnosticoCheck} />
+                                            <span>Detección de cuellos de botella</span>
+                                        </li>
+                                        <li>
+                                            <FaCheckCircle className={styles.diagnosticoCheck} />
+                                            <span>Recomendaciones concretas de mejora</span>
+                                        </li>
+                                        <li>
+                                            <FaCheckCircle className={styles.diagnosticoCheck} />
+                                            <span>Sin compromiso ni obligación</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </Col>
+                            <Col lg={5}>
+                                <div className={styles.diagnosticoFormWrapper}>
+                                    <div className={styles.diagnosticoFormHeader}>
+                                        <FaRocket className={styles.diagnosticoFormIcon} />
+                                        <h4>Diagnóstico exprés</h4>
+                                        <p>Recibí tu análisis en 24hs</p>
+                                    </div>
+
+                                    {/* ✅ FORMULARIO CON WEB3FORMS - DIGITAL POWA */}
+                                    <form
+                                        action="https://api.web3forms.com/submit"
+                                        method="POST"
+                                        className={styles.diagnosticoForm}
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="access_key"
+                                            value="6a22a375-6730-499d-ab20-b86e359f069d"
+                                        />
+                                        <input
+                                            type="hidden"
+                                            name="subject"
+                                            value="📋 Nuevo diagnóstico técnico - Agencia Digital Powa"
+                                        />
+                                        <input
+                                            type="hidden"
+                                            name="from_name"
+                                            value="Agencia Digital Powa"
+                                        />
+                                        <input
+                                            type="hidden"
+                                            name="redirect"
+                                            value="https://agencia-powa.vercel.app/gracias"
+                                        />
+
+                                        {/* Campo para identificar el origen */}
+                                        <input
+                                            type="hidden"
+                                            name="origen"
+                                            value="Diagnóstico - Página Principal"
+                                        />
+
+                                        <div className={styles.diagnosticoInputGroup}>
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                className={styles.diagnosticoInput}
+                                                placeholder="Tu email"
+                                                required
+                                            />
+                                            <button
+                                                type="submit"
+                                                className={styles.diagnosticoButton}
+                                            >
+                                                Quiero mi diagnóstico
+                                            </button>
+                                        </div>
+                                        <p className={styles.diagnosticoFooter}>
+                                            🔒 Tu información está segura. No compartimos tus datos.
+                                        </p>
+                                    </form>
                                 </div>
                             </Col>
                         </Row>

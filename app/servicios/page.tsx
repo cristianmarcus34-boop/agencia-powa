@@ -109,6 +109,48 @@ const SERVICES_DATA: ServiceData[] = [
       "📊 Feedback de usuarios reales",
       "🔄 Iteración continua"
     ]
+  },
+  // ============================================================ //
+  // 🚀 NUEVOS SERVICIOS PARA EMPRENDEDORES
+  // ============================================================ //
+  {
+    icon: <FaRocket />,
+    title: "Lanzamiento de Micro-SaaS",
+    description: "Desarrollamos tu software como servicio para que puedas facturar mensualmente sin inversión inicial.",
+    fullDescription: "Creamos herramientas digitales que se pagan por suscripción mensual. Así generás ingresos recurrentes sin necesidad de stock, logística ni grandes inversiones. Te ayudamos a identificar oportunidades en tu nicho y desarrollamos un MVP funcional en 4 a 6 semanas.",
+    stack: ["Next.js", "Supabase", "Stripe", "MVP en 4-6 semanas"],
+    benefits: [
+      "🚀 MVP en 4-6 semanas",
+      "💰 Ingresos recurrentes",
+      "📈 Escalable desde el día 1",
+      "🔄 Suscripción mensual"
+    ]
+  },
+  {
+    icon: <FaCloudUploadAlt />,
+    title: "Automatización de Procesos",
+    description: "Conectamos tus herramientas para que trabajen solas y ahorres horas de trabajo manual.",
+    fullDescription: "Tu negocio usa múltiples herramientas (WhatsApp, Google Sheets, CRMs, sistemas de stock) pero no se comunican entre sí. Nosotros las integramos y automatizamos flujos completos de trabajo. Así eliminamos tareas repetitivas, reducimos errores y liberamos tu tiempo para lo que realmente importa.",
+    stack: ["Node.js", "APIs", "Webhooks", "Automatización"],
+    benefits: [
+      "🤖 Procesos automatizados",
+      "🔗 Integración con tus herramientas",
+      "📊 Dashboard de control",
+      "💸 Ahorro de tiempo y dinero"
+    ]
+  },
+  {
+    icon: <FaBrain />,
+    title: "Productos Digitales Rentables",
+    description: "Creamos activos digitales que generan ingresos sin esfuerzo adicional. Vos diseñás, nosotros lo construimos.",
+    fullDescription: "Convertimos tu conocimiento en un producto digital que podés vender sin necesidad de stock ni logística. Desde plantillas especializadas hasta sistemas completos, creamos activos digitales que generan ingresos pasivos. El producto es 100% tuyo y podés comercializarlo sin depender de nosotros.",
+    stack: ["Next.js", "Tailwind CSS", "UI/UX", "Vercel"],
+    benefits: [
+      "💼 Tu producto, tu propiedad",
+      "🔄 Ingresos pasivos",
+      "📦 Sin stock ni logística",
+      "📈 Escalable sin esfuerzo"
+    ]
   }
 ];
 
