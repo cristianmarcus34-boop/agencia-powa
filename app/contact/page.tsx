@@ -58,7 +58,9 @@ export default function ContactPage() {
         }
     });
 
-    const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_URL || 'https://formspree.io/f/mzzgoaon';
+    // ✅ WEB3FORMS CONFIGURACIÓN
+    const WEB3FORMS_URL = 'https://api.web3forms.com/submit';
+    const WEB3FORMS_ACCESS_KEY = '6a22a375-6730-499d-ab20-b86e359f069d';
     const WHATSAPP_LINK = `https://wa.me/5491138305837?text=Hola%20Powa%20Digital!%20Me%20gustaría%20consultar%20por%20un%20proyecto...`;
 
     const selectedServiceIds = useWatch({
@@ -77,13 +79,8 @@ export default function ContactPage() {
         }
     }, [shouldShowBudget, unregister]);
 
-    // ✅ MÉTODO SIMPLE: Envío con form tradicional (sin fetch)
+    // ✅ ENVÍO CON WEB3FORMS
     const onSubmit = (data: ContactFormData) => {
-        if (!FORMSPREE_URL) {
-            toast.error('❌ Error de configuración. Contactá al administrador.');
-            return;
-        }
-
         setIsSubmitting(true);
 
         try {
@@ -94,16 +91,20 @@ export default function ContactPage() {
             // ✅ Crear form oculto
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = FORMSPREE_URL;
+            form.action = WEB3FORMS_URL;
 
             const fields = {
+                access_key: WEB3FORMS_ACCESS_KEY,
                 name: data.name,
                 email: data.email,
                 message: data.message,
                 budget: data.budget || 'No especificado',
                 services: readableServices.join(', '),
-                _subject: 'Nuevo proyecto desde agenciadigitalpowa.com',
-                _captcha: 'false'
+                subject: 'Nuevo proyecto desde agenciadigitalpowa.com',
+                from_name: 'Agencia Digital Powa',
+                redirect: 'https://agencia-powa.vercel.app/gracias', // ✅ Funciona en Web3Forms
+                // Campo oculto para evitar spam
+                botcheck: ''
             };
 
             Object.entries(fields).forEach(([key, value]) => {
@@ -119,11 +120,6 @@ export default function ContactPage() {
 
             toast.success('🎉 ¡Mensaje enviado! Te contactaremos pronto.');
             reset();
-
-            // ✅ Redirigir a gracias después del envío
-            setTimeout(() => {
-                window.location.href = 'https://agencia-powa.vercel.app/gracias';
-            }, 1500);
 
         } catch (error) {
             console.error('Error:', error);
