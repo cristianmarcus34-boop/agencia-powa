@@ -36,7 +36,7 @@ export default function FooterPowa() {
                 <a href="https://www.instagram.com/agenciadigitalpowa" target="_blank" rel="noopener noreferrer" className={`${styles.socialLink} ${styles.instagram}`} aria-label="Seguir en Instagram a Powa Digital">
                   <FaInstagram />
                 </a>
-                <a href="mailto:cristianmarcus34@gmail.com" className={styles.socialLink} aria-label="Enviar correo electrónico a Powa Digital">
+                <a href="mailto:agenciadigitalpowa@gmail.com" className={styles.socialLink} aria-label="Enviar correo electrónico a Powa Digital">
                   <FaEnvelope />
                 </a>
               </div>
