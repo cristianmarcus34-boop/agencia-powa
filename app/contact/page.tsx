@@ -79,7 +79,7 @@ export default function ContactPage() {
         }
     }, [shouldShowBudget, unregister]);
 
-    // ✅ ENVÍO CON WEB3FORMS
+    // ✅ ENVÍO CON WEB3FORMS + REDIRECCIÓN CON DELAY
     const onSubmit = (data: ContactFormData) => {
         setIsSubmitting(true);
 
@@ -100,10 +100,9 @@ export default function ContactPage() {
                 message: data.message,
                 budget: data.budget || 'No especificado',
                 services: readableServices.join(', '),
-                subject: 'Nuevo proyecto desde agenciadigitalpowa.com',
+                subject: 'Nuevo proyecto desde agenciadigitalpowa',
                 from_name: 'Agencia Digital Powa',
-                redirect: 'https://agencia-powa.vercel.app/gracias', // ✅ Funciona en Web3Forms
-                // Campo oculto para evitar spam
+                redirect: 'https://agencia-powa.vercel.app/gracias-contacto',
                 botcheck: ''
             };
 
@@ -120,6 +119,11 @@ export default function ContactPage() {
 
             toast.success('🎉 ¡Mensaje enviado! Te contactaremos pronto.');
             reset();
+
+            // ✅ Redirigir después de 1.5 segundos
+            setTimeout(() => {
+                window.location.href = 'https://agencia-powa.vercel.app/gracias-contacto';
+            }, 1500);
 
         } catch (error) {
             console.error('Error:', error);
