@@ -40,6 +40,7 @@ const AVAILABLE_SERVICES: FormServiceItem[] = [
 
 export default function ContactPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
 
     const {
         register,
@@ -84,6 +85,7 @@ export default function ContactPage() {
         }
 
         setIsSubmitting(true);
+        setSubmitSuccess(false);
 
         try {
             const readableServices = data.services.map(
@@ -99,18 +101,22 @@ export default function ContactPage() {
             formData.append('_subject', 'Nuevo proyecto desde agenciadigitalpowa.com');
             formData.append('_captcha', 'false');
 
-            // ✅ FETCH CON REDIRECT: 'manual'
             const response = await fetch(FORMSPREE_URL, {
                 method: 'POST',
                 body: formData,
                 redirect: 'manual',
             });
 
+            // ✅ Si la respuesta es exitosa (200, 302, o cualquier ok)
             if (response.status === 200 || response.status === 302 || response.ok) {
+                setSubmitSuccess(true);
                 toast.success('🎉 ¡Mensaje enviado! Te contactaremos pronto.');
                 reset();
-                // ✅ Redirigir manualmente con window.location.replace
-                window.location.replace('https://agencia-powa.vercel.app/gracias');
+
+                // ✅ Redirigir después de un pequeño delay para que se vea el toast
+                setTimeout(() => {
+                    window.location.href = 'https://agencia-powa.vercel.app/gracias';
+                }, 1500);
             } else {
                 const result = await response.json();
                 toast.error(`❌ Error: ${result.error || 'Intenta nuevamente.'}`);
@@ -260,7 +266,7 @@ export default function ContactPage() {
                                 <div className={styles.iconCircle}><FaEnvelope /></div>
                                 <div>
                                     <h5 className="text-white mb-0">Escríbenos</h5>
-                                    <small className={styles.infoText}>cristianmarcus34@gmail.com</small>
+                                    <small className={styles.infoText}>agenciadigitalpowa@gmail.com</small>
                                 </div>
                             </div>
 
@@ -278,7 +284,7 @@ export default function ContactPage() {
                                 <div className={styles.iconCircle}><FaMapMarkerAlt /></div>
                                 <div>
                                     <h5 className="text-white mb-0">Ubicación</h5>
-                                    <small className={styles.infoText}>Buenos Aires, Argentina</small>
+                                    <small className={styles.infoText}>Quilmes, Buenos Aires, Argentina</small>
                                 </div>
                             </div>
 
