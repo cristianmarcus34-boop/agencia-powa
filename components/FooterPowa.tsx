@@ -27,23 +27,47 @@ export default function FooterPowa() {
           <Col md={6}>
             <div className={styles.footerRight}>
               <div className={styles.socialWrapper}>
+                {/* GitHub - Redirige a WhatsApp para consultar */}
                 <a
-                  href="https://wa.me/5491138305837"
+                  href="https://wa.me/5491138305837?text=Hola!%20Quiero%20consultar%20por%20el%20c%C3%B3digo%20de%20GitHub%20de%20Powa%20Digital..."
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.socialLink}
-                  aria-label="Consultar por WhatsApp"
-                  title="Consultar por WhatsApp"
+                  aria-label="Consultar por código de GitHub"
+                  title="Consultar por código de GitHub"
                 >
                   <FaGithub />
                 </a>
-                <a href="https://www.linkedin.com/in/cristian-marcus2025/" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Visitar perfil de LinkedIn de Powa Digital">
+
+                {/* LinkedIn - Redirige a WhatsApp para consultar */}
+                <a
+                  href="https://wa.me/5491138305837?text=Hola!%20Quiero%20consultar%20por%20el%20perfil%20de%20LinkedIn%20de%20Powa%20Digital..."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.socialLink}
+                  aria-label="Consultar por LinkedIn"
+                  title="Consultar por LinkedIn"
+                >
                   <FaLinkedin />
                 </a>
-                <a href="https://www.instagram.com/agenciadigitalpowa" target="_blank" rel="noopener noreferrer" className={`${styles.socialLink} ${styles.instagram}`} aria-label="Seguir en Instagram a Powa Digital">
+
+                {/* Instagram - Enlace directo */}
+                <a
+                  href="https://www.instagram.com/agenciadigitalpowa"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${styles.socialLink} ${styles.instagram}`}
+                  aria-label="Seguir en Instagram a Powa Digital"
+                >
                   <FaInstagram />
                 </a>
-                <a href="mailto:agenciadigitalpowa@gmail.com" className={styles.socialLink} aria-label="Enviar correo electrónico a Powa Digital">
+
+                {/* Email - Enlace directo */}
+                <a
+                  href="mailto:agenciadigitalpowa@gmail.com"
+                  className={styles.socialLink}
+                  aria-label="Enviar correo electrónico a Powa Digital"
+                >
                   <FaEnvelope />
                 </a>
               </div>
