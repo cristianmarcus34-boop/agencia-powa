@@ -99,19 +99,15 @@ export default function ContactPage() {
             formData.append('_subject', 'Nuevo proyecto desde agenciadigitalpowa.com');
             formData.append('_captcha', 'false');
 
-            // ✅ FETCH CON REDIRECT: 'manual'
             const response = await fetch(FORMSPREE_URL, {
                 method: 'POST',
                 body: formData,
                 redirect: 'manual',
             });
 
-            // ✅ Si la respuesta es exitosa (200, 302, o cualquier ok)
             if (response.status === 200 || response.status === 302 || response.ok) {
                 toast.success('🎉 ¡Mensaje enviado! Te contactaremos pronto.');
                 reset();
-
-                // ✅ Redirigir manualmente a tu página de gracias
                 window.location.href = 'https://agencia-powa.vercel.app/gracias';
             } else {
                 const result = await response.json();
