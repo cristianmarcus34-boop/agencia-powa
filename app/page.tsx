@@ -536,8 +536,8 @@ export default function HomePage() {
             </section>
 
             {/* ============================================
-               🚀 SECCIÓN ROI CON BOTÓN A CALCULADORA
-               ============================================ */}
+   🚀 SECCIÓN ROI - DINÁMICA
+   ============================================ */}
             <section className={styles.roiSection} ref={refROI}>
                 <Container>
                     <div className={styles.sectionHeader}>
@@ -546,115 +546,149 @@ export default function HomePage() {
                             No es un gasto, es una <span className={styles.textGradient}>inversión</span>
                         </h2>
                         <p className={styles.sectionSubtitle}>
-                            Calculá cuánto estás perdiendo hoy y comparalo con el costo de nuestra solución.
+                            Cada negocio es único. Te ayudamos a calcular cuánto estás perdiendo hoy
+                            y cuánto podrías ganar con una solución a medida.
                         </p>
                     </div>
 
                     <Row className="g-4">
-                        {/* Tarjeta 1: Pérdidas actuales */}
+                        {/* Tarjeta 1: El problema - GENÉRICA */}
                         <Col lg={4} md={6}>
                             <div className={styles.roiCard}>
                                 <div className={styles.roiIconWrapper}>
-                                    <FaMoneyBillWave className={styles.roiIcon} />
+                                    <FaMoneyBillWave className={styles.roiIcon} style={{ color: '#ef4444' }} />
                                 </div>
-                                <div className={styles.roiValue} style={{ color: '#ef4444' }}>
-                                    $515.000
+                                <div className={styles.roiValue} style={{ color: '#ef4444', fontSize: '2rem' }}>
+                                    ¿Cuánto <br />estás perdiendo?
                                 </div>
-                                <div className={styles.roiLabel}>Pérdida mensual estimada*</div>
+                                <div className={styles.roiLabel}>Identificamos fugas de dinero y tiempo</div>
+
                                 <ul className={styles.roiList}>
                                     <li>
                                         <FaClock className={styles.roiListIcon} />
-                                        Tiempo de gestión: $200.000/mes
+                                        Procesos manuales que consumen horas
                                     </li>
                                     <li>
                                         <FaUsers className={styles.roiListIcon} />
-                                        Ausencias y doble reserva: $225.000/mes
+                                        Clientes perdidos por mala experiencia
                                     </li>
                                     <li>
                                         <FaChartBar className={styles.roiListIcon} />
-                                        Pérdida de clientes: $90.000/mes
+                                        Oportunidades de venta no aprovechadas
                                     </li>
                                 </ul>
+
                                 <div className={styles.roiFootnote}>
-                                    *Estimado basado en barberías con 10 turnos/día
+                                    *Cada negocio tiene sus propias pérdidas ocultas
                                 </div>
                             </div>
                         </Col>
 
-                        {/* Tarjeta 2: Nuestra solución */}
+                        {/* Tarjeta 2: La solución - GENÉRICA */}
                         <Col lg={4} md={6}>
                             <div className={styles.roiCard}>
                                 <div className={styles.roiIconWrapper}>
-                                    <FaRocket className={styles.roiIcon} />
+                                    <FaRocket className={styles.roiIcon} style={{ color: '#22d3ee' }} />
                                 </div>
-                                <div className={styles.roiValue} style={{ color: '#22d3ee' }}>
-                                    $520.895
+                                <div className={styles.roiValue} style={{ color: '#22d3ee', fontSize: '2rem' }}>
+                                    Solución <br />a medida
                                 </div>
-                                <div className={styles.roiLabel}>Inversión mensual (Plan Profesional)</div>
+                                <div className={styles.roiLabel}>Desarrollamos lo que tu negocio necesita</div>
+
                                 <ul className={styles.roiList}>
                                     <li>
                                         <FaCheckCircle className={styles.roiListIcon} style={{ color: '#10b981' }} />
-                                        Elimina doble reserva
+                                        Automatización de procesos
                                     </li>
                                     <li>
                                         <FaCheckCircle className={styles.roiListIcon} style={{ color: '#10b981' }} />
-                                        Recordatorios automáticos
+                                        Mejora de la experiencia del cliente
                                     </li>
                                     <li>
                                         <FaCheckCircle className={styles.roiListIcon} style={{ color: '#10b981' }} />
-                                        Panel de administración
-                                    </li>
-                                    <li>
-                                        <FaCheckCircle className={styles.roiListIcon} style={{ color: '#10b981' }} />
-                                        Soporte y actualizaciones
+                                        Paneles de control y estadísticas
                                     </li>
                                 </ul>
+
                                 <div className={styles.roiFootnote}>
-                                    Recuperás la inversión en <strong>2 meses</strong>
+                                    Invertís una vez, ganás todos los meses
                                 </div>
                             </div>
                         </Col>
 
-                        {/* Tarjeta 3: Resultado CON BOTÓN A CALCULADORA */}
+                        {/* Tarjeta 3: Calculá tu ROI - CON BOTÓN */}
                         <Col lg={4} md={6}>
                             <div className={`${styles.roiCard} ${styles.roiCardHighlight}`}>
                                 <div className={styles.roiIconWrapper}>
-                                    <FaChartBar className={styles.roiIcon} />
+                                    <FaCalculator className={styles.roiIcon} style={{ color: '#10b981' }} />
                                 </div>
-                                <div className={styles.roiValue} style={{ color: '#10b981' }}>
-                                    +$276.760
+                                <div className={styles.roiValue} style={{ color: '#10b981', fontSize: '2rem' }}>
+                                    Calculá <br />tu ROI
                                 </div>
-                                <div className={styles.roiLabel}>Ganancia neta mensual</div>
-                                <div className={styles.roiResult}>
-                                    <div className={styles.roiResultItem}>
-                                        <span>Pérdida actual</span>
-                                        <span className={styles.roiResultValue} style={{ color: '#ef4444' }}>-$515.000</span>
+                                <div className={styles.roiLabel}>Resultados personalizados para tu negocio</div>
+
+                                <div className={styles.roiExampleBox}>
+                                    <div className={styles.roiExampleItem}>
+                                        <span className={styles.roiExampleLabel}>📌 Ejemplo: Barbería</span>
+                                        <div className={styles.roiExampleResult}>
+                                            <span className={styles.roiExampleBefore}>Pérdida: $515.000/mes</span>
+                                            <span className={styles.roiExampleArrow}>→</span>
+                                            <span className={styles.roiExampleAfter}>Ahorro: $276.760/mes</span>
+                                        </div>
+                                        <div className={styles.roiExampleDetail}>
+                                            10 turnos/día • Valor promedio: $12.000
+                                        </div>
                                     </div>
-                                    <div className={styles.roiResultArrow}>↓</div>
-                                    <div className={styles.roiResultItem}>
-                                        <span>Con Powa</span>
-                                        <span className={styles.roiResultValue} style={{ color: '#10b981' }}>+$276.760</span>
-                                    </div>
                                 </div>
+
                                 <div className={styles.roiCta}>
-                                    {/* ===== BOTÓN CON ENLACE DINÁMICO ===== */}
-                                    <div className={styles.roiCta}>
-                                        <button
-                                            onClick={() => {
-                                                const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-                                                window.open(`${baseUrl}/lab?tool=roi`, '_blank');
-                                            }}
-                                            className={styles.roiButton}
-                                        >
-                                            <FaCalculator className={styles.roiButtonIcon} />
-                                            Calculá tu ROI exacto
-                                            <FaArrowRight className={styles.roiButtonIcon} />
-                                        </button>
-                                    </div>
+                                    <button
+                                        onClick={() => {
+                                            const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+                                            window.open(`${baseUrl}/lab?tool=roi`, '_blank');
+                                        }}
+                                        className={styles.roiButton}
+                                    >
+                                        <FaCalculator className={styles.roiButtonIcon} />
+                                        Calcular mi ROI
+                                        <FaArrowRight className={styles.roiButtonIcon} />
+                                    </button>
                                 </div>
                             </div>
                         </Col>
                     </Row>
+
+                    {/* ===== EJEMPLOS POR INDUSTRIA ===== */}
+                    <div className={styles.roiIndustries}>
+                        <p className={styles.roiIndustriesLabel}>
+                            Ejemplos de pérdidas en diferentes industrias:
+                        </p>
+                        <div className={styles.roiIndustriesGrid}>
+                            <div className={styles.roiIndustryItem}>
+                                <span className={styles.roiIndustryIcon}>✂️</span>
+                                <span className={styles.roiIndustryName}>Barbería</span>
+                                <span className={styles.roiIndustryValue}>$515.000/mes</span>
+                            </div>
+                            <div className={styles.roiIndustryItem}>
+                                <span className={styles.roiIndustryIcon}>🍕</span>
+                                <span className={styles.roiIndustryName}>Restaurante</span>
+                                <span className={styles.roiIndustryValue}>$1.200.000/mes</span>
+                            </div>
+                            <div className={styles.roiIndustryItem}>
+                                <span className={styles.roiIndustryIcon}>🛒</span>
+                                <span className={styles.roiIndustryName}>Tienda Online</span>
+                                <span className={styles.roiIndustryValue}>$900.000/mes</span>
+                            </div>
+                            <div className={styles.roiIndustryItem}>
+                                <span className={styles.roiIndustryIcon}>💼</span>
+                                <span className={styles.roiIndustryName}>Servicios</span>
+                                <span className={styles.roiIndustryValue}>$600.000/mes</span>
+                            </div>
+                        </div>
+                        <p className={styles.roiIndustriesNote}>
+                            *Valores estimados. Calculá el ROI exacto para tu negocio.
+                        </p>
+                    </div>
                 </Container>
             </section>
 
