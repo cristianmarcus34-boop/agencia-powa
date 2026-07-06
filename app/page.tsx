@@ -637,15 +637,20 @@ export default function HomePage() {
                                     </div>
                                 </div>
                                 <div className={styles.roiCta}>
-                                    // En la sección ROI, reemplazá el botón por este:
-                                    <button
-                                        onClick={() => window.open('https://agencia-powa.vercel.app/lab?tool=roi', '_blank')}
-                                        className={styles.roiButton}
-                                    >
-                                        <FaCalculator className={styles.roiButtonIcon} />
-                                        Calculá tu ROI exacto
-                                        <FaArrowRight className={styles.roiButtonIcon} />
-                                    </button>
+                                    {/* ===== BOTÓN CON ENLACE DINÁMICO ===== */}
+                                    <div className={styles.roiCta}>
+                                        <button
+                                            onClick={() => {
+                                                const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+                                                window.open(`${baseUrl}/lab?tool=roi`, '_blank');
+                                            }}
+                                            className={styles.roiButton}
+                                        >
+                                            <FaCalculator className={styles.roiButtonIcon} />
+                                            Calculá tu ROI exacto
+                                            <FaArrowRight className={styles.roiButtonIcon} />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </Col>
