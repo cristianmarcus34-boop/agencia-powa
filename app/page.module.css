@@ -718,7 +718,7 @@
     display: flex;
     gap: 30px;
     width: max-content;
-    animation: scrollStack 40s linear infinite;
+    animation: scrollStack 100s linear infinite;
 }
 
 @media (min-width: 768px) {

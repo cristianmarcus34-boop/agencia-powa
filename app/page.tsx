@@ -19,7 +19,22 @@ import { HiOutlineArrowNarrowRight } from 'react-icons/hi';
 import {
     SiReact, SiNodedotjs, SiTypescript, SiNextdotjs, SiDocker,
     SiAmazonwebservices, SiPostgresql, SiOpenai, SiSupabase,
-    SiTailwindcss, SiVercel, SiJavascript, SiRedux
+    SiTailwindcss, SiVercel, SiJavascript, SiRedux,
+    // 🆕 NUEVOS IMPORTS
+    SiPython, SiDjango, SiFlask, SiFastapi, SiGraphql,
+    SiMongodb, SiRedis, SiElasticsearch, SiApachekafka,
+    SiKubernetes, SiTerraform, SiAnsible, SiGithubactions,
+    SiJenkins, SiPrometheus, SiGrafana,
+    SiAngular, SiVuedotjs, SiSvelte, SiSolidity,
+    SiRust, SiGo, SiSpring, SiLaravel, SiPhp,
+    SiFirebase, SiHeroku, SiNetlify, SiCloudflare,
+    SiMysql, SiSqlite, SiPrisma, SiSequelize,
+    SiFigma, SiAdobe, SiSketch,
+    SiJest, SiCypress, SiMocha,
+    SiWebpack, SiBabel, SiNpm, SiYarn,
+    SiPytorch, SiTensorflow, SiKeras,
+    SiLinux, SiUbuntu, SiDebian, SiNginx,
+    SiApache, SiNatsdotio, SiRabbitmq
 } from 'react-icons/si';
 
 import styles from './page.module.css';
@@ -54,20 +69,105 @@ export default function HomePage() {
     const [refStats] = useInView(options);
     const [refROI] = useInView(options);
 
-    // ===== DATA =====
+    // ===== 🚀 TECH STACK AMPLIADO =====
     const techStack = [
+        // --- FRONTEND ---
         { id: "react", icon: <SiReact color="#61DAFB" />, name: "React" },
         { id: "nextjs", icon: <SiNextdotjs color="#ffffff" />, name: "Next.js" },
-        { id: "nodejs", icon: <SiNodedotjs color="#339933" />, name: "Node.js" },
+        { id: "angular", icon: <SiAngular color="#DD0031" />, name: "Angular" },
+        { id: "vue", icon: <SiVuedotjs color="#4FC08D" />, name: "Vue.js" },
+        { id: "svelte", icon: <SiSvelte color="#FF3E00" />, name: "Svelte" },
         { id: "typescript", icon: <SiTypescript color="#3178C6" />, name: "TypeScript" },
+        { id: "javascript", icon: <SiJavascript color="#F7DF1E" />, name: "JavaScript" },
         { id: "tailwind", icon: <SiTailwindcss color="#38BDF8" />, name: "Tailwind" },
+
+        // --- BACKEND ---
+        { id: "nodejs", icon: <SiNodedotjs color="#339933" />, name: "Node.js" },
+        { id: "python", icon: <SiPython color="#3776AB" />, name: "Python" },
+        { id: "django", icon: <SiDjango color="#092E20" />, name: "Django" },
+        { id: "flask", icon: <SiFlask color="#ffffff" />, name: "Flask" },
+        { id: "fastapi", icon: <SiFastapi color="#009688" />, name: "FastAPI" },
+        { id: "go", icon: <SiGo color="#00ADD8" />, name: "Go" },
+        { id: "rust", icon: <SiRust color="#ffffff" />, name: "Rust" },
+        { id: "spring", icon: <SiSpring color="#6DB33F" />, name: "Spring Boot" },
+        { id: "laravel", icon: <SiLaravel color="#FF2D20" />, name: "Laravel" },
+        { id: "php", icon: <SiPhp color="#777BB4" />, name: "PHP" },
+
+        // --- BASES DE DATOS ---
+        { id: "postgres", icon: <SiPostgresql color="#4169E1" />, name: "PostgreSQL" },
+        { id: "mysql", icon: <SiMysql color="#4479A1" />, name: "MySQL" },
+        { id: "mongodb", icon: <SiMongodb color="#47A248" />, name: "MongoDB" },
+        { id: "redis", icon: <SiRedis color="#DC382D" />, name: "Redis" },
+        { id: "elasticsearch", icon: <SiElasticsearch color="#005571" />, name: "Elasticsearch" },
+        { id: "sqlite", icon: <SiSqlite color="#003B57" />, name: "SQLite" },
         { id: "supabase", icon: <SiSupabase color="#3ECF8E" />, name: "Supabase" },
+        { id: "firebase", icon: <SiFirebase color="#FFCA28" />, name: "Firebase" },
+
+        // --- ORM ---
+        { id: "prisma", icon: <SiPrisma color="#2D3748" />, name: "Prisma" },
+        { id: "sequelize", icon: <SiSequelize color="#52B0E7" />, name: "Sequelize" },
+
+        // --- DEVOPS & CLOUD ---
         { id: "aws", icon: <SiAmazonwebservices color="#FF9900" />, name: "AWS" },
         { id: "docker", icon: <SiDocker color="#2496ED" />, name: "Docker" },
-        { id: "postgres", icon: <SiPostgresql color="#4169E1" />, name: "Postgres" },
+        { id: "kubernetes", icon: <SiKubernetes color="#326CE5" />, name: "Kubernetes" },
+        { id: "terraform", icon: <SiTerraform color="#7B42BC" />, name: "Terraform" },
+        { id: "ansible", icon: <SiAnsible color="#EE0000" />, name: "Ansible" },
         { id: "vercel", icon: <SiVercel color="#ffffff" />, name: "Vercel" },
+        { id: "heroku", icon: <SiHeroku color="#430098" />, name: "Heroku" },
+        { id: "netlify", icon: <SiNetlify color="#00C7B7" />, name: "Netlify" },
+        { id: "cloudflare", icon: <SiCloudflare color="#F38020" />, name: "Cloudflare" },
+
+        // --- CI/CD ---
+        { id: "githubactions", icon: <SiGithubactions color="#2088FF" />, name: "GitHub Actions" },
+        { id: "jenkins", icon: <SiJenkins color="#D24939" />, name: "Jenkins" },
+
+        // --- MONITORING ---
+        { id: "prometheus", icon: <SiPrometheus color="#E6522C" />, name: "Prometheus" },
+        { id: "grafana", icon: <SiGrafana color="#F46800" />, name: "Grafana" },
+
+        // --- BLOCKCHAIN ---
+        { id: "solidity", icon: <SiSolidity color="#363636" />, name: "Solidity" },
+
+        // --- IA / ML ---
         { id: "openai", icon: <SiOpenai color="#74AA9C" />, name: "OpenAI" },
+        { id: "pytorch", icon: <SiPytorch color="#EE4C2C" />, name: "PyTorch" },
+        { id: "tensorflow", icon: <SiTensorflow color="#FF6F00" />, name: "TensorFlow" },
+        { id: "keras", icon: <SiKeras color="#D00000" />, name: "Keras" },
+
+        // --- MENSAJERÍA ---
+        { id: "kafka", icon: <SiApachekafka color="#231F20" />, name: "Kafka" },
+        { id: "rabbitmq", icon: <SiRabbitmq color="#FF6600" />, name: "RabbitMQ" },
+        { id: "nats", icon: <SiNatsdotio color="#27AAE1" />, name: "NATS" },
+
+        // --- ESTADO ---
         { id: "redux", icon: <SiRedux color="#764ABC" />, name: "Redux" },
+
+        // --- WEBPACK / BUILD ---
+        { id: "webpack", icon: <SiWebpack color="#8DD6F9" />, name: "Webpack" },
+        { id: "babel", icon: <SiBabel color="#F9DC3E" />, name: "Babel" },
+        { id: "npm", icon: <SiNpm color="#CB3837" />, name: "npm" },
+        { id: "yarn", icon: <SiYarn color="#2C8EBB" />, name: "Yarn" },
+
+        // --- TESTING ---
+        { id: "jest", icon: <SiJest color="#C21325" />, name: "Jest" },
+        { id: "cypress", icon: <SiCypress color="#17202C" />, name: "Cypress" },
+        { id: "mocha", icon: <SiMocha color="#8D6748" />, name: "Mocha" },
+
+        // --- SERVERS ---
+        { id: "linux", icon: <SiLinux color="#FCC624" />, name: "Linux" },
+        { id: "ubuntu", icon: <SiUbuntu color="#E95420" />, name: "Ubuntu" },
+        { id: "debian", icon: <SiDebian color="#A81D33" />, name: "Debian" },
+        { id: "nginx", icon: <SiNginx color="#009639" />, name: "Nginx" },
+        { id: "apache", icon: <SiApache color="#D22128" />, name: "Apache" },
+
+        // --- DISEÑO ---
+        { id: "figma", icon: <SiFigma color="#F24E1E" />, name: "Figma" },
+        { id: "adobe", icon: <SiAdobe color="#FF0000" />, name: "Adobe" },
+        { id: "sketch", icon: <SiSketch color="#F7B500" />, name: "Sketch" },
+
+        // --- GRAPHQL ---
+        { id: "graphql", icon: <SiGraphql color="#E10098" />, name: "GraphQL" },
     ];
 
     const processItems = [
@@ -186,9 +286,9 @@ export default function HomePage() {
     ];
 
     const stats = [
-        { value: "50+", label: "Proyectos Entregados", icon: <FaRocket /> },
-        { value: "30+", label: "Clientes Satisfechos", icon: <FaUsers /> },
-        { value: "17+", label: "Años de Experiencia", icon: <FaClock /> },
+        { value: "24+", label: "Proyectos Entregados", icon: <FaRocket /> },
+        { value: "24+", label: "Clientes Satisfechos", icon: <FaUsers /> },
+        { value: "15+", label: "Años de Experiencia", icon: <FaClock /> },
         { value: "100%", label: "Propiedad Intelectual", icon: <FaLock /> }
     ];
 
@@ -648,7 +748,7 @@ export default function HomePage() {
                                                 const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
                                                 window.open(`${baseUrl}/lab?tool=roi`, '_blank');
                                             }}
-                                            className={styles.roiButtonNeon}  // 👈 Cambiá la clase aquí
+                                            className={styles.roiButtonNeon}
                                         >
                                             <FaCalculator className={styles.roiButtonIcon} />
                                             <span>Calculá tu ROI exacto</span>

@@ -159,7 +159,7 @@ export default function ChatPowa() {
           <IoClose size={28} />
         ) : (
           <Image
-            src="/chatrobot.png"
+            src="/iconoia.jpg"
             alt="Powa Bot Ayuda"
             width={70}
             height={70}
@@ -175,7 +175,7 @@ export default function ChatPowa() {
             <div className={styles.headerInfo}>
               <div className={styles.headerAvatarContainer}>
                 <Image
-                  src="/chatrobot.png"
+                  src="/iconoia.jpg"
                   alt="Avatar Powa AI"
                   width={30}
                   height={30}
