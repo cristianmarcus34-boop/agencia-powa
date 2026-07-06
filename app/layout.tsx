@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     default: "Powa Digital | Ingeniería de Software & Growth en Quilmes",
     template: "%s | Powa Digital"
   },
-  themeColor: "#0a0f1a",
+
   description: "Agencia de software y diseño web en Villa La Florida, San Francisco Solano y Quilmes. Creamos ecosistemas digitales de alto impacto con Next.js e IA.",
   keywords: [
     "Desarrollo web Quilmes",
