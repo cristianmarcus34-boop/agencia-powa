@@ -339,9 +339,9 @@ export default function PortfolioPage() {
   const [filter, setFilter] = useState<string>('all');
 
   const stats = useMemo(() => [
-    { value: "+20", label: "Proyectos Entregados", icon: <FaAward /> },
+    { value: "+24", label: "Proyectos Entregados", icon: <FaAward /> },
     { value: "99%", label: "Uptime Garantizado", icon: <FaClock /> },
-    { value: "15+", label: "Clientes Activos", icon: <FaUsers /> },
+    { value: "+24", label: "Clientes Activos", icon: <FaUsers /> },
     { value: "Next.js", label: "Stack Principal", icon: <FaCode /> }
   ], []);
 

@@ -256,7 +256,7 @@ export default function ServicesPage() {
   const impactStats = [
     { value: "99.9%", label: "Uptime Garantizado", icon: <FaClock /> },
     { value: "<1s", label: "Tiempo de Carga", icon: <FaRocket /> },
-    { value: "50+", label: "Proyectos Entregados", icon: <FaAward /> },
+    { value: "24+", label: "Proyectos Entregados", icon: <FaAward /> },
     { value: "100%", label: "Propiedad Intelectual", icon: <FaShieldAlt /> }
   ];
 
@@ -292,7 +292,7 @@ export default function ServicesPage() {
         <section aria-label="Nuestros Servicios Técnicos Extensivos" className="mb-5">
           <div className={styles.sectionDivider}>
             <FaStar className={styles.dividerIcon} />
-            <span>SOLUCIONES TÉCNICAS PREMIUM</span>
+            <span>DESARROLLOS DE SOLUCIONES TÉCNICAS PREMIUM</span>
             <FaStar className={styles.dividerIcon} />
           </div>
           <Row className="g-4">
@@ -377,21 +377,21 @@ export default function ServicesPage() {
                   <div className={styles.whyUsBadge}>
                     <FaAward className={styles.whyUsBadgeIcon} />
                     <div>
-                      <strong>5+ años</strong>
+                      <strong>15+ años</strong>
                       <span>de experiencia en software</span>
                     </div>
                   </div>
                   <div className={styles.whyUsBadge}>
                     <FaHandshake className={styles.whyUsBadgeIcon} />
                     <div>
-                      <strong>30+</strong>
+                      <strong>24+</strong>
                       <span>clientes satisfechos</span>
                     </div>
                   </div>
                   <div className={styles.whyUsBadge}>
                     <FaBrain className={styles.whyUsBadgeIcon} />
                     <div>
-                      <strong>50+</strong>
+                      <strong>24+</strong>
                       <span>proyectos entregados</span>
                     </div>
                   </div>

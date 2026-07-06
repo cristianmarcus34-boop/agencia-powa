@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Container, Row, Col, Image } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import Image from 'next/image';
 import {
   FaCode, FaPaintBrush, FaRocket, FaUsers,
   FaShieldAlt, FaClock, FaAward, FaLightbulb,
-  FaCheckCircle, FaHeart, FaHandshake, FaStar
+  FaCheckCircle, FaHeart, FaHandshake, FaStar,
+  FaLaptopCode, FaPalette
 } from 'react-icons/fa';
 import Script from 'next/script';
 import styles from './about.module.css';
@@ -15,7 +17,6 @@ export default function AboutPage() {
   const revealRefs = useRef<(HTMLDivElement | null)[]>([]);
   const statsRef = useRef<HTMLDivElement | null>(null);
 
-  // ===== INTERSECTION OBSERVER PARA REVEAL =====
   useEffect(() => {
     const observerOptions = {
       threshold: 0.15,
@@ -37,7 +38,6 @@ export default function AboutPage() {
     return () => observer.disconnect();
   }, []);
 
-  // ===== OBSERVER PARA ESTADÍSTICAS =====
   useEffect(() => {
     const statsObserver = new IntersectionObserver(
       (entries) => {
@@ -63,15 +63,13 @@ export default function AboutPage() {
     }
   };
 
-  // ===== DATOS DE ESTADÍSTICAS =====
   const stats = [
-    { icon: <FaRocket />, value: '50+', label: 'Proyectos Entregados' },
-    { icon: <FaUsers />, value: '30+', label: 'Clientes Satisfechos' },
-    { icon: <FaClock />, value: '5+', label: 'Años de Experiencia' },
+    { icon: <FaRocket />, value: '24+', label: 'Proyectos Entregados' },
+    { icon: <FaUsers />, value: '24+', label: 'Clientes Satisfechos' },
+    { icon: <FaClock />, value: '7+', label: 'Años de Experiencia' },
     { icon: <FaAward />, value: '100%', label: 'Compromiso con la Calidad' },
   ];
 
-  // ===== DATOS DE VALORES =====
   const values = [
     {
       icon: <FaCode />,
@@ -95,7 +93,6 @@ export default function AboutPage() {
     },
   ];
 
-  // ===== SCHEMA JSON-LD =====
   const aboutSchema = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
@@ -122,7 +119,6 @@ export default function AboutPage() {
 
   return (
     <>
-      {/* ===== SCHEMA ===== */}
       <Script
         id="about-schema"
         type="application/ld+json"
@@ -130,7 +126,6 @@ export default function AboutPage() {
       />
 
       <div className={styles.aboutWrapper}>
-        {/* ===== GLOW AMBIENTAL ===== */}
         <div className={styles.ambientGlow} />
         <div className={styles.ambientGlowSecondary} />
 
@@ -143,7 +138,9 @@ export default function AboutPage() {
                 src="/logo-agenciadigitalpowa-redondo.png"
                 alt="Logo Powa"
                 className={styles.aboutHeroLogo}
-              // removed 'priority' prop to satisfy ImageProps typing
+                width={120}
+                height={120}
+                priority
               />
               <div className={styles.pulseRing} />
             </div>
@@ -165,7 +162,6 @@ export default function AboutPage() {
               </p>
             </div>
 
-            {/* ===== CTA HERO ===== */}
             <div className={styles.heroCTA}>
               <a
                 href="https://wa.me/5491138305837"
@@ -206,38 +202,49 @@ export default function AboutPage() {
                     src="/Cristianabout.png"
                     alt="Cristian Marcus - Founder & Lead Developer"
                     className={styles.profileMainImg}
+                    width={400}
+                    height={500}
                   />
                   <Image
                     src="/logo-agenciadigitalpowa-redondo.png"
                     className={styles.cornerLogo}
                     alt="Powa Seal"
+                    width={60}
+                    height={60}
                   />
                 </div>
               </Col>
               <Col md={7}>
                 <div className="p-4 p-md-5">
                   <div className="d-flex align-items-center mb-2">
-                    <FaCode className={styles.profileIcon} size={24} />
+                    <FaLaptopCode className={styles.profileIcon} size={24} />
                     <h2 className={styles.profileName}>Cristian Marcus</h2>
                   </div>
                   <h4 className={styles.profileRole}>CTO & Lead Software Architect</h4>
+
                   <p className={styles.profileBio}>
-                    Con <strong>más de 10 años de experiencia</strong> lídera equipos de desarrollo y arquitectura de software,
-                    Cristian ha llevado más de <strong>40 proyectos</strong> desde el concepto hasta la producción en múltiples industrias.
-                    Su enfoque combina la <strong>arquitectura escalable</strong> con la <strong>optimización de performance</strong>,
-                    asegurando que cada solución no solo cumpla con los requisitos actuales, sino que esté preparada para crecer.
+                    Con <strong>más de 15 años de experiencia</strong> en el mundo del software, he aprendido que el mejor código no es el más complejo, sino el que resuelve problemas reales con simplicidad y elegancia. Mi viaje comenzó con proyectos pequeños, y hoy lidero arquitecturas que mueven negocios enteros.
                   </p>
                   <p className={styles.profileBio}>
-                    Especialista en migraciones de sistemas legados y optimización de infraestructura cloud,
-                    con experiencia en liderar equipos remotos y establecer flujos de trabajo ágiles que mantienen
-                    la calidad sin sacrificar la velocidad de entrega.
+                    Mi especialidad es el <strong>stack moderno</strong>: Next.js, React, TypeScript, Tailwind CSS, Supabase, Node.js y Django. Pero más allá de las tecnologías, lo que realmente me apasiona es <strong>diseñar soluciones escalables, seguras y mantenibles</strong> que no solo funcionen hoy, sino que crezcan con el negocio.
                   </p>
+                  <p className={styles.profileBio}>
+                    He liderado proyectos de alta complejidad como <strong>sistemas de reservas con integración de pagos</strong>, <strong>e-commerce escalables</strong> y <strong>aplicaciones mobile nativas</strong>. Cada proyecto me ha enseñado que la tecnología es solo una herramienta; el verdadero valor está en <strong>entender al usuario y al negocio</strong>.
+                  </p>
+                  <p className={styles.profileBio}>
+                    <strong>Lo que me diferencia:</strong> No solo desarrollo, también <strong>diseño la experiencia de usuario desde el código</strong>. Creo prototipos funcionales, optimizo la interacción en tiempo real y construyo interfaces que no solo se ven bien, sino que <strong>funcionan de forma intuitiva y rápida</strong>. Mi enfoque combina la <strong>arquitectura escalable</strong> con la <strong>optimización de performance</strong>, asegurando que cada solución esté preparada para crecer.
+                  </p>
+                  <p className={styles.profileBio}>
+                    Detrás de cada línea de código hay personas, por eso priorizo la <strong>comunicación clara</strong> y la <strong>transparencia</strong> en cada etapa del proyecto. No vendo líneas de código; vendo <strong>soluciones que funcionan</strong> y <strong>confianza</strong>. Mi mayor satisfacción no es escribir código perfecto, sino ver cómo una herramienta digital transforma un negocio y mejora la vida de quienes la usan.
+                  </p>
+
                   <div className={styles.expertiseTags}>
                     <span>React • Next.js</span>
                     <span>Node.js • Django</span>
                     <span>Cloud Architecture (AWS/Azure)</span>
                     <span>CI/CD • DevOps</span>
                     <span>Team Leadership</span>
+                    <span>UX/UI desde el código</span>
                   </div>
                 </div>
               </Col>
@@ -253,40 +260,43 @@ export default function AboutPage() {
                     src="/marianaabout.png"
                     alt="Mariana - UX/UI Designer & Strategy Manager"
                     className={`${styles.profileMainImg} ${styles.imgMariana}`}
+                    width={400}
+                    height={500}
                   />
                   <Image
                     src="/logo-agenciadigitalpowa-redondo.png"
                     className={styles.cornerLogo}
                     alt="Powa Seal"
+                    width={60}
+                    height={60}
                   />
                 </div>
               </Col>
               <Col md={7}>
                 <div className="p-4 p-md-5">
                   <div className="d-flex align-items-center mb-2">
-                    <FaPaintBrush className={styles.profileIcon} size={22} />
+                    <FaPalette className={styles.profileIcon} size={22} />
                     <h2 className={styles.profileName}>Mariana Juarez</h2>
                   </div>
                   <h4 className={styles.profileRole}>Head of Design & UX Strategy</h4>
+
                   <p className={styles.profileBio}>
-                    Mariana lidera la dirección creativa y estratégica de Powa, con <strong>6 años de experiencia</strong>
-                    en diseño de productos digitales y consultoría de experiencia de usuario. Ha trabajado en proyectos
-                    para <strong>startups, fintechs y empresas de retail</strong>, diseñando interfaces que combinan
-                    usabilidad con objetivos comerciales.
+                    Mariana lidera la dirección creativa y estratégica de Powa, con <strong>6 años de experiencia</strong> en diseño de productos digitales y consultoría de experiencia de usuario. Ha trabajado en proyectos para <strong>startups, fintechs y empresas de retail</strong>, diseñando interfaces que combinan usabilidad con objetivos comerciales.
                   </p>
                   <p className={styles.profileBio}>
-                    Su metodología se basa en la <strong>investigación de usuarios</strong> y la <strong>validación continua</strong>,
-                    asegurando que cada decisión de diseño esté respaldada por datos. Especialista en sistemas de diseño y
-                    transformación digital, ayuda a las empresas a traducir su identidad de marca en experiencias digitales
-                    coherentes y efectivas.
+                    Su metodología se basa en la <strong>investigación de usuarios</strong> y la <strong>validación continua</strong>, asegurando que cada decisión de diseño esté respaldada por datos. Especialista en <strong>sistemas de diseño</strong> y transformación digital, ayuda a las empresas a traducir su identidad de marca en experiencias digitales coherentes y efectivas.
                   </p>
+                  <p className={styles.profileBio}>
+                    <strong>Lo que la diferencia:</strong> Mariana no solo diseña lo que se ve, sino <strong>cómo se siente</strong>. Su enfoque en la <strong>psicología del usuario</strong> y la <strong>arquitectura de la información</strong> garantiza que cada interacción sea clara, fluida y emocionalmente conectada con la marca.
+                  </p>
+
                   <div className={styles.expertiseTags}>
                     <span>UX Research • User Testing</span>
                     <span>Figma • Design Systems</span>
                     <span>Product Strategy</span>
                     <span>Branding • Visual Identity</span>
                     <span>Design Thinking</span>
-                    <span>Canva | Adobe Creative Suite</span>
+                    <span>Canva • Adobe Creative Suite</span>
                   </div>
                 </div>
               </Col>
