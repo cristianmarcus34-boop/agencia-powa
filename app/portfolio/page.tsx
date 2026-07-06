@@ -2,11 +2,12 @@
 
 import React, { useState, useMemo } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-// ✅ Importación corregida para evitar el error de tipo de unión
 import BsButton from 'react-bootstrap/Button';
-// 👇 Crear un alias para el Button con tipos any
 const Button = BsButton as any;
 
+// ============================================================ //
+// ICONOS - IMPORTACIONES MODERNAS
+// ============================================================ //
 import {
   FaCode,
   FaRocket,
@@ -27,16 +28,26 @@ import {
   FaLeaf,
   FaWhatsapp,
   FaPalette,
-  FaCut,
+  FaCut,              // ✅ Tijeras para barbería (Font Awesome 5)
   FaSwimmer,
-  FaSeedling
+  FaSeedling,
+  FaCalendarCheck,
 } from 'react-icons/fa';
+
+// ============================================================ //
+// ICONOS ADICIONALES (Font Awesome 6)
+// ============================================================ //
+import { FaScissors } from 'react-icons/fa6';
+
 import Link from 'next/link';
 import GimnasioDemo from '@/components/demos/GimnasioDemo';
 import ReservaDemo from '@/components/demos/ReservaDemo';
 import ProjectModal from '@/components/ProjectModal';
 import styles from './portfolio.module.css';
 
+// ============================================================ //
+// INTERFACES
+// ============================================================ //
 interface Project {
   title: string;
   icon: React.ReactNode;
@@ -53,162 +64,19 @@ interface Project {
   category?: string;
 }
 
+// ============================================================ //
+// DATA DE PROYECTOS
+// ============================================================ //
 const PROJECTS_DATA: Project[] = [
-  {
-    title: "Krusty Burger App",
-    icon: <FaMobileAlt />,
-    description: "Ecosistema TWA nativo con sincronización offline y arquitectura modular. Optimizada para flujos transaccionales masivos.",
-    longDescription: `
-      Krusty Burger App es una aplicación mobile nativa tipo TWA (Trusted Web Activity) que permite la sincronización offline de datos y pedidos. Desarrollada con Expo Core y Supabase, esta solución está optimizada para manejar flujos transaccionales masivos en entornos con conectividad intermitente.
-    `,
-    link: "https://www.krustyburger.com.ar/",
-    github: "https://github.com/cristianmarcus34-boop/krusty-burger",
-    tag: "MOBILE ENGINE",
-    tech: ["Expo Core", "Supabase", "Next.js"],
-    featured: true,
-    year: "2025",
-    category: "Mobile",
-    galleryImages: [
-      "/krustyappminiatura.png",
-      "/menuprincipalminiatura.png",
-      "/perfilmini.png",
-      "/panelperfil.png",
-    ],
-  },
-  {
-    title: "Capriccio de Pizza (React)",
-    icon: <FaReact />,
-    description: "Plataforma e-commerce con SSR avanzado. Reducción de latencia y Core Web Vitals optimizados para SEO.",
-    longDescription: `
-      Capriccio de Pizza es una plataforma e-commerce construida con React 18 y Firebase. Implementa SSR avanzado para optimizar el rendimiento y los Core Web Vitals, mejorando significativamente el posicionamiento SEO del sitio.
-    `,
-    link: "https://capiccio-de-pizza.web.app/",
-    github: "https://github.com/cristianmarcus34-boop/capriccio-react",
-    tag: "PERFORMANCE UI",
-    tech: ["React 18", "Firebase", "Optimization"],
-    featured: true,
-    year: "2024",
-    category: "E-commerce",
-    galleryImages: null
-  },
-  {
-    title: "Capriccio Engine (Django)",
-    icon: <FaPython />,
-    description: "Backend de grado corporativo con Python/Django. Implementación de CI/CD y bases de datos relacionales robustas.",
-    longDescription: `
-      Capriccio Engine es el backend corporativo desarrollado con Python y Django que potencia la plataforma de e-commerce. Incluye implementación de CI/CD con GitHub Actions, bases de datos relacionales PostgreSQL y una API Rest completamente documentada.
-    `,
-    link: "https://capricciodepizza.onrender.com/",
-    github: "https://github.com/cristianmarcus34-boop/capriccio-engine",
-    tag: "BACKEND ARCHITECTURE",
-    tech: ["Django", "PostgreSQL", "API Rest"],
-    year: "2024",
-    category: "Backend",
-    galleryImages: null
-  },
-  {
-    title: "La Abu Matie App",
-    icon: <FaServer />,
-    description: "Gestión administrativa automatizada. Interfaz diseñada bajo principios de accesibilidad y eficiencia operativa.",
-    longDescription: `
-      La Abu Matie App es un sistema de gestión administrativa automatizado. La interfaz fue diseñada siguiendo principios de accesibilidad WCAG y eficiencia operativa, permitiendo a los administradores gestionar inventario, pedidos y clientes desde un único dashboard.
-    `,
-    link: "https://la-abu-matie-app.web.app/",
-    github: "https://github.com/cristianmarcus34-boop/la-abu-matie",
-    tag: "ADMIN DASHBOARD",
-    tech: ["Material UI", "Realtime DB", "NoSQL"],
-    year: "2025",
-    category: "Dashboard",
-    galleryImages: null
-  },
-  {
-    title: "Gimnasio & Nutrición",
-    icon: <FaMobileAlt />,
-    description: "Ecosistema para gestión de centros fitness con integración nutricional y seguimiento de progreso en tiempo real.",
-    longDescription: `
-      Gimnasio & Nutrición es un ecosistema digital para la gestión de centros fitness. Incluye integración nutricional, seguimiento de progreso en tiempo real y paneles de control para entrenadores y clientes.
-    `,
-    link: "#",
-    tag: "FITNESS APP",
-    tech: ["Next.js", "Supabase", "Tailwind"],
-    year: "2025",
-    category: "Health",
-    galleryImages: null,
-    demoComponent: <GimnasioDemo />
-  },
-  {
-    title: "Powa Schedule",
-    icon: <FaCloudUploadAlt />,
-    description: "Sistema de gestión de turnos y consultorías con disponibilidad en tiempo real y notificaciones automáticas.",
-    longDescription: `
-      Powa Schedule es un sistema SaaS para la gestión de turnos y consultorías. Ofrece disponibilidad en tiempo real, notificaciones automáticas vía email y WhatsApp, y un panel de administración completo para gestionar reservas y clientes.
-    `,
-    link: "#",
-    tag: "SAAS TOOL",
-    tech: ["Next.js", "Supabase", "React"],
-    year: "2025",
-    category: "SaaS",
-    galleryImages: null,
-    demoComponent: <ReservaDemo />
-  },
   // ============================================================ //
-  // PROYECTO: JARDINERÍA Y PISCINAS
+  // 🚀 PROYECTO: KUBIC.AI (DESTACADO)
   // ============================================================ //
   {
-    title: "Jardinería y Piscinas",
-    icon: <FaLeaf />,
-    description: "Landing page moderna y sofisticada para servicios de jardinería y mantenimiento de piscinas. Incluye galería interactiva con filtros por categoría, formulario de pedido con validación en tiempo real, sección de testimonios y sistema de contacto integrado con WhatsApp. Diseño responsive mobile-first con efectos visuales premium y microinteracciones que elevan la experiencia de usuario.",
-    longDescription: `
-      El proyecto consistió en el desarrollo de una landing page completa para una empresa de servicios de jardinería y piscinas.
-      El sitio fue construido con Django para el backend, aprovechando el sistema de templates para una gestión eficiente del contenido,
-      y desplegado en Vercel para garantizar un rendimiento óptimo y alta disponibilidad.
-
-      🏗️ Arquitectura:
-      • Django 5.1.6 con WhiteNoise para archivos estáticos
-      • Bootstrap 5 + CSS personalizado con variables CSS
-      • JavaScript vanilla para interacciones (filtros, lightbox, acordeón)
-
-      🎨 Diseño:
-      • Interfaz moderna con efectos visuales premium (glassmorphism, gradientes)
-      • Microinteracciones y animaciones con AOS
-      • Footer con acordeón para experiencia móvil óptima
-
-      📱 Experiencia de usuario:
-      • Diseño responsive y mobile-first (optimizado para el 70% del tráfico móvil)
-      • Formulario con labels flotantes y validación en tiempo real
-      • Contadores animados de estadísticas
-      • Lightbox con navegación por teclado
-      • Galería interactiva con filtros por categoría (Jardinería, Piscinas, Poda, Decoración)
-
-      🚀 Despliegue:
-      • Integración continua con GitHub Actions
-      • Hosting en Vercel con CDN global
-      • Dominio personalizado y SSL automático
-    `,
-    link: "https://jardineria-dun.vercel.app",
-    github: "https://github.com/cristianmarcus34-boop/Jardineria",
-    tag: "LANDING PAGE",
-    tech: ["Django", "Python", "HTML5", "CSS3", "JavaScript", "Bootstrap", "Vercel"],
-    featured: true,
-    year: "2026",
-    category: "Landing Page",
-    galleryImages: [
-      "/proyectos/jardineria-hero.jpg",
-      "/proyectos/jardineria-servicios.jpg",
-      "/proyectos/jardineria-galeria.jpg",
-      "/proyectos/jardineria-formulario.jpg",
-      "/proyectos/jardineria-mobile.jpg",
-    ],
-  },
-  // ============================================================ //
-  // 🚀 NUEVO PROYECTO: KUBIC.AI
-  // ============================================================ //
-  {
-    title: "Kubic.ai - Micro-espacios Inteligentes",
-    icon: <FaRocket />,
+    title: "Kubic.ai — Micro-espacios Inteligentes",
+    icon: <FaRocket className="text-primary-400" />,
     description: "Plataforma SaaS + PropTech para alquiler de micro-espacios automatizados con IA. Gestión 100% autónoma de almacenamiento, estudios streaming y oficinas cápsula 24/7.",
     longDescription: `
-      🚀 KUBIC.AI - Revolucionando el Espacio Urbano con IA
+      🚀 KUBIC.AI — Revolucionando el Espacio Urbano con IA
 
       Kubic.ai es una plataforma SaaS + PropTech que conecta a profesionales y empresas con micro-espacios inteligentes, totalmente automatizados y disponibles 24/7.
 
@@ -219,42 +87,10 @@ const PROJECTS_DATA: Project[] = [
       Una plataforma que permite reservar y gestionar espacios automatizados con IA en segundos. Sin papeleo, sin filas, sin intervención humana.
 
       ## 🏗️ Arquitectura Técnica
-
-      **Frontend:**
-      • Next.js 16 con App Router y Turbopack
-      • TypeScript para tipado seguro
-      • Tailwind CSS 4 con diseño oscuro premium
-      • Framer Motion para animaciones fluidas
-
-      **Backend & Servicios:**
-      • Next.js API Routes para endpoints serverless
-      • EmailJS para notificaciones automáticas
-      • Google Maps Platform con marcadores avanzados
-
-      **DevOps & Despliegue:**
-      • Vercel para despliegue continuo
-      • CI/CD con GitHub Actions
-      • Dominio personalizado y SSL automático
-
-      **UX/UI Innovaciones:**
-      • Modo oscuro nativo con paleta de colores personalizada
-      • Microinteracciones y animaciones sutiles
-      • Formularios con validación en tiempo real
-      • Mapa interactivo con estilo personalizado
-      • Sistema de newsletter con email de bienvenida
-
-      ## 📊 Impacto y Resultados
-      • Landing page optimizada con Core Web Vitals > 90
-      • Tiempo de carga < 1.5s (movimiento) y < 0.8s (escritorio)
-      • Accesibilidad WCAG 2.1 AA
-      • 100% responsive (mobile-first)
-      • Integración con Google Maps para geolocalización
-
-      ## 🎯 Próximos Pasos
-      • Panel de administración para gestión de espacios
-      • Sistema de pagos con Stripe
-      • App móvil con React Native
-      • Dashboard de analytics en tiempo real
+      **Frontend:** Next.js 16 con App Router y Turbopack, TypeScript, Tailwind CSS 4, Framer Motion
+      **Backend & Servicios:** Next.js API Routes, EmailJS, Google Maps Platform
+      **DevOps:** Vercel, CI/CD con GitHub Actions, dominio personalizado y SSL automático
+      **UX/UI:** Modo oscuro nativo, microinteracciones, formularios con validación en tiempo real, mapa interactivo
     `,
     link: "https://kubic-ai.vercel.app",
     github: "https://github.com/cristianmarcus34-boop/kubic.ai",
@@ -271,9 +107,232 @@ const PROJECTS_DATA: Project[] = [
       "/proyectos/kubic-mapa.jpg",
       "/proyectos/kubic-mobile.jpg",
     ],
-  }
+  },
+
+  // ============================================================ //
+  // ✂️ PROYECTO: BARBERÍA EL RULO (NUEVO - DESTACADO)
+  // ============================================================ //
+  {
+    title: "Barbería El Rulo — Sistema de Reservas",
+    icon: <FaScissors className="text-primary-400" />,
+    description: "Sistema completo de gestión de turnos con seña vía MercadoPago. Calendario interactivo en tiempo real, panel de administración y notificaciones automáticas.",
+    longDescription: `
+      ✂️ Barbería El Rulo — Sistema de Gestión de Turnos
+
+      Desarrollo de una aplicación web completa para la gestión de turnos de una barbería, con integración de pagos y sistema de recordatorios automáticos.
+
+      ## 🔥 El Problema
+      La barbería manejaba los turnos de forma manual, lo que generaba:
+      • Doble reserva de horarios
+      • Pérdida de clientes por falta de recordatorios
+      • Dificultad para gestionar la disponibilidad en tiempo real
+
+      ## 💡 La Solución
+      Una aplicación web que permite:
+      • Reserva de turnos con seña vía MercadoPago
+      • Calendario interactivo con disponibilidad en tiempo real
+      • Panel de administración con estadísticas y gestión de turnos
+      • Recordatorios automáticos vía email (cron job)
+      • Modo demo para pruebas sin pago real
+
+      ## 🏗️ Arquitectura Técnica
+      **Frontend:** Next.js 16 con App Router, React 19, TypeScript
+      **Estilos:** Tailwind CSS 4 con diseño moderno y sofisticado
+      **Base de datos:** Supabase con RLS (Row Level Security)
+      **Pagos:** MercadoPago (sandbox y producción)
+      **Emails:** Resend para confirmaciones y recordatorios
+      **Despliegue:** Vercel con CI/CD
+
+      ## 📊 Resultados
+      • Reducción del 100% de dobles reservas
+      • Aumento de la satisfacción del cliente
+      • Automatización de recordatorios
+      • Panel de administración intuitivo
+    `,
+    link: "https://barberia-next-indol.vercel.app/",
+    github: "https://github.com/cristianmarcus34-boop/barberia-next",
+    tag: "WEB APP + SAAS",
+    tech: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS", "Supabase", "MercadoPago", "Resend", "Vercel"],
+    featured: true,
+    year: "2026",
+    category: "SaaS",
+    galleryImages: [
+      "/proyectos/barberia-hero.jpg",
+      "/proyectos/barberia-calendario.jpg",
+      "/proyectos/barberia-modal.jpg",
+      "/proyectos/barberia-admin.jpg",
+      "/proyectos/barberia-mobile.jpg",
+    ],
+  },
+
+  // ============================================================ //
+  // PROYECTO: JARDINERÍA Y PISCINAS
+  // ============================================================ //
+  {
+    title: "Jardinería y Piscinas",
+    icon: <FaLeaf className="text-primary-400" />,
+    description: "Landing page moderna y sofisticada para servicios de jardinería y mantenimiento de piscinas. Galería interactiva con filtros, formulario con validación en tiempo real, sección de testimonios y sistema de contacto integrado con WhatsApp.",
+    longDescription: `
+      Jardinería y Piscinas es una landing page completa para una empresa de servicios de jardinería y mantenimiento de piscinas.
+
+      🏗️ Arquitectura:
+      • Django 5.1.6 con WhiteNoise para archivos estáticos
+      • Bootstrap 5 + CSS personalizado con variables CSS
+      • JavaScript vanilla para interacciones (filtros, lightbox, acordeón)
+
+      🎨 Diseño:
+      • Interfaz moderna con efectos visuales premium (glassmorphism, gradientes)
+      • Microinteracciones y animaciones con AOS
+      • Footer con acordeón para experiencia móvil óptima
+
+      📱 Experiencia de usuario:
+      • Diseño responsive y mobile-first
+      • Formulario con labels flotantes y validación en tiempo real
+      • Contadores animados de estadísticas
+      • Lightbox con navegación por teclado
+      • Galería interactiva con filtros por categoría
+    `,
+    link: "https://jardineria-dun.vercel.app",
+    github: "https://github.com/cristianmarcus34-boop/Jardineria",
+    tag: "LANDING PAGE",
+    tech: ["Django", "Python", "HTML5", "CSS3", "JavaScript", "Bootstrap", "Vercel"],
+    featured: true,
+    year: "2026",
+    category: "Landing Page",
+    galleryImages: [
+      "/proyectos/jardineria-hero.jpg",
+      "/proyectos/jardineria-servicios.jpg",
+      "/proyectos/jardineria-galeria.jpg",
+      "/proyectos/jardineria-formulario.jpg",
+      "/proyectos/jardineria-mobile.jpg",
+    ],
+  },
+
+  // ============================================================ //
+  // PROYECTO: KRUSTY BURGER APP
+  // ============================================================ //
+  {
+    title: "Krusty Burger App",
+    icon: <FaMobileAlt className="text-primary-400" />,
+    description: "Ecosistema TWA nativo con sincronización offline y arquitectura modular. Optimizada para flujos transaccionales masivos.",
+    longDescription: `
+      Krusty Burger App es una aplicación mobile nativa tipo TWA (Trusted Web Activity) que permite la sincronización offline de datos y pedidos. Desarrollada con Expo Core y Supabase, optimizada para manejar flujos transaccionales masivos en entornos con conectividad intermitente.
+    `,
+    link: "https://www.krustyburger.com.ar/",
+    github: "https://github.com/cristianmarcus34-boop/krusty-burger",
+    tag: "MOBILE ENGINE",
+    tech: ["Expo Core", "Supabase", "Next.js"],
+    featured: false,
+    year: "2025",
+    category: "Mobile",
+    galleryImages: [
+      "/krustyappminiatura.png",
+      "/menuprincipalminiatura.png",
+      "/perfilmini.png",
+      "/panelperfil.png",
+    ],
+  },
+
+  // ============================================================ //
+  // PROYECTO: CAPRICCIO DE PIZZA (REACT)
+  // ============================================================ //
+  {
+    title: "Capriccio de Pizza (React)",
+    icon: <FaReact className="text-primary-400" />,
+    description: "Plataforma e-commerce con SSR avanzado. Reducción de latencia y Core Web Vitals optimizados para SEO.",
+    longDescription: `
+      Capriccio de Pizza es una plataforma e-commerce construida con React 18 y Firebase. Implementa SSR avanzado para optimizar el rendimiento y los Core Web Vitals, mejorando significativamente el posicionamiento SEO del sitio.
+    `,
+    link: "https://capiccio-de-pizza.web.app/",
+    github: "https://github.com/cristianmarcus34-boop/capriccio-react",
+    tag: "PERFORMANCE UI",
+    tech: ["React 18", "Firebase", "Optimization"],
+    featured: false,
+    year: "2024",
+    category: "E-commerce",
+    galleryImages: null
+  },
+
+  // ============================================================ //
+  // PROYECTO: CAPRICCIO ENGINE (DJANGO)
+  // ============================================================ //
+  {
+    title: "Capriccio Engine (Django)",
+    icon: <FaPython className="text-primary-400" />,
+    description: "Backend de grado corporativo con Python/Django. Implementación de CI/CD y bases de datos relacionales robustas.",
+    longDescription: `
+      Capriccio Engine es el backend corporativo desarrollado con Python y Django que potencia la plataforma de e-commerce. Incluye implementación de CI/CD con GitHub Actions, bases de datos relacionales PostgreSQL y una API Rest completamente documentada.
+    `,
+    link: "https://capricciodepizza.onrender.com/",
+    github: "https://github.com/cristianmarcus34-boop/capriccio-engine",
+    tag: "BACKEND ARCHITECTURE",
+    tech: ["Django", "PostgreSQL", "API Rest"],
+    year: "2024",
+    category: "Backend",
+    galleryImages: null
+  },
+
+  // ============================================================ //
+  // PROYECTO: LA ABU MATIE APP
+  // ============================================================ //
+  {
+    title: "La Abu Matie App",
+    icon: <FaServer className="text-primary-400" />,
+    description: "Gestión administrativa automatizada. Interfaz diseñada bajo principios de accesibilidad y eficiencia operativa.",
+    longDescription: `
+      La Abu Matie App es un sistema de gestión administrativa automatizado. La interfaz fue diseñada siguiendo principios de accesibilidad WCAG y eficiencia operativa, permitiendo a los administradores gestionar inventario, pedidos y clientes desde un único dashboard.
+    `,
+    link: "https://la-abu-matie-app.web.app/",
+    github: "https://github.com/cristianmarcus34-boop/la-abu-matie",
+    tag: "ADMIN DASHBOARD",
+    tech: ["Material UI", "Realtime DB", "NoSQL"],
+    year: "2025",
+    category: "Dashboard",
+    galleryImages: null
+  },
+
+  // ============================================================ //
+  // PROYECTO: GIMNASIO & NUTRICIÓN
+  // ============================================================ //
+  {
+    title: "Gimnasio & Nutrición",
+    icon: <FaMobileAlt className="text-primary-400" />,
+    description: "Ecosistema para gestión de centros fitness con integración nutricional y seguimiento de progreso en tiempo real.",
+    longDescription: `
+      Gimnasio & Nutrición es un ecosistema digital para la gestión de centros fitness. Incluye integración nutricional, seguimiento de progreso en tiempo real y paneles de control para entrenadores y clientes.
+    `,
+    link: "#",
+    tag: "FITNESS APP",
+    tech: ["Next.js", "Supabase", "Tailwind"],
+    year: "2025",
+    category: "Health",
+    galleryImages: null,
+    demoComponent: <GimnasioDemo />
+  },
+
+  // ============================================================ //
+  // PROYECTO: POWA SCHEDULE
+  // ============================================================ //
+  {
+    title: "Powa Schedule",
+    icon: <FaCloudUploadAlt className="text-primary-400" />,
+    description: "Sistema de gestión de turnos y consultorías con disponibilidad en tiempo real y notificaciones automáticas.",
+    longDescription: `
+      Powa Schedule es un sistema SaaS para la gestión de turnos y consultorías. Ofrece disponibilidad en tiempo real, notificaciones automáticas vía email y WhatsApp, y un panel de administración completo para gestionar reservas y clientes.
+    `,
+    link: "#",
+    tag: "SAAS TOOL",
+    tech: ["Next.js", "Supabase", "React"],
+    year: "2025",
+    category: "SaaS",
+    galleryImages: null,
+    demoComponent: <ReservaDemo />
+  },
 ];
 
+// ============================================================ //
+// COMPONENTE PRINCIPAL
+// ============================================================ //
 export default function PortfolioPage() {
   const [showModal, setShowModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -321,7 +380,6 @@ export default function PortfolioPage() {
             seguros y centrados en el usuario.
           </p>
 
-          {/* ===== FEATURED BADGE ===== */}
           <div className={styles.featuredBadge}>
             <FaStar className={styles.featuredIcon} />
             <span>Proyectos Destacados</span>
@@ -331,7 +389,6 @@ export default function PortfolioPage() {
       </Container>
 
       <Container className="pb-5">
-        {/* ===== STATS ===== */}
         <Row className="mb-5 g-3">
           {stats.map((stat, i) => (
             <Col xs={6} md={3} key={i}>
@@ -344,7 +401,6 @@ export default function PortfolioPage() {
           ))}
         </Row>
 
-        {/* ===== FILTROS ===== */}
         <div className={styles.filterSection}>
           <div className={styles.filterWrapper}>
             {categories.map((cat) => (
@@ -362,7 +418,6 @@ export default function PortfolioPage() {
           </span>
         </div>
 
-        {/* ===== GRID HEADER ===== */}
         <div className={styles.gridHeader}>
           <h2 className={styles.sectionDivider}>
             <FaCode className={styles.iconBlue} /> Catálogo de Ingeniería
@@ -370,7 +425,6 @@ export default function PortfolioPage() {
           <div className={styles.lineDivider} />
         </div>
 
-        {/* ===== PROJECTS GRID ===== */}
         <Row className="g-4">
           {filteredProjects.map((project, index) => (
             <Col md={6} lg={4} key={index} className={project.featured ? styles.featuredCol : ''}>
@@ -432,7 +486,6 @@ export default function PortfolioPage() {
           ))}
         </Row>
 
-        {/* ===== CTA SECTION ===== */}
         <section className={styles.ctaWrapper}>
           <div className={styles.ctaInner}>
             <div className={styles.ctaGlow} />
