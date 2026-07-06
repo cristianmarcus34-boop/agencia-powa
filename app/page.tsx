@@ -642,17 +642,19 @@ export default function HomePage() {
                                 </div>
 
                                 <div className={styles.roiCta}>
-                                    <button
-                                        onClick={() => {
-                                            const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-                                            window.open(`${baseUrl}/lab?tool=roi`, '_blank');
-                                        }}
-                                        className={styles.roiButton}
-                                    >
-                                        <FaCalculator className={styles.roiButtonIcon} />
-                                        Calcular mi ROI
-                                        <FaArrowRight className={styles.roiButtonIcon} />
-                                    </button>
+                                    <div className={styles.roiCta}>
+                                        <button
+                                            onClick={() => {
+                                                const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+                                                window.open(`${baseUrl}/lab?tool=roi`, '_blank');
+                                            }}
+                                            className={styles.roiButtonNeon}  // 👈 Cambiá la clase aquí
+                                        >
+                                            <FaCalculator className={styles.roiButtonIcon} />
+                                            <span>Calculá tu ROI exacto</span>
+                                            <FaArrowRight className={styles.roiButtonIcon} />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </Col>
