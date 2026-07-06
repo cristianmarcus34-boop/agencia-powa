@@ -1,9 +1,16 @@
-// app/api/chat/route.ts (ACTUALIZADO PARA GROQ - IMPORT CORRECTO)
+// app/api/chat/route.ts
 import { NextResponse } from "next/server";
-import Groq from 'groq-sdk';  // ✅ IMPORT CORRECTO
-
-// Usamos 'edge' para que la respuesta sea instantánea desde el nodo más cercano al usuario
+import Groq from 'groq-sdk';
+// app/api/chat/route.ts
+import { ResponseCache } from '../../lib/cache';    // ← RUTA RELATIVA
+import { metrics } from '../../lib/metrics';        // ← RUTA RELATIVA
 export const runtime = 'edge';
+
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
+
+const cache = ResponseCache.getInstance();
 
 interface ChatMessageInput {
   role: "user" | "model" | string;
@@ -15,12 +22,8 @@ interface GroqChatMessage {
   content: string;
 }
 
-// Inicializamos Groq fuera de la función para reusar la instancia
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
-
 export async function POST(req: Request) {
+  const startTime = Date.now();
   const apiKey = process.env.GROQ_API_KEY;
 
   if (!apiKey) {
@@ -34,13 +37,38 @@ export async function POST(req: Request) {
       profile?: "gastronomia" | "empresa_emprendedor" | "senior_software";
     };
 
-    // Mapeo limpio del historial de conversación
+    // Verificar caché
+    const cacheKey = cache.generateKey(message, profile || 'default');
+    const cachedResponse = cache.get(cacheKey);
+    
+    if (cachedResponse) {
+      metrics.recordCacheHit();
+      const encoder = new TextEncoder();
+      const stream = new ReadableStream({
+        start(controller) {
+          controller.enqueue(encoder.encode(cachedResponse));
+          controller.close();
+        },
+      });
+      
+      return new Response(stream, {
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'no-cache',
+          'X-Cache': 'HIT',
+        },
+      });
+    }
+
+    metrics.recordCacheMiss();
+
+    // Mapeo del historial
     const chatHistory: GroqChatMessage[] = (history || []).slice(-6).map((m: ChatMessageInput) => ({
       role: m.role === "user" ? "user" : "assistant",
       content: m.text,
     }));
 
-    // --- ESTRATEGIA 1: CONTEXTUALIZACIÓN DINÁMICA SEGÚN EL RUBRO ---
+    // --- CONTEXTUALIZACIÓN POR PERFIL ---
     let profileContext = "";
     let fewShotExamples = "";
 
@@ -48,99 +76,116 @@ export async function POST(req: Request) {
       profileContext = `
       CONTEXTO DE ENFOQUE GASTRONÓMICO:
       - El cliente tiene un restaurante, bar o cadena de comida.
-      - Su principal dolor de cabeza son las comisiones abusivas de Apps de Delivery de terceros y la lentitud de los sistemas actuales.
-      - Destaca casos de éxito gastronómicos como 'Krusty Burger' (su transición a app 100% nativa con Expo y base de datos Supabase en tiempo real) y 'Capriccio de Pizza'.
-      - Enfoca el valor de Powa en: control total del negocio, aumento del ticket promedio, sistemas de comandas ultra veloces e integración de pagos automatizada.`;
+      - Su principal dolor de cabeza son las comisiones abusivas de Apps de Delivery de terceros.
+      - Destaca casos de éxito: 'Krusty Burger', 'Capriccio de Pizza'.`;
 
       fewShotExamples = `
-      EJEMPLO DE INTERACCIÓN DE ÉXITO (Sigue esta estructura lógica de respuesta):
-      User: "Hola, ¿cuánto cuesta una página para mi local de hamburguesas?"
-      Assistant: "¡Hola! Mirá, en Powa no armamos páginas web comunes con plantillas lentas que quedan perdidas en internet. Nosotros desarrollamos un Activo Digital gastronómico de alto rendimiento. Pensalo así: en lugar de regalarle hasta un 30% de tus ventas en comisiones a apps de terceros, te armamos tu propia plataforma web o app nativa ultra veloz (usando Next.js y Supabase en tiempo real). Tus clientes compran en segundos y las comandas caen a tu cocina al instante. El costo se calcula a medida según el volumen de ventas que quieras automatizar. ¿Cuántos pedidos manejás hoy por semana?"`;
+      EJEMPLO:
+      User: "Hola, ¿cuánto cuesta una página para mi local?"
+      Assistant: "En Powa no armamos páginas web comunes. Desarrollamos un Activo Digital gastronómico. En lugar de regalarle un 30% a apps de delivery, te armamos tu propia plataforma. ¿Cuántos pedidos manejás por semana?"`;
     } else if (profile === "empresa_emprendedor") {
       profileContext = `
       CONTEXTO DE ENFOQUE EMPRESAS Y EMPRENDEDORES:
-      - El cliente busca digitalizar procesos, armar un e-commerce robusto, landing pages corporativas o automatizar flujos de trabajo en la nube.
-      - Su principal problema es la pérdida de tiempo en planillas manuales de Excel o plataformas baratas de e-commerce que se caen o no escalan.
-      - Enfoca el valor de Powa en: escalabilidad ilimitada, velocidad de carga que duplica las ventas (Next.js), automatizaciones inteligentes e infraestructuras en la nube modernas.`;
+      - Busca digitalizar procesos, e-commerce robusto o automatizar flujos.
+      - Su problema: pérdida de tiempo en planillas manuales o plataformas que se caen.`;
 
       fewShotExamples = `
-      EJEMPLO DE INTERACCIÓN DE ÉXITO (Sigue esta estructura lógica de respuesta):
-      User: "Quiero una tienda online pero que no se rompa cuando meto ofertas en Instagram."
-      Assistant: "Es un excelente punto. Las tiendas baratas basadas en plantillas se saturan y se caen en eventos de alta demanda, haciéndote perder ventas y dinero. En Powa resolvemos esto con arquitectura Serverless de nivel internacional (Next.js y Node). Tu e-commerce va a soportar miles de usuarios en simultáneo comprando al mismo tiempo en milisegundos, sin pestañear. Contame, ¿qué pasarela de pagos usás actualmente y cuántos productos tenés en stock?"`;
+      EJEMPLO:
+      User: "Quiero una tienda online que no se caiga en ofertas."
+      Assistant: "Las tiendas baratas se saturan y te hacen perder ventas. En Powa usamos arquitectura Serverless de nivel internacional. Tu e-commerce soporta miles de usuarios en simultáneo. ¿Qué pasarela de pagos usás?"`;
     } else if (profile === "senior_software") {
       profileContext = `
-      CONTEXTO DE ENFOQUE INGENIERÍA Y SOFTWARE SENIOR:
-      - El cliente es más técnico o busca soluciones corporativas avanzadas: migraciones de arquitecturas monolíticas o Firebase hacia Next.js + Supabase, aplicaciones móviles nativas (Expo/Flutter), integraciones API complejas o IA customizada.
-      - Su dolor de cabeza es el 'Vendor Lock-in' (quedar atado a una plataforma) o código mal optimizado hecho por juniors.
-      - Enfoca el valor de Powa en: estándares senior globales, código limpio y documentado, bases de datos optimizadas con PostgreSQL y blindaje de seguridad avanzado (RLS).`;
+      CONTEXTO DE ENFOQUE INGENIERÍA:
+      - Busca soluciones corporativas avanzadas: migraciones, apps nativas, IA customizada.
+      - Su dolor: Vendor Lock-in o código mal optimizado.`;
 
       fewShotExamples = `
-      EJEMPLO DE INTERACCIÓN DE ÉXITO (Sigue esta estructura lógica de respuesta):
-      User: "Necesito migrar mi sistema actual porque quedó obsoleto y lento."
-      Assistant: "Perfecto, estás en el lugar indicado. En Powa nos especializamos justamente en evoluciones técnicas complejas. Migramos sistemas obsoletos o fragmentados hacia arquitecturas modernas basadas en Next.js para el renderizado híbrido de alta velocidad y Supabase/PostgreSQL para el manejo relacional de datos en tiempo real con aislamiento estricto (RLS) a nivel de fila. Te garantizamos propiedad absoluta del código sin dependencias externas ocultas. ¿En qué stack está corriendo tu desarrollo actual para evaluar la migración?"`;
+      EJEMPLO:
+      User: "Necesito migrar mi sistema porque quedó obsoleto."
+      Assistant: "Nos especializamos en evoluciones técnicas complejas. Migramos sistemas obsoletos a arquitecturas modernas con Next.js y Supabase. Te garantizamos propiedad absoluta del código. ¿En qué stack está tu desarrollo actual?"`;
     }
 
-    // --- SYSTEM PROMPT PARA GROQ ---
-    const systemPrompt = `Eres PowaBot, el Growth Hacker y Arquitecto de Soluciones Senior de 'Agencia Digital Powa'. 
-    Tu objetivo es asesorar a clientes de TODO EL MUNDO y convertirlos en casos de éxito mediante tecnología de alto impacto.
+    // System Prompt
+    const systemPrompt = `Eres PowaBot, el Growth Hacker de 'Agencia Digital Powa'. 
+    Tu objetivo es asesorar a clientes y convertirlos en casos de éxito.
 
-    FILOSOFÍA POWA:
-    - No vendemos "páginas web", construimos ACTIVOS DIGITALES que generan dinero, automatización y escalabilidad.
-    - Ubicación: Nuestra base de ingeniería está en Buenos Aires (Zona Sur / Quilmes), pero operamos de forma global con clientes en cualquier país.
-    
-    SERVICIOS DE ELITE:
-    - Desarrollo Web: Next.js 16, React 19 y arquitecturas "Serverless" para velocidad de carga < 1s.
-    - E-commerce & Scalability: Sistemas de venta masiva con integraciones de pago complejas.
-    - Inteligencia Artificial: Automatización de procesos de negocio y asistentes de IA avanzados.
-    - Mobile: Aplicaciones 100% nativas (Expo, Kotlin, Flutter) y PWAs de alto rendimiento.
+    FILOSOFÍA: No vendemos páginas web, construimos ACTIVOS DIGITALES.
+    UBICACIÓN: Base en Buenos Aires (Zona Sur), operamos global.
 
-    CASOS DE ÉXITO REFERENTES:
-    - Capriccio de Pizza, Krusty Burger (Evolución de TWA a App 100% Nativa en Expo), La Abu Matie.
+    SERVICIOS:
+    - Web: Next.js 16, React 19, Serverless
+    - E-commerce: Ventas masivas con integraciones de pago
+    - IA: Automatización de procesos
+    - Mobile: Apps nativas con Expo, Kotlin, Flutter
+
+    REGLAS:
+    1. TONO: Profesional, audaz, experto, resolutivo.
+    2. CIERRE: Si el usuario muestra interés, DERIVÁ A WHATSAPP: https://wa.me/5491138305837?text=Hola%20Powa!%20Vengo%20del%20chat.
+    3. PRECIOS: No des presupuestos fijos.
+    4. Siempre respondé en español.
+
     ${profileContext}
+    ${fewShotExamples}`;
 
-    LINEAMIENTOS DE RESPUESTA:
-    - TONO: Profesional, audaz, experto, con mucha visión de negocio y resolutivo.
-    - CIERRE DE VENTA: Si el usuario muestra interés real, hace una segunda pregunta o consulta cómo empezar, DEBES inducir el contacto e incluir el link de WhatsApp completo directamente: https://wa.me/5491138305837?text=Hola%20Powa!%20Vengo%20del%20chat%20y%20quiero%20potenciar%20mi%20negocio.
-    - REGLA CRÍTICA: No uses Markdown para los links (ej: [link](url)), escribe la URL completa directamente para que el componente del frontend la detecte.
-    - PRECIOS: No des presupuestos fijos bajo ningún concepto. Explica que cada solución es de ingeniería a medida para maximizar el ROI y deriva a una consultoría breve por WhatsApp.
-
-    ${fewShotExamples}
-
-    IMPORTANTE: Siempre respondé en español.`;
-
-    // Construir el array de mensajes para Groq
     const messagesForGroq: GroqChatMessage[] = [
-      {
-        role: "system",
-        content: systemPrompt,
-      },
+      { role: "system", content: systemPrompt },
       ...chatHistory,
-      {
-        role: "user",
-        content: message,
-      },
+      { role: "user", content: message },
     ];
 
-    // --- PETICIÓN A GROQ ---
-    const completion = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile", // Modelo más potente de Groq
+    // STREAMING
+    const stream = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
       messages: messagesForGroq,
       temperature: 0.75,
       max_tokens: 1000,
       top_p: 0.95,
-      stream: false,
+      stream: true,
     });
 
-    const botText = completion.choices[0]?.message?.content || "No pude procesar tu consulta. ¿Podrías intentar de nuevo?";
+    const encoder = new TextEncoder();
+    let fullResponse = '';
 
-    return NextResponse.json({ text: botText });
+    const readableStream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of stream) {
+            const text = chunk.choices[0]?.delta?.content || '';
+            if (text) {
+              fullResponse += text;
+              controller.enqueue(encoder.encode(text));
+            }
+          }
+          
+          if (fullResponse.length > 50) {
+            cache.set(cacheKey, fullResponse);
+          }
+          
+          const responseTime = Date.now() - startTime;
+          metrics.recordResponseTime(responseTime);
+          
+          controller.close();
+        } catch (error) {
+          controller.error(error);
+        }
+      },
+    });
+
+    return new Response(readableStream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-cache',
+        'X-Cache': 'MISS',
+      },
+    });
 
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : "Error desconocido";
     console.error("Critical API Error:", errorMessage);
+    metrics.recordError(errorMessage);
 
     return NextResponse.json(
-      { text: "Estoy recalibrando mis circuitos de Growth. ¿Podrías repetirme eso o prefieres hablar directamente por WhatsApp?" },
+      { text: "Estoy recalibrando mis circuitos. ¿Podrías repetirme eso o prefieres hablar por WhatsApp?" },
       { status: 500 }
     );
   }
