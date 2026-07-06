@@ -37,6 +37,7 @@ export default function ChatPowa() {
   const [isStreaming, setIsStreaming] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const streamingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const getWhatsAppLink = useCallback(() => {
     const lastUserMsg = [...messages].reverse().find(m => m.role === 'user')?.text;
@@ -63,6 +64,15 @@ export default function ChatPowa() {
     if (isOpen) scrollToBottom();
   }, [messages, loading, isOpen, isStreaming]);
 
+  // 🔥 LIMPIAR TIMEOUT AL DESMONTAR
+  useEffect(() => {
+    return () => {
+      if (streamingTimeoutRef.current) {
+        clearTimeout(streamingTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const handleToggleChat = () => {
     if (!isOpen) playRobotSound();
     setIsOpen(!isOpen);
@@ -82,7 +92,21 @@ export default function ChatPowa() {
     });
   };
 
-  // 🔥 handleSelectProfile - AHORA CON STREAMING
+  // 🔥 FUNCIÓN PARA RESETEAR EL ESTADO DE STREAMING
+  const resetStreamingState = useCallback(() => {
+    if (streamingTimeoutRef.current) {
+      clearTimeout(streamingTimeoutRef.current);
+      streamingTimeoutRef.current = null;
+    }
+    setIsStreaming(false);
+    setLoading(false);
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+  }, []);
+
+  // 🔥 handleSelectProfile - CON STREAMING Y TIMEOUT DE SEGURIDAD
   const handleSelectProfile = async (selectedProfile: ClientProfile, label: string) => {
     setProfile(selectedProfile);
     const userMsg: Message = { role: 'user', text: `Mi proyecto es del rubro: ${label}` };
@@ -103,7 +127,6 @@ export default function ChatPowa() {
 
       if (!res.ok) throw new Error('Error en la respuesta');
 
-      // 🔥 MANEJAR STREAMING
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
 
@@ -117,6 +140,12 @@ export default function ChatPowa() {
 
       setIsStreaming(true);
       let accumulatedText = '';
+
+      // 🔥 TIMEOUT DE SEGURIDAD (15 segundos)
+      streamingTimeoutRef.current = setTimeout(() => {
+        console.log('⏱️ Timeout: streaming forzado a false');
+        resetStreamingState();
+      }, 15000);
 
       if (reader) {
         while (true) {
@@ -142,7 +171,12 @@ export default function ChatPowa() {
         }
       }
 
-      // Si el mensaje quedó vacío, mostrar mensaje por defecto
+      // Limpiar timeout
+      if (streamingTimeoutRef.current) {
+        clearTimeout(streamingTimeoutRef.current);
+        streamingTimeoutRef.current = null;
+      }
+
       setMessages(prev => {
         const newMessages = [...prev];
         const botIndex = newMessages.findIndex(m => m.id === botMessageId);
@@ -162,8 +196,12 @@ export default function ChatPowa() {
         text: "Lo siento, hubo un problema técnico. ¿Prefieres contactarnos por WhatsApp?"
       }]);
     } finally {
-      setLoading(false);
       setIsStreaming(false);
+      setLoading(false);
+      if (streamingTimeoutRef.current) {
+        clearTimeout(streamingTimeoutRef.current);
+        streamingTimeoutRef.current = null;
+      }
     }
   };
 
@@ -213,6 +251,12 @@ export default function ChatPowa() {
       setIsStreaming(true);
       let accumulatedText = '';
 
+      // 🔥 TIMEOUT DE SEGURIDAD (15 segundos)
+      streamingTimeoutRef.current = setTimeout(() => {
+        console.log('⏱️ Timeout: streaming forzado a false');
+        resetStreamingState();
+      }, 15000);
+
       if (reader) {
         while (true) {
           const { done, value } = await reader.read();
@@ -235,6 +279,12 @@ export default function ChatPowa() {
             return newMessages;
           });
         }
+      }
+
+      // Limpiar timeout
+      if (streamingTimeoutRef.current) {
+        clearTimeout(streamingTimeoutRef.current);
+        streamingTimeoutRef.current = null;
       }
 
       setMessages(prev => {
@@ -264,9 +314,13 @@ export default function ChatPowa() {
         }]);
       }
     } finally {
-      setLoading(false);
       setIsStreaming(false);
+      setLoading(false);
       abortControllerRef.current = null;
+      if (streamingTimeoutRef.current) {
+        clearTimeout(streamingTimeoutRef.current);
+        streamingTimeoutRef.current = null;
+      }
     }
   };
 
@@ -289,8 +343,12 @@ export default function ChatPowa() {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
-      setIsStreaming(false);
-      setLoading(false);
+    }
+    setIsStreaming(false);
+    setLoading(false);
+    if (streamingTimeoutRef.current) {
+      clearTimeout(streamingTimeoutRef.current);
+      streamingTimeoutRef.current = null;
     }
   };
 
