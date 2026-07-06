@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+import { useSearchParams } from 'next/navigation';
 import ImageOptimizer from '@/components/ImageOptimizer';
 import RoiCalculator from '@/components/RoiCalculator';
 import VideoCompressor from '@/components/VideoCompressor';
@@ -15,22 +16,55 @@ import {
   FaRocket, FaShieldAlt, FaClock, FaStar,
   FaCode, FaCloudUploadAlt, FaChartLine, FaCrown,
   FaFileCode, FaFont, FaTachometerAlt, FaImage,
-  FaFileAlt
+  FaFileAlt, FaArrowRight
 } from 'react-icons/fa';
 
 import styles from './lab.module.css';
 
-export default function LabPage() {
-  const [activeTool, setActiveTool] = useState<'optimizer' | 'roi' | 'video' | 'svg' | 'vitals' | 'schema' | 'font' | null>('optimizer');
-  const [feedbackEmail, setFeedbackEmail] = useState('');
-  const [feedbackMessage, setFeedbackMessage] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
+// ============================================
+// TIPOS
+// ============================================
+type ToolType = 'optimizer' | 'roi' | 'video' | 'svg' | 'vitals' | 'schema' | 'font' | null;
 
-  const toggleTool = (tool: 'optimizer' | 'roi' | 'video' | 'svg' | 'vitals' | 'schema' | 'font') => {
+export default function LabPage() {
+  // ===== STATE CON TIPOS =====
+  const [activeTool, setActiveTool] = useState<ToolType>('optimizer');
+  const [feedbackEmail, setFeedbackEmail] = useState<string>('');
+  const [feedbackMessage, setFeedbackMessage] = useState<string>('');
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  // ===== LEER PARÁMETRO DE URL =====
+  const searchParams = useSearchParams();
+
+  // ===== EFECTO PARA ABRIR LA HERRAMIENTA SEGÚN PARÁMETRO =====
+  useEffect(() => {
+    const toolParam = searchParams.get('tool');
+    if (toolParam === 'roi') {
+      setActiveTool('roi');
+      // Scroll suave hacia la herramienta
+      setTimeout(() => {
+        const roiElement = document.getElementById('roi-tool');
+        if (roiElement) {
+          roiElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 300);
+    }
+  }, [searchParams]);
+
+  // ===== HANDLERS CON TIPOS =====
+  const toggleTool = (tool: Exclude<ToolType, null>): void => {
     setActiveTool(activeTool === tool ? null : tool);
   };
 
-  const handleFeedbackSubmit = (e: React.FormEvent) => {
+  const handleFeedbackEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setFeedbackEmail(e.target.value);
+  };
+
+  const handleFeedbackMessageChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setFeedbackMessage(e.target.value);
+  };
+
+  const handleFeedbackSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (feedbackEmail && feedbackMessage) {
       setIsSubmitted(true);
@@ -42,7 +76,7 @@ export default function LabPage() {
     }
   };
 
-  // Stats del Lab
+  // ===== STATS DEL LAB =====
   const labStats = [
     { value: "7", label: "Herramientas Activas", icon: <FaFlask /> },
     { value: "99%", label: "Procesamiento Local", icon: <FaShieldAlt /> },
@@ -134,8 +168,11 @@ export default function LabPage() {
               )}
             </div>
 
-            {/* ===== TOOL 2: ROI CALCULATOR ===== */}
-            <div className={`${styles.labAccordionItem} ${activeTool === 'roi' ? styles.active : ''}`}>
+            {/* ===== TOOL 2: ROI CALCULATOR (CON ID PARA SCROLL) ===== */}
+            <div
+              id="roi-tool"
+              className={`${styles.labAccordionItem} ${activeTool === 'roi' ? styles.active : ''}`}
+            >
               <div className={styles.labAccordionHeader} onClick={() => toggleTool('roi')}>
                 <div className="d-flex align-items-center">
                   <div className={`${styles.iconCircle} me-3`}>
@@ -144,12 +181,12 @@ export default function LabPage() {
                   <div>
                     <h4 className="mb-0 text-white">ROI Business Metrics</h4>
                     <small className={styles.labSubtitleCustom}>
-                      Calculadora de rentabilidad publicitaria
+                      Calculá tu retorno de inversión en segundos
                     </small>
                   </div>
                 </div>
                 <div className={styles.headerRight}>
-                  <span className={styles.toolStatus}>Activo</span>
+                  <span className={styles.toolStatus}>💰 Nuevo</span>
                   {activeTool === 'roi' ? <FaChevronUp /> : <FaChevronDown />}
                 </div>
               </div>
@@ -159,7 +196,8 @@ export default function LabPage() {
                   <div className={styles.infoBoxLab}>
                     <FaChartLine className={styles.infoIcon} />
                     <div>
-                      <strong>📊 Métrica Clave:</strong> Un ROI positivo es el indicador más importante de que tu estrategia digital está funcionando.
+                      <strong>📊 Métrica Clave:</strong> Un ROI positivo es el indicador más importante de que tu estrategia digital está funcionando. <br />
+                      <span className={styles.infoHighlight}>"Cada negocio es único. Te ayudamos a calcular cuánto estás perdiendo hoy y cuánto podrías ganar con una solución a medida."</span>
                     </div>
                   </div>
                   <RoiCalculator />
@@ -355,7 +393,8 @@ export default function LabPage() {
                         className={styles.formControlPowa}
                         placeholder="Tu email (opcional)"
                         value={feedbackEmail}
-                        onChange={(e) => setFeedbackEmail(e.target.value)}
+                        onChange={handleFeedbackEmailChange}
+                        type="email"
                       />
                     </Col>
                     <Col md={5}>
@@ -363,7 +402,7 @@ export default function LabPage() {
                         className={styles.formControlPowa}
                         placeholder="Ej: Optimizador de SVG, Analizador de SEO..."
                         value={feedbackMessage}
-                        onChange={(e) => setFeedbackMessage(e.target.value)}
+                        onChange={handleFeedbackMessageChange}
                         required
                       />
                     </Col>

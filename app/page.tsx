@@ -12,7 +12,8 @@ import {
     FaMapMarkerAlt, FaSearch, FaCogs, FaCheckCircle, FaShieldAlt,
     FaFileContract, FaLock, FaUsers, FaChartLine, FaClock,
     FaStar, FaQuoteRight, FaWhatsapp, FaCloudUploadAlt,
-    FaAward, FaBrain, FaLightbulb, FaHandshake
+    FaAward, FaBrain, FaLightbulb, FaHandshake,
+    FaUser, FaCalculator, FaMoneyBillWave, FaChartBar,
 } from 'react-icons/fa';
 import { HiOutlineArrowNarrowRight } from 'react-icons/hi';
 import {
@@ -33,7 +34,6 @@ export default function HomePage() {
         e.preventDefault();
         if (diagnosticoEmail) {
             setDiagnosticoEnviado(true);
-            // Aquí iría la lógica para enviar el email
             console.log('Email para diagnóstico:', diagnosticoEmail);
             setTimeout(() => {
                 setDiagnosticoEnviado(false);
@@ -52,6 +52,7 @@ export default function HomePage() {
     const [refCta] = useInView(options);
     const [refTestimonials] = useInView(options);
     const [refStats] = useInView(options);
+    const [refROI] = useInView(options);
 
     // ===== DATA =====
     const techStack = [
@@ -218,7 +219,6 @@ export default function HomePage() {
                                     </Link>
                                 </div>
 
-                                {/* Trust Badges */}
                                 <div className={styles.heroTrustBadges}>
                                     <span className={styles.trustBadge}>
                                         <FaShieldAlt className={styles.trustBadgeIcon} />
@@ -232,7 +232,6 @@ export default function HomePage() {
                                         <FaWhatsapp className={styles.trustBadgeIcon} />
                                         Soporte 24/7
                                     </span>
-                                    {/* ✅ NUEVO: Enlace a Planes de Mantenimient */}
                                     <Link href="/planes" className={styles.trustBadgeLink}>
                                         <FaShieldAlt className={styles.trustBadgeIcon} />
                                         Planes de Mantenimiento
@@ -342,7 +341,7 @@ export default function HomePage() {
             <section className={styles.budgetMatchSection} ref={refBudget}>
                 <Container>
                     <div className={styles.budgetMatchContainer}>
-                        <Row className="align-items-center g-4">
+                        <Row className="align-items-center g-5">
                             <Col lg={6}>
                                 <div className={styles.budgetContent}>
                                     <span className={styles.sectionBadge}>💰 PRESUPUESTO</span>
@@ -378,45 +377,153 @@ export default function HomePage() {
                                     </div>
                                 </div>
                             </Col>
+
                             <Col lg={6}>
                                 <div className={styles.budgetVisual}>
                                     <div className={styles.budgetCard}>
                                         <div className={styles.budgetCardHeader}>
-                                            <span className={styles.budgetCardBadge}>📊 Comparativa</span>
+                                            <span className={styles.budgetCardBadge}>📊 COMPARATIVA</span>
                                             <h3>¿Cuánto cuesta invertir en tecnología?</h3>
+                                            <p className={styles.budgetCardSubtitle}>
+                                                Precios referenciales según el perfil del desarrollador y tipo de proyecto.
+                                                <br />
+                                                <span className={styles.budgetCardNote}>
+                                                    *En pesos argentinos, cotización al día: <strong>$1.488,27 ARS/USD</strong>
+                                                </span>
+                                            </p>
                                         </div>
+
                                         <div className={styles.budgetCardBody}>
-                                            <div className={styles.budgetComparison}>
-                                                <div className={styles.budgetItem}>
-                                                    <span className={styles.budgetItemLabel}>Desarrollo básico</span>
-                                                    <div className={styles.budgetBarWrapper}>
-                                                        <div className={styles.budgetBar} style={{ width: '100%' }}>
-                                                            <span>$800 - $1,500</span>
-                                                        </div>
+                                            <div className={styles.budgetProfiles}>
+                                                <div className={styles.budgetProfileCard}>
+                                                    <span className={styles.budgetProfileBadge}>Junior</span>
+                                                    <div className={styles.budgetProfileRange}>
+                                                        <span className={styles.budgetProfilePrice}>$22.324</span>
+                                                        <span className={styles.budgetProfileSeparator}>—</span>
+                                                        <span className={styles.budgetProfilePrice}>$37.206</span>
+                                                    </div>
+                                                    <span className={styles.budgetProfileLabel}>por hora</span>
+                                                    <div className={styles.budgetProfileTag}>
+                                                        <FaUser className={styles.budgetProfileIcon} />
+                                                        0-2 años
                                                     </div>
                                                 </div>
-                                                <div className={styles.budgetItem}>
-                                                    <span className={styles.budgetItemLabel}>Desarrollo profesional</span>
-                                                    <div className={styles.budgetBarWrapper}>
-                                                        <div className={`${styles.budgetBar} ${styles.budgetBarPrimary}`} style={{ width: '85%' }}>
-                                                            <span>$1,500 - $3,500</span>
-                                                        </div>
+
+                                                <div className={`${styles.budgetProfileCard} ${styles.budgetProfileActive}`}>
+                                                    <span className={styles.budgetProfileBadge}>Semi-Senior</span>
+                                                    <div className={styles.budgetProfileRange}>
+                                                        <span className={styles.budgetProfilePrice}>$44.648</span>
+                                                        <span className={styles.budgetProfileSeparator}>—</span>
+                                                        <span className={styles.budgetProfilePrice}>$74.413</span>
+                                                    </div>
+                                                    <span className={styles.budgetProfileLabel}>por hora</span>
+                                                    <div className={styles.budgetProfileTag}>
+                                                        <FaUser className={styles.budgetProfileIcon} />
+                                                        2-5 años
                                                     </div>
                                                 </div>
-                                                <div className={styles.budgetItem}>
-                                                    <span className={styles.budgetItemLabel}>Solución enterprise</span>
-                                                    <div className={styles.budgetBarWrapper}>
-                                                        <div className={`${styles.budgetBar} ${styles.budgetBarPremium}`} style={{ width: '70%' }}>
-                                                            <span>$3,500+</span>
-                                                        </div>
+
+                                                <div className={`${styles.budgetProfileCard} ${styles.budgetProfileSenior}`}>
+                                                    <span className={styles.budgetProfileBadge}>🔥 Senior</span>
+                                                    <div className={styles.budgetProfileRange}>
+                                                        <span className={styles.budgetProfilePrice}>$74.413</span>
+                                                        <span className={styles.budgetProfileSeparator}>—</span>
+                                                        <span className={styles.budgetProfilePrice}>$119.062</span>
+                                                    </div>
+                                                    <span className={styles.budgetProfileLabel}>por hora</span>
+                                                    <div className={styles.budgetProfileTag}>
+                                                        <FaUser className={styles.budgetProfileIcon} />
+                                                        5-8 años
+                                                    </div>
+                                                </div>
+
+                                                <div className={styles.budgetProfileCard}>
+                                                    <span className={styles.budgetProfileBadge}>🏢 Agencia</span>
+                                                    <div className={styles.budgetProfileRange}>
+                                                        <span className={styles.budgetProfilePrice}>$119.062</span>
+                                                        <span className={styles.budgetProfileSeparator}>—</span>
+                                                        <span className={styles.budgetProfilePrice}>$223.240</span>
+                                                    </div>
+                                                    <span className={styles.budgetProfileLabel}>por hora</span>
+                                                    <div className={styles.budgetProfileTag}>
+                                                        <FaUsers className={styles.budgetProfileIcon} />
+                                                        Equipo completo
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div className={styles.budgetProjectTable}>
+                                                <h4 className={styles.budgetTableTitle}>
+                                                    <FaCode className={styles.budgetTableIcon} />
+                                                    Precios estimados por proyecto
+                                                </h4>
+
+                                                <div className={styles.budgetTable}>
+                                                    <div className={styles.budgetTableRow}>
+                                                        <div className={styles.budgetTableCell}>Landing Page</div>
+                                                        <div className={styles.budgetTableCell}>$178K - $297K</div>
+                                                        <div className={styles.budgetTableCell}>$595K - $1.19M</div>
+                                                        <div className={styles.budgetTableCell}>$1.19M - $2.23M</div>
+                                                    </div>
+                                                    <div className={styles.budgetTableRow}>
+                                                        <div className={styles.budgetTableCell}>Sitio Institucional</div>
+                                                        <div className={styles.budgetTableCell}>$446K - $892K</div>
+                                                        <div className={styles.budgetTableCell}>$1.78M - $2.97M</div>
+                                                        <div className={styles.budgetTableCell}>$2.97M - $5.35M</div>
+                                                    </div>
+                                                    <div className={styles.budgetTableRow}>
+                                                        <div className={styles.budgetTableCell}>E-commerce</div>
+                                                        <div className={styles.budgetTableCell}>$892K - $1.78M</div>
+                                                        <div className={styles.budgetTableCell}>$2.97M - $5.35M</div>
+                                                        <div className={styles.budgetTableCell}>$5.35M - $10.71M</div>
+                                                    </div>
+                                                    <div className={`${styles.budgetTableRow} ${styles.budgetTableHighlight}`}>
+                                                        <div className={styles.budgetTableCell}>SaaS / Web App</div>
+                                                        <div className={styles.budgetTableCell}>$2.67M - $4.46M</div>
+                                                        <div className={styles.budgetTableCell}>$8.92M - $14.28M</div>
+                                                        <div className={styles.budgetTableCell}>$14.28M - $26.78M</div>
+                                                    </div>
+                                                    <div className={styles.budgetTableRow}>
+                                                        <div className={styles.budgetTableCell}>Dashboard Admin</div>
+                                                        <div className={styles.budgetTableCell}>$1.78M - $3.57M</div>
+                                                        <div className={styles.budgetTableCell}>$5.95M - $10.71M</div>
+                                                        <div className={styles.budgetTableCell}>$10.71M - $17.85M</div>
+                                                    </div>
+                                                </div>
+
+                                                <div className={styles.budgetTableLegend}>
+                                                    <span className={styles.budgetLegendItem}>
+                                                        <span className={styles.budgetLegendDot} style={{ background: '#94a3b8' }} />
+                                                        Junior
+                                                    </span>
+                                                    <span className={styles.budgetLegendItem}>
+                                                        <span className={styles.budgetLegendDot} style={{ background: '#3b82f6' }} />
+                                                        Semi-Senior
+                                                    </span>
+                                                    <span className={styles.budgetLegendItem}>
+                                                        <span className={styles.budgetLegendDot} style={{ background: '#8b5cf6' }} />
+                                                        Senior
+                                                    </span>
+                                                    <span className={styles.budgetLegendItem}>
+                                                        <span className={styles.budgetLegendDot} style={{ background: '#f59e0b' }} />
+                                                        Agencia
+                                                    </span>
+                                                </div>
+                                            </div>
+
                                             <div className={styles.budgetCtaBox}>
-                                                <p>¿No encontrás tu presupuesto? <strong>Hablemos y armamos algo juntos.</strong></p>
-                                                <Link href="/contact" className={styles.budgetCtaButton}>
+                                                <div className={styles.budgetCtaContent}>
                                                     <FaWhatsapp className={styles.budgetCtaIcon} />
+                                                    <div>
+                                                        <p className={styles.budgetCtaText}>
+                                                            ¿No encontrás tu presupuesto?
+                                                            <strong> Hablemos y armamos algo juntos.</strong>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <Link href="/contact" className={styles.budgetCtaButton}>
                                                     Consultar presupuesto
+                                                    <FaRocket className={styles.budgetCtaArrow} />
                                                 </Link>
                                             </div>
                                         </div>
@@ -425,6 +532,124 @@ export default function HomePage() {
                             </Col>
                         </Row>
                     </div>
+                </Container>
+            </section>
+
+            {/* ============================================
+               🚀 SECCIÓN ROI CON BOTÓN A CALCULADORA
+               ============================================ */}
+            <section className={styles.roiSection} ref={refROI}>
+                <Container>
+                    <div className={styles.sectionHeader}>
+                        <span className={styles.sectionBadge}>💰 ROI GARANTIZADO</span>
+                        <h2 className={styles.sectionTitle}>
+                            No es un gasto, es una <span className={styles.textGradient}>inversión</span>
+                        </h2>
+                        <p className={styles.sectionSubtitle}>
+                            Calculá cuánto estás perdiendo hoy y comparalo con el costo de nuestra solución.
+                        </p>
+                    </div>
+
+                    <Row className="g-4">
+                        {/* Tarjeta 1: Pérdidas actuales */}
+                        <Col lg={4} md={6}>
+                            <div className={styles.roiCard}>
+                                <div className={styles.roiIconWrapper}>
+                                    <FaMoneyBillWave className={styles.roiIcon} />
+                                </div>
+                                <div className={styles.roiValue} style={{ color: '#ef4444' }}>
+                                    $515.000
+                                </div>
+                                <div className={styles.roiLabel}>Pérdida mensual estimada*</div>
+                                <ul className={styles.roiList}>
+                                    <li>
+                                        <FaClock className={styles.roiListIcon} />
+                                        Tiempo de gestión: $200.000/mes
+                                    </li>
+                                    <li>
+                                        <FaUsers className={styles.roiListIcon} />
+                                        Ausencias y doble reserva: $225.000/mes
+                                    </li>
+                                    <li>
+                                        <FaChartBar className={styles.roiListIcon} />
+                                        Pérdida de clientes: $90.000/mes
+                                    </li>
+                                </ul>
+                                <div className={styles.roiFootnote}>
+                                    *Estimado basado en barberías con 10 turnos/día
+                                </div>
+                            </div>
+                        </Col>
+
+                        {/* Tarjeta 2: Nuestra solución */}
+                        <Col lg={4} md={6}>
+                            <div className={styles.roiCard}>
+                                <div className={styles.roiIconWrapper}>
+                                    <FaRocket className={styles.roiIcon} />
+                                </div>
+                                <div className={styles.roiValue} style={{ color: '#22d3ee' }}>
+                                    $520.895
+                                </div>
+                                <div className={styles.roiLabel}>Inversión mensual (Plan Profesional)</div>
+                                <ul className={styles.roiList}>
+                                    <li>
+                                        <FaCheckCircle className={styles.roiListIcon} style={{ color: '#10b981' }} />
+                                        Elimina doble reserva
+                                    </li>
+                                    <li>
+                                        <FaCheckCircle className={styles.roiListIcon} style={{ color: '#10b981' }} />
+                                        Recordatorios automáticos
+                                    </li>
+                                    <li>
+                                        <FaCheckCircle className={styles.roiListIcon} style={{ color: '#10b981' }} />
+                                        Panel de administración
+                                    </li>
+                                    <li>
+                                        <FaCheckCircle className={styles.roiListIcon} style={{ color: '#10b981' }} />
+                                        Soporte y actualizaciones
+                                    </li>
+                                </ul>
+                                <div className={styles.roiFootnote}>
+                                    Recuperás la inversión en <strong>2 meses</strong>
+                                </div>
+                            </div>
+                        </Col>
+
+                        {/* Tarjeta 3: Resultado CON BOTÓN A CALCULADORA */}
+                        <Col lg={4} md={6}>
+                            <div className={`${styles.roiCard} ${styles.roiCardHighlight}`}>
+                                <div className={styles.roiIconWrapper}>
+                                    <FaChartBar className={styles.roiIcon} />
+                                </div>
+                                <div className={styles.roiValue} style={{ color: '#10b981' }}>
+                                    +$276.760
+                                </div>
+                                <div className={styles.roiLabel}>Ganancia neta mensual</div>
+                                <div className={styles.roiResult}>
+                                    <div className={styles.roiResultItem}>
+                                        <span>Pérdida actual</span>
+                                        <span className={styles.roiResultValue} style={{ color: '#ef4444' }}>-$515.000</span>
+                                    </div>
+                                    <div className={styles.roiResultArrow}>↓</div>
+                                    <div className={styles.roiResultItem}>
+                                        <span>Con Powa</span>
+                                        <span className={styles.roiResultValue} style={{ color: '#10b981' }}>+$276.760</span>
+                                    </div>
+                                </div>
+                                <div className={styles.roiCta}>
+                                    // En la sección ROI, reemplazá el botón por este:
+                                    <button
+                                        onClick={() => window.open('https://agencia-powa.vercel.app/lab?tool=roi', '_blank')}
+                                        className={styles.roiButton}
+                                    >
+                                        <FaCalculator className={styles.roiButtonIcon} />
+                                        Calculá tu ROI exacto
+                                        <FaArrowRight className={styles.roiButtonIcon} />
+                                    </button>
+                                </div>
+                            </div>
+                        </Col>
+                    </Row>
                 </Container>
             </section>
 
@@ -473,7 +698,6 @@ export default function HomePage() {
                                         <p>Recibí tu análisis en 24hs</p>
                                     </div>
 
-                                    {/* ✅ FORMULARIO CON WEB3FORMS - DIGITAL POWA */}
                                     <form
                                         action="https://api.web3forms.com/submit"
                                         method="POST"
@@ -500,7 +724,6 @@ export default function HomePage() {
                                             value="https://agencia-powa.vercel.app/gracias"
                                         />
 
-                                        {/* Campo para identificar el origen */}
                                         <input
                                             type="hidden"
                                             name="origen"
@@ -615,7 +838,6 @@ export default function HomePage() {
                                 <Link href="/faq" className={styles.btnCtaSecondary}>
                                     Ver Preguntas Frecuentes
                                 </Link>
-                                {/* ✅ NUEVO: Enlace directo a Planes de Mantenimiento */}
                                 <Link href="/planes" className={styles.btnCtaSecondary}>
                                     Ver Planes de Mantenimiento
                                 </Link>
