@@ -82,6 +82,7 @@ export default function ChatPowa() {
     });
   };
 
+  // 🔥 handleSelectProfile - AHORA CON STREAMING
   const handleSelectProfile = async (selectedProfile: ClientProfile, label: string) => {
     setProfile(selectedProfile);
     const userMsg: Message = { role: 'user', text: `Mi proyecto es del rubro: ${label}` };
@@ -100,13 +101,69 @@ export default function ChatPowa() {
         }),
       });
 
-      const data = await res.json();
-      setMessages(prev => [...prev, { role: 'bot', text: data.text }]);
+      if (!res.ok) throw new Error('Error en la respuesta');
+
+      // 🔥 MANEJAR STREAMING
+      const reader = res.body?.getReader();
+      const decoder = new TextDecoder();
+
+      const botMessageId = (Date.now() + 1).toString();
+
+      setMessages(prev => [...prev, {
+        role: 'bot',
+        text: '',
+        id: botMessageId
+      }]);
+
+      setIsStreaming(true);
+      let accumulatedText = '';
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value);
+          if (chunk) {
+            accumulatedText += chunk;
+          }
+
+          setMessages(prev => {
+            const newMessages = [...prev];
+            const botIndex = newMessages.findIndex(m => m.id === botMessageId);
+            if (botIndex !== -1) {
+              newMessages[botIndex] = {
+                ...newMessages[botIndex],
+                text: accumulatedText || '✍️ Escribiendo...'
+              };
+            }
+            return newMessages;
+          });
+        }
+      }
+
+      // Si el mensaje quedó vacío, mostrar mensaje por defecto
+      setMessages(prev => {
+        const newMessages = [...prev];
+        const botIndex = newMessages.findIndex(m => m.id === botMessageId);
+        if (botIndex !== -1 && !newMessages[botIndex].text.trim()) {
+          newMessages[botIndex] = {
+            ...newMessages[botIndex],
+            text: 'Gracias por tu consulta. ¿Querés que profundicemos en algún aspecto en particular?'
+          };
+        }
+        return newMessages;
+      });
+
     } catch (error) {
       console.error("Error al enviar mensaje:", error);
-      setMessages(prev => [...prev, { role: 'bot', text: "Lo siento, hubo un problema técnico. ¿Prefieres contactarnos por WhatsApp?" }]);
+      setMessages(prev => [...prev, {
+        role: 'bot',
+        text: "Lo siento, hubo un problema técnico. ¿Prefieres contactarnos por WhatsApp?"
+      }]);
     } finally {
       setLoading(false);
+      setIsStreaming(false);
     }
   };
 

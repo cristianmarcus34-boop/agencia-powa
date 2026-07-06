@@ -2913,4 +2913,30 @@
     .budgetProfileIcon {
         font-size: 0.6rem;
     }
+
+    /* styles/globals.css - AGREGAR AL FINAL */
+
+    /* Fondo unificado para toda la app */
+    html,
+    body {
+        background-color: #0a0f1a;
+        min-height: 100vh;
+    }
+
+    /* Para la barra de navegación inferior en Android */
+    @media (display-mode: standalone) {
+        body {
+            background-color: #0a0f1a;
+        }
+    }
+
+    /* Para Chrome en Android (barra inferior) */
+    html {
+        background-color: #0a0f1a;
+    }
+
+    /* Para la barra de estado superior */
+    :root {
+        --dark-powa: #0a0f1a;
+    }
 }
