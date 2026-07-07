@@ -13,7 +13,6 @@ type Message = {
 
 type ClientProfile = 'gastronomia' | 'empresa_emprendedor' | 'senior_software' | null;
 
-// PREGUNTAS SUGERIDAS
 const suggestedQuestions = [
   { icon: '💸', text: '¿Cuánto cuesta desarrollar una app?', profile: 'empresa_emprendedor' },
   { icon: '🚀', text: '¿Cómo puedo digitalizar mi negocio?', profile: 'empresa_emprendedor' },
@@ -36,7 +35,6 @@ export default function ChatPowa() {
   const [loading, setLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const abortControllerRef = useRef<AbortController | null>(null);
   const streamingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const getWhatsAppLink = useCallback(() => {
@@ -45,7 +43,6 @@ export default function ChatPowa() {
     const context = lastUserMsg
       ? ` Estaba consultando sobre: "${lastUserMsg.substring(0, 70)}${lastUserMsg.length > 70 ? '...' : ''}"`
       : " Me gustaría recibir asesoría personalizada para mi proyecto.";
-
     const fullMessage = `${intro}${context} ¿Podemos hablar?`;
     return `https://wa.me/5491138305837?text=${encodeURIComponent(fullMessage)}`;
   }, [messages]);
@@ -64,7 +61,6 @@ export default function ChatPowa() {
     if (isOpen) scrollToBottom();
   }, [messages, loading, isOpen, isStreaming]);
 
-  // 🔥 LIMPIAR TIMEOUT AL DESMONTAR
   useEffect(() => {
     return () => {
       if (streamingTimeoutRef.current) {
@@ -72,6 +68,14 @@ export default function ChatPowa() {
       }
     };
   }, []);
+
+  // MONITOREO: Si isStreaming está true pero no hay loading, forzar reset
+  useEffect(() => {
+    if (isStreaming && !loading) {
+      console.log('⚠️ Streaming activo sin loading - forzando reset');
+      setIsStreaming(false);
+    }
+  }, [isStreaming, loading]);
 
   const handleToggleChat = () => {
     if (!isOpen) playRobotSound();
@@ -92,7 +96,6 @@ export default function ChatPowa() {
     });
   };
 
-  // 🔥 FUNCIÓN PARA RESETEAR EL ESTADO DE STREAMING
   const resetStreamingState = useCallback(() => {
     if (streamingTimeoutRef.current) {
       clearTimeout(streamingTimeoutRef.current);
@@ -100,13 +103,8 @@ export default function ChatPowa() {
     }
     setIsStreaming(false);
     setLoading(false);
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-      abortControllerRef.current = null;
-    }
   }, []);
 
-  // 🔥 handleSelectProfile - CON STREAMING Y TIMEOUT DE SEGURIDAD
   const handleSelectProfile = async (selectedProfile: ClientProfile, label: string) => {
     setProfile(selectedProfile);
     const userMsg: Message = { role: 'user', text: `Mi proyecto es del rubro: ${label}` };
@@ -129,7 +127,6 @@ export default function ChatPowa() {
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
-
       const botMessageId = (Date.now() + 1).toString();
 
       setMessages(prev => [...prev, {
@@ -141,7 +138,6 @@ export default function ChatPowa() {
       setIsStreaming(true);
       let accumulatedText = '';
 
-      // 🔥 TIMEOUT DE SEGURIDAD (15 segundos)
       streamingTimeoutRef.current = setTimeout(() => {
         console.log('⏱️ Timeout: streaming forzado a false');
         resetStreamingState();
@@ -151,11 +147,8 @@ export default function ChatPowa() {
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
-
           const chunk = decoder.decode(value);
-          if (chunk) {
-            accumulatedText += chunk;
-          }
+          if (chunk) accumulatedText += chunk;
 
           setMessages(prev => {
             const newMessages = [...prev];
@@ -171,7 +164,6 @@ export default function ChatPowa() {
         }
       }
 
-      // Limpiar timeout
       if (streamingTimeoutRef.current) {
         clearTimeout(streamingTimeoutRef.current);
         streamingTimeoutRef.current = null;
@@ -189,15 +181,20 @@ export default function ChatPowa() {
         return newMessages;
       });
 
+      setTimeout(() => {
+        setIsStreaming(false);
+        setLoading(false);
+      }, 50);
+
     } catch (error) {
-      console.error("Error al enviar mensaje:", error);
+      console.error("Error:", error);
       setMessages(prev => [...prev, {
         role: 'bot',
         text: "Lo siento, hubo un problema técnico. ¿Prefieres contactarnos por WhatsApp?"
       }]);
-    } finally {
       setIsStreaming(false);
       setLoading(false);
+    } finally {
       if (streamingTimeoutRef.current) {
         clearTimeout(streamingTimeoutRef.current);
         streamingTimeoutRef.current = null;
@@ -205,7 +202,6 @@ export default function ChatPowa() {
     }
   };
 
-  // 🔥 STREAMING - Envío de mensaje
   const sendMessage = async () => {
     if (!input.trim() || loading || isStreaming) return;
 
@@ -221,8 +217,6 @@ export default function ChatPowa() {
     setInput("");
     setLoading(true);
 
-    abortControllerRef.current = new AbortController();
-
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -232,14 +226,12 @@ export default function ChatPowa() {
           history: newHistory,
           profile: profile
         }),
-        signal: abortControllerRef.current.signal,
       });
 
       if (!response.ok) throw new Error('Error en la respuesta');
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
-
       const botMessageId = (Date.now() + 1).toString();
 
       setMessages(prev => [...prev, {
@@ -251,7 +243,6 @@ export default function ChatPowa() {
       setIsStreaming(true);
       let accumulatedText = '';
 
-      // 🔥 TIMEOUT DE SEGURIDAD (15 segundos)
       streamingTimeoutRef.current = setTimeout(() => {
         console.log('⏱️ Timeout: streaming forzado a false');
         resetStreamingState();
@@ -261,11 +252,8 @@ export default function ChatPowa() {
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
-
           const chunk = decoder.decode(value);
-          if (chunk) {
-            accumulatedText += chunk;
-          }
+          if (chunk) accumulatedText += chunk;
 
           setMessages(prev => {
             const newMessages = [...prev];
@@ -281,7 +269,6 @@ export default function ChatPowa() {
         }
       }
 
-      // Limpiar timeout
       if (streamingTimeoutRef.current) {
         clearTimeout(streamingTimeoutRef.current);
         streamingTimeoutRef.current = null;
@@ -299,24 +286,20 @@ export default function ChatPowa() {
         return newMessages;
       });
 
-    } catch (error: any) {
-      console.error("Error al enviar mensaje:", error);
+      setTimeout(() => {
+        setIsStreaming(false);
+        setLoading(false);
+      }, 50);
 
-      if (error.name === 'AbortError') {
-        setMessages(prev => [...prev, {
-          role: 'bot',
-          text: '⏹️ La respuesta fue cancelada. ¿Querés intentar de nuevo?'
-        }]);
-      } else {
-        setMessages(prev => [...prev, {
-          role: 'bot',
-          text: "Lo siento, hubo un problema técnico. ¿Prefieres contactarnos por WhatsApp?"
-        }]);
-      }
-    } finally {
+    } catch (error: any) {
+      console.error("Error:", error);
+      setMessages(prev => [...prev, {
+        role: 'bot',
+        text: "Lo siento, hubo un problema técnico. ¿Prefieres contactarnos por WhatsApp?"
+      }]);
       setIsStreaming(false);
       setLoading(false);
-      abortControllerRef.current = null;
+    } finally {
       if (streamingTimeoutRef.current) {
         clearTimeout(streamingTimeoutRef.current);
         streamingTimeoutRef.current = null;
@@ -324,7 +307,6 @@ export default function ChatPowa() {
     }
   };
 
-  // Preguntas sugeridas
   const handleSuggestedQuestion = (question: string, questionProfile: string) => {
     if (profile !== questionProfile) {
       setProfile(questionProfile as ClientProfile);
@@ -338,21 +320,6 @@ export default function ChatPowa() {
     }
   };
 
-  // Abortar streaming
-  const abortStream = () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-      abortControllerRef.current = null;
-    }
-    setIsStreaming(false);
-    setLoading(false);
-    if (streamingTimeoutRef.current) {
-      clearTimeout(streamingTimeoutRef.current);
-      streamingTimeoutRef.current = null;
-    }
-  };
-
-  // Calificar respuesta
   const rateResponse = async (rating: number) => {
     try {
       await fetch('/api/metrics', {
@@ -375,10 +342,9 @@ export default function ChatPowa() {
     <div className={styles.chatContainer}>
       {!isOpen && <div className={styles.notificationBadge}>1</div>}
 
-      <button onClick={handleToggleChat} className={styles.chatToggleButton} aria-label="Abrir Chat de Ayuda">
-        {isOpen ? (
-          <IoClose size={28} />
-        ) : (
+      {/* 🔥 BOTÓN FLOTANTE - SOLO CUANDO EL CHAT ESTÁ CERRADO */}
+      {!isOpen && (
+        <button onClick={handleToggleChat} className={styles.chatToggleButton} aria-label="Abrir Chat de Ayuda">
           <Image
             src="/iconoia.jpg"
             alt="Powa Bot Ayuda"
@@ -387,12 +353,12 @@ export default function ChatPowa() {
             className={styles.robotIconImg}
             priority
           />
-        )}
-      </button>
+        </button>
+      )}
 
       {isOpen && (
         <div className={styles.chatWindow}>
-          <div className={styles.header}>
+          <div className={styles.header} style={{ position: 'relative', zIndex: 10 }}>
             <div className={styles.headerInfo}>
               <div className={styles.headerAvatarContainer}>
                 <Image
@@ -406,11 +372,14 @@ export default function ChatPowa() {
               </div>
               <div className={styles.headerText}>
                 <span className={styles.headerTitle}>POWA AI LAB</span>
-                <span className={styles.headerSubtitle}>Soporte Local Zona Sur</span>
+                <span className={styles.headerSubtitle}>
+                  <span className={styles.headerSubtitleFull}>Soporte Local Zona Sur</span>
+                  <span className={styles.headerSubtitleShort}>Soporte Zona Sur</span>
+                </span>
               </div>
             </div>
             <button onClick={() => setIsOpen(false)} className={styles.closeButton}>
-              <IoClose size={18} />
+              <IoClose size={20} />
             </button>
           </div>
 
@@ -424,7 +393,6 @@ export default function ChatPowa() {
                   )}
                 </div>
 
-                {/* Calificación */}
                 {m.role === 'bot' && i === messages.length - 1 && !isStreaming && m.text.length > 20 && (
                   <div className={styles.ratingContainer}>
                     <span className={styles.ratingLabel}>¿Te fue útil?</span>
@@ -440,7 +408,6 @@ export default function ChatPowa() {
                   </div>
                 )}
 
-                {/* Perfiles */}
                 {i === 0 && !profile && !loading && (
                   <div className={styles.profileOptionsContainer}>
                     <button
@@ -464,7 +431,6 @@ export default function ChatPowa() {
                   </div>
                 )}
 
-                {/* Preguntas sugeridas */}
                 {profile && i === 0 && !loading && !isStreaming && (
                   <div className={styles.suggestedQuestionsContainer}>
                     <span className={styles.suggestedLabel}>Preguntas frecuentes:</span>
@@ -486,7 +452,6 @@ export default function ChatPowa() {
                   </div>
                 )}
 
-                {/* WhatsApp */}
                 {m.role === 'bot' && (m.text.toLowerCase().includes('whatsapp') || m.text.toLowerCase().includes('contacto')) && (
                   <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" className={styles.whatsappButton}>
                     🟢 HABLAR CON UN ESPECIALISTA
@@ -515,19 +480,14 @@ export default function ChatPowa() {
               placeholder={profile ? "¿Cómo escalamos tu proyecto?" : "Selecciona un rubro arriba primero..."}
               disabled={!profile || loading || isStreaming}
             />
-            {isStreaming ? (
-              <button onClick={abortStream} className={styles.abortButton} aria-label="Cancelar respuesta">
-                ⏹️
-              </button>
-            ) : (
-              <button
-                onClick={sendMessage}
-                disabled={loading || !input.trim() || !profile}
-                className={styles.sendButton}
-              >
-                <IoSend size={20} />
-              </button>
-            )}
+
+            <button
+              onClick={sendMessage}
+              disabled={loading || !input.trim() || !profile || isStreaming}
+              className={styles.sendButton}
+            >
+              <IoSend size={20} />
+            </button>
           </div>
         </div>
       )}
