@@ -1405,6 +1405,41 @@
 }
 
 /* ============================================
+   DIAGNÓSTICO - TEXTAREA
+   ============================================ */
+.diagnosticoTextarea {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    resize: vertical;
+    font-family: inherit;
+    min-height: 80px;
+}
+
+@media (min-width: 768px) {
+    .diagnosticoTextarea {
+        padding: 14px 18px;
+        font-size: 1rem;
+        min-height: 100px;
+    }
+}
+
+.diagnosticoTextarea::placeholder {
+    color: var(--slate-500);
+}
+
+.diagnosticoTextarea:focus {
+    outline: none;
+    border-color: rgba(34, 211, 238, 0.4);
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.05);
+}
+
+/* ============================================
    DIAGNÓSTICO GRATUITO
    ============================================ */
 .diagnosticoSection {
@@ -1607,10 +1642,14 @@
     }
 }
 
+/* ============================================
+   DIAGNÓSTICO - INPUTS ACTUALIZADOS
+   ============================================ */
 .diagnosticoInputGroup {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-bottom: 10px;
 }
 
 @media (min-width: 576px) {
@@ -1630,6 +1669,7 @@
     font-size: 0.9rem;
     transition: all 0.3s ease;
     min-width: 0;
+    width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -1660,6 +1700,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
+    flex-shrink: 0;
 }
 
 @media (min-width: 768px) {

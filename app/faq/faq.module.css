@@ -559,6 +559,147 @@
     color: #f8fafc;
 }
 
+/* ============================================
+   CHAT CTA - FAQ
+   ============================================ */
+.chatCtaCard {
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.6), rgba(34, 211, 238, 0.05));
+    border: 1px solid rgba(34, 211, 238, 0.15);
+    border-radius: 24px;
+    padding: 32px 24px;
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+    .chatCtaCard {
+        padding: 40px 36px;
+        border-radius: 28px;
+    }
+}
+
+.chatCtaCard:hover {
+    border-color: rgba(34, 211, 238, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.chatCtaContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+}
+
+@media (min-width: 768px) {
+    .chatCtaContent {
+        flex-direction: row;
+        text-align: left;
+        gap: 24px;
+    }
+}
+
+.chatCtaIconWrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(34, 211, 238, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .chatCtaIconWrapper {
+        width: 72px;
+        height: 72px;
+    }
+}
+
+.chatCtaIcon {
+    font-size: 28px;
+    color: #22d3ee;
+}
+
+@media (min-width: 768px) {
+    .chatCtaIcon {
+        font-size: 32px;
+    }
+}
+
+.chatCtaText {
+    flex: 1;
+}
+
+.chatCtaTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+@media (min-width: 768px) {
+    .chatCtaTitle {
+        font-size: 1.25rem;
+    }
+}
+
+.chatCtaDesc {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin: 0;
+    line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+    .chatCtaDesc {
+        font-size: 0.95rem;
+    }
+}
+
+.chatCtaButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: #ffffff !important;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+@media (min-width: 768px) {
+    .chatCtaButton {
+        padding: 14px 32px;
+        font-size: 0.95rem;
+        border-radius: 14px;
+    }
+}
+
+.chatCtaButton:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
+}
+
+.chatCtaButtonIcon {
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.chatCtaButton:hover .chatCtaButtonIcon {
+    transform: translateX(4px);
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 992px) {
     .categoryFilters {

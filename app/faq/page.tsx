@@ -11,7 +11,7 @@ import {
   FaMobileAlt, FaPlug, FaCloudUploadAlt, FaChartLine,
   FaUserTie, FaFileContract, FaQuestionCircle,
   FaSearch, FaFilter, FaTags, FaServer, FaDatabase,
-  FaArrowRight
+  FaArrowRight, FaRobot
 } from 'react-icons/fa';
 import Script from 'next/script';
 import styles from './faq.module.css';
@@ -326,6 +326,7 @@ export default function FaqPage() {
             </Col>
           </Row>
 
+
           {/* ===== BADGES DE CONFIANZA ===== */}
           <Row className="justify-content-center mb-5">
             <Col lg={10}>
@@ -413,6 +414,41 @@ export default function FaqPage() {
                   <p>No hay preguntas en esta categoría</p>
                 </div>
               )}
+            </Col>
+          </Row>
+
+          {/* ===== CTA: Si no encontraste tu respuesta ===== */}
+          <Row className="justify-content-center mt-5">
+            <Col lg={9}>
+              <div className={styles.chatCtaCard}>
+                <div className={styles.chatCtaContent}>
+                  <div className={styles.chatCtaIconWrapper}>
+                    <FaRobot className={styles.chatCtaIcon} />
+                  </div>
+                  <div className={styles.chatCtaText}>
+                    <h4 className={styles.chatCtaTitle}>
+                      ¿No encontraste lo que buscabas?
+                    </h4>
+                    <p className={styles.chatCtaDesc}>
+                      Nuestro asistente con IA está listo para responder todas tus preguntas
+                      sobre desarrollo, arquitectura y soluciones tecnológicas en tiempo real.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      // Buscar el botón del chat y abrirlo
+                      const chatButton = document.querySelector('[aria-label="Abrir Chat de Ayuda"]');
+                      if (chatButton) {
+                        (chatButton as HTMLButtonElement).click();
+                      }
+                    }}
+                    className={styles.chatCtaButton}
+                  >
+                    <FaRocket className={styles.chatCtaButtonIcon} />
+                    Hablar con PowaBot IA
+                  </button>
+                </div>
+              </div>
             </Col>
           </Row>
 

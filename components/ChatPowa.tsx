@@ -26,12 +26,8 @@ export default function ChatPowa() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [profile, setProfile] = useState<ClientProfile>(null);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'bot',
-      text: '¡Hola! Soy el estratega de Powa. 🚀 Estamos impulsando negocios en Quilmes y el mundo con tecnología de punta. Para darte la mejor asesoría técnica y de Growth, seleccioná el rubro de tu proyecto:'
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [conversacionId, setConversacionId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -61,6 +57,13 @@ export default function ChatPowa() {
     if (isOpen) scrollToBottom();
   }, [messages, loading, isOpen, isStreaming]);
 
+  // Cargar historial al abrir el chat
+  useEffect(() => {
+    if (isOpen && conversacionId) {
+      cargarHistorial(conversacionId);
+    }
+  }, [isOpen, conversacionId]);
+
   useEffect(() => {
     return () => {
       if (streamingTimeoutRef.current) {
@@ -78,7 +81,12 @@ export default function ChatPowa() {
   }, [isStreaming, loading]);
 
   const handleToggleChat = () => {
-    if (!isOpen) playRobotSound();
+    if (!isOpen) {
+      playRobotSound();
+      // Reiniciar el chat al abrir
+      setMessages([]);
+      setConversacionId(null);
+    }
     setIsOpen(!isOpen);
   };
 
@@ -105,6 +113,26 @@ export default function ChatPowa() {
     setLoading(false);
   }, []);
 
+  // Cargar historial desde la base de datos
+  const cargarHistorial = async (chatId: string) => {
+    try {
+      const response = await fetch(`/api/chat/historial?chatId=${chatId}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.mensajes && data.mensajes.length > 0) {
+          const historialMessages = data.mensajes.map((m: any) => ({
+            role: m.rol === 'usuario' ? 'user' : 'bot',
+            text: m.contenido,
+            id: m.id
+          }));
+          setMessages(historialMessages);
+        }
+      }
+    } catch (error) {
+      console.error('Error cargando historial:', error);
+    }
+  };
+
   const handleSelectProfile = async (selectedProfile: ClientProfile, label: string) => {
     setProfile(selectedProfile);
     const userMsg: Message = { role: 'user', text: `Mi proyecto es del rubro: ${label}` };
@@ -119,11 +147,18 @@ export default function ChatPowa() {
         body: JSON.stringify({
           message: `Hola, seleccioné la opción de ${label}. Contame cómo me pueden ayudar con soluciones Senior y Growth.`,
           history: newHistory,
-          profile: selectedProfile
+          profile: selectedProfile,
+          conversacionId: conversacionId
         }),
       });
 
       if (!res.ok) throw new Error('Error en la respuesta');
+
+      // Obtener el chatId de los headers
+      const newChatId = res.headers.get('X-Chat-Id');
+      if (newChatId && !conversacionId) {
+        setConversacionId(newChatId);
+      }
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
@@ -148,7 +183,9 @@ export default function ChatPowa() {
           const { done, value } = await reader.read();
           if (done) break;
           const chunk = decoder.decode(value);
-          if (chunk) accumulatedText += chunk;
+          if (chunk) {
+            accumulatedText += chunk;
+          }
 
           setMessages(prev => {
             const newMessages = [...prev];
@@ -224,11 +261,18 @@ export default function ChatPowa() {
         body: JSON.stringify({
           message: currentInput,
           history: newHistory,
-          profile: profile
+          profile: profile,
+          conversacionId: conversacionId
         }),
       });
 
       if (!response.ok) throw new Error('Error en la respuesta');
+
+      // Obtener el chatId de los headers
+      const newChatId = response.headers.get('X-Chat-Id');
+      if (newChatId && !conversacionId) {
+        setConversacionId(newChatId);
+      }
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
@@ -253,7 +297,9 @@ export default function ChatPowa() {
           const { done, value } = await reader.read();
           if (done) break;
           const chunk = decoder.decode(value);
-          if (chunk) accumulatedText += chunk;
+          if (chunk) {
+            accumulatedText += chunk;
+          }
 
           setMessages(prev => {
             const newMessages = [...prev];
@@ -327,7 +373,7 @@ export default function ChatPowa() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'satisfaction',
-          data: { rating }
+          data: { rating, conversacionId }
         }),
       });
       const ratingMsg = ['😡', '😕', '😐', '😊', '🌟'][rating - 1];
@@ -342,7 +388,6 @@ export default function ChatPowa() {
     <div className={styles.chatContainer}>
       {!isOpen && <div className={styles.notificationBadge}>1</div>}
 
-      {/* 🔥 BOTÓN FLOTANTE - SOLO CUANDO EL CHAT ESTÁ CERRADO */}
       {!isOpen && (
         <button onClick={handleToggleChat} className={styles.chatToggleButton} aria-label="Abrir Chat de Ayuda">
           <Image
@@ -384,6 +429,13 @@ export default function ChatPowa() {
           </div>
 
           <div className={styles.messagesArea}>
+            {messages.length === 0 && !loading && (
+              <div className={styles.welcomeMessage}>
+                <p>¡Hola! Soy el estratega de Powa. 🚀</p>
+                <p>Seleccioná el rubro de tu proyecto para comenzar:</p>
+              </div>
+            )}
+
             {messages.map((m, i) => (
               <div key={i} className={styles.messageRow}>
                 <div className={m.role === 'user' ? styles.userBubble : styles.botBubble}>
@@ -408,7 +460,7 @@ export default function ChatPowa() {
                   </div>
                 )}
 
-                {i === 0 && !profile && !loading && (
+                {i === 0 && !profile && !loading && messages.length === 1 && (
                   <div className={styles.profileOptionsContainer}>
                     <button
                       onClick={() => handleSelectProfile('gastronomia', 'Gastronomía (Restaurantes/Delivery)')}

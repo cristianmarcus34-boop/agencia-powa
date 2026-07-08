@@ -864,14 +864,32 @@ export default function HomePage() {
                                             name="redirect"
                                             value="https://agencia-powa.vercel.app/gracias"
                                         />
-
                                         <input
                                             type="hidden"
                                             name="origen"
                                             value="Diagnóstico - Página Principal"
                                         />
 
+                                        {/* 🔥 NUEVO: Nombre */}
                                         <div className={styles.diagnosticoInputGroup}>
+                                            <input
+                                                type="text"
+                                                name="nombre"
+                                                className={styles.diagnosticoInput}
+                                                placeholder="Tu nombre"
+                                                required
+                                            />
+                                        </div>
+
+                                        {/* 🔥 NUEVO: URL + Email en la misma fila */}
+                                        <div className={styles.diagnosticoInputGroup}>
+                                            <input
+                                                type="url"
+                                                name="url"
+                                                className={styles.diagnosticoInput}
+                                                placeholder="URL de tu sitio web (ej: mipagina.com)"
+                                                required
+                                            />
                                             <input
                                                 type="email"
                                                 name="email"
@@ -879,13 +897,36 @@ export default function HomePage() {
                                                 placeholder="Tu email"
                                                 required
                                             />
-                                            <button
-                                                type="submit"
-                                                className={styles.diagnosticoButton}
-                                            >
-                                                Quiero mi diagnóstico
-                                            </button>
                                         </div>
+
+                                        {/* 🔥 NUEVO: Teléfono (opcional) */}
+                                        <div className={styles.diagnosticoInputGroup}>
+                                            <input
+                                                type="tel"
+                                                name="telefono"
+                                                className={styles.diagnosticoInput}
+                                                placeholder="Tu teléfono (opcional)"
+                                            />
+                                        </div>
+
+                                        {/* 🔥 NUEVO: Mensaje */}
+                                        <div className={styles.diagnosticoInputGroup}>
+                                            <textarea
+                                                name="mensaje"
+                                                className={styles.diagnosticoTextarea}
+                                                placeholder="Contanos qué necesitas mejorar o qué problema tenés con tu sitio..."
+                                                rows={3}
+                                            />
+                                        </div>
+
+                                        {/* 🔥 Botón de enviar */}
+                                        <button
+                                            type="submit"
+                                            className={styles.diagnosticoButton}
+                                        >
+                                            Quiero mi diagnóstico
+                                        </button>
+
                                         <p className={styles.diagnosticoFooter}>
                                             🔒 Tu información está segura. No compartimos tus datos.
                                         </p>

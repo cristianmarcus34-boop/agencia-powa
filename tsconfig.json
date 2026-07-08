@@ -21,6 +21,7 @@
     "paths": {
       "@/*": ["./*"],
       "@/lib/*": ["./lib/*"]
+      
     },
     "typeRoots": [
       "./node_modules/@types",

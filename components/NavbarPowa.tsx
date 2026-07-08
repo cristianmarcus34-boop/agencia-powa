@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import styles from './NavbarPowa.module.css';
 
@@ -16,6 +17,7 @@ export default function NavbarPowa() {
   const [scrolled, setScrolled] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   const handleScroll = useCallback(() => {
     const isScrolled = window.scrollY > 20;
@@ -43,15 +45,14 @@ export default function NavbarPowa() {
   return (
     <Navbar
       expanded={expanded}
-      onToggle={(nextExpand) => setExpanded(nextExpand)}
+      onToggle={(nextExpand: boolean) => setExpanded(nextExpand)} // 🔥 CORREGIDO
       expand="lg"
       fixed="top"
       variant="dark"
-      suppressHydrationWarning // <--- Agrega esto acá
+      suppressHydrationWarning
       className={`${styles.navbarBase} ${scrolled ? styles.navbarScrolled : styles.navbarTransparent}`}
     >
       <Container>
-        {/* SOLUCIÓN HIDRATACIÓN BRAND: Usamos Navbar.Brand con 'as={Link}' nativo de React-Bootstrap */}
         <Navbar.Brand
           as={Link}
           href="/"
@@ -82,7 +83,6 @@ export default function NavbarPowa() {
 
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ms-auto align-items-center">
-            {/* SOLUCIÓN HIDRATACIÓN NAV LINKS: Usamos Nav.Link con 'as={Link}' para evitar tags anidados conflictivos */}
             {navLinks.map((link) => (
               <Nav.Link
                 key={link.path}
@@ -97,7 +97,6 @@ export default function NavbarPowa() {
 
             <div className={styles.navDivider}></div>
 
-            {/* SOLUCIÓN HIDRATACIÓN LAB: Pasado a Nav.Link con comportamiento de Link de Next */}
             <Nav.Link
               as={Link}
               href="/lab"
@@ -108,17 +107,63 @@ export default function NavbarPowa() {
               <span className={styles.badgeSoon}>Beta</span>
             </Nav.Link>
 
-            {/* BOTÓN CONTACTO: Convertido a Nav.Link estructural para que maneje bien las clases custom sin romper atributos */}
-            <Nav.Link
-              as={Link}
-              href="/contact"
-              className="ms-lg-2 p-0 text-decoration-none"
-              onClick={closeMenu}
-            >
-              <span className={styles.contactBtn} role="button">
-                Empezar Proyecto
-              </span>
-            </Nav.Link>
+            {/* 🔥 BOTÓN DE LOGIN / LOGOUT */}
+            {session ? (
+              // Usuario logueado
+              <>
+                <Nav.Link
+                  as={Link}
+                  href={session.user?.rol === 'admin' ? '/admin' : '/cliente'}
+                  className={styles.navLink}
+                  onClick={closeMenu}
+                >
+                  <span className={styles.userInfo}>
+                    👤 {session.user?.name}
+                  </span>
+                </Nav.Link>
+                <Nav.Link
+                  onClick={() => {
+                    signOut();
+                    closeMenu();
+                  }}
+                  className={`${styles.navLink} ${styles.logoutBtn}`}
+                  style={{ cursor: 'pointer' }}
+                >
+                  Cerrar sesión
+                </Nav.Link>
+                <Nav.Link
+                  as={Link}
+                  href="/contact"
+                  className="ms-lg-2 p-0 text-decoration-none"
+                  onClick={closeMenu}
+                >
+                  <span className={styles.contactBtn} role="button">
+                    Empezar Proyecto
+                  </span>
+                </Nav.Link>
+              </>
+            ) : (
+              // Usuario NO logueado
+              <>
+                <Nav.Link
+                  onClick={() => signIn()}
+                  className={`${styles.navLink} ${styles.loginBtn}`}
+                  style={{ cursor: 'pointer' }}
+                >
+                  Iniciar sesión
+                </Nav.Link>
+                <Nav.Link
+                  as={Link}
+                  href="/contact"
+                  className="ms-lg-2 p-0 text-decoration-none"
+                  onClick={closeMenu}
+                >
+                  <span className={styles.contactBtn} role="button">
+                    Empezar Proyecto
+                  </span>
+                </Nav.Link>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
