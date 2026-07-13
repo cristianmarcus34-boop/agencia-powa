@@ -23,10 +23,15 @@ export default function LoginPage() {
             console.log('✅ Usuario logueado:', session.user);
             console.log('✅ Rol:', session.user.rol);
 
-            if (session.user.rol === 'admin') {
-                router.push('/admin');
+            const redirectPath = session.user.rol === 'admin' ? '/admin' : '/cliente';
+
+            // 🔥 Si se abrió desde otra pestaña
+            if (window.opener) {
+                window.opener.location.href = redirectPath;
+                window.close();
             } else {
-                router.push('/cliente');
+                // 🔥 Si se abrió directamente
+                router.push(redirectPath);
             }
         }
     }, [status, session, router]);
@@ -46,7 +51,7 @@ export default function LoginPage() {
             if (result?.error) {
                 setError('Email o contraseña incorrectos');
             } else {
-                // ✅ La redirección la maneja el useEffect
+                // 🔥 Forzar refresco de la sesión
                 router.refresh();
             }
         } catch (error) {
@@ -56,12 +61,23 @@ export default function LoginPage() {
         }
     };
 
-    // 🔥 Mostrar loading mientras se redirige
+    // 🔥 Si ya está autenticado, mostrar loading mientras redirige
     if (status === 'loading') {
         return (
             <div className={styles.loginContainer}>
                 <div className={styles.loginCard}>
                     <p style={{ color: '#fff', textAlign: 'center' }}>Cargando...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // 🔥 Si ya está autenticado y no se redirigió, mostrar loading
+    if (status === 'authenticated') {
+        return (
+            <div className={styles.loginContainer}>
+                <div className={styles.loginCard}>
+                    <p style={{ color: '#fff', textAlign: 'center' }}>Redirigiendo...</p>
                 </div>
             </div>
         );
