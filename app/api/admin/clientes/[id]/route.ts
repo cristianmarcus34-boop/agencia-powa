@@ -15,7 +15,7 @@ export async function PUT(
       nombre_contacto, 
       email, 
       telefono, 
-      website,
+      sitio_web,  // ← CAMBIAR: usar sitio_web directamente
       industria,
       tamaño_empresa,
       notas,
@@ -27,7 +27,7 @@ export async function PUT(
       nombre_contacto,
       email,
       telefono: telefono || '',
-      website: website || '',
+      sitio_web: sitio_web || '',
       industria: industria || '',
       tamaño_empresa: tamaño_empresa || '',
       notas: notas || '',

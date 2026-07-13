@@ -16,13 +16,23 @@ export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 // ============================================
 
 // Crear una nueva conversación
-export async function crearConversacion(perfil: string) {
+export async function crearConversacion(
+  perfil: string,
+  usuarioId?: string, // 🔥 AGREGADO
+  esAdmin?: boolean // 🔥 AGREGADO
+) {
   const { data, error } = await supabase
     .from('conversaciones')
-    .insert({ perfil })
+    .insert({
+      perfil,
+      usuario_id: usuarioId || null,
+      es_admin: esAdmin || false,
+      estado: 'activo',
+      origen: 'web',
+    })
     .select()
     .single();
-  
+
   if (error) throw error;
   return data;
 }
@@ -34,7 +44,7 @@ export async function obtenerConversacion(id: string) {
     .select('*')
     .eq('id', id)
     .single();
-  
+
   if (error) throw error;
   return data;
 }
@@ -47,7 +57,7 @@ export async function actualizarEstadoConversacion(id: string, estado: 'activo' 
     .eq('id', id)
     .select()
     .single();
-  
+
   if (error) throw error;
   return data;
 }
@@ -63,7 +73,7 @@ export async function guardarMensaje(conversacionId: string, rol: 'usuario' | 'a
     .insert({ conversacion_id: conversacionId, rol, contenido })
     .select()
     .single();
-  
+
   if (error) throw error;
   return data;
 }
@@ -76,7 +86,7 @@ export async function obtenerHistorial(conversacionId: string, limite: number = 
     .eq('conversacion_id', conversacionId)
     .order('creado_en', { ascending: true })
     .limit(limite);
-  
+
   if (error) throw error;
   return data;
 }
@@ -89,7 +99,7 @@ export async function obtenerUltimosMensajes(conversacionId: string, limite: num
     .eq('conversacion_id', conversacionId)
     .order('creado_en', { ascending: false })
     .limit(limite);
-  
+
   if (error) throw error;
   return data.reverse();
 }
@@ -102,12 +112,12 @@ export async function obtenerUltimosMensajes(conversacionId: string, limite: num
 export async function guardarMetrica(tipoEvento: string, conversacionId?: string, valor?: any) {
   const { error } = await supabase
     .from('metricas')
-    .insert({ 
-      tipo_evento: tipoEvento, 
+    .insert({
+      tipo_evento: tipoEvento,
       conversacion_id: conversacionId,
       valor: valor || null
     });
-  
+
   if (error) console.error('Error guardando métrica:', error);
 }
 
@@ -117,7 +127,7 @@ export async function obtenerMetricasDiarias(dias: number = 30) {
     .from('metricas_diarias')
     .select('*')
     .limit(dias);
-  
+
   if (error) throw error;
   return data;
 }
@@ -133,7 +143,7 @@ export async function guardarCalificacion(conversacionId: string, puntuacion: nu
     .insert({ conversacion_id: conversacionId, puntuacion, comentario })
     .select()
     .single();
-  
+
   if (error) throw error;
   return data;
 }
@@ -145,7 +155,7 @@ export async function obtenerCalificaciones(conversacionId: string) {
     .select('*')
     .eq('conversacion_id', conversacionId)
     .order('creado_en', { ascending: false });
-  
+
   if (error) throw error;
   return data;
 }
@@ -164,7 +174,7 @@ export async function guardarCache(clave: string, respuesta: string, segundos: n
       respuesta,
       expira_en: expiraEn.toISOString(),
     });
-  
+
   if (error) console.error('Error guardando caché:', error);
 }
 
@@ -176,15 +186,15 @@ export async function obtenerCache(clave: string) {
     .eq('clave', clave)
     .gt('expira_en', new Date().toISOString())
     .single();
-  
+
   if (error || !data) return null;
-  
+
   // Incrementar contador de consultas
   await supabase
     .from('cache')
     .update({ cantidad_consultas: (data.cantidad_consultas || 0) + 1 })
     .eq('clave', clave);
-  
+
   return data.respuesta;
 }
 
@@ -194,7 +204,7 @@ export async function limpiarCacheExpirado() {
     .from('cache')
     .delete()
     .lt('expira_en', new Date().toISOString());
-  
+
   if (error) console.error('Error limpiando caché:', error);
 }
 
@@ -215,7 +225,7 @@ export async function crearCliente(datos: {
     .insert(datos)
     .select()
     .single();
-  
+
   if (error) throw error;
   return data;
 }
@@ -227,7 +237,7 @@ export async function obtenerClientePorEmail(email: string) {
     .select('*')
     .eq('email', email)
     .single();
-  
+
   if (error && error.code !== 'PGRST116') throw error;
   return data;
 }
@@ -248,7 +258,7 @@ export async function crearProyecto(datos: {
     .insert(datos)
     .select()
     .single();
-  
+
   if (error) throw error;
   return data;
 }
@@ -265,7 +275,7 @@ export async function obtenerFAQs() {
     .eq('categoria', 'faq')
     .eq('publicado', true)
     .order('creado_en', { ascending: false });
-  
+
   if (error) throw error;
   return data;
 }

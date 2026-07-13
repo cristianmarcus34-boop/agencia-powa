@@ -3,14 +3,16 @@ import { NextResponse } from "next/server";
 import Groq from 'groq-sdk';
 import { ResponseCache } from '../../lib/cache';
 import { metrics } from '../../lib/metrics';
-import { 
-  crearConversacion, 
-  guardarMensaje, 
+import {
+  crearConversacion,
+  guardarMensaje,
   obtenerUltimosMensajes,
-  guardarMetrica 
+  guardarMetrica
 } from '../../lib/supabase';
 
 export const runtime = 'edge';
+
+console.log('🔵 CARGANDO /api/chat/route.ts');
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -133,20 +135,39 @@ R: Sí. El despliegue a producción es solo el inicio de la relación técnica. 
 `;
 
 export async function POST(req: Request) {
-  const startTime = Date.now();
-  const apiKey = process.env.GROQ_API_KEY;
-
-  if (!apiKey) {
-    return NextResponse.json({ text: "Error: Configuración de IA pendiente." }, { status: 500 });
-  }
+  console.log('🔵 POST /api/chat - INICIANDO');
 
   try {
-    const { message, history, profile, conversacionId } = await req.json() as {
+    const startTime = Date.now();
+    const apiKey = process.env.GROQ_API_KEY;
+
+    console.log('🔑 API Key existe?', !!apiKey);
+    console.log('🔑 API Key preview:', apiKey ? apiKey.substring(0, 15) + '...' : '❌ NO HAY KEY');
+
+    if (!apiKey) {
+      console.log('❌ GROQ_API_KEY no configurada');
+      return NextResponse.json({
+        text: "Error: Configuración de IA pendiente."
+      }, { status: 500 });
+    }
+
+    const body = await req.json();
+    console.log('📦 Body recibido:', JSON.stringify(body, null, 2));
+
+    const { message, history, profile, conversacionId, usuarioId, esAdmin } = body as {
       message: string;
       history?: ChatMessageInput[];
       profile?: "gastronomia" | "empresa_emprendedor" | "senior_software";
       conversacionId?: string;
+      usuarioId?: string; // 🔥 AGREGADO
+      esAdmin?: boolean; // 🔥 AGREGADO
     };
+
+    console.log('📧 Message:', message);
+    console.log('📋 Profile:', profile);
+    console.log('🆔 ConversacionId:', conversacionId);
+    console.log('👤 UsuarioId:', usuarioId);
+    console.log('🔑 EsAdmin:', esAdmin);
 
     // ============================================
     // 🔥 CREAR O USAR CONVERSACIÓN EXISTENTE
@@ -154,45 +175,70 @@ export async function POST(req: Request) {
     let chatId: string = conversacionId || '';
 
     if (!chatId) {
-      const nuevaConversacion = await crearConversacion(profile || 'empresa_emprendedor');
-      chatId = nuevaConversacion.id;
-      await guardarMetrica('inicio_chat', chatId);
+      console.log('🆕 Creando nueva conversación...');
+      try {
+        const nuevaConversacion = await crearConversacion(
+          profile || 'empresa_emprendedor',
+          usuarioId, // 🔥 PASAR USUARIO ID
+          esAdmin // 🔥 PASAR SI ES ADMIN
+        );
+        chatId = nuevaConversacion.id;
+        console.log('✅ Conversación creada:', chatId);
+        await guardarMetrica('inicio_chat', chatId);
+      } catch (dbError) {
+        console.error('❌ Error creando conversación en DB:', dbError);
+      }
+    } else {
+      console.log('📋 Usando conversación existente:', chatId);
     }
 
     // ============================================
     // 🔥 GUARDAR MENSAJE DEL USUARIO
     // ============================================
-    await guardarMensaje(chatId, 'usuario', message);
-    await guardarMetrica('mensaje', chatId, { rol: 'usuario' });
+    try {
+      if (chatId) {
+        await guardarMensaje(chatId, 'usuario', message);
+        await guardarMetrica('mensaje', chatId, { rol: 'usuario' });
+        console.log('✅ Mensaje guardado en DB');
+      }
+    } catch (dbError) {
+      console.error('❌ Error guardando mensaje en DB:', dbError);
+    }
 
     // ============================================
     // 🔥 VERIFICAR CACHÉ
     // ============================================
     const cacheKey = cache.generateKey(message, profile || 'default');
-    const cachedResponse = cache.get(cacheKey);
-    
-    if (cachedResponse) {
-      metrics.recordCacheHit();
-      await guardarMetrica('acierto_cache', chatId);
-      await guardarMensaje(chatId, 'asistente', cachedResponse);
-      await guardarMetrica('mensaje', chatId, { rol: 'asistente' });
-      
-      const encoder = new TextEncoder();
-      const stream = new ReadableStream({
-        start(controller) {
-          controller.enqueue(encoder.encode(cachedResponse));
-          controller.close();
-        },
-      });
-      
-      return new Response(stream, {
-        headers: {
-          'Content-Type': 'text/plain; charset=utf-8',
-          'Cache-Control': 'no-cache',
-          'X-Cache': 'HIT',
-          'X-Chat-Id': chatId,
-        },
-      });
+    console.log('🔑 Cache key:', cacheKey);
+
+    try {
+      const cachedResponse = cache.get(cacheKey);
+      if (cachedResponse) {
+        console.log('💾 Respuesta desde caché');
+        metrics.recordCacheHit();
+        await guardarMetrica('acierto_cache', chatId);
+        await guardarMensaje(chatId, 'asistente', cachedResponse);
+        await guardarMetrica('mensaje', chatId, { rol: 'asistente' });
+
+        const encoder = new TextEncoder();
+        const stream = new ReadableStream({
+          start(controller) {
+            controller.enqueue(encoder.encode(cachedResponse));
+            controller.close();
+          },
+        });
+
+        return new Response(stream, {
+          headers: {
+            'Content-Type': 'text/plain; charset=utf-8',
+            'Cache-Control': 'no-cache',
+            'X-Cache': 'HIT',
+            'X-Chat-Id': chatId,
+          },
+        });
+      }
+    } catch (cacheError) {
+      console.error('❌ Error en caché:', cacheError);
     }
 
     metrics.recordCacheMiss();
@@ -201,21 +247,24 @@ export async function POST(req: Request) {
     // 🔥 PREPARAR HISTORIAL
     // ============================================
     let chatHistory: GroqChatMessage[] = [];
-    
+
     if (history && history.length > 0) {
+      console.log('📜 Usando historial del frontend:', history.length, 'mensajes');
       chatHistory = history.slice(-6).map((m: ChatMessageInput) => ({
         role: m.role === "user" ? "user" : "assistant",
         content: m.text,
       }));
-    } else {
+    } else if (chatId) {
       try {
+        console.log('📜 Cargando historial de DB...');
         const mensajesDB = await obtenerUltimosMensajes(chatId, 6);
         chatHistory = mensajesDB.map((m: any) => ({
           role: m.rol === 'usuario' ? 'user' : 'assistant',
           content: m.contenido,
         }));
-      } catch (error) {
-        console.log('No se pudo cargar historial de DB:', error);
+        console.log('✅ Historial cargado:', chatHistory.length, 'mensajes');
+      } catch (dbError) {
+        console.error('❌ Error cargando historial de DB:', dbError);
       }
     }
 
@@ -284,15 +333,21 @@ export async function POST(req: Request) {
 
     ${faqContext}`;
 
+    console.log('📝 System prompt generado (longitud):', systemPrompt.length);
+
     const messagesForGroq: GroqChatMessage[] = [
       { role: "system", content: systemPrompt },
       ...chatHistory,
       { role: "user", content: message },
     ];
 
+    console.log('📨 Mensajes para Groq:', messagesForGroq.length);
+
     // ============================================
     // 🔥 STREAMING
     // ============================================
+    console.log('🔄 Llamando a Groq...');
+
     const stream = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages: messagesForGroq,
@@ -301,6 +356,8 @@ export async function POST(req: Request) {
       top_p: 0.95,
       stream: true,
     });
+
+    console.log('✅ Groq respondiendo...');
 
     const encoder = new TextEncoder();
     let fullResponse = '';
@@ -315,24 +372,40 @@ export async function POST(req: Request) {
               controller.enqueue(encoder.encode(text));
             }
           }
-          
+
+          console.log('✅ Respuesta completa recibida, longitud:', fullResponse.length);
+
           if (fullResponse.length > 50) {
-            cache.set(cacheKey, fullResponse);
+            try {
+              cache.set(cacheKey, fullResponse);
+            } catch (cacheError) {
+              console.error('❌ Error guardando en caché:', cacheError);
+            }
           }
-          
-          await guardarMensaje(chatId, 'asistente', fullResponse);
-          await guardarMetrica('mensaje', chatId, { rol: 'asistente' });
-          
+
+          try {
+            if (chatId) {
+              await guardarMensaje(chatId, 'asistente', fullResponse);
+              await guardarMetrica('mensaje', chatId, { rol: 'asistente' });
+              console.log('✅ Respuesta guardada en DB');
+            }
+          } catch (dbError) {
+            console.error('❌ Error guardando respuesta en DB:', dbError);
+          }
+
           const responseTime = Date.now() - startTime;
           metrics.recordResponseTime(responseTime);
-          
+          console.log('⏱️ Tiempo de respuesta:', responseTime, 'ms');
+
           controller.close();
         } catch (error) {
+          console.error('❌ Error en streaming:', error);
           controller.error(error);
         }
       },
     });
 
+    console.log('✅ Devolviendo respuesta al cliente');
     return new Response(readableStream, {
       headers: {
         'Content-Type': 'text/plain; charset=utf-8',
@@ -344,7 +417,8 @@ export async function POST(req: Request) {
 
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : "Error desconocido";
-    console.error("Critical API Error:", errorMessage);
+    console.error('❌ Critical API Error:', errorMessage);
+    console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack disponible');
     metrics.recordError(errorMessage);
 
     return NextResponse.json(

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { IoSend, IoClose } from 'react-icons/io5';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react'; // 🔥 AGREGADO
 import styles from './ChatPowa.module.css';
 
 type Message = {
@@ -23,6 +24,7 @@ const suggestedQuestions = [
 ];
 
 export default function ChatPowa() {
+  const { data: session } = useSession(); // 🔥 OBTENER SESIÓN
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [profile, setProfile] = useState<ClientProfile>(null);
@@ -57,7 +59,6 @@ export default function ChatPowa() {
     if (isOpen) scrollToBottom();
   }, [messages, loading, isOpen, isStreaming]);
 
-  // Cargar historial al abrir el chat
   useEffect(() => {
     if (isOpen && conversacionId) {
       cargarHistorial(conversacionId);
@@ -72,7 +73,6 @@ export default function ChatPowa() {
     };
   }, []);
 
-  // MONITOREO: Si isStreaming está true pero no hay loading, forzar reset
   useEffect(() => {
     if (isStreaming && !loading) {
       console.log('⚠️ Streaming activo sin loading - forzando reset');
@@ -83,7 +83,6 @@ export default function ChatPowa() {
   const handleToggleChat = () => {
     if (!isOpen) {
       playRobotSound();
-      // Reiniciar el chat al abrir
       setMessages([]);
       setConversacionId(null);
     }
@@ -113,7 +112,6 @@ export default function ChatPowa() {
     setLoading(false);
   }, []);
 
-  // Cargar historial desde la base de datos
   const cargarHistorial = async (chatId: string) => {
     try {
       const response = await fetch(`/api/chat/historial?chatId=${chatId}`);
@@ -148,13 +146,14 @@ export default function ChatPowa() {
           message: `Hola, seleccioné la opción de ${label}. Contame cómo me pueden ayudar con soluciones Senior y Growth.`,
           history: newHistory,
           profile: selectedProfile,
-          conversacionId: conversacionId
+          conversacionId: conversacionId,
+          usuarioId: session?.user?.id || null, // 🔥 AGREGADO
+          esAdmin: session?.user?.rol === 'admin', // 🔥 AGREGADO
         }),
       });
 
       if (!res.ok) throw new Error('Error en la respuesta');
 
-      // Obtener el chatId de los headers
       const newChatId = res.headers.get('X-Chat-Id');
       if (newChatId && !conversacionId) {
         setConversacionId(newChatId);
@@ -262,13 +261,14 @@ export default function ChatPowa() {
           message: currentInput,
           history: newHistory,
           profile: profile,
-          conversacionId: conversacionId
+          conversacionId: conversacionId,
+          usuarioId: session?.user?.id || null, // 🔥 AGREGADO
+          esAdmin: session?.user?.rol === 'admin', // 🔥 AGREGADO
         }),
       });
 
       if (!response.ok) throw new Error('Error en la respuesta');
 
-      // Obtener el chatId de los headers
       const newChatId = response.headers.get('X-Chat-Id');
       if (newChatId && !conversacionId) {
         setConversacionId(newChatId);
@@ -436,6 +436,29 @@ export default function ChatPowa() {
               </div>
             )}
 
+            {!profile && !loading && (
+              <div className={styles.profileOptionsContainer}>
+                <button
+                  onClick={() => handleSelectProfile('gastronomia', 'Gastronomía (Restaurantes/Delivery)')}
+                  className={styles.profileButton}
+                >
+                  🍔 Gastronomía (Restaurantes, Delivery, Apps)
+                </button>
+                <button
+                  onClick={() => handleSelectProfile('empresa_emprendedor', 'Empresas y Emprendedores (Webs, E-commerce)')}
+                  className={styles.profileButton}
+                >
+                  📈 Empresas / E-commerce / Automatización
+                </button>
+                <button
+                  onClick={() => handleSelectProfile('senior_software', 'Desarrollo Senior a Medida (Next.js, APIS)')}
+                  className={styles.profileButton}
+                >
+                  ⚙️ Consultoría & Software Senior a Medida
+                </button>
+              </div>
+            )}
+
             {messages.map((m, i) => (
               <div key={i} className={styles.messageRow}>
                 <div className={m.role === 'user' ? styles.userBubble : styles.botBubble}>
@@ -457,29 +480,6 @@ export default function ChatPowa() {
                         {rating}
                       </button>
                     ))}
-                  </div>
-                )}
-
-                {i === 0 && !profile && !loading && messages.length === 1 && (
-                  <div className={styles.profileOptionsContainer}>
-                    <button
-                      onClick={() => handleSelectProfile('gastronomia', 'Gastronomía (Restaurantes/Delivery)')}
-                      className={styles.profileButton}
-                    >
-                      🍔 Gastronomía (Restaurantes, Delivery, Apps)
-                    </button>
-                    <button
-                      onClick={() => handleSelectProfile('empresa_emprendedor', 'Empresas y Emprendedores (Webs, E-commerce)')}
-                      className={styles.profileButton}
-                    >
-                      📈 Empresas / E-commerce / Automatización
-                    </button>
-                    <button
-                      onClick={() => handleSelectProfile('senior_software', 'Desarrollo Senior a Medida (Next.js, APIS)')}
-                      className={styles.profileButton}
-                    >
-                      ⚙️ Consultoría & Software Senior a Medida
-                    </button>
                   </div>
                 )}
 

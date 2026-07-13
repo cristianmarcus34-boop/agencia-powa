@@ -45,7 +45,7 @@ export default function NavbarPowa() {
   return (
     <Navbar
       expanded={expanded}
-      onToggle={(nextExpand: boolean) => setExpanded(nextExpand)} // 🔥 CORREGIDO
+      onToggle={(nextExpand: boolean) => setExpanded(nextExpand)}
       expand="lg"
       fixed="top"
       variant="dark"
@@ -145,8 +145,12 @@ export default function NavbarPowa() {
             ) : (
               // Usuario NO logueado
               <>
+                {/* 🔥 INICIAR SESIÓN EN NUEVA PESTAÑA */}
                 <Nav.Link
-                  onClick={() => signIn()}
+                  onClick={() => {
+                    window.open('/login', '_blank');
+                    closeMenu();
+                  }}
                   className={`${styles.navLink} ${styles.loginBtn}`}
                   style={{ cursor: 'pointer' }}
                 >

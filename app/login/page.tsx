@@ -1,8 +1,8 @@
 // app/login/page.tsx
 'use client';
 
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { useState, useEffect } from 'react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
 
@@ -12,6 +12,24 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const { data: session, status } = useSession();
+
+    // 🔥 Redirigir cuando la sesión esté disponible
+    useEffect(() => {
+        console.log('📋 Status:', status);
+        console.log('📋 Session:', session);
+
+        if (status === 'authenticated' && session?.user) {
+            console.log('✅ Usuario logueado:', session.user);
+            console.log('✅ Rol:', session.user.rol);
+
+            if (session.user.rol === 'admin') {
+                router.push('/admin');
+            } else {
+                router.push('/cliente');
+            }
+        }
+    }, [status, session, router]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -28,14 +46,8 @@ export default function LoginPage() {
             if (result?.error) {
                 setError('Email o contraseña incorrectos');
             } else {
-                // Obtener la sesión para saber el rol
-                const res = await fetch('/api/auth/session');
-                const session = await res.json();
-                if (session?.user?.rol === 'admin') {
-                    router.push('/admin');
-                } else {
-                    router.push('/cliente');
-                }
+                // ✅ La redirección la maneja el useEffect
+                router.refresh();
             }
         } catch (error) {
             setError('Error al iniciar sesión');
@@ -43,6 +55,17 @@ export default function LoginPage() {
             setLoading(false);
         }
     };
+
+    // 🔥 Mostrar loading mientras se redirige
+    if (status === 'loading') {
+        return (
+            <div className={styles.loginContainer}>
+                <div className={styles.loginCard}>
+                    <p style={{ color: '#fff', textAlign: 'center' }}>Cargando...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.loginContainer}>

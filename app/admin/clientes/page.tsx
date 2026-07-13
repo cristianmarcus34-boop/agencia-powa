@@ -13,7 +13,7 @@ interface Cliente {
     nombre_contacto: string;
     email: string;
     telefono: string;
-    website: string;
+    sitio_web: string;
     industria: string;
     tamaño_empresa: string;
     notas: string;
@@ -54,7 +54,7 @@ export default function ClientesPage() {
         nombre_contacto: '',
         email: '',
         telefono: '',
-        website: '',
+        sitio_web: '',
         industria: '',
         tamaño_empresa: '',
         notas: '',
@@ -117,7 +117,7 @@ export default function ClientesPage() {
                 nombre_contacto: formData.nombre_contacto,
                 email: formData.email,
                 telefono: formData.telefono,
-                website: formData.website,
+                sitio_web: formData.sitio_web,
                 industria: formData.industria,
                 tamaño_empresa: formData.tamaño_empresa,
                 notas: formData.notas,
@@ -172,7 +172,7 @@ export default function ClientesPage() {
             nombre_contacto: cliente.nombre_contacto,
             email: cliente.email,
             telefono: cliente.telefono || '',
-            website: cliente.website || '',
+            sitio_web: cliente.sitio_web || '',
             industria: cliente.industria || '',
             tamaño_empresa: cliente.tamaño_empresa || '',
             notas: cliente.notas || '',
@@ -188,7 +188,7 @@ export default function ClientesPage() {
             nombre_contacto: '',
             email: '',
             telefono: '',
-            website: '',
+            sitio_web: '',
             industria: '',
             tamaño_empresa: '',
             notas: '',
@@ -204,7 +204,7 @@ export default function ClientesPage() {
             nombre_contacto: '',
             email: '',
             telefono: '',
-            website: '',
+            sitio_web: '',
             industria: '',
             tamaño_empresa: '',
             notas: '',
@@ -419,8 +419,8 @@ export default function ClientesPage() {
                                 <label>Sitio web</label>
                                 <input
                                     type="url"
-                                    value={formData.website}
-                                    onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                                    value={formData.sitio_web}
+                                    onChange={(e) => setFormData({ ...formData, sitio_web: e.target.value })}
                                     placeholder="https://www.empresa.com"
                                 />
                             </div>
