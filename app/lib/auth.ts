@@ -37,7 +37,6 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          // 🔥 Autenticar con Supabase
           const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
             email: credentials.email,
             password: credentials.password,
@@ -51,11 +50,10 @@ export const authOptions: NextAuthOptions = {
           console.log('✅ Autenticación exitosa en Supabase');
           console.log('👤 User ID:', authData.user.id);
 
-          // 🔥 BUSCAR POR ID (NO por email)
           const { data: usuario, error: usuarioError } = await supabase
             .from('usuarios')
             .select('*')
-            .eq('id', authData.user.id)  // ← BUSCAR POR ID
+            .eq('id', authData.user.id)
             .single();
 
           if (usuarioError || !usuario) {
@@ -102,6 +100,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/login',
+    signOut: '/logout',  // ← 🔥 AGREGAR ESTA LÍNEA
     error: '/login',
   },
   session: {

@@ -4,9 +4,10 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import {
     FaUsers, FaProjectDiagram, FaUserTie, FaComments,
-    FaStar, FaEnvelope
+    FaStar, FaEnvelope, FaHome, FaArrowLeft
 } from 'react-icons/fa';
 import styles from './admin.module.css';
 
@@ -111,11 +112,43 @@ export default function AdminDashboard() {
 
     return (
         <div>
-            <div style={{ marginBottom: '24px' }}>
-                <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>📊 Dashboard</h1>
-                <p style={{ color: '#94a3b8' }}>
-                    Bienvenido, {session?.user?.name}
-                </p>
+            {/* 🔥 HEADER CON BOTÓN VOLVER */}
+            <div style={{
+                marginBottom: '24px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '12px'
+            }}>
+                <div>
+                    <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>📊 Dashboard</h1>
+                    <p style={{ color: '#94a3b8' }}>
+                        Bienvenido, {session?.user?.name}
+                    </p>
+                </div>
+
+                {/* 🔥 BOTÓN VOLVER AL INICIO */}
+                <Link
+                    href="/"
+                    className={styles.btnSecondary}
+                    style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        padding: '10px 20px',
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '10px',
+                        color: '#e2e8f0',
+                        textDecoration: 'none',
+                        transition: 'all 0.2s ease',
+                        fontSize: '14px',
+                        fontWeight: 600
+                    }}
+                >
+                    <FaArrowLeft /> Volver al inicio
+                </Link>
             </div>
 
             {/* Tarjetas */}
@@ -158,8 +191,8 @@ export default function AdminDashboard() {
                                         <td>{conv.perfil}</td>
                                         <td>
                                             <span className={`${styles.statusBadge} ${conv.estado === 'activo' ? styles.statusActive :
-                                                    conv.estado === 'cerrado' ? styles.statusInactive :
-                                                        styles.statusPending
+                                                conv.estado === 'cerrado' ? styles.statusInactive :
+                                                    styles.statusPending
                                                 }`}>
                                                 {conv.estado}
                                             </span>

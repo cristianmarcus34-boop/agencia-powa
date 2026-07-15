@@ -47,12 +47,16 @@ export default function RootLayout({
   const pathname = usePathname();
 
   // 🔥 RUTAS DONDE NO QUEREMOS MOSTRAR EL NAVBAR
-  const hideNavbar = pathname?.startsWith('/admin') || pathname?.startsWith('/cliente');
+  const hideNavbar = pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/cliente') ||
+    pathname?.startsWith('/login') ||
+    pathname?.startsWith('/logout');
 
   return (
     <html lang="es" className={`${orbitron.variable}`}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SessionProvider>
+          {/* ✅ LOADING - Solo se muestra si el componente lo decide */}
           <LoadingScreen />
 
           <script
@@ -74,9 +78,8 @@ export default function RootLayout({
             {children}
           </main>
 
-          {/* 🔥 CHAT SOLO EN RUTAS PÚBLICAS */}
+          {/* 🔥 CHAT Y FOOTER SOLO EN RUTAS PÚBLICAS */}
           {!hideNavbar && <ChatPowa />}
-
           {!hideNavbar && <FooterPowa />}
 
           <ToastContainer

@@ -7,11 +7,24 @@ export default function LoadingScreen() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // 🔥 Verificar si ya cargó antes
+    const hasLoadedBefore = sessionStorage.getItem('hasLoadedBefore');
+
+    if (hasLoadedBefore) {
+      // ✅ Ya cargó antes, ocultar inmediatamente
+      setLoading(false);
+      document.body.style.overflow = "unset";
+      return;
+    }
+
+    // 🆕 Primera carga: mostrar loading
     document.body.style.overflow = "hidden";
 
     const timer = setTimeout(() => {
       setLoading(false);
       document.body.style.overflow = "unset";
+      // 💾 Guardar que ya cargó
+      sessionStorage.setItem('hasLoadedBefore', 'true');
     }, 2500);
 
     return () => {
@@ -25,7 +38,6 @@ export default function LoadingScreen() {
       {loading && (
         <motion.div
           key="loading-powa-screen"
-          // CRUCIAL: Arranca en 1 para que no haya parpadeos transparentes al inicio
           initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -37,7 +49,7 @@ export default function LoadingScreen() {
             width: "100vw",
             height: "100vh",
             backgroundColor: "#0f172a",
-            zIndex: 9999999, // Un número más alto para asegurar prioridad total
+            zIndex: 9999999,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

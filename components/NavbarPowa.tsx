@@ -121,9 +121,10 @@ export default function NavbarPowa() {
                     👤 {session.user?.name}
                   </span>
                 </Nav.Link>
+                {/* 🔥 CERRAR SESIÓN - REDIRIGE A /logout */}
                 <Nav.Link
                   onClick={() => {
-                    signOut();
+                    window.location.href = '/logout';
                     closeMenu();
                   }}
                   className={`${styles.navLink} ${styles.logoutBtn}`}
@@ -145,10 +146,9 @@ export default function NavbarPowa() {
             ) : (
               // Usuario NO logueado
               <>
-                {/* 🔥 INICIAR SESIÓN EN NUEVA PESTAÑA */}
                 <Nav.Link
                   onClick={() => {
-                    window.open('/login', '_blank');
+                    signIn();
                     closeMenu();
                   }}
                   className={`${styles.navLink} ${styles.loginBtn}`}

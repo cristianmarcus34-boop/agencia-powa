@@ -1,128 +1,14 @@
 /* app/cliente/cliente.module.css */
 
 /* ============================================
-   CLIENTE PANEL
+   DASHBOARD PRINCIPAL
    ============================================ */
 
-.clienteContainer {
-    min-height: 100vh;
-    background: #0a0f1a;
-    color: #e2e8f0;
-    padding: 40px 24px;
-}
-
-@media (max-width: 768px) {
-    .clienteContainer {
-        padding: 80px 16px 24px;
-    }
-}
-
-.clienteHeader {
-    max-width: 1200px;
-    margin: 0 auto 32px;
-}
-
-.clienteTitle {
-    font-size: 28px;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 8px;
-}
-
-@media (max-width: 480px) {
-    .clienteTitle {
-        font-size: 22px;
-    }
-}
-
-.clienteSubtitle {
-    color: #94a3b8;
-    font-size: 16px;
-}
-
-/* ============================================
-   GRID DE TARJETAS
-   ============================================ */
-
-.dashboardGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto 32px;
-}
-
-@media (max-width: 480px) {
-    .dashboardGrid {
-        grid-template-columns: 1fr;
-    }
-}
-
-.dashboardCard {
-    background: #1a2333;
-    padding: 24px 20px;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.3s ease;
-}
-
-.dashboardCard:hover {
-    transform: translateY(-4px);
-    border-color: rgba(34, 211, 238, 0.2);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-}
-
-.cardIcon {
-    font-size: 28px;
-    margin-bottom: 12px;
-    display: block;
-}
-
-.cardValue {
-    font-size: 28px;
-    font-weight: 800;
-    color: #ffffff;
-    margin-bottom: 4px;
-}
-
-.cardLabel {
-    font-size: 14px;
-    color: #94a3b8;
-}
-
-/* ============================================
-   TABLA
-   ============================================ */
-
-.tableContainer {
-    background: #1a2333;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    overflow: hidden;
-    max-width: 1200px;
+.dashboard {
+    max-width: 1400px;
     margin: 0 auto;
-}
-
-.tableHeader {
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.tableTitle {
-    font-size: 18px;
-    font-weight: 700;
-    color: #ffffff;
-}
-
-.emptyState {
-    padding: 40px;
-    text-align: center;
-    color: #94a3b8;
+    padding: 24px;
+    min-height: 100vh;
 }
 
 /* ============================================
@@ -137,6 +23,7 @@
     min-height: 100vh;
     background: #0a0f1a;
     color: #e2e8f0;
+    gap: 16px;
 }
 
 .loadingSpinner {
@@ -146,11 +33,488 @@
     border-top-color: #22d3ee;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    margin-bottom: 16px;
 }
 
 @keyframes spin {
     to {
         transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 22px;
+    }
+}
+
+.subtitle {
+    color: #94a3b8;
+    font-size: 16px;
+    margin: 4px 0 0;
+}
+
+.headerActions {
+    display: flex;
+    gap: 12px;
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+
+.btnPrimary {
+    background: linear-gradient(135deg, #3b82f6, #22d3ee);
+    border: none;
+    color: #ffffff;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(34, 211, 238, 0.25);
+}
+
+.btnSecondary {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btnSecondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================
+   TARJETAS DE ESTADÍSTICAS
+   ============================================ */
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+@media (max-width: 480px) {
+    .statsGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.statCard {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.3s ease;
+}
+
+.statCard:hover {
+    transform: translateY(-2px);
+    border-color: rgba(34, 211, 238, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.statIcon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.statLabel {
+    font-size: 13px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.statValue {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+
+/* ============================================
+   LAYOUT DE DOS COLUMNAS
+   ============================================ */
+
+.twoColumnLayout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+@media (max-width: 1024px) {
+    .twoColumnLayout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   TARJETAS (CARDS)
+   ============================================ */
+
+.card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    border-color: rgba(34, 211, 238, 0.15);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cardTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.cardAction {
+    background: none;
+    border: none;
+    color: #00f2fe;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.cardAction:hover {
+    color: #3b82f6;
+}
+
+/* ============================================
+   LISTA DE PROYECTOS
+   ============================================ */
+
+.proyectosList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.proyectoItem {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.proyectoItem:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.proyectoInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.proyectoNombre {
+    font-weight: 500;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.proyectoDetalles {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.progresoContainer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.progresoBar {
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #22d3ee);
+    border-radius: 4px;
+    flex: 1;
+    transition: width 0.6s ease;
+}
+
+.progresoTexto {
+    font-size: 12px;
+    color: #94a3b8;
+    min-width: 36px;
+    text-align: right;
+}
+
+/* ============================================
+   LISTA DE FACTURAS
+   ============================================ */
+
+.facturasList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.facturaItem {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.facturaItem:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.facturaInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.facturaNumero {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.facturaProyecto {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.facturaMonto {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.monto {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.facturaFecha {
+    font-size: 13px;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ============================================
+   ESTADO BADGE
+   ============================================ */
+
+.estadoBadge {
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+/* ============================================
+   INFORMACIÓN DEL CLIENTE
+   ============================================ */
+
+.clienteInfoGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+@media (max-width: 480px) {
+    .clienteInfoGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.clienteInfoItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+.infoIcon {
+    font-size: 20px;
+    color: #00f2fe;
+    flex-shrink: 0;
+}
+
+.infoLabel {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.infoValue {
+    font-size: 14px;
+    color: #ffffff;
+    margin: 0;
+}
+
+/* ============================================
+   ENLACES
+   ============================================ */
+
+.link {
+    color: #00f2fe;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.link:hover {
+    color: #3b82f6;
+    text-decoration: underline;
+}
+
+/* ============================================
+   ESTADO VACÍO
+   ============================================ */
+
+.emptyState {
+    color: #64748b;
+    text-align: center;
+    padding: 32px 0;
+    margin: 0;
+}
+
+/* ============================================
+   ANIMACIONES GLOBALES
+   ============================================ */
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   RESPONSIVE FINO
+   ============================================ */
+
+@media (max-width: 768px) {
+    .dashboard {
+        padding: 16px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .headerActions {
+        width: 100%;
+    }
+
+    .headerActions .btnPrimary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .proyectoInfo,
+    .facturaInfo {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .facturaMonto {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 480px) {
+    .statCard {
+        padding: 16px;
+    }
+
+    .statValue {
+        font-size: 22px;
+    }
+
+    .statIcon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .cardTitle {
+        font-size: 16px;
     }
 }
