@@ -3,7 +3,6 @@
 
 import { useState, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
 
 export default function LoginPage() {
@@ -11,7 +10,6 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
     const { data: session, status } = useSession();
 
     // 🔥 Redirigir cuando la sesión esté disponible
@@ -25,16 +23,15 @@ export default function LoginPage() {
 
             const redirectPath = session.user.rol === 'admin' ? '/admin' : '/cliente';
 
-            // 🔥 Si se abrió desde otra pestaña
+            // 🔥 USAR window.location.href PARA PRODUCCIÓN
             if (window.opener) {
                 window.opener.location.href = redirectPath;
                 window.close();
             } else {
-                // 🔥 Si se abrió directamente
-                router.push(redirectPath);
+                window.location.href = redirectPath;
             }
         }
-    }, [status, session, router]);
+    }, [status, session]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -50,10 +47,8 @@ export default function LoginPage() {
 
             if (result?.error) {
                 setError('Email o contraseña incorrectos');
-            } else {
-                // 🔥 Forzar refresco de la sesión
-                router.refresh();
             }
+            // ✅ No hacer nada más, el useEffect maneja la redirección
         } catch (error) {
             setError('Error al iniciar sesión');
         } finally {
@@ -61,23 +56,14 @@ export default function LoginPage() {
         }
     };
 
-    // 🔥 Si ya está autenticado, mostrar loading mientras redirige
-    if (status === 'loading') {
+    // 🔥 Si está cargando o autenticado, mostrar mensaje
+    if (status === 'loading' || status === 'authenticated') {
         return (
             <div className={styles.loginContainer}>
                 <div className={styles.loginCard}>
-                    <p style={{ color: '#fff', textAlign: 'center' }}>Cargando...</p>
-                </div>
-            </div>
-        );
-    }
-
-    // 🔥 Si ya está autenticado y no se redirigió, mostrar loading
-    if (status === 'authenticated') {
-        return (
-            <div className={styles.loginContainer}>
-                <div className={styles.loginCard}>
-                    <p style={{ color: '#fff', textAlign: 'center' }}>Redirigiendo...</p>
+                    <p style={{ color: '#fff', textAlign: 'center' }}>
+                        {status === 'loading' ? 'Cargando...' : 'Redirigiendo...'}
+                    </p>
                 </div>
             </div>
         );
