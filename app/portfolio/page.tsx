@@ -28,10 +28,11 @@ import {
   FaLeaf,
   FaWhatsapp,
   FaPalette,
-  FaCut,              // ✅ Tijeras para barbería (Font Awesome 5)
+  FaCut,
   FaSwimmer,
   FaSeedling,
   FaCalendarCheck,
+  FaTree,              // 🌳 Para Vivero Verde
 } from 'react-icons/fa';
 
 // ============================================================ //
@@ -110,7 +111,7 @@ const PROJECTS_DATA: Project[] = [
   },
 
   // ============================================================ //
-  // ✂️ PROYECTO: BARBERÍA EL RULO (NUEVO - DESTACADO)
+  // ✂️ PROYECTO: BARBERÍA EL RULO (DESTACADO)
   // ============================================================ //
   {
     title: "Barbería El Rulo — Sistema de Reservas",
@@ -162,6 +163,59 @@ const PROJECTS_DATA: Project[] = [
       "/proyectos/barberia-modal.jpg",
       "/proyectos/barberia-admin.jpg",
       "/proyectos/barberia-mobile.jpg",
+    ],
+  },
+
+  // ============================================================ //
+  // 🌿 PROYECTO: VIVERO VERDE (NUEVO - DESTACADO)
+  // ============================================================ //
+  {
+    title: "Vivero Verde — Sitio Web Tradicional",
+    icon: <FaTree className="text-primary-400" />,
+    description: "Sitio web tradicional para vivero con HTML, CSS y JavaScript puro. Catálogo completo de plantas, macetas, tierra y accesorios con filtros por categoría y búsqueda en tiempo real.",
+    longDescription: `
+      🌿 Vivero Verde — Sitio Web Tradicional
+
+      Desarrollo de un sitio web completo para un vivero, utilizando tecnologías web tradicionales (HTML, CSS, JavaScript) con Next.js 16 como framework.
+
+      ## 🎯 El Proyecto
+      Un sitio web estático y eficiente que permite a los clientes explorar el catálogo de productos del vivero: plantas, macetas, tierra, herramientas y accesorios.
+
+      ## 💡 Características Principales
+      • **Catálogo de productos** con arrays locales (sin base de datos)
+      • **Filtros por categoría** (plantas, macetas, tierra, herramientas, decoración)
+      • **Búsqueda en tiempo real** de productos
+      • **Diseño responsive** para todos los dispositivos
+      • **Formulario de contacto** con validación
+      • **Banner informativo** de sitio web tradicional
+
+      ## 🏗️ Arquitectura Técnica
+      **Framework:** Next.js 16 con App Router
+      **Frontend:** React 19, CSS Modules
+      **Estilos:** Tailwind CSS 4
+      **Datos:** Arrays en JavaScript (sin base de datos)
+      **Despliegue:** Vercel con CI/CD
+
+      ## 📊 Tecnologías Utilizadas
+      • HTML5 semántico
+      • CSS3 con CSS Modules
+      • JavaScript puro (ES6+)
+      • Next.js 16 (App Router)
+      • Tailwind CSS 4
+      • React 19
+    `,
+    link: "https://vivero-verde.vercel.app",
+    github: "https://github.com/cristianmarcus34-boop/vivero-verde",
+    tag: "LANDING PAGE",
+    tech: ["Next.js 16", "React 19", "Tailwind CSS", "CSS Modules", "JavaScript", "Vercel"],
+    featured: true,
+    year: "2026",
+    category: "Landing Page",
+    galleryImages: [
+      "/proyectos/vivero-hero.jpg",
+      "/proyectos/vivero-productos.jpg",
+      "/proyectos/vivero-contacto.jpg",
+      "/proyectos/vivero-mobile.jpg",
     ],
   },
 
@@ -339,9 +393,9 @@ export default function PortfolioPage() {
   const [filter, setFilter] = useState<string>('all');
 
   const stats = useMemo(() => [
-    { value: "+24", label: "Proyectos Entregados", icon: <FaAward /> },
+    { value: "+25", label: "Proyectos Entregados", icon: <FaAward /> },
     { value: "99%", label: "Uptime Garantizado", icon: <FaClock /> },
-    { value: "+24", label: "Clientes Activos", icon: <FaUsers /> },
+    { value: "+25", label: "Clientes Activos", icon: <FaUsers /> },
     { value: "Next.js", label: "Stack Principal", icon: <FaCode /> }
   ], []);
 
