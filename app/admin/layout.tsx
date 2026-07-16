@@ -8,15 +8,16 @@ import Link from 'next/link';
 import {
     FaHome, FaUsers, FaProjectDiagram, FaUserTie,
     FaComments, FaChartBar, FaSignOutAlt, FaBars,
-    FaTimes, FaCog, FaDatabase
+    FaTimes, FaCog, FaDatabase, FaFileInvoice
 } from 'react-icons/fa';
 import styles from './admin.module.css';
 
 const menuItems = [
     { name: 'Dashboard', icon: <FaHome />, path: '/admin' },
     { name: 'Usuarios', icon: <FaUsers />, path: '/admin/usuarios' },
-    { name: 'Proyectos', icon: <FaProjectDiagram />, path: '/admin/proyectos' },
     { name: 'Clientes', icon: <FaUserTie />, path: '/admin/clientes' },
+    { name: 'Proyectos', icon: <FaProjectDiagram />, path: '/admin/proyectos' },
+    { name: 'Facturas', icon: <FaFileInvoice />, path: '/admin/facturas' },  // ✅ NUEVO
     { name: 'Conversaciones', icon: <FaComments />, path: '/admin/conversaciones' },
     { name: 'Métricas', icon: <FaChartBar />, path: '/admin/metricas' },
 ];

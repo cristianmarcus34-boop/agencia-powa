@@ -1,4 +1,3 @@
-// app/admin/proyectos/page.tsx
 'use client';
 
 import { useSession } from 'next-auth/react';
@@ -24,14 +23,19 @@ interface Proyecto {
     fecha_inicio: string;
     fecha_fin: string;
     activo: boolean;
+    progreso: number;        // ✅ Agregado
     creado_en: string;
+    tipo?: string;
+    plazo?: string;
+    notas?: string;
     clientes?: Cliente;
 }
 
 const estados = [
+    { value: 'solicitado', label: '📩 Solicitado', color: '#f59e0b' },
     { value: 'planificacion', label: '📋 Planificación', color: '#f59e0b' },
     { value: 'desarrollo', label: '💻 Desarrollo', color: '#3b82f6' },
-    { value: 'pruebas', label: '🧪 Pruebas', color: '#8b5cf6' },
+    { value: 'en_revision', label: '🔍 En Revisión', color: '#8b5cf6' },
     { value: 'completado', label: '✅ Completado', color: '#10b981' },
     { value: 'cancelado', label: '❌ Cancelado', color: '#ef4444' },
 ];
@@ -54,7 +58,11 @@ export default function ProyectosPage() {
         presupuesto: '',
         fecha_inicio: '',
         fecha_fin: '',
-        activo: true
+        activo: true,
+        progreso: '0',        // ✅ Agregado (string para el input)
+        tipo: 'desarrollo',
+        plazo: '',
+        notas: ''
     });
 
     useEffect(() => {
@@ -85,7 +93,6 @@ export default function ProyectosPage() {
 
     const fetchData = async () => {
         try {
-            // Obtener proyectos
             const resProyectos = await fetch('/api/admin/proyectos');
             const resultProyectos = await resProyectos.json();
             if (resultProyectos.success) {
@@ -93,7 +100,6 @@ export default function ProyectosPage() {
                 setFilteredProyectos(resultProyectos.data);
             }
 
-            // Obtener clientes para el select
             const resClientes = await fetch('/api/admin/clientes');
             const resultClientes = await resClientes.json();
             if (resultClientes.success) {
@@ -125,7 +131,13 @@ export default function ProyectosPage() {
                 fecha_inicio: formData.fecha_inicio || null,
                 fecha_fin: formData.fecha_fin || null,
                 activo: formData.activo,
+                progreso: parseInt(String(formData.progreso)) || 0,  // ✅ Convertir a número
+                tipo: formData.tipo,
+                plazo: formData.plazo || null,
+                notas: formData.notas || null
             };
+
+            console.log('📝 Enviando datos:', body);
 
             const res = await fetch(url, {
                 method,
@@ -138,13 +150,13 @@ export default function ProyectosPage() {
                 fetchData();
                 setShowModal(false);
                 resetForm();
-                alert(editingProyecto ? 'Proyecto actualizado' : 'Proyecto creado');
+                alert(editingProyecto ? '✅ Proyecto actualizado' : '✅ Proyecto creado');
             } else {
-                alert(result.error || 'Error al guardar proyecto');
+                alert(result.error || '❌ Error al guardar proyecto');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error al guardar proyecto');
+            alert('❌ Error al guardar proyecto');
         }
     };
 
@@ -158,13 +170,13 @@ export default function ProyectosPage() {
             const result = await res.json();
             if (result.success) {
                 fetchData();
-                alert('Proyecto eliminado');
+                alert('✅ Proyecto eliminado');
             } else {
-                alert(result.error || 'Error al eliminar proyecto');
+                alert(result.error || '❌ Error al eliminar proyecto');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error al eliminar proyecto');
+            alert('❌ Error al eliminar proyecto');
         }
     };
 
@@ -174,11 +186,15 @@ export default function ProyectosPage() {
             cliente_id: proyecto.cliente_id,
             nombre: proyecto.nombre,
             descripcion: proyecto.descripcion || '',
-            estado: proyecto.estado,
+            estado: proyecto.estado || 'planificacion',
             presupuesto: proyecto.presupuesto?.toString() || '',
             fecha_inicio: proyecto.fecha_inicio || '',
             fecha_fin: proyecto.fecha_fin || '',
-            activo: proyecto.activo,
+            activo: proyecto.activo !== undefined ? proyecto.activo : true,
+            progreso: proyecto.progreso?.toString() || '0',  // ✅ Convertir a string
+            tipo: proyecto.tipo || 'desarrollo',
+            plazo: proyecto.plazo || '',
+            notas: proyecto.notas || ''
         });
         setShowModal(true);
     };
@@ -194,6 +210,10 @@ export default function ProyectosPage() {
             fecha_inicio: '',
             fecha_fin: '',
             activo: true,
+            progreso: '0',
+            tipo: 'desarrollo',
+            plazo: '',
+            notas: ''
         });
         setShowModal(true);
     };
@@ -209,6 +229,10 @@ export default function ProyectosPage() {
             fecha_inicio: '',
             fecha_fin: '',
             activo: true,
+            progreso: '0',
+            tipo: 'desarrollo',
+            plazo: '',
+            notas: ''
         });
     };
 
@@ -281,7 +305,8 @@ export default function ProyectosPage() {
                             <th>Cliente</th>
                             <th>Estado</th>
                             <th>Presupuesto</th>
-                            <th>Fecha inicio</th>
+                            <th>Progreso</th>
+                            <th>Activo</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -305,7 +330,39 @@ export default function ProyectosPage() {
                                             </span>
                                         </td>
                                         <td>${proyecto.presupuesto?.toLocaleString() || '0'}</td>
-                                        <td>{proyecto.fecha_inicio ? new Date(proyecto.fecha_inicio).toLocaleDateString() : '—'}</td>
+                                        <td>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <div style={{
+                                                    width: '60px',
+                                                    height: '6px',
+                                                    background: 'rgba(255,255,255,0.1)',
+                                                    borderRadius: '4px',
+                                                    overflow: 'hidden'
+                                                }}>
+                                                    <div style={{
+                                                        width: `${proyecto.progreso || 0}%`,
+                                                        height: '100%',
+                                                        background: 'linear-gradient(90deg, #3b82f6, #22d3ee)',
+                                                        borderRadius: '4px',
+                                                        transition: 'width 0.3s ease'
+                                                    }} />
+                                                </div>
+                                                <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+                                                    {proyecto.progreso || 0}%
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span style={{
+                                                padding: '2px 12px',
+                                                borderRadius: '12px',
+                                                fontSize: '12px',
+                                                background: proyecto.activo ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+                                                color: proyecto.activo ? '#22c55e' : '#ef4444'
+                                            }}>
+                                                {proyecto.activo ? '✅ Activo' : '❌ Inactivo'}
+                                            </span>
+                                        </td>
                                         <td>
                                             <button
                                                 onClick={() => openEditModal(proyecto)}
@@ -325,7 +382,7 @@ export default function ProyectosPage() {
                             })
                         ) : (
                             <tr>
-                                <td colSpan={6} style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
+                                <td colSpan={7} style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
                                     No hay proyectos {searchTerm ? 'que coincidan con la búsqueda' : 'registrados'}
                                 </td>
                             </tr>
@@ -347,7 +404,7 @@ export default function ProyectosPage() {
 
                         <form onSubmit={handleSubmit} className={styles.modalForm}>
                             <div className={styles.formGroup}>
-                                <label>Cliente</label>
+                                <label>Cliente *</label>
                                 <select
                                     value={formData.cliente_id}
                                     onChange={(e) => setFormData({ ...formData, cliente_id: e.target.value })}
@@ -363,7 +420,7 @@ export default function ProyectosPage() {
                             </div>
 
                             <div className={styles.formGroup}>
-                                <label>Nombre del proyecto</label>
+                                <label>Nombre del proyecto *</label>
                                 <input
                                     type="text"
                                     value={formData.nombre}
@@ -406,6 +463,22 @@ export default function ProyectosPage() {
                                 </select>
                             </div>
 
+                            <div className={styles.formGroup}>
+                                <label>Tipo de proyecto</label>
+                                <select
+                                    value={formData.tipo}
+                                    onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
+                                >
+                                    <option value="desarrollo">💻 Desarrollo Web</option>
+                                    <option value="app">📱 App Móvil</option>
+                                    <option value="marketing">📊 Marketing Digital</option>
+                                    <option value="diseño">🎨 Diseño UI/UX</option>
+                                    <option value="seo">🔍 SEO / Posicionamiento</option>
+                                    <option value="consultoria">💡 Consultoría</option>
+                                    <option value="otro">📦 Otro</option>
+                                </select>
+                            </div>
+
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                                 <div className={styles.formGroup}>
                                     <label>Presupuesto ($)</label>
@@ -418,16 +491,15 @@ export default function ProyectosPage() {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>Activo</label>
-                                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', marginTop: '8px' }}>
-                                        <input
-                                            type="checkbox"
-                                            checked={formData.activo}
-                                            onChange={(e) => setFormData({ ...formData, activo: e.target.checked })}
-                                            style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                                        />
-                                        Proyecto activo
-                                    </label>
+                                    <label>Progreso (%)</label>
+                                    <input
+                                        type="number"
+                                        value={formData.progreso}
+                                        onChange={(e) => setFormData({ ...formData, progreso: e.target.value })}
+                                        placeholder="0"
+                                        min="0"
+                                        max="100"
+                                    />
                                 </div>
                             </div>
 
@@ -448,6 +520,55 @@ export default function ProyectosPage() {
                                         onChange={(e) => setFormData({ ...formData, fecha_fin: e.target.value })}
                                     />
                                 </div>
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label>Plazo estimado</label>
+                                <select
+                                    value={formData.plazo}
+                                    onChange={(e) => setFormData({ ...formData, plazo: e.target.value })}
+                                >
+                                    <option value="">Seleccionar...</option>
+                                    <option value="1_semana">1 semana</option>
+                                    <option value="2_semanas">2 semanas</option>
+                                    <option value="1_mes">1 mes</option>
+                                    <option value="2_meses">2 meses</option>
+                                    <option value="3_meses">3 meses</option>
+                                    <option value="mas">Más de 3 meses</option>
+                                </select>
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label>Notas adicionales</label>
+                                <textarea
+                                    value={formData.notas}
+                                    onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
+                                    rows={2}
+                                    placeholder="Notas sobre el proyecto..."
+                                    style={{
+                                        padding: '10px 14px',
+                                        borderRadius: '10px',
+                                        border: '1px solid rgba(255,255,255,0.08)',
+                                        background: 'rgba(0,0,0,0.3)',
+                                        color: '#ffffff',
+                                        fontSize: '14px',
+                                        width: '100%',
+                                        resize: 'vertical',
+                                        fontFamily: 'inherit'
+                                    }}
+                                />
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.activo}
+                                        onChange={(e) => setFormData({ ...formData, activo: e.target.checked })}
+                                        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                                    />
+                                    Proyecto activo
+                                </label>
                             </div>
 
                             <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '20px' }}>

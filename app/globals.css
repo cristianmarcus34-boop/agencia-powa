@@ -6,6 +6,8 @@ html {
   scroll-behavior: auto !important;
   /* Evita saltos visuales de contenido al aparecer/desaparecer la scrollbar de forma nativa */
   scrollbar-gutter: stable;
+  /* 🔥 COMPENSAR EL NAVBAR FIJO */
+  scroll-padding-top: 100px;
 }
 
 :root {
@@ -17,6 +19,8 @@ html {
   --glass-border: rgba(255, 255, 255, 0.1);
   --text-main: #f8fafc;
   --text-muted: #5ce2db;
+  /* 🔥 ALTURA DEL NAVBAR */
+  --navbar-height: 80px;
 }
 
 body {
@@ -27,9 +31,21 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  /* 🔥 COMPENSAR EL NAVBAR FIJO EN EL BODY */
+  padding-top: var(--navbar-height);
   /* Optimización de renderizado de texto */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* 🔥 QUITAR EL PADDING DEL BODY EN RUTAS SIN NAVBAR */
+body:has(main.min-h-screen) {
+  padding-top: 0;
+}
+
+/* 🔥 COMPENSAR EL NAVBAR EN EL MAIN CONTENT */
+main:not(.min-h-screen) {
+  padding-top: var(--navbar-height);
 }
 
 /* Scrollbar Global Estilizada (Webkit) */
@@ -147,29 +163,52 @@ img {
 /* Prevención de conflictos con el modal de Bootstrap y el scroll */
 body.modal-open {
   padding-right: 0 !important;
+}
 
-
-  /* ============================================
+/* ============================================
    CHAT POWA - AJUSTE GLOBAL DE POSICIONAMIENTO
    ============================================ */
 
-  /* Asegura que el chat flotante no se superponga con el footer */
+/* Asegura que el chat flotante no se superponga con el footer */
+.chat-container {
+  bottom: 120px !important;
+  /* Aumentado para dar espacio al footer */
+}
+
+/* En móviles, ajustamos dinámicamente */
+@media (max-width: 768px) {
   .chat-container {
-    bottom: 120px !important;
-    /* Aumentado para dar espacio al footer */
+    bottom: 100px !important;
   }
+}
 
-  /* En móviles, ajustamos dinámicamente */
-  @media (max-width: 768px) {
-    .chat-container {
-      bottom: 100px !important;
-    }
+@media (max-width: 480px) {
+  .chat-container {
+    bottom: 85px !important;
   }
+}
 
-  @media (max-width: 480px) {
-    .chat-container {
-      bottom: 85px !important;
-    }
-  }
+/* ============================================
+   🔥 COMPENSACIÓN DEL NAVBAR EN PÁGINAS ESPECÍFICAS
+   ============================================ */
 
+/* Para el panel de admin y cliente */
+.admin-page main,
+.cliente-page main {
+  padding-top: calc(var(--navbar-height) + 20px) !important;
+}
+
+/* Para tablas con sticky headers */
+.table-container {
+  margin-top: 0;
+}
+
+/* Para modales que pueden quedar tapados */
+.modal-content {
+  margin-top: var(--navbar-height);
+}
+
+/* Para anchors internos (scroll suave) */
+.anchor-offset {
+  scroll-margin-top: calc(var(--navbar-height) + 20px);
 }

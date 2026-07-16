@@ -1,10 +1,9 @@
-// app/admin/clientes/page.tsx
 'use client';
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FaEdit, FaTrash, FaPlus, FaSearch, FaBuilding, FaUser, FaEnvelope, FaPhone } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus, FaSearch } from 'react-icons/fa';
 import styles from '../admin.module.css';
 
 interface Cliente {
@@ -60,19 +59,29 @@ export default function ClientesPage() {
         notas: '',
         activo: true
     });
+    // ✅ Control de redirección
+    const [redirected, setRedirected] = useState(false);
 
+    // ✅ Manejo de autenticación mejorado
     useEffect(() => {
-        if (status === 'unauthenticated') {
-            router.push('/login');
-        }
-        if (session?.user?.rol !== 'admin') {
-            router.push('/cliente');
-        }
-    }, [status, session, router]);
+        if (status === 'loading') return;
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+        if (status === 'unauthenticated' && !redirected) {
+            setRedirected(true);
+            router.replace('/login');
+            return;
+        }
+
+        if (status === 'authenticated' && session?.user?.rol !== 'admin' && !redirected) {
+            setRedirected(true);
+            router.replace('/cliente');
+            return;
+        }
+
+        if (status === 'authenticated' && session?.user?.rol === 'admin') {
+            fetchData();
+        }
+    }, [status, session, router, redirected]);
 
     useEffect(() => {
         if (searchTerm.trim() === '') {
@@ -89,6 +98,7 @@ export default function ClientesPage() {
 
     const fetchData = async () => {
         try {
+            setLoading(true);
             const res = await fetch('/api/admin/clientes');
             const result = await res.json();
             if (result.success) {
@@ -221,9 +231,12 @@ export default function ClientesPage() {
         );
     }
 
+    if (status === 'unauthenticated' || session?.user?.rol !== 'admin') {
+        return null;
+    }
+
     return (
         <div>
-            {/* Header */}
             <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
                 <div>
                     <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>🏢 Clientes</h1>
@@ -234,7 +247,6 @@ export default function ClientesPage() {
                 </button>
             </div>
 
-            {/* Buscador */}
             <div style={{ marginBottom: '20px' }}>
                 <div style={{
                     display: 'flex',
@@ -264,7 +276,6 @@ export default function ClientesPage() {
                 </div>
             </div>
 
-            {/* Tabla */}
             <div className={styles.tableContainer}>
                 <table className={styles.table}>
                     <thead>
@@ -331,7 +342,6 @@ export default function ClientesPage() {
                 </table>
             </div>
 
-            {/* Modal de Crear/Editar */}
             {showModal && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>

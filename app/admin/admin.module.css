@@ -626,6 +626,70 @@
     color: #ffffff;
 }
 
+/* app/admin/admin.module.css */
+
+/* 🔥 Botón Cambiar Contraseña */
+.btnPassword {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 6px;
+}
+
+.btnPassword:hover {
+    background: rgba(234, 179, 8, 0.25);
+    transform: scale(1.05);
+}
+
+.btnPassword:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Navegación lateral del admin */
+.sidebar {
+    width: 240px;
+    background: #0f172a;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 20px 0;
+    height: calc(100vh - 80px);
+    position: sticky;
+    top: 80px;
+    overflow-y: auto;
+}
+
+.sidebarLink {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.sidebarLink:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+}
+
+.sidebarLink.active {
+    background: rgba(34, 211, 238, 0.1);
+    color: #22d3ee;
+    border-left-color: #22d3ee;
+}
+
+.sidebarLink .icon {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+
 /* ============================================
    RESPONSIVE
    ============================================ */

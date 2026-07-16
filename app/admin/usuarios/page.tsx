@@ -1,10 +1,9 @@
-// app/admin/usuarios/page.tsx
 'use client';
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FaEdit, FaTrash, FaPlus, FaSearch } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus, FaSearch, FaKey, FaUser, FaEnvelope, FaUserTag } from 'react-icons/fa';
 import styles from '../admin.module.css';
 
 interface Usuario {
@@ -24,13 +23,21 @@ export default function UsuariosPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
-    const [editingUser, setEditingUser] = useState<Usuario | null>(null);
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
+    const [editingUsuario, setEditingUsuario] = useState<Usuario | null>(null);
+    const [selectedUsuario, setSelectedUsuario] = useState<Usuario | null>(null);
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [passwordSuccess, setPasswordSuccess] = useState('');
+    const [formError, setFormError] = useState('');
+    const [formSuccess, setFormSuccess] = useState('');
     const [formData, setFormData] = useState({
         email: '',
         nombre_completo: '',
         rol: 'cliente',
-        password: '',
-        activo: true
+        activo: true,
+        password: ''
     });
 
     useEffect(() => {
@@ -43,8 +50,10 @@ export default function UsuariosPage() {
     }, [status, session, router]);
 
     useEffect(() => {
-        fetchUsuarios();
-    }, []);
+        if (status === 'authenticated' && session?.user?.rol === 'admin') {
+            fetchUsuarios();
+        }
+    }, [status, session]);
 
     useEffect(() => {
         if (searchTerm.trim() === '') {
@@ -52,14 +61,15 @@ export default function UsuariosPage() {
         } else {
             const term = searchTerm.toLowerCase();
             setFilteredUsuarios(usuarios.filter(u =>
-                u.nombre_completo.toLowerCase().includes(term) ||
-                u.email.toLowerCase().includes(term)
+                u.email.toLowerCase().includes(term) ||
+                u.nombre_completo.toLowerCase().includes(term)
             ));
         }
     }, [searchTerm, usuarios]);
 
     const fetchUsuarios = async () => {
         try {
+            setLoading(true);
             const res = await fetch('/api/admin/usuarios');
             const result = await res.json();
             if (result.success) {
@@ -75,22 +85,31 @@ export default function UsuariosPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setFormError('');
+        setFormSuccess('');
 
         try {
-            const url = editingUser
-                ? `/api/admin/usuarios/${editingUser.id}`
+            const url = editingUsuario
+                ? `/api/admin/usuarios/${editingUsuario.id}`
                 : '/api/admin/usuarios';
 
-            const method = editingUser ? 'PUT' : 'POST';
+            const method = editingUsuario ? 'PUT' : 'POST';
 
-            const body = editingUser
-                ? {
-                    nombre_completo: formData.nombre_completo,
-                    rol: formData.rol,
-                    activo: formData.activo,
-                    ...(formData.password && { password: formData.password })
+            const body: any = {
+                email: formData.email,
+                nombre_completo: formData.nombre_completo,
+                rol: formData.rol,
+                activo: formData.activo,
+            };
+
+            // Solo enviar password si es nuevo usuario
+            if (!editingUsuario) {
+                if (!formData.password || formData.password.length < 6) {
+                    setFormError('La contraseña debe tener al menos 6 caracteres');
+                    return;
                 }
-                : formData;
+                body.password = formData.password;
+            }
 
             const res = await fetch(url, {
                 method,
@@ -100,21 +119,65 @@ export default function UsuariosPage() {
 
             const result = await res.json();
             if (result.success) {
+                setFormSuccess(editingUsuario ? '✅ Usuario actualizado correctamente' : '✅ Usuario creado correctamente');
                 fetchUsuarios();
-                setShowModal(false);
-                resetForm();
-                alert(editingUser ? 'Usuario actualizado' : 'Usuario creado');
+
+                setTimeout(() => {
+                    setShowModal(false);
+                    resetForm();
+                    setFormSuccess('');
+                }, 1500);
             } else {
-                alert(result.error || 'Error al guardar usuario');
+                setFormError(result.error || 'Error al guardar usuario');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error al guardar usuario');
+            setFormError('Error al guardar usuario');
+        }
+    };
+
+    const handleChangePassword = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setPasswordError('');
+        setPasswordSuccess('');
+
+        if (newPassword.length < 6) {
+            setPasswordError('La contraseña debe tener al menos 6 caracteres');
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            setPasswordError('Las contraseñas no coinciden');
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/admin/usuarios/${selectedUsuario?.id}/cambiar-password`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: newPassword })
+            });
+
+            const result = await res.json();
+            if (result.success) {
+                setPasswordSuccess('✅ Contraseña actualizada correctamente');
+                setTimeout(() => {
+                    setShowPasswordModal(false);
+                    setNewPassword('');
+                    setConfirmPassword('');
+                    setPasswordSuccess('');
+                }, 2000);
+            } else {
+                setPasswordError(result.error || 'Error al cambiar contraseña');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setPasswordError('Error al cambiar contraseña');
         }
     };
 
     const handleDelete = async (usuario: Usuario) => {
-        if (!confirm(`¿Estás seguro de eliminar a ${usuario.nombre_completo}?`)) return;
+        if (!confirm(`¿Estás seguro de eliminar al usuario "${usuario.nombre_completo}"?`)) return;
 
         try {
             const res = await fetch(`/api/admin/usuarios/${usuario.id}`, {
@@ -134,38 +197,69 @@ export default function UsuariosPage() {
     };
 
     const openEditModal = (usuario: Usuario) => {
-        setEditingUser(usuario);
+        setEditingUsuario(usuario);
         setFormData({
             email: usuario.email,
             nombre_completo: usuario.nombre_completo,
             rol: usuario.rol,
-            password: '',
-            activo: usuario.activo
+            activo: usuario.activo,
+            password: ''
         });
+        setFormError('');
+        setFormSuccess('');
         setShowModal(true);
     };
 
+    const openPasswordModal = (usuario: Usuario) => {
+        setSelectedUsuario(usuario);
+        setNewPassword('');
+        setConfirmPassword('');
+        setPasswordError('');
+        setPasswordSuccess('');
+        setShowPasswordModal(true);
+    };
+
     const openCreateModal = () => {
-        setEditingUser(null);
+        setEditingUsuario(null);
         setFormData({
             email: '',
             nombre_completo: '',
             rol: 'cliente',
-            password: '',
-            activo: true
+            activo: true,
+            password: ''
         });
+        setFormError('');
+        setFormSuccess('');
         setShowModal(true);
     };
 
     const resetForm = () => {
-        setEditingUser(null);
+        setEditingUsuario(null);
         setFormData({
             email: '',
             nombre_completo: '',
             rol: 'cliente',
-            password: '',
-            activo: true
+            activo: true,
+            password: ''
         });
+        setFormError('');
+        setFormSuccess('');
+    };
+
+    const getRolLabel = (rol: string) => {
+        const labels = {
+            admin: '👑 Admin',
+            cliente: '👤 Cliente'
+        };
+        return labels[rol as keyof typeof labels] || rol;
+    };
+
+    const getRolColor = (rol: string) => {
+        const colors = {
+            admin: '#8b5cf6',
+            cliente: '#22d3ee'
+        };
+        return colors[rol as keyof typeof colors] || '#94a3b8';
     };
 
     if (status === 'loading' || loading) {
@@ -204,7 +298,7 @@ export default function UsuariosPage() {
                     <FaSearch style={{ color: '#64748b', marginRight: '12px' }} />
                     <input
                         type="text"
-                        placeholder="Buscar por nombre o email..."
+                        placeholder="Buscar usuarios..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         style={{
@@ -225,7 +319,7 @@ export default function UsuariosPage() {
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Nombre</th>
+                            <th>Usuario</th>
                             <th>Email</th>
                             <th>Rol</th>
                             <th>Estado</th>
@@ -243,12 +337,11 @@ export default function UsuariosPage() {
                                             padding: '2px 12px',
                                             borderRadius: '12px',
                                             fontSize: '12px',
-                                            background: usuario.rol === 'admin'
-                                                ? 'rgba(139, 92, 246, 0.15)'
-                                                : 'rgba(59, 130, 246, 0.15)',
-                                            color: usuario.rol === 'admin' ? '#a78bfa' : '#60a5fa'
+                                            fontWeight: 500,
+                                            background: `rgba(${usuario.rol === 'admin' ? '139, 92, 246' : '34, 211, 238'}, 0.15)`,
+                                            color: getRolColor(usuario.rol)
                                         }}>
-                                            {usuario.rol}
+                                            {getRolLabel(usuario.rol)}
                                         </span>
                                     </td>
                                     <td>
@@ -260,14 +353,22 @@ export default function UsuariosPage() {
                                         <button
                                             onClick={() => openEditModal(usuario)}
                                             className={styles.btnEdit}
+                                            title="Editar usuario"
                                         >
                                             <FaEdit />
+                                        </button>
+                                        <button
+                                            onClick={() => openPasswordModal(usuario)}
+                                            className={styles.btnPassword}
+                                            title="Cambiar contraseña"
+                                        >
+                                            <FaKey />
                                         </button>
                                         <button
                                             onClick={() => handleDelete(usuario)}
                                             className={styles.btnDanger}
                                             disabled={usuario.id === session?.user?.id}
-                                            title={usuario.id === session?.user?.id ? 'No puedes eliminar tu propio usuario' : ''}
+                                            title={usuario.id === session?.user?.id ? 'No puedes eliminarte a ti mismo' : ''}
                                         >
                                             <FaTrash />
                                         </button>
@@ -285,63 +386,80 @@ export default function UsuariosPage() {
                 </table>
             </div>
 
-            {/* Modal de Crear/Editar */}
+            {/* Modal de Crear/Editar Usuario */}
             {showModal && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>
                         <div className={styles.modalHeader}>
-                            <h2>{editingUser ? 'Editar usuario' : 'Nuevo usuario'}</h2>
+                            <h2>{editingUsuario ? 'Editar usuario' : 'Nuevo usuario'}</h2>
                             <button onClick={() => { setShowModal(false); resetForm(); }} className={styles.modalClose}>
                                 ✕
                             </button>
                         </div>
 
+                        {formError && (
+                            <div style={{
+                                background: 'rgba(239, 68, 68, 0.15)',
+                                color: '#ef4444',
+                                padding: '12px 16px',
+                                borderRadius: '10px',
+                                marginBottom: '16px',
+                                border: '1px solid rgba(239, 68, 68, 0.2)'
+                            }}>
+                                {formError}
+                            </div>
+                        )}
+
+                        {formSuccess && (
+                            <div style={{
+                                background: 'rgba(34, 197, 94, 0.15)',
+                                color: '#22c55e',
+                                padding: '12px 16px',
+                                borderRadius: '10px',
+                                marginBottom: '16px',
+                                border: '1px solid rgba(34, 197, 94, 0.2)'
+                            }}>
+                                {formSuccess}
+                            </div>
+                        )}
+
                         <form onSubmit={handleSubmit} className={styles.modalForm}>
                             <div className={styles.formGroup}>
-                                <label>Email</label>
-                                <input
-                                    type="email"
-                                    value={formData.email}
-                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    required
-                                    disabled={!!editingUser}
-                                    placeholder="usuario@email.com"
-                                />
-                            </div>
-
-                            <div className={styles.formGroup}>
-                                <label>Nombre completo</label>
+                                <label>Nombre completo *</label>
                                 <input
                                     type="text"
                                     value={formData.nombre_completo}
                                     onChange={(e) => setFormData({ ...formData, nombre_completo: e.target.value })}
                                     required
-                                    placeholder="Nombre Apellido"
+                                    placeholder="Ej: Juan Pérez"
                                 />
                             </div>
 
-                            {!editingUser && (
+                            <div className={styles.formGroup}>
+                                <label>Email *</label>
+                                <input
+                                    type="email"
+                                    value={formData.email}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    required
+                                    placeholder="ejemplo@email.com"
+                                />
+                            </div>
+
+                            {!editingUsuario && (
                                 <div className={styles.formGroup}>
-                                    <label>Contraseña</label>
+                                    <label>Contraseña *</label>
                                     <input
                                         type="password"
                                         value={formData.password}
                                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                         required
-                                        placeholder="••••••••"
+                                        placeholder="Mínimo 6 caracteres"
+                                        minLength={6}
                                     />
-                                </div>
-                            )}
-
-                            {editingUser && (
-                                <div className={styles.formGroup}>
-                                    <label>Nueva contraseña (opcional)</label>
-                                    <input
-                                        type="password"
-                                        value={formData.password}
-                                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                        placeholder="Dejar en blanco para no cambiar"
-                                    />
+                                    <small style={{ color: '#94a3b8', fontSize: '12px' }}>
+                                        La contraseña debe tener al menos 6 caracteres
+                                    </small>
                                 </div>
                             )}
 
@@ -350,10 +468,9 @@ export default function UsuariosPage() {
                                 <select
                                     value={formData.rol}
                                     onChange={(e) => setFormData({ ...formData, rol: e.target.value })}
-                                    required
                                 >
                                     <option value="cliente">Cliente</option>
-                                    <option value="admin">Administrador</option>
+                                    <option value="admin">Admin</option>
                                 </select>
                             </div>
 
@@ -374,7 +491,103 @@ export default function UsuariosPage() {
                                     Cancelar
                                 </button>
                                 <button type="submit" className={styles.btnPrimary}>
-                                    {editingUser ? 'Actualizar' : 'Crear'}
+                                    {editingUsuario ? 'Actualizar' : 'Crear'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal para cambiar contraseña */}
+            {showPasswordModal && selectedUsuario && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modal}>
+                        <div className={styles.modalHeader}>
+                            <h2>🔑 Cambiar contraseña</h2>
+                            <button onClick={() => { setShowPasswordModal(false); setPasswordError(''); setPasswordSuccess(''); }} className={styles.modalClose}>
+                                ✕
+                            </button>
+                        </div>
+
+                        <div style={{ marginBottom: '16px' }}>
+                            <p style={{ color: '#94a3b8' }}>
+                                Cambiando contraseña para: <strong style={{ color: '#ffffff' }}>{selectedUsuario.nombre_completo}</strong>
+                            </p>
+                            <p style={{ color: '#64748b', fontSize: '14px' }}>
+                                Email: {selectedUsuario.email}
+                            </p>
+                        </div>
+
+                        {passwordSuccess && (
+                            <div style={{
+                                background: 'rgba(34, 197, 94, 0.15)',
+                                color: '#22c55e',
+                                padding: '12px 16px',
+                                borderRadius: '10px',
+                                marginBottom: '16px',
+                                border: '1px solid rgba(34, 197, 94, 0.2)'
+                            }}>
+                                {passwordSuccess}
+                            </div>
+                        )}
+
+                        {passwordError && (
+                            <div style={{
+                                background: 'rgba(239, 68, 68, 0.15)',
+                                color: '#ef4444',
+                                padding: '12px 16px',
+                                borderRadius: '10px',
+                                marginBottom: '16px',
+                                border: '1px solid rgba(239, 68, 68, 0.2)'
+                            }}>
+                                {passwordError}
+                            </div>
+                        )}
+
+                        <form onSubmit={handleChangePassword} className={styles.modalForm}>
+                            <div className={styles.formGroup}>
+                                <label>Nueva contraseña *</label>
+                                <input
+                                    type="password"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    required
+                                    placeholder="Mínimo 6 caracteres"
+                                    minLength={6}
+                                    autoFocus
+                                />
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label>Confirmar contraseña *</label>
+                                <input
+                                    type="password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    required
+                                    placeholder="Repite la contraseña"
+                                    minLength={6}
+                                />
+                            </div>
+
+                            <div style={{
+                                background: 'rgba(255, 255, 255, 0.05)',
+                                padding: '12px 16px',
+                                borderRadius: '10px',
+                                marginBottom: '16px',
+                                fontSize: '13px',
+                                color: '#94a3b8'
+                            }}>
+                                💡 La contraseña debe tener al menos 6 caracteres.
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '20px' }}>
+                                <button type="button" onClick={() => { setShowPasswordModal(false); setPasswordError(''); setPasswordSuccess(''); }} className={styles.btnSecondary}>
+                                    Cancelar
+                                </button>
+                                <button type="submit" className={styles.btnPrimary}>
+                                    <FaKey style={{ marginRight: '8px' }} /> Cambiar contraseña
                                 </button>
                             </div>
                         </form>

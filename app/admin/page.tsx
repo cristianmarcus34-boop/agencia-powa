@@ -7,10 +7,11 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
     FaUsers, FaProjectDiagram, FaUserTie, FaComments,
-    FaStar, FaEnvelope, FaHome, FaArrowLeft
+    FaStar, FaEnvelope, FaHome, FaArrowLeft, FaFileInvoice
 } from 'react-icons/fa';
 import styles from './admin.module.css';
 
+// ✅ INTERFAZ ACTUALIZADA CON LAS NUEVAS PROPIEDADES
 interface DashboardData {
     totalUsuarios: number;
     usuariosActivos: number;
@@ -20,6 +21,8 @@ interface DashboardData {
     totalConversaciones: number;
     totalMensajes: number;
     promedioCalificacion: number;
+    totalFacturas: number;        // ✅ Agregado
+    facturasPendientes: number;   // ✅ Agregado
     ultimasConversaciones: Array<{
         id: string;
         perfil: string;
@@ -80,27 +83,39 @@ export default function AdminDashboard() {
             value: data?.totalUsuarios || 0,
             label: 'Usuarios',
             sub: `${data?.usuariosActivos || 0} activos`,
-            color: '#3b82f6'
+            color: '#3b82f6',
+            link: '/admin/usuarios'
         },
         {
             icon: <FaProjectDiagram />,
             value: data?.totalProyectos || 0,
             label: 'Proyectos',
             sub: `${data?.proyectosActivos || 0} activos`,
-            color: '#22d3ee'
+            color: '#22d3ee',
+            link: '/admin/proyectos'
         },
         {
             icon: <FaUserTie />,
             value: data?.totalClientes || 0,
             label: 'Clientes',
-            color: '#10b981'
+            color: '#10b981',
+            link: '/admin/clientes'
+        },
+        {
+            icon: <FaFileInvoice />,
+            value: data?.totalFacturas || 0,        // ✅ Ahora existe
+            label: 'Facturas',
+            sub: `${data?.facturasPendientes || 0} pendientes`,  // ✅ Ahora existe
+            color: '#f59e0b',
+            link: '/admin/facturas'
         },
         {
             icon: <FaComments />,
             value: data?.totalConversaciones || 0,
             label: 'Conversaciones',
             sub: `${data?.totalMensajes || 0} mensajes`,
-            color: '#f59e0b'
+            color: '#f59e0b',
+            link: '/admin/conversaciones'
         },
         {
             icon: <FaStar />,
@@ -154,18 +169,38 @@ export default function AdminDashboard() {
             {/* Tarjetas */}
             <div className={styles.dashboardGrid}>
                 {cards.map((card, index) => (
-                    <div key={index} className={styles.dashboardCard}>
-                        <span className={styles.cardIcon} style={{ color: card.color }}>
-                            {card.icon}
-                        </span>
-                        <div className={styles.cardValue}>{card.value}</div>
-                        <div className={styles.cardLabel}>{card.label}</div>
-                        {card.sub && (
-                            <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>
-                                {card.sub}
-                            </div>
-                        )}
-                    </div>
+                    card.link ? (
+                        <Link
+                            key={index}
+                            href={card.link}
+                            className={styles.dashboardCard}
+                            style={{ textDecoration: 'none', cursor: 'pointer' }}
+                        >
+                            <span className={styles.cardIcon} style={{ color: card.color }}>
+                                {card.icon}
+                            </span>
+                            <div className={styles.cardValue}>{card.value}</div>
+                            <div className={styles.cardLabel}>{card.label}</div>
+                            {card.sub && (
+                                <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>
+                                    {card.sub}
+                                </div>
+                            )}
+                        </Link>
+                    ) : (
+                        <div key={index} className={styles.dashboardCard}>
+                            <span className={styles.cardIcon} style={{ color: card.color }}>
+                                {card.icon}
+                            </span>
+                            <div className={styles.cardValue}>{card.value}</div>
+                            <div className={styles.cardLabel}>{card.label}</div>
+                            {card.sub && (
+                                <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>
+                                    {card.sub}
+                                </div>
+                            )}
+                        </div>
+                    )
                 ))}
             </div>
 

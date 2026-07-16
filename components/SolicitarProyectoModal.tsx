@@ -28,6 +28,7 @@ export default function SolicitarProyectoModal({
     });
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
 
     const tiposProyecto = [
         { value: 'desarrollo', label: '💻 Desarrollo Web' },
@@ -42,15 +43,31 @@ export default function SolicitarProyectoModal({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        setError('');
+
+        // 🔥 Log para ver qué se está enviando
+        console.log('📝 Enviando datos:', {
+            cliente_id: clienteId,
+            nombre: formData.nombre,
+            descripcion: formData.descripcion,
+            presupuesto: parseFloat(formData.presupuesto) || 0,
+            tipo: formData.tipo,
+            plazo: formData.plazo || null,
+            notas: formData.notas || null
+        });
 
         try {
             const response = await fetch('/api/cliente/solicitar-proyecto', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    ...formData,
                     cliente_id: clienteId,
-                    presupuesto: parseFloat(formData.presupuesto) || 0
+                    nombre: formData.nombre.trim(),
+                    descripcion: formData.descripcion.trim(),
+                    presupuesto: parseFloat(formData.presupuesto) || 0,
+                    tipo: formData.tipo,
+                    plazo: formData.plazo || null,
+                    notas: formData.notas || null
                 })
             });
 
@@ -71,12 +88,12 @@ export default function SolicitarProyectoModal({
                     });
                 }, 2000);
             } else {
-                alert(data.error || 'Error al enviar la solicitud');
+                setError(data.error || 'Error al enviar la solicitud');
+                setLoading(false);
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error al enviar la solicitud');
-        } finally {
+            setError('Error al enviar la solicitud');
             setLoading(false);
         }
     };
@@ -109,6 +126,19 @@ export default function SolicitarProyectoModal({
                     <p className={styles.subtitle}>
                         Completa el formulario para solicitar un nuevo proyecto para <strong>{clienteNombre}</strong>
                     </p>
+
+                    {error && (
+                        <div style={{
+                            background: 'rgba(239, 68, 68, 0.15)',
+                            color: '#ef4444',
+                            padding: '12px 16px',
+                            borderRadius: '10px',
+                            marginBottom: '16px',
+                            border: '1px solid rgba(239, 68, 68, 0.2)'
+                        }}>
+                            ❌ {error}
+                        </div>
+                    )}
 
                     {success ? (
                         <div className={styles.successMessage}>

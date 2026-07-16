@@ -1,4 +1,3 @@
-// app/cliente/page.tsx
 'use client';
 
 import { useSession } from 'next-auth/react';
@@ -19,14 +18,15 @@ import {
     FaPhone,
     FaGlobe,
     FaTag,
-    FaArrowRight,
-    FaDownload,
-    FaEye,
-    FaPlus
+    FaPlus,
+    FaEye
 } from 'react-icons/fa';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import styles from './cliente.module.css';
 import SolicitarProyectoModal from '@/components/SolicitarProyectoModal';
+// 🔥 IMPORTAR EL BOTÓN DE DESCARGA PDF
+import { DownloadFacturaButton } from '@/components/FacturaPDF';
+import FacturaPreviewModal from '@/components/FacturaPreviewModal';
 
 interface Proyecto {
     id: string;
@@ -47,6 +47,9 @@ interface Factura {
     fecha_emision: string;
     fecha_vencimiento: string;
     proyecto_nombre: string;
+    subtotal?: number;
+    monto_impuesto?: number;
+    notas?: string;
 }
 
 interface ClienteInfo {
@@ -74,24 +77,68 @@ export default function ClienteDashboard() {
         facturas_pendientes: 0,
         facturas_totales: 0
     });
-    const [proyectoSeleccionado, setProyectoSeleccionado] = useState<string | null>(null);
-    // 🔥 ESTADO PARA EL MODAL
     const [showModal, setShowModal] = useState(false);
+    // ✅ Control de redirección
+    const [redirected, setRedirected] = useState(false);
+    // 🔥 Estados para previsualización
+    const [selectedFactura, setSelectedFactura] = useState<Factura | null>(null);
+    const [showPreviewModal, setShowPreviewModal] = useState(false);
 
+    // ✅ Manejo de autenticación mejorado
     useEffect(() => {
-        if (status === 'unauthenticated') {
-            router.push('/login');
-        }
-        if (session?.user?.rol === 'admin') {
-            router.push('/admin');
-        }
-    }, [status, session, router]);
+        if (status === 'loading') return;
 
-    useEffect(() => {
-        if (session?.user?.id) {
+        // Si no está autenticado y no se redirigió aún
+        if (status === 'unauthenticated' && !redirected) {
+            setRedirected(true);
+            router.replace('/login');
+            return;
+        }
+
+        // Si es admin, redirigir al panel de admin
+        if (status === 'authenticated' && session?.user?.rol === 'admin' && !redirected) {
+            setRedirected(true);
+            router.replace('/admin');
+            return;
+        }
+
+        // Si está autenticado como cliente, cargar datos
+        if (status === 'authenticated' && session?.user?.id && session?.user?.rol !== 'admin') {
             fetchDashboardData();
         }
-    }, [session]);
+    }, [status, session, router, redirected]);
+
+    // 🔥 Función para formatear la factura para el PDF
+    const formatFacturaForPDF = (factura: Factura) => {
+        return {
+            numero_factura: factura.numero,
+            fecha_emision: factura.fecha_emision,
+            fecha_vencimiento: factura.fecha_vencimiento,
+            subtotal: factura.subtotal || factura.monto * 0.8,
+            tasa_impuesto: 21,
+            monto_impuesto: factura.monto_impuesto || factura.monto * 0.21,
+            total: factura.monto,
+            estado: factura.estado,
+            notas: factura.notas || '',
+            clientes: clienteInfo ? {
+                nombre_empresa: clienteInfo.nombre_empresa,
+                nombre_contacto: clienteInfo.nombre_contacto,
+                email: clienteInfo.email
+            } : undefined
+        };
+    };
+
+    // 🔥 Función para abrir previsualización
+    const openFacturaPreview = (factura: Factura) => {
+        setSelectedFactura(factura);
+        setShowPreviewModal(true);
+    };
+
+    // 🔥 Función para cerrar previsualización
+    const closeFacturaPreview = () => {
+        setShowPreviewModal(false);
+        setSelectedFactura(null);
+    };
 
     const fetchDashboardData = async () => {
         try {
@@ -109,7 +156,6 @@ export default function ClienteDashboard() {
             if (proyData.success) {
                 setProyectos(proyData.data);
 
-                // Calcular estadísticas
                 const activos = proyData.data.filter((p: Proyecto) => p.estado === 'activo' || p.estado === 'en_revision');
                 const completados = proyData.data.filter((p: Proyecto) => p.estado === 'completado');
                 setEstadisticas(prev => ({
@@ -167,17 +213,7 @@ export default function ClienteDashboard() {
         return labels[estado as keyof typeof labels] || estado;
     };
 
-    const getIconoEstado = (estado: string) => {
-        switch (estado) {
-            case 'activo': return <FaSpinner style={{ animation: 'spin 2s linear infinite' }} />;
-            case 'en_revision': return <FaClock />;
-            case 'completado': return <FaCheckCircle />;
-            case 'pausado': return <FaExclamationTriangle />;
-            case 'cancelado': return <FaExclamationTriangle />;
-            default: return <FaBriefcase />;
-        }
-    };
-
+    // ✅ Mostrar loading controlado
     if (status === 'loading' || loading) {
         return (
             <div className={styles.loadingContainer}>
@@ -187,9 +223,13 @@ export default function ClienteDashboard() {
         );
     }
 
+    // ✅ Si no está autenticado, no renderizar nada
+    if (status === 'unauthenticated') {
+        return null;
+    }
+
     return (
         <div className={styles.dashboard}>
-            {/* Header */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -200,7 +240,6 @@ export default function ClienteDashboard() {
                     <p className={styles.subtitle}>Panel de control de {clienteInfo?.nombre_empresa || 'tu empresa'}</p>
                 </div>
                 <div className={styles.headerActions}>
-                    {/* 🔥 BOTÓN CON FUNCIONALIDAD */}
                     <button
                         className={styles.btnPrimary}
                         onClick={() => setShowModal(true)}
@@ -210,7 +249,6 @@ export default function ClienteDashboard() {
                 </div>
             </motion.div>
 
-            {/* 🔥 MODAL DE SOLICITUD */}
             <SolicitarProyectoModal
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
@@ -218,7 +256,6 @@ export default function ClienteDashboard() {
                 clienteNombre={clienteInfo?.nombre_empresa || 'tu empresa'}
             />
 
-            {/* Tarjetas de estadísticas */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -264,7 +301,6 @@ export default function ClienteDashboard() {
             </motion.div>
 
             <div className={styles.twoColumnLayout}>
-                {/* Proyectos Recientes */}
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -310,7 +346,6 @@ export default function ClienteDashboard() {
                     </div>
                 </motion.div>
 
-                {/* Facturas Recientes */}
                 <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -319,7 +354,12 @@ export default function ClienteDashboard() {
                 >
                     <div className={styles.cardHeader}>
                         <h3 className={styles.cardTitle}>🧾 Facturas Recientes</h3>
-                        <button className={styles.cardAction}>Ver todas →</button>
+                        <button
+                            className={styles.cardAction}
+                            onClick={() => router.push('/cliente/facturas')}
+                        >
+                            Ver todas →
+                        </button>
                     </div>
                     <div className={styles.facturasList}>
                         {facturas.length > 0 ? (
@@ -343,6 +383,43 @@ export default function ClienteDashboard() {
                                     <div className={styles.facturaFecha}>
                                         <FaCalendarAlt /> Vence: {new Date(factura.fecha_vencimiento).toLocaleDateString()}
                                     </div>
+                                    {/* 🔥 BOTONES DE ACCIÓN */}
+                                    <div style={{
+                                        marginTop: '12px',
+                                        display: 'flex',
+                                        gap: '8px',
+                                        flexWrap: 'wrap'
+                                    }}>
+                                        {/* Botón Previsualizar */}
+                                        <button
+                                            onClick={() => openFacturaPreview(factura)}
+                                            style={{
+                                                background: 'rgba(59, 130, 246, 0.15)',
+                                                border: '1px solid rgba(59, 130, 246, 0.2)',
+                                                color: '#60a5fa',
+                                                padding: '6px 14px',
+                                                borderRadius: '8px',
+                                                fontSize: '13px',
+                                                cursor: 'pointer',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '6px',
+                                                transition: 'all 0.3s ease'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.background = 'rgba(59, 130, 246, 0.25)';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.background = 'rgba(59, 130, 246, 0.15)';
+                                            }}
+                                        >
+                                            <FaEye /> Previsualizar
+                                        </button>
+                                        {/* Botón Descargar */}
+                                        <DownloadFacturaButton
+                                            factura={formatFacturaForPDF(factura)}
+                                        />
+                                    </div>
                                 </div>
                             ))
                         ) : (
@@ -352,7 +429,6 @@ export default function ClienteDashboard() {
                 </motion.div>
             </div>
 
-            {/* Información del Cliente */}
             {clienteInfo && (
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -417,6 +493,18 @@ export default function ClienteDashboard() {
                         </div>
                     </div>
                 </motion.div>
+            )}
+
+            {/* 🔥 MODAL DE PREVISUALIZACIÓN */}
+            {selectedFactura && (
+                <FacturaPreviewModal
+                    isOpen={showPreviewModal}
+                    onClose={closeFacturaPreview}
+                    factura={formatFacturaForPDF(selectedFactura)}
+                    onDownload={() => {
+                        // El botón de descarga del modal ya maneja la descarga
+                    }}
+                />
             )}
         </div>
     );
