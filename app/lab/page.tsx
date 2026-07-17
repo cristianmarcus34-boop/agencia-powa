@@ -32,6 +32,8 @@ export default function LabPage() {
   const [feedbackEmail, setFeedbackEmail] = useState<string>('');
   const [feedbackMessage, setFeedbackMessage] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   // ===== LEER PARÁMETRO DE URL =====
   const searchParams = useSearchParams();
@@ -41,7 +43,6 @@ export default function LabPage() {
     const toolParam = searchParams.get('tool');
     if (toolParam === 'roi') {
       setActiveTool('roi');
-      // Scroll suave hacia la herramienta
       setTimeout(() => {
         const roiElement = document.getElementById('roi-tool');
         if (roiElement) {
@@ -64,16 +65,65 @@ export default function LabPage() {
     setFeedbackMessage(e.target.value);
   };
 
-  const handleFeedbackSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  // ===== HANDLER PARA ENVÍO CON WEB3FORMS =====
+  const handleFeedbackSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    if (feedbackEmail && feedbackMessage) {
+    setIsLoading(true);
+    setErrorMessage('');
+
+    // Validar mensaje (obligatorio)
+    if (!feedbackMessage.trim()) {
+      setErrorMessage('Por favor, describí tu idea.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const payload = {
+        access_key: '8aec62d9-0155-4c0b-ac90-929df1d972ef',
+        name: feedbackEmail || 'Anónimo',
+        email: feedbackEmail || 'anonimo@email.com',
+        subject: '💡 Nueva idea para Powa Lab',
+        message: `
+💡 NUEVA IDEA PARA POWA LAB
+
+📧 Email: ${feedbackEmail || 'No especificado'}
+💡 Idea:
+${feedbackMessage}
+
+---
+Enviado desde Powa Lab
+https://agencia-powa.vercel.app/lab
+        `,
+        from_name: feedbackEmail || 'Anónimo',
+        replyto: feedbackEmail || 'anonimo@email.com',
+      };
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Error al enviar');
+      }
+
       setIsSubmitted(true);
+      setFeedbackEmail('');
+      setFeedbackMessage('');
       setTimeout(() => {
         setIsSubmitted(false);
-        setFeedbackEmail('');
-        setFeedbackMessage('');
-      }, 3000);
+      }, 5000);
+    } catch (error) {
+      console.error('Error:', error);
+      setErrorMessage('❌ Error al enviar. Intenta nuevamente.');
     }
+    setIsLoading(false);
   };
 
   // ===== STATS DEL LAB =====
@@ -168,7 +218,7 @@ export default function LabPage() {
               )}
             </div>
 
-            {/* ===== TOOL 2: ROI CALCULATOR (CON ID PARA SCROLL) ===== */}
+            {/* ===== TOOL 2: ROI CALCULATOR ===== */}
             <div
               id="roi-tool"
               className={`${styles.labAccordionItem} ${activeTool === 'roi' ? styles.active : ''}`}
@@ -370,7 +420,7 @@ export default function LabPage() {
               )}
             </div>
 
-            {/* ===== FEEDBACK SECTION ===== */}
+            {/* ===== FEEDBACK SECTION CON WEB3FORMS ===== */}
             <div className={styles.feedbackSection}>
               <div className={styles.feedbackHeader}>
                 <FaStar className={styles.feedbackIcon} />
@@ -380,10 +430,16 @@ export default function LabPage() {
                 </p>
               </div>
 
+              {errorMessage && (
+                <div className="alert alert-danger" role="alert">
+                  {errorMessage}
+                </div>
+              )}
+
               {isSubmitted ? (
                 <div className={styles.feedbackSuccess}>
                   <FaPaperPlane className={styles.successIcon} />
-                  <span className={styles.successText}>¡Gracias! Tu idea fue enviada. La evaluaremos pronto.</span>
+                  <span className={styles.successText}>✅ ¡Gracias! Tu idea fue enviada. La evaluaremos pronto.</span>
                 </div>
               ) : (
                 <Form onSubmit={handleFeedbackSubmit} className={styles.feedbackForm}>
@@ -407,8 +463,17 @@ export default function LabPage() {
                       />
                     </Col>
                     <Col md={3}>
-                      <Button type="submit" className={styles.btnPowaPrimary}>
-                        <FaPaperPlane className="me-2" /> Enviar Idea
+                      <Button type="submit" className={styles.btnPowaPrimary} disabled={isLoading}>
+                        {isLoading ? (
+                          <>
+                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
+                            Enviando...
+                          </>
+                        ) : (
+                          <>
+                            <FaPaperPlane className="me-2" /> Enviar Idea
+                          </>
+                        )}
                       </Button>
                     </Col>
                   </Row>
