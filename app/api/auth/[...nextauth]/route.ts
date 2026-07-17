@@ -1,6 +1,6 @@
 // app/api/auth/[...nextauth]/route.ts
 import NextAuth from "next-auth";
-import { authOptions } from "../../../lib/auth"; // ✅ RUTA RELATIVA
+import { authOptions } from "../../../lib/auth";// ⬅️ Usa el alias @ en lugar de rutas relativas
 
 const handler = NextAuth(authOptions);
 

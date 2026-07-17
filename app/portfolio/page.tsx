@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import BsButton from 'react-bootstrap/Button';
 const Button = BsButton as any;
+import Image from 'next/image'; // ✅ IMPORTADO PARA IMÁGENES
 
 // ============================================================ //
 // ICONOS - IMPORTACIONES MODERNAS
@@ -32,7 +33,8 @@ import {
   FaSwimmer,
   FaSeedling,
   FaCalendarCheck,
-  FaTree,              // 🌳 Para Vivero Verde
+  FaTree,
+  FaPaw,              // 🐾 Para Petshop Solutions
 } from 'react-icons/fa';
 
 // ============================================================ //
@@ -52,6 +54,7 @@ import styles from './portfolio.module.css';
 interface Project {
   title: string;
   icon: React.ReactNode;
+  image?: string;
   description: string;
   longDescription?: string;
   link: string;
@@ -75,6 +78,7 @@ const PROJECTS_DATA: Project[] = [
   {
     title: "Kubic.ai — Micro-espacios Inteligentes",
     icon: <FaRocket className="text-primary-400" />,
+    image: "/proyectos/kubic-ia.jpg",
     description: "Plataforma SaaS + PropTech para alquiler de micro-espacios automatizados con IA. Gestión 100% autónoma de almacenamiento, estudios streaming y oficinas cápsula 24/7.",
     longDescription: `
       🚀 KUBIC.AI — Revolucionando el Espacio Urbano con IA
@@ -116,6 +120,7 @@ const PROJECTS_DATA: Project[] = [
   {
     title: "Barbería El Rulo — Sistema de Reservas",
     icon: <FaScissors className="text-primary-400" />,
+    image: "/proyectos/barberia.webp",
     description: "Sistema completo de gestión de turnos con seña vía MercadoPago. Calendario interactivo en tiempo real, panel de administración y notificaciones automáticas.",
     longDescription: `
       ✂️ Barbería El Rulo — Sistema de Gestión de Turnos
@@ -167,11 +172,12 @@ const PROJECTS_DATA: Project[] = [
   },
 
   // ============================================================ //
-  // 🌿 PROYECTO: VIVERO VERDE (NUEVO - DESTACADO)
+  // 🌿 PROYECTO: VIVERO VERDE (DESTACADO)
   // ============================================================ //
   {
     title: "Vivero Verde — Sitio Web Tradicional",
     icon: <FaTree className="text-primary-400" />,
+    image: "/proyectos/vivero.jpg",
     description: "Sitio web tradicional para vivero con HTML, CSS y JavaScript puro. Catálogo completo de plantas, macetas, tierra y accesorios con filtros por categoría y búsqueda en tiempo real.",
     longDescription: `
       🌿 Vivero Verde — Sitio Web Tradicional
@@ -195,14 +201,6 @@ const PROJECTS_DATA: Project[] = [
       **Estilos:** Tailwind CSS 4
       **Datos:** Arrays en JavaScript (sin base de datos)
       **Despliegue:** Vercel con CI/CD
-
-      ## 📊 Tecnologías Utilizadas
-      • HTML5 semántico
-      • CSS3 con CSS Modules
-      • JavaScript puro (ES6+)
-      • Next.js 16 (App Router)
-      • Tailwind CSS 4
-      • React 19
     `,
     link: "https://vivero-verde.vercel.app",
     github: "https://github.com/cristianmarcus34-boop/vivero-verde",
@@ -220,11 +218,63 @@ const PROJECTS_DATA: Project[] = [
   },
 
   // ============================================================ //
+  // 🐾 PROYECTO: PETSHOP SOLUTIONS (NUEVO - DESTACADO)
+  // ============================================================ //
+  {
+    title: "Petshop Solutions — Consultoría Digital",
+    icon: <FaPaw className="text-primary-400" />,
+    image: "/proyectos/petshop.jpg",
+    description: "Plataforma de consultoría digital para petshops. Cuestionario interactivo de 4 pasos que recomienda la solución ideal (Básica, Dashboard o Premium) para digitalizar tu negocio de mascotas.",
+    longDescription: `
+      🐾 Petshop Solutions — Consultoría Digital para Petshops
+
+      Plataforma de consultoría digital que ayuda a dueños de negocios de mascotas a encontrar la solución tecnológica perfecta.
+
+      ## 🎯 Características Principales
+      • **Cuestionario interactivo** de 4 pasos
+      • **Recomendación personalizada** con IA
+      • **3 planes** (Básico, Dashboard, Premium)
+      • **Envío de leads** por WhatsApp
+      • **Web3** - Conexión con MetaMask
+      • **Demo de productos** con filtros
+
+      ## 🏗️ Arquitectura Técnica
+      **Framework:** Next.js 16 con App Router
+      **Frontend:** React 19, Tailwind CSS
+      **Estilos:** CSS Modules
+      **Emails:** Web3Forms
+      **Despliegue:** Vercel
+
+      ## 📊 Tecnologías Utilizadas
+      • Next.js 16 (App Router)
+      • React 19
+      • Tailwind CSS
+      • Web3 / Ethers
+      • Web3Forms
+      • Vercel
+    `,
+    link: "https://petshop-solutions-y9aq.vercel.app/",
+    github: "https://github.com/cristianmarcus34-boop/petshop-solutions",
+    tag: "LANDING PAGE",
+    tech: ["Next.js 16", "React 19", "Tailwind CSS", "Web3", "Ethers", "Web3Forms", "Vercel"],
+    featured: true,
+    year: "2026",
+    category: "Landing Page",
+    galleryImages: [
+      "/proyectos/petshop-hero.jpg",
+      "/proyectos/petshop-cuestionario.jpg",
+      "/proyectos/petshop-opciones.jpg",
+      "/proyectos/petshop-mobile.jpg",
+    ],
+  },
+
+  // ============================================================ //
   // PROYECTO: JARDINERÍA Y PISCINAS
   // ============================================================ //
   {
     title: "Jardinería y Piscinas",
     icon: <FaLeaf className="text-primary-400" />,
+    image: "/proyectos/jardineria.jpg",
     description: "Landing page moderna y sofisticada para servicios de jardinería y mantenimiento de piscinas. Galería interactiva con filtros, formulario con validación en tiempo real, sección de testimonios y sistema de contacto integrado con WhatsApp.",
     longDescription: `
       Jardinería y Piscinas es una landing page completa para una empresa de servicios de jardinería y mantenimiento de piscinas.
@@ -268,6 +318,7 @@ const PROJECTS_DATA: Project[] = [
   {
     title: "Krusty Burger App",
     icon: <FaMobileAlt className="text-primary-400" />,
+    image: "/proyectos/krustyburger.webp",
     description: "Ecosistema TWA nativo con sincronización offline y arquitectura modular. Optimizada para flujos transaccionales masivos.",
     longDescription: `
       Krusty Burger App es una aplicación mobile nativa tipo TWA (Trusted Web Activity) que permite la sincronización offline de datos y pedidos. Desarrollada con Expo Core y Supabase, optimizada para manejar flujos transaccionales masivos en entornos con conectividad intermitente.
@@ -293,6 +344,7 @@ const PROJECTS_DATA: Project[] = [
   {
     title: "Capriccio de Pizza (React)",
     icon: <FaReact className="text-primary-400" />,
+    image: "/proyectos/capriccioreact.webp",
     description: "Plataforma e-commerce con SSR avanzado. Reducción de latencia y Core Web Vitals optimizados para SEO.",
     longDescription: `
       Capriccio de Pizza es una plataforma e-commerce construida con React 18 y Firebase. Implementa SSR avanzado para optimizar el rendimiento y los Core Web Vitals, mejorando significativamente el posicionamiento SEO del sitio.
@@ -313,6 +365,7 @@ const PROJECTS_DATA: Project[] = [
   {
     title: "Capriccio Engine (Django)",
     icon: <FaPython className="text-primary-400" />,
+    image: "/proyectos/capricciodjango.jpg",
     description: "Backend de grado corporativo con Python/Django. Implementación de CI/CD y bases de datos relacionales robustas.",
     longDescription: `
       Capriccio Engine es el backend corporativo desarrollado con Python y Django que potencia la plataforma de e-commerce. Incluye implementación de CI/CD con GitHub Actions, bases de datos relacionales PostgreSQL y una API Rest completamente documentada.
@@ -332,6 +385,7 @@ const PROJECTS_DATA: Project[] = [
   {
     title: "La Abu Matie App",
     icon: <FaServer className="text-primary-400" />,
+    image: "/proyectos/laabumatie.jpeg",
     description: "Gestión administrativa automatizada. Interfaz diseñada bajo principios de accesibilidad y eficiencia operativa.",
     longDescription: `
       La Abu Matie App es un sistema de gestión administrativa automatizado. La interfaz fue diseñada siguiendo principios de accesibilidad WCAG y eficiencia operativa, permitiendo a los administradores gestionar inventario, pedidos y clientes desde un único dashboard.
@@ -351,6 +405,7 @@ const PROJECTS_DATA: Project[] = [
   {
     title: "Gimnasio & Nutrición",
     icon: <FaMobileAlt className="text-primary-400" />,
+    image: "/proyectos/gimnasio.webp",
     description: "Ecosistema para gestión de centros fitness con integración nutricional y seguimiento de progreso en tiempo real.",
     longDescription: `
       Gimnasio & Nutrición es un ecosistema digital para la gestión de centros fitness. Incluye integración nutricional, seguimiento de progreso en tiempo real y paneles de control para entrenadores y clientes.
@@ -370,6 +425,7 @@ const PROJECTS_DATA: Project[] = [
   {
     title: "Powa Schedule",
     icon: <FaCloudUploadAlt className="text-primary-400" />,
+    image: "/proyectos/powaschedule.jpg",
     description: "Sistema de gestión de turnos y consultorías con disponibilidad en tiempo real y notificaciones automáticas.",
     longDescription: `
       Powa Schedule es un sistema SaaS para la gestión de turnos y consultorías. Ofrece disponibilidad en tiempo real, notificaciones automáticas vía email y WhatsApp, y un panel de administración completo para gestionar reservas y clientes.
@@ -393,9 +449,9 @@ export default function PortfolioPage() {
   const [filter, setFilter] = useState<string>('all');
 
   const stats = useMemo(() => [
-    { value: "+25", label: "Proyectos Entregados", icon: <FaAward /> },
+    { value: "+26", label: "Proyectos Entregados", icon: <FaAward /> },
     { value: "99%", label: "Uptime Garantizado", icon: <FaClock /> },
-    { value: "+25", label: "Clientes Activos", icon: <FaUsers /> },
+    { value: "+26", label: "Clientes Activos", icon: <FaUsers /> },
     { value: "Next.js", label: "Stack Principal", icon: <FaCode /> }
   ], []);
 
@@ -483,29 +539,58 @@ export default function PortfolioPage() {
           {filteredProjects.map((project, index) => (
             <Col md={6} lg={4} key={index} className={project.featured ? styles.featuredCol : ''}>
               <div className={`${styles.powaProjectCard} ${project.featured ? styles.featuredCard : ''}`}>
+                {/* IMAGEN MEJORADA */}
                 <div className={styles.projectTop}>
-                  {project.featured && (
-                    <div className={styles.featuredTag}>
-                      <FaStar /> Destacado
+                  {project.image ? (
+                    <div className="relative w-full overflow-hidden" style={{ height: '220px' }}>
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover"
+                        quality={85}
+                        priority={index < 4}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-between p-4">
+                        <div className="flex justify-between items-start">
+                          <span className={styles.projectTag}>{project.tag}</span>
+                          {project.featured && (
+                            <div className={styles.featuredTag}>
+                              <FaStar /> Destacado
+                            </div>
+                          )}
+                        </div>
+                        <div className="text-right">
+                          <div className="text-3xl">{project.icon}</div>
+                        </div>
+                      </div>
+                      <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <Button
+                          className={styles.glassButton}
+                          onClick={() => {
+                            if (project.galleryImages || project.demoComponent) {
+                              handleShowModal(project);
+                            } else {
+                              void window.open(project.link, '_blank');
+                            }
+                          }}
+                        >
+                          {project.demoComponent ? "Ver Demo" : (project.galleryImages ? "Ver Arquitectura" : "Explorar")}
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center p-6" style={{ height: '220px', background: '#f3f4f6' }}>
+                      <div className="text-6xl mb-2">{project.icon}</div>
+                      <span className={styles.projectTag}>{project.tag}</span>
+                      {project.featured && (
+                        <div className={styles.featuredTag}>
+                          <FaStar /> Destacado
+                        </div>
+                      )}
                     </div>
                   )}
-                  <div className={styles.projectTag}>{project.tag}</div>
-                  <div className={styles.projectIcon}>{project.icon}</div>
-
-                  <div className={styles.overlayActions}>
-                    <Button
-                      className={styles.glassButton}
-                      onClick={() => {
-                        if (project.galleryImages || project.demoComponent) {
-                          handleShowModal(project);
-                        } else {
-                          void window.open(project.link, '_blank');
-                        }
-                      }}
-                    >
-                      {project.demoComponent ? "Ver Demo" : (project.galleryImages ? "Ver Arquitectura" : "Explorar")}
-                    </Button>
-                  </div>
                 </div>
 
                 <div className={styles.cardContent}>
