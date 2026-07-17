@@ -269,7 +269,7 @@ const PROJECTS_DATA: Project[] = [
   },
 
   // ============================================================ //
-  // 🐾 PROYECTO: VET SOLUTIONS (NUEVO - DESTACADO)
+  // 🐾 PROYECTO: VET SOLUTIONS (DESTACADO)
   // ============================================================ //
   {
     title: "Vet Solutions — Consultoría Digital",
@@ -315,6 +315,56 @@ const PROJECTS_DATA: Project[] = [
       "/proyectos/vet-planes.jpg",
       "/proyectos/vet-cuestionario.jpg",
       "/proyectos/vet-mobile.jpg",
+    ],
+  },
+
+  // ============================================================ //
+  // 🎉 PROYECTO: EVENT SOLUTIONS (NUEVO - DESTACADO)
+  // ============================================================ //
+  {
+    title: "Event Solutions — Consultoría Digital",
+    icon: <FaCalendarCheck className="text-primary-400" />,
+    image: "/proyectos/eventos.jpg",
+    description: "Plataforma de consultoría digital para salones de eventos. Cuestionario interactivo de 4 pasos que recomienda el plan ideal (Básico, Profesional o Premium) para digitalizar tu salón.",
+    longDescription: `
+      🎉 Event Solutions — Consultoría Digital para Salones de Eventos
+
+      Plataforma de consultoría digital que ayuda a dueños de salones de eventos a encontrar la solución tecnológica perfecta para su negocio.
+
+      ## 🎯 Características Principales
+      • **Cuestionario interactivo** de 4 pasos
+      • **Recomendación personalizada** de planes
+      • **3 planes** (Básico, Profesional, Premium)
+      • **Envío de leads** por WhatsApp
+      • **Página de demo** interactiva
+      • **Formulario de contacto** con Web3Forms
+
+      ## 🏗️ Arquitectura Técnica
+      **Framework:** Next.js 16 con App Router
+      **Frontend:** React 19, Tailwind CSS
+      **Estilos:** CSS Modules
+      **Emails:** Web3Forms
+      **Despliegue:** Vercel
+
+      ## 📊 Tecnologías Utilizadas
+      • Next.js 16 (App Router)
+      • React 19
+      • Tailwind CSS
+      • Web3Forms
+      • Vercel
+    `,
+    link: "https://event-solutions-ten.vercel.app/",
+    github: "https://github.com/cristianmarcus34-boop/event-solutions",
+    tag: "",
+    tech: ["Next.js 16", "React 19", "Tailwind CSS", "Web3Forms", "Vercel"],
+    featured: true,
+    year: "2026",
+    category: "Landing Page",
+    galleryImages: [
+      "/proyectos/event-hero.jpg",
+      "/proyectos/event-planes.jpg",
+      "/proyectos/event-cuestionario.jpg",
+      "/proyectos/event-mobile.jpg",
     ],
   },
 
@@ -444,7 +494,7 @@ const PROJECTS_DATA: Project[] = [
     `,
     link: "https://capricciodepizza.onrender.com/",
     github: "https://github.com/cristianmarcus34-boop/capriccio-engine",
-    tag: "BACKEND ARCHITECTURE",
+    tag: "",
     tech: ["Django", "PostgreSQL", "API Rest"],
     year: "2024",
     category: "Backend",
@@ -521,9 +571,9 @@ export default function PortfolioPage() {
   const [filter, setFilter] = useState<string>('all');
 
   const stats = useMemo(() => [
-    { value: "+27", label: "Proyectos Entregados", icon: <FaAward /> },
+    { value: "+28", label: "Proyectos Entregados", icon: <FaAward /> },
     { value: "99%", label: "Uptime Garantizado", icon: <FaClock /> },
-    { value: "+27", label: "Clientes Activos", icon: <FaUsers /> },
+    { value: "+28", label: "Clientes Activos", icon: <FaUsers /> },
     { value: "Next.js", label: "Stack Principal", icon: <FaCode /> }
   ], []);
 
