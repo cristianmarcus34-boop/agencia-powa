@@ -4,7 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import BsButton from 'react-bootstrap/Button';
 const Button = BsButton as any;
-import Image from 'next/image'; // ✅ IMPORTADO PARA IMÁGENES
+import Image from 'next/image';
 
 // ============================================================ //
 // ICONOS - IMPORTACIONES MODERNAS
@@ -34,7 +34,7 @@ import {
   FaSeedling,
   FaCalendarCheck,
   FaTree,
-  FaPaw,              // 🐾 Para Petshop Solutions
+  FaPaw,
 } from 'react-icons/fa';
 
 // ============================================================ //
@@ -99,7 +99,7 @@ const PROJECTS_DATA: Project[] = [
     `,
     link: "https://kubic-ai.vercel.app",
     github: "https://github.com/cristianmarcus34-boop/kubic.ai",
-    tag: "SAAS + PROPTECH",
+    tag: "",
     tech: ["Next.js 16", "TypeScript", "Tailwind CSS", "Framer Motion", "EmailJS", "Google Maps API", "Vercel"],
     featured: true,
     year: "2026",
@@ -157,7 +157,7 @@ const PROJECTS_DATA: Project[] = [
     `,
     link: "https://barberia-next-indol.vercel.app/",
     github: "https://github.com/cristianmarcus34-boop/barberia-next",
-    tag: "WEB APP + SAAS",
+    tag: "",
     tech: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS", "Supabase", "MercadoPago", "Resend", "Vercel"],
     featured: true,
     year: "2026",
@@ -204,7 +204,7 @@ const PROJECTS_DATA: Project[] = [
     `,
     link: "https://vivero-verde.vercel.app",
     github: "https://github.com/cristianmarcus34-boop/vivero-verde",
-    tag: "LANDING PAGE",
+    tag: "",
     tech: ["Next.js 16", "React 19", "Tailwind CSS", "CSS Modules", "JavaScript", "Vercel"],
     featured: true,
     year: "2026",
@@ -218,7 +218,7 @@ const PROJECTS_DATA: Project[] = [
   },
 
   // ============================================================ //
-  // 🐾 PROYECTO: PETSHOP SOLUTIONS (NUEVO - DESTACADO)
+  // 🐾 PROYECTO: PETSHOP SOLUTIONS (DESTACADO)
   // ============================================================ //
   {
     title: "Petshop Solutions — Consultoría Digital",
@@ -255,7 +255,7 @@ const PROJECTS_DATA: Project[] = [
     `,
     link: "https://petshop-solutions-y9aq.vercel.app/",
     github: "https://github.com/cristianmarcus34-boop/petshop-solutions",
-    tag: "LANDING PAGE",
+    tag: "",
     tech: ["Next.js 16", "React 19", "Tailwind CSS", "Web3", "Ethers", "Web3Forms", "Vercel"],
     featured: true,
     year: "2026",
@@ -265,6 +265,56 @@ const PROJECTS_DATA: Project[] = [
       "/proyectos/petshop-cuestionario.jpg",
       "/proyectos/petshop-opciones.jpg",
       "/proyectos/petshop-mobile.jpg",
+    ],
+  },
+
+  // ============================================================ //
+  // 🐾 PROYECTO: VET SOLUTIONS (NUEVO - DESTACADO)
+  // ============================================================ //
+  {
+    title: "Vet Solutions — Consultoría Digital",
+    icon: <FaPaw className="text-primary-400" />,
+    image: "/proyectos/veterinaria.jpg",
+    description: "Plataforma de consultoría digital para clínicas veterinarias. Cuestionario interactivo de 4 pasos que recomienda el plan ideal (Básico, Profesional o Premium) para digitalizar tu clínica.",
+    longDescription: `
+      🐾 Vet Solutions — Consultoría Digital para Veterinarias
+
+      Plataforma de consultoría digital que ayuda a clínicas veterinarias a encontrar la solución tecnológica perfecta para su gestión diaria.
+
+      ## 🎯 Características Principales
+      • **Cuestionario interactivo** de 4 pasos
+      • **Recomendación personalizada** de planes
+      • **3 planes** (Básico, Profesional, Premium)
+      • **Envío de leads** por WhatsApp
+      • **Página de demo** interactiva
+      • **Formulario de contacto** con Web3Forms
+
+      ## 🏗️ Arquitectura Técnica
+      **Framework:** Next.js 16 con App Router
+      **Frontend:** React 19, Tailwind CSS
+      **Estilos:** CSS Modules
+      **Emails:** Web3Forms
+      **Despliegue:** Vercel
+
+      ## 📊 Tecnologías Utilizadas
+      • Next.js 16 (App Router)
+      • React 19
+      • Tailwind CSS
+      • Web3Forms
+      • Vercel
+    `,
+    link: "https://vet-solutions.vercel.app/",
+    github: "https://github.com/cristianmarcus34-boop/vet-solutions",
+    tag: "",
+    tech: ["Next.js 16", "React 19", "Tailwind CSS", "Web3Forms", "Vercel"],
+    featured: true,
+    year: "2026",
+    category: "Landing Page",
+    galleryImages: [
+      "/proyectos/vet-hero.jpg",
+      "/proyectos/vet-planes.jpg",
+      "/proyectos/vet-cuestionario.jpg",
+      "/proyectos/vet-mobile.jpg",
     ],
   },
 
@@ -298,7 +348,7 @@ const PROJECTS_DATA: Project[] = [
     `,
     link: "https://jardineria-dun.vercel.app",
     github: "https://github.com/cristianmarcus34-boop/Jardineria",
-    tag: "LANDING PAGE",
+    tag: "",
     tech: ["Django", "Python", "HTML5", "CSS3", "JavaScript", "Bootstrap", "Vercel"],
     featured: true,
     year: "2026",
@@ -319,14 +369,36 @@ const PROJECTS_DATA: Project[] = [
     title: "Krusty Burger App",
     icon: <FaMobileAlt className="text-primary-400" />,
     image: "/proyectos/krustyburger.webp",
-    description: "Ecosistema TWA nativo con sincronización offline y arquitectura modular. Optimizada para flujos transaccionales masivos.",
+    description: "App web de delivery con arquitectura moderna. El proyecto nativo está en desarrollo activo.",
     longDescription: `
-      Krusty Burger App es una aplicación mobile nativa tipo TWA (Trusted Web Activity) que permite la sincronización offline de datos y pedidos. Desarrollada con Expo Core y Supabase, optimizada para manejar flujos transaccionales masivos en entornos con conectividad intermitente.
-    `,
+    🍔 Krusty Burger App — App Web de Delivery con Visión Nativa
+
+    ## 🎯 El Proyecto
+
+    Krusty Burger App es una aplicación web de delivery de hamburguesas, desarrollada con Next.js 16 y Supabase.
+
+    ## 📱 Estado Actual
+
+    - ✅ **App Web:** Funcional y en producción
+    - 🚧 **App Nativa:** En desarrollo activo
+    - 🔄 **Base de datos:** Supabase para sincronización en tiempo real
+
+    ## 🛠️ Tecnologías
+
+    - **App Web:** Next.js 16, Tailwind CSS
+    - **Backend:** Supabase (PostgreSQL + Realtime)
+    - **App Nativa (en desarrollo):** React Native, Expo Core
+
+    ## ⏳ Próximos Pasos
+
+    - Finalizar la app nativa 
+    - Sincronizar datos entre web y mobile
+    - Publicar en Play Store y App Store
+  `,
     link: "https://www.krustyburger.com.ar/",
     github: "https://github.com/cristianmarcus34-boop/krusty-burger",
-    tag: "MOBILE ENGINE",
-    tech: ["Expo Core", "Supabase", "Next.js"],
+    tag: "",
+    tech: ["Next.js 16", "React Native", "Expo Core", "Supabase", "Tailwind CSS"],
     featured: false,
     year: "2025",
     category: "Mobile",
@@ -351,7 +423,7 @@ const PROJECTS_DATA: Project[] = [
     `,
     link: "https://capiccio-de-pizza.web.app/",
     github: "https://github.com/cristianmarcus34-boop/capriccio-react",
-    tag: "PERFORMANCE UI",
+    tag: "",
     tech: ["React 18", "Firebase", "Optimization"],
     featured: false,
     year: "2024",
@@ -392,7 +464,7 @@ const PROJECTS_DATA: Project[] = [
     `,
     link: "https://la-abu-matie-app.web.app/",
     github: "https://github.com/cristianmarcus34-boop/la-abu-matie",
-    tag: "ADMIN DASHBOARD",
+    tag: "",
     tech: ["Material UI", "Realtime DB", "NoSQL"],
     year: "2025",
     category: "Dashboard",
@@ -411,7 +483,7 @@ const PROJECTS_DATA: Project[] = [
       Gimnasio & Nutrición es un ecosistema digital para la gestión de centros fitness. Incluye integración nutricional, seguimiento de progreso en tiempo real y paneles de control para entrenadores y clientes.
     `,
     link: "#",
-    tag: "FITNESS APP",
+    tag: "",
     tech: ["Next.js", "Supabase", "Tailwind"],
     year: "2025",
     category: "Health",
@@ -431,7 +503,7 @@ const PROJECTS_DATA: Project[] = [
       Powa Schedule es un sistema SaaS para la gestión de turnos y consultorías. Ofrece disponibilidad en tiempo real, notificaciones automáticas vía email y WhatsApp, y un panel de administración completo para gestionar reservas y clientes.
     `,
     link: "#",
-    tag: "SAAS TOOL",
+    tag: "",
     tech: ["Next.js", "Supabase", "React"],
     year: "2025",
     category: "SaaS",
@@ -449,9 +521,9 @@ export default function PortfolioPage() {
   const [filter, setFilter] = useState<string>('all');
 
   const stats = useMemo(() => [
-    { value: "+26", label: "Proyectos Entregados", icon: <FaAward /> },
+    { value: "+27", label: "Proyectos Entregados", icon: <FaAward /> },
     { value: "99%", label: "Uptime Garantizado", icon: <FaClock /> },
-    { value: "+26", label: "Clientes Activos", icon: <FaUsers /> },
+    { value: "+27", label: "Clientes Activos", icon: <FaUsers /> },
     { value: "Next.js", label: "Stack Principal", icon: <FaCode /> }
   ], []);
 
@@ -539,7 +611,6 @@ export default function PortfolioPage() {
           {filteredProjects.map((project, index) => (
             <Col md={6} lg={4} key={index} className={project.featured ? styles.featuredCol : ''}>
               <div className={`${styles.powaProjectCard} ${project.featured ? styles.featuredCard : ''}`}>
-                {/* IMAGEN MEJORADA */}
                 <div className={styles.projectTop}>
                   {project.image ? (
                     <div className="relative w-full overflow-hidden" style={{ height: '220px' }}>
