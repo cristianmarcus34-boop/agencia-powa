@@ -65,10 +65,8 @@ export default function ConversacionesPage() {
 
     const fetchConversaciones = async () => {
         try {
-            console.log('📥 Fetching conversaciones...');
             const res = await fetch('/api/admin/conversaciones');
             const result = await res.json();
-            console.log('📥 Resultado:', result);
 
             if (result.success) {
                 setConversaciones(result.data);
@@ -99,9 +97,7 @@ export default function ConversacionesPage() {
         return perfiles[perfil] || perfil;
     };
 
-    // 🔥 Función para obtener el label del usuario
     const getUsuarioLabel = (conversacion: Conversacion) => {
-        // Si no tiene usuario asociado
         if (!conversacion.usuario_id && !conversacion.usuario) {
             return {
                 label: '👤 Anónimo',
@@ -110,7 +106,6 @@ export default function ConversacionesPage() {
             };
         }
 
-        // Si es admin
         if (conversacion.es_admin || conversacion.usuario?.rol === 'admin') {
             return {
                 label: `🛡️ ${conversacion.usuario?.nombre_completo || 'Admin'}`,
@@ -119,7 +114,6 @@ export default function ConversacionesPage() {
             };
         }
 
-        // Si es cliente
         return {
             label: `👤 ${conversacion.usuario?.nombre_completo || 'Cliente'}`,
             color: '#3b82f6',
@@ -138,13 +132,11 @@ export default function ConversacionesPage() {
 
     return (
         <div>
-            {/* Header */}
             <div style={{ marginBottom: '24px' }}>
                 <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>💬 Conversaciones</h1>
                 <p style={{ color: '#94a3b8' }}>Gestiona las conversaciones del chat</p>
             </div>
 
-            {/* Buscador */}
             <div style={{ marginBottom: '20px' }}>
                 <div style={{
                     display: 'flex',
@@ -174,7 +166,6 @@ export default function ConversacionesPage() {
                 </div>
             </div>
 
-            {/* Tabla */}
             <div className={styles.tableContainer}>
                 <table className={styles.table}>
                     <thead>
@@ -240,23 +231,27 @@ export default function ConversacionesPage() {
                                         </td>
                                         <td>{new Date(conv.creado_en).toLocaleDateString()}</td>
                                         <td>
-                                            <button
-                                                className={styles.btnEdit}
-                                                title="Ver conversación"
-                                                onClick={() => router.push(`/admin/conversaciones/${conv.id}`)}
-                                            >
-                                                <FaEye />
-                                            </button>
-                                            <button
-                                                className={styles.btnDanger}
-                                                onClick={() => {
-                                                    if (confirm('¿Estás seguro de archivar esta conversación?')) {
-                                                        alert('Función en desarrollo');
-                                                    }
-                                                }}
-                                            >
-                                                <FaTrash />
-                                            </button>
+                                            {/* 🔥 BOTONES DE ACCIÓN MEJORADOS */}
+                                            <div className={styles.actionButtons}>
+                                                <button
+                                                    className={styles.btnView}
+                                                    title="Ver conversación"
+                                                    onClick={() => router.push(`/admin/conversaciones/${conv.id}`)}
+                                                >
+                                                    <FaEye /> <span>Ver</span>
+                                                </button>
+                                                <button
+                                                    className={styles.btnDelete}
+                                                    onClick={() => {
+                                                        if (confirm('¿Estás seguro de archivar esta conversación?')) {
+                                                            alert('Función en desarrollo');
+                                                        }
+                                                    }}
+                                                    title="Archivar conversación"
+                                                >
+                                                    <FaTrash />
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 );

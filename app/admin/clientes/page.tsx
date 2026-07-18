@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FaEdit, FaTrash, FaPlus, FaSearch } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus, FaSearch, FaEye, FaBuilding, FaUser, FaEnvelope, FaPhone, FaGlobe, FaIndustry } from 'react-icons/fa';
 import styles from '../admin.module.css';
 
 interface Cliente {
@@ -59,10 +59,8 @@ export default function ClientesPage() {
         notas: '',
         activo: true
     });
-    // ✅ Control de redirección
     const [redirected, setRedirected] = useState(false);
 
-    // ✅ Manejo de autenticación mejorado
     useEffect(() => {
         if (status === 'loading') return;
 
@@ -310,24 +308,28 @@ export default function ClientesPage() {
                                     <td>{cliente.proyectos?.length || 0}</td>
                                     <td>
                                         <span className={`${styles.statusBadge} ${cliente.activo ? styles.statusActive : styles.statusInactive}`}>
-                                            {cliente.activo ? 'Activo' : 'Inactivo'}
+                                            {cliente.activo ? '✅ Activo' : '❌ Inactivo'}
                                         </span>
                                     </td>
                                     <td>
-                                        <button
-                                            onClick={() => openEditModal(cliente)}
-                                            className={styles.btnEdit}
-                                        >
-                                            <FaEdit />
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(cliente)}
-                                            className={styles.btnDanger}
-                                            disabled={cliente.proyectos && cliente.proyectos.length > 0}
-                                            title={cliente.proyectos && cliente.proyectos.length > 0 ? 'Tiene proyectos asociados' : ''}
-                                        >
-                                            <FaTrash />
-                                        </button>
+                                        {/* 🔥 BOTONES DE ACCIÓN MEJORADOS */}
+                                        <div className={styles.actionButtons}>
+                                            <button
+                                                onClick={() => openEditModal(cliente)}
+                                                className={styles.btnEdit}
+                                                title="Editar cliente"
+                                            >
+                                                <FaEdit /> <span>Editar</span>
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(cliente)}
+                                                className={styles.btnDelete}
+                                                disabled={cliente.proyectos && cliente.proyectos.length > 0}
+                                                title={cliente.proyectos && cliente.proyectos.length > 0 ? 'Tiene proyectos asociados' : 'Eliminar cliente'}
+                                            >
+                                                <FaTrash />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))
@@ -346,7 +348,7 @@ export default function ClientesPage() {
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>
                         <div className={styles.modalHeader}>
-                            <h2>{editingCliente ? 'Editar cliente' : 'Nuevo cliente'}</h2>
+                            <h2>{editingCliente ? '✏️ Editar cliente' : '➕ Nuevo cliente'}</h2>
                             <button onClick={() => { setShowModal(false); resetForm(); }} className={styles.modalClose}>
                                 ✕
                             </button>
@@ -473,7 +475,7 @@ export default function ClientesPage() {
                                     Cancelar
                                 </button>
                                 <button type="submit" className={styles.btnPrimary}>
-                                    {editingCliente ? 'Actualizar' : 'Crear'}
+                                    {editingCliente ? '💾 Actualizar' : '➕ Crear'}
                                 </button>
                             </div>
                         </form>

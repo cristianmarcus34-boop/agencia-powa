@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FaEdit, FaTrash, FaPlus, FaSearch, FaKey, FaUser, FaEnvelope, FaUserTag } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus, FaSearch, FaKey, FaUser, FaEnvelope, FaUserTag, FaEye } from 'react-icons/fa';
 import styles from '../admin.module.css';
 
 interface Usuario {
@@ -102,7 +102,6 @@ export default function UsuariosPage() {
                 activo: formData.activo,
             };
 
-            // Solo enviar password si es nuevo usuario
             if (!editingUsuario) {
                 if (!formData.password || formData.password.length < 6) {
                     setFormError('La contraseña debe tener al menos 6 caracteres');
@@ -346,32 +345,35 @@ export default function UsuariosPage() {
                                     </td>
                                     <td>
                                         <span className={`${styles.statusBadge} ${usuario.activo ? styles.statusActive : styles.statusInactive}`}>
-                                            {usuario.activo ? 'Activo' : 'Inactivo'}
+                                            {usuario.activo ? '✅ Activo' : '❌ Inactivo'}
                                         </span>
                                     </td>
                                     <td>
-                                        <button
-                                            onClick={() => openEditModal(usuario)}
-                                            className={styles.btnEdit}
-                                            title="Editar usuario"
-                                        >
-                                            <FaEdit />
-                                        </button>
-                                        <button
-                                            onClick={() => openPasswordModal(usuario)}
-                                            className={styles.btnPassword}
-                                            title="Cambiar contraseña"
-                                        >
-                                            <FaKey />
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(usuario)}
-                                            className={styles.btnDanger}
-                                            disabled={usuario.id === session?.user?.id}
-                                            title={usuario.id === session?.user?.id ? 'No puedes eliminarte a ti mismo' : ''}
-                                        >
-                                            <FaTrash />
-                                        </button>
+                                        {/* 🔥 BOTONES DE ACCIÓN MEJORADOS */}
+                                        <div className={styles.actionButtons}>
+                                            <button
+                                                onClick={() => openEditModal(usuario)}
+                                                className={styles.btnEdit}
+                                                title="Editar usuario"
+                                            >
+                                                <FaEdit /> <span>Editar</span>
+                                            </button>
+                                            <button
+                                                onClick={() => openPasswordModal(usuario)}
+                                                className={styles.btnPassword}
+                                                title="Cambiar contraseña"
+                                            >
+                                                <FaKey />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(usuario)}
+                                                className={styles.btnDelete}
+                                                disabled={usuario.id === session?.user?.id}
+                                                title={usuario.id === session?.user?.id ? 'No puedes eliminarte a ti mismo' : 'Eliminar usuario'}
+                                            >
+                                                <FaTrash />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))
@@ -391,7 +393,7 @@ export default function UsuariosPage() {
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>
                         <div className={styles.modalHeader}>
-                            <h2>{editingUsuario ? 'Editar usuario' : 'Nuevo usuario'}</h2>
+                            <h2>{editingUsuario ? '✏️ Editar usuario' : '➕ Nuevo usuario'}</h2>
                             <button onClick={() => { setShowModal(false); resetForm(); }} className={styles.modalClose}>
                                 ✕
                             </button>
@@ -406,7 +408,7 @@ export default function UsuariosPage() {
                                 marginBottom: '16px',
                                 border: '1px solid rgba(239, 68, 68, 0.2)'
                             }}>
-                                {formError}
+                                ⚠️ {formError}
                             </div>
                         )}
 
@@ -491,7 +493,7 @@ export default function UsuariosPage() {
                                     Cancelar
                                 </button>
                                 <button type="submit" className={styles.btnPrimary}>
-                                    {editingUsuario ? 'Actualizar' : 'Crear'}
+                                    {editingUsuario ? '💾 Actualizar' : '➕ Crear'}
                                 </button>
                             </div>
                         </form>
@@ -541,7 +543,7 @@ export default function UsuariosPage() {
                                 marginBottom: '16px',
                                 border: '1px solid rgba(239, 68, 68, 0.2)'
                             }}>
-                                {passwordError}
+                                ⚠️ {passwordError}
                             </div>
                         )}
 

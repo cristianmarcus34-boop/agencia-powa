@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FaEdit, FaTrash, FaPlus, FaSearch } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus, FaSearch, FaEye } from 'react-icons/fa';
 import styles from '../admin.module.css';
 
 interface Cliente {
@@ -23,7 +23,7 @@ interface Proyecto {
     fecha_inicio: string;
     fecha_fin: string;
     activo: boolean;
-    progreso: number;        // ✅ Agregado
+    progreso: number;
     creado_en: string;
     tipo?: string;
     plazo?: string;
@@ -59,7 +59,7 @@ export default function ProyectosPage() {
         fecha_inicio: '',
         fecha_fin: '',
         activo: true,
-        progreso: '0',        // ✅ Agregado (string para el input)
+        progreso: '0',
         tipo: 'desarrollo',
         plazo: '',
         notas: ''
@@ -131,13 +131,11 @@ export default function ProyectosPage() {
                 fecha_inicio: formData.fecha_inicio || null,
                 fecha_fin: formData.fecha_fin || null,
                 activo: formData.activo,
-                progreso: parseInt(String(formData.progreso)) || 0,  // ✅ Convertir a número
+                progreso: parseInt(String(formData.progreso)) || 0,
                 tipo: formData.tipo,
                 plazo: formData.plazo || null,
                 notas: formData.notas || null
             };
-
-            console.log('📝 Enviando datos:', body);
 
             const res = await fetch(url, {
                 method,
@@ -191,7 +189,7 @@ export default function ProyectosPage() {
             fecha_inicio: proyecto.fecha_inicio || '',
             fecha_fin: proyecto.fecha_fin || '',
             activo: proyecto.activo !== undefined ? proyecto.activo : true,
-            progreso: proyecto.progreso?.toString() || '0',  // ✅ Convertir a string
+            progreso: proyecto.progreso?.toString() || '0',
             tipo: proyecto.tipo || 'desarrollo',
             plazo: proyecto.plazo || '',
             notas: proyecto.notas || ''
@@ -364,18 +362,23 @@ export default function ProyectosPage() {
                                             </span>
                                         </td>
                                         <td>
-                                            <button
-                                                onClick={() => openEditModal(proyecto)}
-                                                className={styles.btnEdit}
-                                            >
-                                                <FaEdit />
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(proyecto)}
-                                                className={styles.btnDanger}
-                                            >
-                                                <FaTrash />
-                                            </button>
+                                            {/* 🔥 BOTONES DE ACCIÓN MEJORADOS */}
+                                            <div className={styles.actionButtons}>
+                                                <button
+                                                    onClick={() => openEditModal(proyecto)}
+                                                    className={styles.btnEdit}
+                                                    title="Editar proyecto"
+                                                >
+                                                    <FaEdit /> <span>Editar</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(proyecto)}
+                                                    className={styles.btnDelete}
+                                                    title="Eliminar proyecto"
+                                                >
+                                                    <FaTrash />
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 );
@@ -391,12 +394,17 @@ export default function ProyectosPage() {
                 </table>
             </div>
 
-            {/* Modal de Crear/Editar */}
+            {/* Modal de Crear/Editar - CON ESTILOS PREMIUM */}
             {showModal && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>
                         <div className={styles.modalHeader}>
-                            <h2>{editingProyecto ? 'Editar proyecto' : 'Nuevo proyecto'}</h2>
+                            <h2>
+                                <span className={styles.modalIcon}>
+                                    {editingProyecto ? '✏️' : '➕'}
+                                </span>
+                                {editingProyecto ? 'Editar proyecto' : 'Nuevo proyecto'}
+                            </h2>
                             <button onClick={() => { setShowModal(false); resetForm(); }} className={styles.modalClose}>
                                 ✕
                             </button>
@@ -404,7 +412,7 @@ export default function ProyectosPage() {
 
                         <form onSubmit={handleSubmit} className={styles.modalForm}>
                             <div className={styles.formGroup}>
-                                <label>Cliente *</label>
+                                <label>Cliente <span className={styles.required}>*</span></label>
                                 <select
                                     value={formData.cliente_id}
                                     onChange={(e) => setFormData({ ...formData, cliente_id: e.target.value })}
@@ -420,7 +428,7 @@ export default function ProyectosPage() {
                             </div>
 
                             <div className={styles.formGroup}>
-                                <label>Nombre del proyecto *</label>
+                                <label>Nombre del proyecto <span className={styles.required}>*</span></label>
                                 <input
                                     type="text"
                                     value={formData.nombre}
@@ -437,46 +445,36 @@ export default function ProyectosPage() {
                                     onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
                                     rows={3}
                                     placeholder="Descripción del proyecto..."
-                                    style={{
-                                        padding: '10px 14px',
-                                        borderRadius: '10px',
-                                        border: '1px solid rgba(255,255,255,0.08)',
-                                        background: 'rgba(0,0,0,0.3)',
-                                        color: '#ffffff',
-                                        fontSize: '14px',
-                                        width: '100%',
-                                        resize: 'vertical',
-                                        fontFamily: 'inherit'
-                                    }}
                                 />
                             </div>
 
-                            <div className={styles.formGroup}>
-                                <label>Estado</label>
-                                <select
-                                    value={formData.estado}
-                                    onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
-                                >
-                                    {estados.map((e) => (
-                                        <option key={e.value} value={e.value}>{e.label}</option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div className={styles.formGroup}>
-                                <label>Tipo de proyecto</label>
-                                <select
-                                    value={formData.tipo}
-                                    onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
-                                >
-                                    <option value="desarrollo">💻 Desarrollo Web</option>
-                                    <option value="app">📱 App Móvil</option>
-                                    <option value="marketing">📊 Marketing Digital</option>
-                                    <option value="diseño">🎨 Diseño UI/UX</option>
-                                    <option value="seo">🔍 SEO / Posicionamiento</option>
-                                    <option value="consultoria">💡 Consultoría</option>
-                                    <option value="otro">📦 Otro</option>
-                                </select>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                <div className={styles.formGroup}>
+                                    <label>Estado</label>
+                                    <select
+                                        value={formData.estado}
+                                        onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
+                                    >
+                                        {estados.map((e) => (
+                                            <option key={e.value} value={e.value}>{e.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className={styles.formGroup}>
+                                    <label>Tipo de proyecto</label>
+                                    <select
+                                        value={formData.tipo}
+                                        onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
+                                    >
+                                        <option value="desarrollo">💻 Desarrollo Web</option>
+                                        <option value="app">📱 App Móvil</option>
+                                        <option value="marketing">📊 Marketing Digital</option>
+                                        <option value="diseño">🎨 Diseño UI/UX</option>
+                                        <option value="seo">🔍 SEO / Posicionamiento</option>
+                                        <option value="consultoria">💡 Consultoría</option>
+                                        <option value="otro">📦 Otro</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
@@ -545,38 +543,25 @@ export default function ProyectosPage() {
                                     onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
                                     rows={2}
                                     placeholder="Notas sobre el proyecto..."
-                                    style={{
-                                        padding: '10px 14px',
-                                        borderRadius: '10px',
-                                        border: '1px solid rgba(255,255,255,0.08)',
-                                        background: 'rgba(0,0,0,0.3)',
-                                        color: '#ffffff',
-                                        fontSize: '14px',
-                                        width: '100%',
-                                        resize: 'vertical',
-                                        fontFamily: 'inherit'
-                                    }}
                                 />
                             </div>
 
-                            <div className={styles.formGroup}>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={formData.activo}
-                                        onChange={(e) => setFormData({ ...formData, activo: e.target.checked })}
-                                        style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                                    />
-                                    Proyecto activo
-                                </label>
+                            <div className={styles.checkboxGroup}>
+                                <input
+                                    type="checkbox"
+                                    checked={formData.activo}
+                                    onChange={(e) => setFormData({ ...formData, activo: e.target.checked })}
+                                    id="proyectoActivo"
+                                />
+                                <label htmlFor="proyectoActivo">Proyecto activo</label>
                             </div>
 
-                            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '20px' }}>
-                                <button type="button" onClick={() => { setShowModal(false); resetForm(); }} className={styles.btnSecondary}>
+                            <div className={styles.modalActions}>
+                                <button type="button" onClick={() => { setShowModal(false); resetForm(); }} className={styles.btnCancel}>
                                     Cancelar
                                 </button>
-                                <button type="submit" className={styles.btnPrimary}>
-                                    {editingProyecto ? 'Actualizar' : 'Crear'}
+                                <button type="submit" className={styles.btnSubmit}>
+                                    {editingProyecto ? '💾 Actualizar' : '➕ Crear'}
                                 </button>
                             </div>
                         </form>

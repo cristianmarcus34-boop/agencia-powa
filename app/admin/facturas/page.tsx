@@ -87,7 +87,6 @@ export default function FacturasPage() {
 
     const fetchData = async () => {
         try {
-            // Obtener facturas
             const resFacturas = await fetch('/api/admin/facturas');
             const resultFacturas = await resFacturas.json();
             if (resultFacturas.success) {
@@ -95,7 +94,6 @@ export default function FacturasPage() {
                 setFilteredFacturas(resultFacturas.data);
             }
 
-            // Obtener clientes para el select
             const resClientes = await fetch('/api/admin/clientes');
             const resultClientes = await resClientes.json();
             if (resultClientes.success) {
@@ -201,7 +199,6 @@ export default function FacturasPage() {
 
     const openCreateModal = () => {
         setEditingFactura(null);
-        // Generar número de factura automático
         const now = new Date();
         const año = now.getFullYear();
         const mes = String(now.getMonth() + 1).padStart(2, '0');
@@ -247,7 +244,6 @@ export default function FacturasPage() {
         };
     };
 
-    // Calcular totales automáticamente cuando cambia subtotal o tasa
     useEffect(() => {
         const subtotal = parseFloat(formData.subtotal) || 0;
         const tasa = parseFloat(formData.tasa_impuesto) || 0;
@@ -270,7 +266,6 @@ export default function FacturasPage() {
 
     return (
         <div>
-            {/* Header */}
             <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
                 <div>
                     <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>🧾 Facturas</h1>
@@ -281,7 +276,6 @@ export default function FacturasPage() {
                 </button>
             </div>
 
-            {/* Buscador */}
             <div style={{ marginBottom: '20px' }}>
                 <div style={{
                     display: 'flex',
@@ -311,7 +305,6 @@ export default function FacturasPage() {
                 </div>
             </div>
 
-            {/* Tabla */}
             <div className={styles.tableContainer}>
                 <table className={styles.table}>
                     <thead>
@@ -350,18 +343,23 @@ export default function FacturasPage() {
                                             </span>
                                         </td>
                                         <td>
-                                            <button
-                                                onClick={() => openEditModal(factura)}
-                                                className={styles.btnEdit}
-                                            >
-                                                <FaEdit />
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(factura)}
-                                                className={styles.btnDanger}
-                                            >
-                                                <FaTrash />
-                                            </button>
+                                            {/* 🔥 BOTONES DE ACCIÓN MEJORADOS */}
+                                            <div className={styles.actionButtons}>
+                                                <button
+                                                    onClick={() => openEditModal(factura)}
+                                                    className={styles.btnEdit}
+                                                    title="Editar factura"
+                                                >
+                                                    <FaEdit /> <span>Editar</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(factura)}
+                                                    className={styles.btnDelete}
+                                                    title="Eliminar factura"
+                                                >
+                                                    <FaTrash />
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 );
@@ -377,12 +375,17 @@ export default function FacturasPage() {
                 </table>
             </div>
 
-            {/* Modal de Crear/Editar */}
+            {/* Modal con estilos premium */}
             {showModal && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>
                         <div className={styles.modalHeader}>
-                            <h2>{editingFactura ? 'Editar factura' : 'Nueva factura'}</h2>
+                            <h2>
+                                <span className={styles.modalIcon}>
+                                    {editingFactura ? '✏️' : '🧾'}
+                                </span>
+                                {editingFactura ? 'Editar factura' : 'Nueva factura'}
+                            </h2>
                             <button onClick={() => { setShowModal(false); resetForm(); }} className={styles.modalClose}>
                                 ✕
                             </button>
@@ -390,7 +393,7 @@ export default function FacturasPage() {
 
                         <form onSubmit={handleSubmit} className={styles.modalForm}>
                             <div className={styles.formGroup}>
-                                <label>Cliente *</label>
+                                <label>Cliente <span className={styles.required}>*</span></label>
                                 <select
                                     value={formData.cliente_id}
                                     onChange={(e) => setFormData({ ...formData, cliente_id: e.target.value })}
@@ -406,7 +409,7 @@ export default function FacturasPage() {
                             </div>
 
                             <div className={styles.formGroup}>
-                                <label>N° Factura *</label>
+                                <label>N° Factura <span className={styles.required}>*</span></label>
                                 <input
                                     type="text"
                                     value={formData.numero_factura}
@@ -437,7 +440,7 @@ export default function FacturasPage() {
 
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                                 <div className={styles.formGroup}>
-                                    <label>Subtotal ($)</label>
+                                    <label>Subtotal ($) <span className={styles.required}>*</span></label>
                                     <input
                                         type="number"
                                         value={formData.subtotal}
@@ -501,26 +504,15 @@ export default function FacturasPage() {
                                     onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
                                     rows={2}
                                     placeholder="Notas sobre la factura..."
-                                    style={{
-                                        padding: '10px 14px',
-                                        borderRadius: '10px',
-                                        border: '1px solid rgba(255,255,255,0.08)',
-                                        background: 'rgba(0,0,0,0.3)',
-                                        color: '#ffffff',
-                                        fontSize: '14px',
-                                        width: '100%',
-                                        resize: 'vertical',
-                                        fontFamily: 'inherit'
-                                    }}
                                 />
                             </div>
 
-                            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '20px' }}>
-                                <button type="button" onClick={() => { setShowModal(false); resetForm(); }} className={styles.btnSecondary}>
+                            <div className={styles.modalActions}>
+                                <button type="button" onClick={() => { setShowModal(false); resetForm(); }} className={styles.btnCancel}>
                                     Cancelar
                                 </button>
-                                <button type="submit" className={styles.btnPrimary}>
-                                    {editingFactura ? 'Actualizar' : 'Crear'}
+                                <button type="submit" className={styles.btnSubmit}>
+                                    {editingFactura ? '💾 Actualizar' : '➕ Crear'}
                                 </button>
                             </div>
                         </form>
