@@ -1,8 +1,10 @@
+// components/FooterPowa.tsx
 'use client';
 
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FaGithub, FaLinkedin, FaEnvelope, FaInstagram, FaMapMarkerAlt } from 'react-icons/fa';
+import Link from 'next/link';
 import styles from './FooterPowa.module.css';
 
 export default function FooterPowa() {
@@ -27,7 +29,6 @@ export default function FooterPowa() {
           <Col md={6}>
             <div className={styles.footerRight}>
               <div className={styles.socialWrapper}>
-                {/* GitHub - Redirige a WhatsApp para consultar */}
                 <a
                   href="https://wa.me/5491138305837?text=Hola!%20Quiero%20consultar%20por%20el%20c%C3%B3digo%20de%20GitHub%20de%20Powa%20Digital..."
                   target="_blank"
@@ -38,8 +39,6 @@ export default function FooterPowa() {
                 >
                   <FaGithub />
                 </a>
-
-                {/* LinkedIn - Redirige a WhatsApp para consultar */}
                 <a
                   href="https://wa.me/5491138305837?text=Hola!%20Quiero%20consultar%20por%20el%20perfil%20de%20LinkedIn%20de%20Powa%20Digital..."
                   target="_blank"
@@ -50,8 +49,6 @@ export default function FooterPowa() {
                 >
                   <FaLinkedin />
                 </a>
-
-                {/* Instagram - Enlace directo */}
                 <a
                   href="https://www.instagram.com/agenciadigitalpowa"
                   target="_blank"
@@ -61,8 +58,6 @@ export default function FooterPowa() {
                 >
                   <FaInstagram />
                 </a>
-
-                {/* Email - Enlace directo */}
                 <a
                   href="mailto:agenciadigitalpowa@gmail.com"
                   className={styles.socialLink}
@@ -75,7 +70,16 @@ export default function FooterPowa() {
           </Col>
         </Row>
 
-        {/* Marcado SEO: Ahora con mejor contraste para Lighthouse */}
+        {/* 🔥 ENLACES DEL FOOTER (SIN BLOG) */}
+        <div className={styles.footerLinks}>
+          <Link href="/faq">FAQ</Link>
+          <span className={styles.footerDot}>•</span>
+          <Link href="/about">Sobre Nosotros</Link>
+          <span className={styles.footerDot}>•</span>
+          <Link href="/contact">Contacto</Link>
+        </div>
+
+        {/* Marcado SEO */}
         <div className={styles.seoTagline}>
           <p>
             <strong>Software Factory &amp; Consultoría IT con base en Zona Sur.</strong><br />

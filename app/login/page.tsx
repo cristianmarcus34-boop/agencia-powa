@@ -4,7 +4,8 @@
 import { useState, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { FaArrowLeft } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
+import { FaArrowLeft, FaEye, FaEyeSlash, FaSpinner } from 'react-icons/fa';
 import styles from './login.module.css';
 
 export default function LoginPage() {
@@ -12,33 +13,38 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
     const { data: session, status } = useSession();
+    const router = useRouter();
 
     // 🔥 Redirigir cuando la sesión esté disponible
     useEffect(() => {
-        console.log('📋 Status:', status);
-        console.log('📋 Session:', session);
-
         if (status === 'authenticated' && session?.user) {
-            console.log('✅ Usuario logueado:', session.user);
-            console.log('✅ Rol:', session.user.rol);
-
             const redirectPath = session.user.rol === 'admin' ? '/admin' : '/cliente';
-
-            // 🔥 USAR window.location.href PARA PRODUCCIÓN
-            if (window.opener) {
-                window.opener.location.href = redirectPath;
-                window.close();
-            } else {
-                window.location.href = redirectPath;
-            }
+            router.push(redirectPath);
         }
-    }, [status, session]);
+    }, [status, session, router]);
+
+    // 🔥 Cargar email guardado
+    useEffect(() => {
+        const savedEmail = localStorage.getItem('rememberEmail');
+        if (savedEmail) {
+            setEmail(savedEmail);
+            setRememberMe(true);
+        }
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError('');
+
+        if (!email || !password) {
+            setError('Completa todos los campos');
+            setLoading(false);
+            return;
+        }
 
         try {
             const result = await signIn('credentials', {
@@ -49,23 +55,46 @@ export default function LoginPage() {
 
             if (result?.error) {
                 setError('Email o contraseña incorrectos');
+                setLoading(false);
+                return;
             }
-            // ✅ No hacer nada más, el useEffect maneja la redirección
+
+            if (rememberMe) {
+                localStorage.setItem('rememberEmail', email);
+            } else {
+                localStorage.removeItem('rememberEmail');
+            }
+
         } catch (error) {
             setError('Error al iniciar sesión');
+            setLoading(false);
         } finally {
             setLoading(false);
         }
     };
 
     // 🔥 Si está cargando o autenticado, mostrar mensaje
-    if (status === 'loading' || status === 'authenticated') {
+    if (status === 'loading') {
         return (
             <div className={styles.loginContainer}>
                 <div className={styles.loginCard}>
-                    <p style={{ color: '#fff', textAlign: 'center' }}>
-                        {status === 'loading' ? 'Cargando...' : 'Redirigiendo...'}
-                    </p>
+                    <div className={styles.loadingWrapper}>
+                        <FaSpinner className={styles.spinner} />
+                        <p>Cargando...</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (status === 'authenticated') {
+        return (
+            <div className={styles.loginContainer}>
+                <div className={styles.loginCard}>
+                    <div className={styles.loadingWrapper}>
+                        <FaSpinner className={styles.spinner} />
+                        <p>Redirigiendo...</p>
+                    </div>
                 </div>
             </div>
         );
@@ -80,6 +109,7 @@ export default function LoginPage() {
                 </Link>
 
                 <div className={styles.loginHeader}>
+                    <div className={styles.logoIcon}>⚡</div>
                     <h1>Powa Digital</h1>
                     <p>Iniciá sesión para acceder a tu panel</p>
                 </div>
@@ -94,25 +124,71 @@ export default function LoginPage() {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="tu@email.com"
                             required
+                            disabled={loading}
+                            className={styles.inputField}
+                            autoComplete="email"
                         />
                     </div>
 
                     <div className={styles.formGroup}>
                         <label htmlFor="password">Contraseña</label>
-                        <input
-                            id="password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="••••••••"
-                            required
-                        />
+                        <div className={styles.passwordWrapper}>
+                            <input
+                                id="password"
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="••••••••"
+                                required
+                                disabled={loading}
+                                className={styles.inputField}
+                                autoComplete="current-password"
+                            />
+                            <button
+                                type="button"
+                                className={styles.eyeButton}
+                                onClick={() => setShowPassword(!showPassword)}
+                                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                        </div>
                     </div>
 
-                    {error && <div className={styles.errorMessage}>{error}</div>}
+                    <div className={styles.formOptions}>
+                        <label className={styles.rememberMe}>
+                            <input
+                                type="checkbox"
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)}
+                            />
+                            Recordarme
+                        </label>
+                        {/* 🔥 REDIRIGE A CONTACTO EN LUGAR DE RECUPERAR PASSWORD */}
+                        <Link href="/contact" className={styles.forgotPassword}>
+                            ¿Problemas para ingresar? Contáctanos
+                        </Link>
+                    </div>
 
-                    <button type="submit" disabled={loading} className={styles.loginButton}>
-                        {loading ? 'Cargando...' : 'Iniciar sesión'}
+                    {error && (
+                        <div className={styles.errorMessage}>
+                            <span>⚠️</span> {error}
+                        </div>
+                    )}
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={styles.loginButton}
+                    >
+                        {loading ? (
+                            <>
+                                <FaSpinner className={styles.buttonSpinner} />
+                                Iniciando sesión...
+                            </>
+                        ) : (
+                            'Iniciar sesión'
+                        )}
                     </button>
                 </form>
             </div>

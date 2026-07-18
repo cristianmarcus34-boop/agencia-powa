@@ -30,6 +30,43 @@
     font-size: 0.65rem;
 }
 
+/* ============================================
+   🔥 ENLACES DEL FOOTER
+   ============================================ */
+
+.footerLinks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px 12px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.7rem;
+}
+
+.footerLinks a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.footerLinks a:hover {
+    color: #22d3ee;
+}
+
+.footerDot {
+    color: #475569;
+    font-size: 0.4rem;
+}
+
+/* ============================================
+   SEO TAGLINE
+   ============================================ */
+
 .seoTagline {
     margin-top: 8px;
     padding-top: 6px;
@@ -48,6 +85,10 @@
 .seoTagline br {
     display: none;
 }
+
+/* ============================================
+   REDES SOCIALES
+   ============================================ */
 
 .socialWrapper {
     display: flex;
@@ -74,7 +115,10 @@
     filter: drop-shadow(0 0 8px rgba(225, 48, 108, 0.4));
 }
 
-/* Responsive */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
 @media (max-width: 768px) {
     .mainFooter {
         padding: 0.5rem 0;
@@ -95,6 +139,13 @@
 
     .socialWrapper {
         gap: 0.6rem;
+    }
+
+    .footerLinks {
+        font-size: 0.6rem;
+        gap: 4px 10px;
+        margin-top: 10px;
+        padding-top: 8px;
     }
 
     .seoTagline {
@@ -126,9 +177,31 @@
         gap: 0.5rem;
     }
 
+    .footerLinks {
+        font-size: 0.5rem;
+        gap: 3px 8px;
+        margin-top: 8px;
+        padding-top: 6px;
+    }
+
+    .footerDot {
+        font-size: 0.3rem;
+    }
+
     .seoTagline {
         font-size: 0.45rem;
         margin-top: 4px;
         padding-top: 3px;
+    }
+}
+
+@media (max-width: 380px) {
+    .footerLinks {
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .footerDot {
+        display: none;
     }
 }

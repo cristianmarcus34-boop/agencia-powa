@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import styles from './NavbarPowa.module.css';
 
@@ -33,13 +33,13 @@ export default function NavbarPowa() {
 
   const closeMenu = () => setExpanded(false);
 
+  // 🔥 ENLACES COMPACTOS PERO COMPLETOS
   const navLinks: NavLinkItem[] = [
     { name: 'Inicio', path: '/' },
     { name: 'Servicios', path: '/servicios' },
     { name: 'Portafolio', path: '/portfolio' },
-    { name: 'FAQ', path: '/faq' },
     { name: 'Blog', path: '/blog' },
-    { name: 'Sobre Nosotros', path: '/about' },
+    { name: 'FAQ', path: '/faq' },
   ];
 
   return (
@@ -52,7 +52,7 @@ export default function NavbarPowa() {
       suppressHydrationWarning
       className={`${styles.navbarBase} ${scrolled ? styles.navbarScrolled : styles.navbarTransparent}`}
     >
-      <Container>
+      <Container fluid className="px-3 px-xl-4">
         <Navbar.Brand
           as={Link}
           href="/"
@@ -63,8 +63,8 @@ export default function NavbarPowa() {
             <Image
               src="/logo-agenciadigitalpowa-redondo.png"
               alt="Powa Digital Logo"
-              width={50}
-              height={50}
+              width={40}
+              height={40}
               className={styles.logoImage}
               priority
               quality={85}
@@ -107,9 +107,7 @@ export default function NavbarPowa() {
               <span className={styles.badgeSoon}>Beta</span>
             </Nav.Link>
 
-            {/* 🔥 BOTÓN DE LOGIN / LOGOUT */}
             {session ? (
-              // Usuario logueado
               <>
                 <Nav.Link
                   as={Link}
@@ -118,10 +116,9 @@ export default function NavbarPowa() {
                   onClick={closeMenu}
                 >
                   <span className={styles.userInfo}>
-                    👤 {session.user?.name}
+                    👤 {session.user?.name?.split(' ')[0] || 'Usuario'}
                   </span>
                 </Nav.Link>
-                {/* 🔥 CERRAR SESIÓN - REDIRIGE A /logout */}
                 <Nav.Link
                   onClick={() => {
                     window.location.href = '/logout';
@@ -130,21 +127,20 @@ export default function NavbarPowa() {
                   className={`${styles.navLink} ${styles.logoutBtn}`}
                   style={{ cursor: 'pointer' }}
                 >
-                  Cerrar sesión
+                  Salir
                 </Nav.Link>
                 <Nav.Link
                   as={Link}
                   href="/contact"
-                  className="ms-lg-2 p-0 text-decoration-none"
+                  className="ms-lg-1 p-0 text-decoration-none"
                   onClick={closeMenu}
                 >
                   <span className={styles.contactBtn} role="button">
-                    Empezar Proyecto
+                    Proyecto
                   </span>
                 </Nav.Link>
               </>
             ) : (
-              // Usuario NO logueado
               <>
                 <Nav.Link
                   onClick={() => {
@@ -154,16 +150,16 @@ export default function NavbarPowa() {
                   className={`${styles.navLink} ${styles.loginBtn}`}
                   style={{ cursor: 'pointer' }}
                 >
-                  Iniciar sesión
+                  Iniciar
                 </Nav.Link>
                 <Nav.Link
                   as={Link}
                   href="/contact"
-                  className="ms-lg-2 p-0 text-decoration-none"
+                  className="ms-lg-1 p-0 text-decoration-none"
                   onClick={closeMenu}
                 >
                   <span className={styles.contactBtn} role="button">
-                    Empezar Proyecto
+                    Proyecto
                   </span>
                 </Nav.Link>
               </>
