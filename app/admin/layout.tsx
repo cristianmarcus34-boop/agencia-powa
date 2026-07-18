@@ -1,14 +1,14 @@
 // app/admin/layout.tsx
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
     FaHome, FaUsers, FaProjectDiagram, FaUserTie,
     FaComments, FaChartBar, FaSignOutAlt, FaBars,
-    FaTimes, FaCog, FaDatabase, FaFileInvoice
+    FaChevronLeft, FaChevronRight, FaFileInvoice
 } from 'react-icons/fa';
 import styles from './admin.module.css';
 
@@ -17,16 +17,12 @@ const menuItems = [
     { name: 'Usuarios', icon: <FaUsers />, path: '/admin/usuarios' },
     { name: 'Clientes', icon: <FaUserTie />, path: '/admin/clientes' },
     { name: 'Proyectos', icon: <FaProjectDiagram />, path: '/admin/proyectos' },
-    { name: 'Facturas', icon: <FaFileInvoice />, path: '/admin/facturas' },  // ✅ NUEVO
+    { name: 'Facturas', icon: <FaFileInvoice />, path: '/admin/facturas' },
     { name: 'Conversaciones', icon: <FaComments />, path: '/admin/conversaciones' },
     { name: 'Métricas', icon: <FaChartBar />, path: '/admin/metricas' },
 ];
 
-export default function AdminLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const { data: session, status } = useSession();
     const router = useRouter();
     const pathname = usePathname();
@@ -34,13 +30,25 @@ export default function AdminLayout({
     const [mobileOpen, setMobileOpen] = useState(false);
 
     useEffect(() => {
-        if (status === 'unauthenticated') {
-            router.push('/login');
-        }
-        if (session?.user?.rol !== 'admin') {
-            router.push('/cliente');
-        }
+        if (status === 'unauthenticated') router.push('/login');
+        if (session?.user?.rol !== 'admin') router.push('/cliente');
     }, [status, session, router]);
+
+    // Cerrar sidebar móvil al cambiar de página
+    useEffect(() => {
+        setMobileOpen(false);
+    }, [pathname]);
+
+    // Cerrar sidebar móvil al redimensionar a desktop
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > 768) {
+                setMobileOpen(false);
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     if (status === 'loading') {
         return (
@@ -51,41 +59,44 @@ export default function AdminLayout({
         );
     }
 
-    const toggleSidebar = () => {
-        setSidebarOpen(!sidebarOpen);
-    };
+    const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+    const toggleMobile = () => setMobileOpen(!mobileOpen);
 
-    const toggleMobile = () => {
-        setMobileOpen(!mobileOpen);
+    const handleLogout = async () => {
+        await signOut({ redirect: false });
+        router.push('/login');
     };
 
     return (
         <div className={styles.adminContainer}>
-            {/* Mobile Header */}
+            {/* 🔥 MOBILE HEADER - Visible solo en móvil */}
             <header className={styles.mobileHeader}>
-                <button onClick={toggleMobile} className={styles.menuButton}>
+                <button onClick={toggleMobile} className={styles.menuButton} aria-label="Abrir menú">
                     <FaBars />
                 </button>
-                <span className={styles.mobileTitle}>Powa Admin</span>
-                <div className={styles.mobileUser}>
-                    <span>{session?.user?.name?.split(' ')[0]}</span>
-                </div>
+                <span className={styles.mobileTitle}>⚡ Admin</span>
+                <span className={styles.mobileUser}>
+                    {session?.user?.name?.split(' ')[0] || 'Admin'}
+                </span>
             </header>
 
-            {/* Sidebar Overlay (Mobile) */}
+            {/* 🔥 OVERLAY - Para cerrar sidebar en móvil */}
             {mobileOpen && (
-                <div className={styles.overlay} onClick={toggleMobile}></div>
+                <div
+                    className={styles.overlayActive}
+                    onClick={toggleMobile}
+                />
             )}
 
-            {/* Sidebar */}
+            {/* 🔥 SIDEBAR */}
             <aside className={`${styles.sidebar} ${!sidebarOpen ? styles.sidebarCollapsed : ''} ${mobileOpen ? styles.sidebarMobileOpen : ''}`}>
                 <div className={styles.sidebarHeader}>
                     <div className={styles.logo}>
                         <span className={styles.logoIcon}>⚡</span>
-                        {sidebarOpen && <span className={styles.logoText}>Powa Admin</span>}
+                        <span className={styles.logoText}>Admin</span>
                     </div>
                     <button onClick={toggleSidebar} className={styles.collapseBtn}>
-                        {sidebarOpen ? <FaTimes /> : <FaBars />}
+                        {sidebarOpen ? <FaChevronLeft /> : <FaChevronRight />}
                     </button>
                 </div>
 
@@ -98,7 +109,7 @@ export default function AdminLayout({
                             onClick={() => setMobileOpen(false)}
                         >
                             <span className={styles.navIcon}>{item.icon}</span>
-                            {sidebarOpen && <span className={styles.navText}>{item.name}</span>}
+                            <span className={styles.navText}>{item.name}</span>
                         </Link>
                     ))}
                 </nav>
@@ -108,27 +119,27 @@ export default function AdminLayout({
                         <div className={styles.userAvatar}>
                             {session?.user?.name?.charAt(0) || 'A'}
                         </div>
-                        {sidebarOpen && (
-                            <div className={styles.userDetails}>
-                                <span className={styles.userName}>{session?.user?.name}</span>
-                                <span className={styles.userRole}>Administrador</span>
-                            </div>
-                        )}
+                        <div className={styles.userDetails}>
+                            <span className={styles.userName}>{session?.user?.name || 'Admin'}</span>
+                            <span className={styles.userRole}>Administrador</span>
+                        </div>
                     </div>
-                    <button
-                        onClick={() => router.push('/api/auth/signout')}
-                        className={styles.logoutBtn}
-                    >
+                    <button onClick={handleLogout} className={styles.logoutBtn}>
                         <FaSignOutAlt />
-                        {sidebarOpen && <span>Cerrar sesión</span>}
+                        <span>Cerrar sesión</span>
                     </button>
                 </div>
             </aside>
 
-            {/* Main Content */}
+            {/* 🔥 MAIN CONTENT */}
             <main className={`${styles.mainContent} ${!sidebarOpen ? styles.mainContentFull : ''}`}>
                 <div className={styles.pageContent}>
                     {children}
+                </div>
+
+                {/* 🔥 FOOTER DENTRO DEL MAIN (para que no se corte) */}
+                <div style={{ marginTop: '24px' }}>
+                    {/* Aquí va tu FooterPowa */}
                 </div>
             </main>
         </div>

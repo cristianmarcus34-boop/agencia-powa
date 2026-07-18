@@ -48,8 +48,11 @@ export default function RootLayout({
   const [navbarHeight, setNavbarHeight] = useState(80);
   const [isMounted, setIsMounted] = useState(false);
 
+  // 🔥 RUTAS DONDE SE OCULTA EL NAVBAR Y FOOTER
   const hideNavbar = pathname?.startsWith('/login') ||
-    pathname?.startsWith('/logout');
+    pathname?.startsWith('/logout') ||
+    pathname?.startsWith('/admin') ||
+    pathname?.startsWith('/cliente');
 
   const showNavbar = !hideNavbar;
 
@@ -116,6 +119,7 @@ export default function RootLayout({
             }}
           />
 
+          {/* 🔥 NAVBAR - OCULTO EN LOGIN, LOGOUT, ADMIN Y CLIENTE */}
           {showNavbar && <NavbarPowa />}
 
           <main
@@ -125,6 +129,7 @@ export default function RootLayout({
             {children}
           </main>
 
+          {/* 🔥 FOOTER Y CHAT - OCULTOS EN ADMIN Y CLIENTE */}
           {showNavbar && <ChatPowa />}
           {showNavbar && <FooterPowa />}
 
