@@ -602,7 +602,7 @@ export default function PortfolioPage() {
       <Container className={styles.heroSection}>
         <header className="text-center">
           <div className={styles.badgeWrapper}>
-            <span className={styles.badgePowa}>CASE STUDIES</span>
+            <span className={styles.badgePowa}>CASOS DE ESTUDIO</span>
           </div>
           <h1 className={styles.portfolioTitleMain}>
             Software de <span className={styles.textGradient}>Alto Impacto</span>
@@ -646,7 +646,7 @@ export default function PortfolioPage() {
             ))}
           </div>
           <span className={styles.filterCount}>
-            {filteredProjects.length} proyectos
+            {filteredProjects.length} Proyectos
           </span>
         </div>
 
@@ -661,58 +661,10 @@ export default function PortfolioPage() {
           {filteredProjects.map((project, index) => (
             <Col md={6} lg={4} key={index} className={project.featured ? styles.featuredCol : ''}>
               <div className={`${styles.powaProjectCard} ${project.featured ? styles.featuredCard : ''}`}>
-                <div className={styles.projectTop}>
-                  {project.image ? (
-                    <div className="relative w-full overflow-hidden" style={{ height: '220px' }}>
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover"
-                        quality={85}
-                        priority={index < 4}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-between p-4">
-                        <div className="flex justify-between items-start">
-                          <span className={styles.projectTag}>{project.tag}</span>
-                          {project.featured && (
-                            <div className={styles.featuredTag}>
-                              <FaStar /> Destacado
-                            </div>
-                          )}
-                        </div>
-                        <div className="text-right">
-                          <div className="text-3xl">{project.icon}</div>
-                        </div>
-                      </div>
-                      <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <Button
-                          className={styles.glassButton}
-                          onClick={() => {
-                            if (project.galleryImages || project.demoComponent) {
-                              handleShowModal(project);
-                            } else {
-                              void window.open(project.link, '_blank');
-                            }
-                          }}
-                        >
-                          {project.demoComponent ? "Ver Demo" : (project.galleryImages ? "Ver Arquitectura" : "Explorar")}
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center p-6" style={{ height: '220px', background: '#f3f4f6' }}>
-                      <div className="text-6xl mb-2">{project.icon}</div>
-                      <span className={styles.projectTag}>{project.tag}</span>
-                      {project.featured && (
-                        <div className={styles.featuredTag}>
-                          <FaStar /> Destacado
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
+                {/* ============================================ */}
+                {/* IMAGEN MEJORADA - CON object-fit COVER */}
+                {/* ============================================ */}
+
 
                 <div className={styles.cardContent}>
                   <div className={styles.cardMeta}>
