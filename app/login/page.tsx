@@ -3,6 +3,8 @@
 
 import { useState, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { FaArrowLeft } from 'react-icons/fa';
 import styles from './login.module.css';
 
 export default function LoginPage() {
@@ -72,6 +74,11 @@ export default function LoginPage() {
     return (
         <div className={styles.loginContainer}>
             <div className={styles.loginCard}>
+                {/* 🔥 BOTÓN VOLVER AL INICIO */}
+                <Link href="/" className={styles.backButton}>
+                    <FaArrowLeft /> Volver al inicio
+                </Link>
+
                 <div className={styles.loginHeader}>
                     <h1>Powa Digital</h1>
                     <p>Iniciá sesión para acceder a tu panel</p>
