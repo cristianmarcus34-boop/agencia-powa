@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import {
     FaCheckCircle, FaClock, FaShieldAlt, FaRocket,
     FaWhatsapp, FaServer, FaDatabase, FaCode,
     FaChartLine, FaUsers, FaCloudUploadAlt, FaBolt,
-    FaCrown, FaStar, FaArrowRight, FaShieldVirus
+    FaCrown, FaStar, FaArrowRight, FaShieldVirus,
+    FaAward, FaHandshake, FaFileContract
 } from 'react-icons/fa';
 import Link from 'next/link';
 import styles from './planes.module.css';
@@ -22,67 +23,93 @@ interface Plan {
     popular?: boolean;
     color: string;
     badge?: string;
+    priceArs?: string;
 }
 
+// Cotización de referencia
+const USD_TO_ARS = 1488.27;
+
 const PLANS: Plan[] = [
+    {
+        id: 'lanzamiento',
+        name: 'Plan de Lanzamiento',
+        icon: <FaRocket />,
+        price: '$1.200',
+        period: 'pago único',
+        description: 'Todo lo que necesitás para los primeros 90 días después del lanzamiento.',
+        color: 'from-emerald-500 to-cyan-500',
+        features: [
+            '✅ Monitoreo 24/7 durante 90 días',
+            '✅ Correcciones críticas inmediatas',
+            '✅ Optimización de rendimiento',
+            '✅ Capacitación a tu equipo',
+            '✅ Documentación técnica completa',
+            '✅ Plan de continuidad',
+            '✅ Auditoría de seguridad inicial'
+        ],
+        badge: '🚀 Post-lanzamiento',
+        priceArs: `≈ $${(1200 * USD_TO_ARS).toLocaleString('es-AR')} ARS`
+    },
     {
         id: 'basico',
         name: 'Básico',
         icon: <FaCloudUploadAlt />,
-        price: '$100',
+        price: '$150',
         period: '/mes',
         description: 'Mantenimiento preventivo y soporte básico para proyectos pequeños.',
         color: 'from-blue-500 to-blue-600',
         features: [
-            'Monitoreo básico de disponibilidad',
-            'Actualizaciones de seguridad críticas',
-            'Soporte por email (respuesta en 48hs)',
-            'Reporte mensual de rendimiento',
-            'Backups semanales',
-            '1 hora de soporte mensual incluida'
+            '✅ Monitoreo básico de disponibilidad',
+            '✅ Actualizaciones de seguridad críticas',
+            '✅ Soporte por email (respuesta en 48hs)',
+            '✅ Reporte mensual de rendimiento',
+            '✅ Backups semanales',
+            '✅ 1 hora de soporte mensual incluida'
         ],
-        badge: 'Para proyectos pequeños'
+        badge: 'Para proyectos pequeños',
+        priceArs: `≈ $${(150 * USD_TO_ARS).toLocaleString('es-AR')} ARS`
     },
     {
         id: 'pro',
         name: 'Pro',
         icon: <FaShieldAlt />,
-        price: '$250',
+        price: '$350',
         period: '/mes',
         description: 'Soporte completo y mantenimiento avanzado para proyectos en crecimiento.',
         color: 'from-purple-500 to-accent-purple',
         popular: true,
         features: [
-            'Monitoreo 24/7 con alertas proactivas',
-            'Actualizaciones de seguridad en tiempo real',
-            'Soporte por email y WhatsApp (respuesta en 24hs)',
-            'Reporte detallado de rendimiento y métricas',
-            'Backups diarios',
-            '5 horas de soporte mensual incluidas',
-            'Auditoría de seguridad trimestral',
-            'Optimización de rendimiento mensual'
+            '✅ Monitoreo 24/7 con alertas proactivas',
+            '✅ Actualizaciones de seguridad en tiempo real',
+            '✅ Soporte por email y WhatsApp (respuesta en 24hs)',
+            '✅ Reporte detallado de rendimiento y métricas',
+            '✅ Backups diarios',
+            '✅ 5 horas de soporte mensual incluidas',
+            '✅ Auditoría de seguridad trimestral',
+            '✅ Optimización de rendimiento mensual'
         ],
-        badge: '⭐ Más popular'
+        badge: '⭐ Más popular',
+        priceArs: `≈ $${(350 * USD_TO_ARS).toLocaleString('es-AR')} ARS`
     },
     {
         id: 'enterprise',
         name: 'Enterprise',
         icon: <FaCrown />,
-        price: 'Personalizado',
-        period: '',
+        price: 'Desde $600',
+        period: '/mes',
         description: 'Solución completa para empresas con necesidades críticas y alto volumen.',
         color: 'from-gold-500 to-orange-500',
         features: [
-            'Monitoreo 24/7 con respuesta en minutos',
-            'Equipo dedicado de ingenieros',
-            'Soporte prioritario 24/7 (email, WhatsApp, llamada)',
-            'Dashboard de métricas en tiempo real',
-            'Backups cada 6 horas con recuperación rápida',
-            'Horas de soporte ilimitadas',
-            'Auditoría de seguridad mensual',
-            'Optimización continua de rendimiento',
-            'Consultoría estratégica mensual',
-            'SLA personalizado con garantías'
+            '✅ Monitoreo 24/7 con respuesta en minutos',
+            '✅ Equipo dedicado de ingenieros',
+            '✅ Soporte prioritario 24/7 (email, WhatsApp, llamada)',
+            '✅ Dashboard de métricas en tiempo real',
+            '✅ Backups cada 6 horas con recuperación rápida',
+            '✅ Horas de soporte ilimitadas',
+            '✅ Auditoría de seguridad mensual',
+            '✅ Optimización continua de rendimiento',
+            '✅ Consultoría estratégica mensual',
+            '✅ SLA personalizado con garantías'
         ],
         badge: '🏢 Para empresas'
     }
@@ -113,7 +140,7 @@ export default function PlanesPage() {
                 {/* ===== GRID DE PLANES ===== */}
                 <Row className="g-4">
                     {PLANS.map((plan) => (
-                        <Col key={plan.id} lg={4} md={6}>
+                        <Col key={plan.id} lg={3} md={6}>
                             <div
                                 className={`${styles.planCard} ${plan.popular ? styles.popularCard : ''}`}
                                 onMouseEnter={() => setSelectedPlan(plan.id)}
@@ -132,9 +159,14 @@ export default function PlanesPage() {
                                     </div>
                                     <h3 className={styles.planName}>{plan.name}</h3>
                                     <div className={styles.planPrice}>
-                                        <span className={styles.priceAmount}>{plan.price}</span>
+                                        <span className={styles.priceAmount}>USD {plan.price}</span>
                                         <span className={styles.pricePeriod}>{plan.period}</span>
                                     </div>
+                                    {plan.priceArs && (
+                                        <div className={styles.priceArs}>
+                                            {plan.priceArs}
+                                        </div>
+                                    )}
                                     <p className={styles.planDescription}>{plan.description}</p>
                                     {plan.badge && (
                                         <span className={styles.planBadge}>{plan.badge}</span>
@@ -144,34 +176,22 @@ export default function PlanesPage() {
                                 <ul className={styles.planFeatures}>
                                     {plan.features.map((feature, index) => (
                                         <li key={index} className={styles.featureItem}>
-                                            <FaCheckCircle className={styles.featureIcon} />
-                                            <span>{feature}</span>
+                                            <span className={styles.featureIcon}>✅</span>
+                                            <span>{feature.replace('✅ ', '')}</span>
                                         </li>
                                     ))}
                                 </ul>
 
                                 <div className={styles.planFooter}>
-                                    {plan.id === 'enterprise' ? (
-                                        <a
-                                            href={WHATSAPP_LINK}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={`${styles.btnPlan} ${styles.btnWhatsapp}`}
-                                        >
-                                            <FaWhatsapp className="me-2" />
-                                            Consultar
-                                        </a>
-                                    ) : (
-                                        <a
-                                            href={WHATSAPP_LINK}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={styles.btnPlan}
-                                        >
-                                            Contratar plan
-                                            <FaArrowRight className="ms-2" />
-                                        </a>
-                                    )}
+                                    <a
+                                        href={`${WHATSAPP_LINK} ${encodeURIComponent(`Quiero contratar el plan ${plan.name}`)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={`${styles.btnPlan} ${plan.id === 'enterprise' ? styles.btnWhatsapp : ''}`}
+                                    >
+                                        <FaWhatsapp className="me-2" />
+                                        {plan.id === 'enterprise' ? 'Consultar' : 'Contratar ahora'}
+                                    </a>
                                 </div>
 
                                 {selectedPlan === plan.id && (

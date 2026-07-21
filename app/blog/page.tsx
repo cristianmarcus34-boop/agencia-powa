@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import {
     FaCalendarAlt, FaArrowRight, FaSearch,
     FaTag, FaClock, FaRocket, FaCode, FaShieldAlt,
-    FaMobileAlt, FaCloudUploadAlt, FaChartLine, FaTimes
+    FaMobileAlt, FaCloudUploadAlt, FaChartLine, FaTimes,
+    FaArrowUp
 } from 'react-icons/fa';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -34,27 +35,44 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
     'Estrategia': <FaChartLine />
 };
 
+// ===== TAGS POPULARES =====
+const POPULAR_TAGS = [
+    'Next.js', 'TypeScript', 'Performance', 'SEO',
+    'Arquitectura', 'DevOps', 'UX/UI', 'Cloud'
+];
+
 export default function BlogPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [activeCategory, setActiveCategory] = useState<string>('Todos');
+    const [showScrollTop, setShowScrollTop] = useState(false);
 
-    // ===== FILTRADO CORREGIDO =====
+    // ===== SCROLL TOP =====
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowScrollTop(window.scrollY > 500);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // ===== FILTRADO =====
     const filteredPosts = useMemo(() => {
         const searchLower = searchTerm.toLowerCase().trim();
 
         return blogPosts.filter(post => {
-            // Si no hay término de búsqueda y categoría es 'Todos', mostrar todo
             if (!searchLower && activeCategory === 'Todos') {
                 return true;
             }
 
-            // Verificar coincidencia en título, extracto o categoría
             const matchesSearch = !searchLower ||
                 post.title.toLowerCase().includes(searchLower) ||
                 post.excerpt.toLowerCase().includes(searchLower) ||
                 post.category.toLowerCase().includes(searchLower);
 
-            // Verificar coincidencia de categoría
             const matchesCategory = activeCategory === 'Todos' ||
                 post.category === activeCategory;
 
@@ -157,6 +175,28 @@ export default function BlogPage() {
                                         </button>
                                     ))}
                                 </div>
+
+                                {/* ===== TAGS POPULARES ===== */}
+                                <div className={styles.tagsWrapper}>
+                                    <span className={styles.tagsLabel}>
+                                        <FaTag className={styles.tagsIcon} />
+                                        Tags populares:
+                                    </span>
+                                    <div className={styles.tagsCloud}>
+                                        {POPULAR_TAGS.map((tag) => (
+                                            <button
+                                                key={tag}
+                                                className={styles.tagButton}
+                                                onClick={() => {
+                                                    setSearchTerm(tag);
+                                                    setActiveCategory('Todos');
+                                                }}
+                                            >
+                                                #{tag}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         </Col>
                     </Row>
@@ -253,6 +293,17 @@ export default function BlogPage() {
                         </>
                     )}
                 </Container>
+
+                {/* ===== BOTÓN VOLVER ARRIBA ===== */}
+                {showScrollTop && (
+                    <button
+                        onClick={scrollToTop}
+                        className={styles.scrollTopButton}
+                        aria-label="Volver arriba"
+                    >
+                        <FaArrowUp />
+                    </button>
+                )}
             </div>
         </>
     );

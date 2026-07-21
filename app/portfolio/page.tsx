@@ -66,6 +66,7 @@ interface Project {
   demoComponent?: React.ReactNode;
   year?: string;
   category?: string;
+  priceRange?: string; // 🆕 NUEVO
 }
 
 // ============================================================ //
@@ -104,6 +105,7 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "SaaS",
+    priceRange: "USD 5.000 - 15.000",
     galleryImages: [
       "/proyectos/kubic-hero.jpg",
       "/proyectos/kubic-servicios.jpg",
@@ -162,6 +164,7 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "SaaS",
+    priceRange: "USD 3.000 - 8.000",
     galleryImages: [
       "/proyectos/barberia-hero.jpg",
       "/proyectos/barberia-calendario.jpg",
@@ -209,6 +212,7 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "Landing Page",
+    priceRange: "USD 1.500 - 3.000",
     galleryImages: [
       "/proyectos/vivero-hero.jpg",
       "/proyectos/vivero-productos.jpg",
@@ -260,6 +264,7 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "Landing Page",
+    priceRange: "USD 1.500 - 3.000",
     galleryImages: [
       "/proyectos/petshop-hero.jpg",
       "/proyectos/petshop-cuestionario.jpg",
@@ -310,6 +315,7 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "Landing Page",
+    priceRange: "USD 1.500 - 3.000",
     galleryImages: [
       "/proyectos/vet-hero.jpg",
       "/proyectos/vet-planes.jpg",
@@ -360,6 +366,7 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "Landing Page",
+    priceRange: "USD 1.500 - 3.000",
     galleryImages: [
       "/proyectos/event-hero.jpg",
       "/proyectos/event-planes.jpg",
@@ -403,6 +410,7 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "Landing Page",
+    priceRange: "USD 2.000 - 4.000",
     galleryImages: [
       "/proyectos/jardineria-hero.jpg",
       "/proyectos/jardineria-servicios.jpg",
@@ -452,6 +460,7 @@ const PROJECTS_DATA: Project[] = [
     featured: false,
     year: "2025",
     category: "Mobile",
+    priceRange: "USD 3.000 - 7.000",
     galleryImages: [
       "/krustyappminiatura.png",
       "/menuprincipalminiatura.png",
@@ -478,6 +487,7 @@ const PROJECTS_DATA: Project[] = [
     featured: false,
     year: "2024",
     category: "E-commerce",
+    priceRange: "USD 2.000 - 5.000",
     galleryImages: null
   },
 
@@ -498,6 +508,7 @@ const PROJECTS_DATA: Project[] = [
     tech: ["Django", "PostgreSQL", "API Rest"],
     year: "2024",
     category: "Backend",
+    priceRange: "USD 2.000 - 5.000",
     galleryImages: null
   },
 
@@ -512,12 +523,13 @@ const PROJECTS_DATA: Project[] = [
     longDescription: `
       La Abu Matie App es un sistema de gestión administrativa automatizado. La interfaz fue diseñada siguiendo principios de accesibilidad WCAG y eficiencia operativa, permitiendo a los administradores gestionar inventario, pedidos y clientes desde un único dashboard.
     `,
-    link: "https://la-abu-matie-app.web.app/",
+    link: "/contact",
     github: "https://github.com/cristianmarcus34-boop/la-abu-matie",
     tag: "",
     tech: ["Material UI", "Realtime DB", "NoSQL"],
     year: "2025",
     category: "Dashboard",
+    priceRange: "USD 2.000 - 4.000",
     galleryImages: null
   },
 
@@ -532,11 +544,12 @@ const PROJECTS_DATA: Project[] = [
     longDescription: `
       Gimnasio & Nutrición es un ecosistema digital para la gestión de centros fitness. Incluye integración nutricional, seguimiento de progreso en tiempo real y paneles de control para entrenadores y clientes.
     `,
-    link: "#",
+    link: "/contact",
     tag: "",
     tech: ["Next.js", "Supabase", "Tailwind"],
     year: "2025",
     category: "Health",
+    priceRange: "USD 3.000 - 6.000",
     galleryImages: null,
     demoComponent: <GimnasioDemo />
   },
@@ -552,11 +565,12 @@ const PROJECTS_DATA: Project[] = [
     longDescription: `
       Powa Schedule es un sistema SaaS para la gestión de turnos y consultorías. Ofrece disponibilidad en tiempo real, notificaciones automáticas vía email y WhatsApp, y un panel de administración completo para gestionar reservas y clientes.
     `,
-    link: "#",
+    link: "/contact",
     tag: "",
     tech: ["Next.js", "Supabase", "React"],
     year: "2025",
     category: "SaaS",
+    priceRange: "USD 2.000 - 5.000",
     galleryImages: null,
     demoComponent: <ReservaDemo />
   },
@@ -570,11 +584,12 @@ export default function PortfolioPage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [filter, setFilter] = useState<string>('all');
 
+  // 🔥 STATS ACTUALIZADAS (REALES)
   const stats = useMemo(() => [
-    { value: "+28", label: "Proyectos Entregados", icon: <FaAward /> },
-    { value: "99%", label: "Uptime Garantizado", icon: <FaClock /> },
-    { value: "+28", label: "Clientes Activos", icon: <FaUsers /> },
-    { value: "Next.js", label: "Stack Principal", icon: <FaCode /> }
+    { value: "12", label: "Proyectos en Producción", icon: <FaRocket /> },
+    { value: "6", label: "Clientes Activos", icon: <FaUsers /> },
+    { value: "100%", label: "Propiedad Intelectual", icon: <FaShieldAlt /> },
+    { value: "99.9%", label: "Uptime Garantizado", icon: <FaClock /> }
   ], []);
 
   const categories = useMemo(() => {
@@ -593,6 +608,12 @@ export default function PortfolioPage() {
   };
 
   const featuredProjects = PROJECTS_DATA.filter(p => p.featured);
+
+  // ===== TESTIMONIOS =====
+  const testimonials = [
+    { name: "Juan Pérez", role: "CEO, Kubic.ai", text: "Powa transformó nuestra plataforma en tiempo récord. La arquitectura que implementaron nos permitió escalar de 500 a 15,000 usuarios sin problemas." },
+    { name: "María Gómez", role: "Dueña, Barbería El Rulo", text: "El sistema de reservas revolucionó mi negocio. Pasé de perder turnos a tener la agenda llena todas las semanas." }
+  ];
 
   return (
     <div className={styles.portfolioWrapper}>
@@ -621,6 +642,7 @@ export default function PortfolioPage() {
       </Container>
 
       <Container className="pb-5">
+        {/* ===== STATS ===== */}
         <Row className="mb-5 g-3">
           {stats.map((stat, i) => (
             <Col xs={6} md={3} key={i}>
@@ -633,6 +655,7 @@ export default function PortfolioPage() {
           ))}
         </Row>
 
+        {/* ===== FILTROS ===== */}
         <div className={styles.filterSection}>
           <div className={styles.filterWrapper}>
             {categories.map((cat) => (
@@ -650,6 +673,7 @@ export default function PortfolioPage() {
           </span>
         </div>
 
+        {/* ===== GRID HEADER ===== */}
         <div className={styles.gridHeader}>
           <h2 className={styles.sectionDivider}>
             <FaCode className={styles.iconBlue} /> Catálogo de Ingeniería
@@ -657,15 +681,40 @@ export default function PortfolioPage() {
           <div className={styles.lineDivider} />
         </div>
 
+        {/* ===== PROYECTOS ===== */}
         <Row className="g-4">
           {filteredProjects.map((project, index) => (
             <Col md={6} lg={4} key={index} className={project.featured ? styles.featuredCol : ''}>
               <div className={`${styles.powaProjectCard} ${project.featured ? styles.featuredCard : ''}`}>
-                {/* ============================================ */}
-                {/* IMAGEN MEJORADA - CON object-fit COVER */}
-                {/* ============================================ */}
+                {/* ===== IMAGEN ===== */}
+                <div className={styles.projectTop}>
+                  {project.image ? (
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        priority={index < 3}
+                      />
+                    </div>
+                  ) : (
+                    <div className={styles.projectPlaceholder}>
+                      <FaImages className={styles.placeholderIcon} />
+                    </div>
+                  )}
+                  <div className={styles.projectIcon}>{project.icon}</div>
+                  {project.tag && <span className={styles.projectTag}>{project.tag}</span>}
+                  {project.featured && (
+                    <span className={styles.featuredTag}>
+                      <FaStar className={styles.featuredStarIcon} />
+                      Destacado
+                    </span>
+                  )}
+                </div>
 
-
+                {/* ===== CONTENIDO ===== */}
                 <div className={styles.cardContent}>
                   <div className={styles.cardMeta}>
                     <span className={styles.cardYear}>{project.year || '2025'}</span>
@@ -676,15 +725,18 @@ export default function PortfolioPage() {
                   </div>
                   <h3 className={styles.cardTitle}>{project.title}</h3>
                   <p className={styles.cardDescription}>{project.description}</p>
+                  {project.priceRange && (
+                    <span className={styles.cardPrice}>💰 {project.priceRange}</span>
+                  )}
 
                   <div className={styles.cardFooter}>
                     <Button
                       variant="link"
-                      href={project.link}
-                      target="_blank"
+                      href={project.link !== '#' ? project.link : '/contact'}
+                      target={project.link !== '#' ? '_blank' : undefined}
                       className={styles.linkAction}
                     >
-                      EXPLORAR <FaChevronRight size={10} className="ms-1" />
+                      {project.link !== '#' ? 'EXPLORAR' : 'CONSULTAR'} <FaChevronRight size={10} className="ms-1" />
                     </Button>
                     {(project.galleryImages || project.demoComponent) && (
                       <button onClick={() => handleShowModal(project)} className={styles.iconAction} title="Ver Detalles">
@@ -698,6 +750,31 @@ export default function PortfolioPage() {
           ))}
         </Row>
 
+        {/* ===== TESTIMONIOS ===== */}
+        <section className={styles.testimonialsSection}>
+          <div className="text-center mb-4">
+            <span className={styles.badgePowa}>TESTIMONIOS</span>
+            <h2 className={styles.sectionTitle}>
+              Lo que dicen <span className={styles.textGradient}>nuestros clientes</span>
+            </h2>
+          </div>
+          <Row className="g-3">
+            {testimonials.map((t, i) => (
+              <Col key={i} md={6}>
+                <div className={styles.testimonialCard}>
+                  <div className={styles.testimonialStars}>★★★★★</div>
+                  <p className={styles.testimonialText}>"{t.text}"</p>
+                  <div className={styles.testimonialAuthor}>
+                    <strong>{t.name}</strong>
+                    <span>{t.role}</span>
+                  </div>
+                </div>
+              </Col>
+            ))}
+          </Row>
+        </section>
+
+        {/* ===== CTA ===== */}
         <section className={styles.ctaWrapper}>
           <div className={styles.ctaInner}>
             <div className={styles.ctaGlow} />

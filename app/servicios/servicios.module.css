@@ -621,6 +621,156 @@
 }
 
 /* ============================================
+   NUEVAS SECCIONES: TRUST SIGNALS
+   ============================================ */
+.trustSignalCard {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px 16px;
+  text-align: center;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.trustSignalCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--cyan-powa);
+  box-shadow: 0 8px 30px rgba(34, 211, 238, 0.15);
+}
+
+.trustSignalIcon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: var(--cyan-powa);
+}
+
+.trustSignalText {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+/* ============================================
+   NUEVAS SECCIONES: AUDIENCE CARDS
+   ============================================ */
+.audienceCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.audienceCard:hover {
+  border-color: var(--cyan-powa);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(34, 211, 238, 0.1);
+}
+
+.audienceIcon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.audienceTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.audienceDesc {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+/* ============================================
+   NUEVAS SECCIONES: RISK FREE
+   ============================================ */
+.riskFreeSection {
+  background: rgba(34, 211, 238, 0.05);
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  border-radius: 24px;
+  padding: 40px 36px;
+}
+
+.riskFreeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .riskFreeGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.riskFreeItem {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.riskFreeIcon {
+  color: #2ecc71;
+  font-size: 1.4rem;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.riskFreeItem h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.riskFreeItem p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+/* ============================================
+   NUEVAS SECCIONES: MINI FAQ
+   ============================================ */
+.miniFaqItem {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 20px 24px;
+  transition: all 0.3s ease;
+}
+
+.miniFaqItem:hover {
+  border-color: rgba(34, 211, 238, 0.3);
+}
+
+.miniFaqQ {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.miniFaqA {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 @media (max-width: 992px) {
@@ -747,4 +897,6 @@
   .negocioFeatures li {
     font-size: 0.8rem;
   }
+
+
 }

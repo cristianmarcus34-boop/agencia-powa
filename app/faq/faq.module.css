@@ -193,6 +193,14 @@
     border-left-color: var(--gold-powa) !important;
 }
 
+.category-pricing {
+    border-left: 3px solid transparent !important;
+}
+
+.category-pricing:hover {
+    border-left-color: var(--gold-powa) !important;
+}
+
 .category-process {
     border-left: 3px solid transparent !important;
 }
@@ -225,7 +233,7 @@
     border-left-color: var(--pink-powa) !important;
 }
 
-/* ===== ITEMS DESTACADOS (mitigación de riesgos) ===== */
+/* ===== ITEMS DESTACADOS ===== */
 .highlightedItem {
     background: rgba(245, 158, 11, 0.05) !important;
     border-color: rgba(245, 158, 11, 0.15) !important;
@@ -352,7 +360,8 @@
 .bodyContent {
     color: var(--slate-400);
     font-size: 0.95rem;
-    line-height: 1.7;
+    line-height: 1.8;
+    white-space: pre-line;
 }
 
 /* ===== LINK A PLANES ===== */
@@ -495,72 +504,8 @@
     transform: translateY(-4px) scale(1.1);
 }
 
-/* ===== WHATSAPP FLOTANTE ===== */
-.whatsappFloat {
-    position: fixed;
-    bottom: 40px;
-    right: 40px;
-    background: rgba(15, 23, 42, 0.75);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: #ffffff !important;
-    border-radius: 14px;
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 700;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    z-index: 100;
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-    text-decoration: none !important;
-}
-
-.whatsappFloat:hover {
-    transform: translateY(-4px) scale(1.02);
-    border-color: rgba(37, 211, 102, 0.4);
-    box-shadow: 0 20px 40px -5px rgba(37, 211, 102, 0.15);
-}
-
-.pulseContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    width: 28px;
-    height: 28px;
-    background: rgba(37, 211, 102, 0.15);
-    color: #25d366;
-    border-radius: 8px;
-    font-size: 1.1rem;
-}
-
-.floatIcon {
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.15);
-    }
-}
-
-.floatText {
-    font-weight: 800;
-    color: #f8fafc;
-}
-
 /* ============================================
-   CHAT CTA - FAQ
+   CHAT CTA
    ============================================ */
 .chatCtaCard {
     background: linear-gradient(145deg, rgba(15, 23, 42, 0.6), rgba(34, 211, 238, 0.05));
@@ -793,34 +738,6 @@
         justify-content: center;
     }
 
-    .whatsappFloat {
-        bottom: 20px;
-        right: 20px;
-        padding: 12px;
-        width: 56px;
-        height: 56px;
-        border-radius: 16px;
-        justify-content: center;
-    }
-
-    .whatsappFloat:hover {
-        transform: none;
-    }
-
-    .floatText {
-        display: none;
-    }
-
-    .pulseContainer {
-        width: 100%;
-        height: 100%;
-        background: transparent;
-    }
-
-    .floatIcon {
-        font-size: 1.6rem;
-    }
-
     .techIconsGrid {
         gap: 24px;
     }
@@ -891,18 +808,6 @@
         padding: 10px 16px;
         width: 100%;
         justify-content: center;
-    }
-
-    .whatsappFloat {
-        bottom: 16px;
-        right: 16px;
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-    }
-
-    .floatIcon {
-        font-size: 1.4rem;
     }
 
     .ctaTitle {

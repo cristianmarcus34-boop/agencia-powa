@@ -233,7 +233,7 @@
 }
 
 /* ============================================
-   PROJECT CARDS - IMAGEN MEJORADA
+   PROJECT CARDS
    ============================================ */
 .powaProjectCard {
   background: rgba(15, 23, 42, 0.6);
@@ -265,7 +265,7 @@
   box-shadow: 0 30px 60px -12px rgba(34, 197, 94, 0.15);
 }
 
-/* ===== PROJECT TOP - MEJORADO ===== */
+/* ===== PROJECT TOP ===== */
 .projectTop {
   height: 260px;
   background: #0a0f1d;
@@ -277,16 +277,6 @@
   flex-shrink: 0;
 }
 
-/* Contenedor de la imagen */
-.projectTop :global(.relative) {
-  width: 100% !important;
-  height: 100% !important;
-  position: absolute !important;
-  top: 0;
-  left: 0;
-}
-
-/* ===== IMAGEN CON PROPORCIÓN CORRECTA ===== */
 .projectTop img {
   width: 100% !important;
   height: 100% !important;
@@ -295,12 +285,10 @@
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Al hacer hover, la imagen se agranda ligeramente */
 .powaProjectCard:hover .projectTop img {
   transform: scale(1.05);
 }
 
-/* ===== OVERLAY DE LA IMAGEN ===== */
 .projectTop::after {
   content: '';
   position: absolute;
@@ -308,6 +296,21 @@
   background: linear-gradient(180deg, transparent 50%, rgba(2, 6, 23, 0.4) 100%);
   pointer-events: none;
   z-index: 2;
+}
+
+/* ===== PROJECT PLACEHOLDER ===== */
+.projectPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(34, 211, 238, 0.03);
+}
+
+.placeholderIcon {
+  font-size: 4rem;
+  color: rgba(34, 211, 238, 0.1);
 }
 
 /* ===== PROJECT ICON ===== */
@@ -358,38 +361,8 @@
   letter-spacing: 0.5px;
 }
 
-/* ===== OVERLAY ACTIONS ===== */
-.overlayActions {
-  position: absolute;
-  inset: 0;
-  background: rgba(2, 6, 23, 0.7);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s;
-  z-index: 4;
-}
-
-.powaProjectCard:hover .overlayActions {
-  opacity: 1;
-}
-
-.glassButton {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: none !important;
-  font-weight: 900 !important;
-  font-size: 11px !important;
-  padding: 12px 24px !important;
-  border-radius: 12px !important;
-  transition: all 0.3s ease !important;
-}
-
-.glassButton:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15) !important;
+.featuredStarIcon {
+  font-size: 8px;
 }
 
 /* ===== CARD CONTENT ===== */
@@ -444,7 +417,7 @@
   letter-spacing: 0.5px;
 }
 
-/* ===== TÍTULO Y DESCRIPCIÓN ===== */
+/* ===== CARD TITLE & DESCRIPTION ===== */
 .cardTitle {
   font-size: 1.3rem;
   font-weight: 800;
@@ -458,6 +431,20 @@
   font-size: 0.9rem;
   line-height: 1.6;
   flex: 1;
+}
+
+/* ===== CARD PRICE ===== */
+.cardPrice {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--emerald-powa);
+  background: rgba(16, 185, 129, 0.08);
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-top: 8px;
+  border: 1px solid rgba(16, 185, 129, 0.08);
+  align-self: flex-start;
 }
 
 /* ===== CARD FOOTER ===== */
@@ -524,6 +511,66 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
+}
+
+/* ============================================
+   TESTIMONIALS
+   ============================================ */
+.testimonialsSection {
+  margin-top: 60px;
+  padding: 40px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.sectionTitle {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.testimonialCard {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 24px;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.testimonialCard:hover {
+  border-color: rgba(34, 211, 238, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.testimonialStars {
+  color: var(--gold-powa);
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.testimonialText {
+  color: var(--slate-300);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.testimonialAuthor {
+  display: flex;
+  flex-direction: column;
+}
+
+.testimonialAuthor strong {
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.testimonialAuthor span {
+  color: var(--slate-400);
+  font-size: 0.8rem;
 }
 
 /* ============================================
@@ -718,6 +765,14 @@
   .featuredCol::before {
     display: none;
   }
+
+  .testimonialCard {
+    padding: 20px;
+  }
+
+  .testimonialText {
+    font-size: 0.9rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -804,14 +859,24 @@
     padding: 3px 8px;
   }
 
-  .glassButton {
-    font-size: 9px !important;
-    padding: 10px 18px !important;
+  .cardPrice {
+    font-size: 0.65rem;
+    padding: 2px 10px;
   }
 
-  .cardMeta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+  .testimonialStars {
+    font-size: 0.85rem;
+  }
+
+  .testimonialText {
+    font-size: 0.85rem;
+  }
+
+  .testimonialAuthor strong {
+    font-size: 0.85rem;
+  }
+
+  .testimonialAuthor span {
+    font-size: 0.7rem;
   }
 }

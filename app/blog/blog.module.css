@@ -649,6 +649,228 @@
 }
 
 /* ============================================
+   TAGS POPULARES
+   ============================================ */
+.tagsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.tagsLabel {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--slate-500);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tagsIcon {
+    font-size: 0.65rem;
+}
+
+.tagsCloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tagButton {
+    padding: 4px 12px;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 6px;
+    color: var(--slate-400);
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.tagButton:hover {
+    border-color: rgba(34, 211, 238, 0.3);
+    color: var(--cyan-powa);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   BOTÓN VOLVER ARRIBA
+   ============================================ */
+.scrollTopButton {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 48px;
+    height: 48px;
+    background: rgba(34, 211, 238, 0.1);
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    border-radius: 12px;
+    color: var(--cyan-powa);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(12px);
+}
+
+.scrollTopButton:hover {
+    background: rgba(34, 211, 238, 0.2);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 30px rgba(34, 211, 238, 0.15);
+}
+
+/* ============================================
+   ARTÍCULOS RELACIONADOS
+   ============================================ */
+.relatedSection {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.relatedTitle {
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+}
+
+.relatedLink {
+    text-decoration: none !important;
+}
+
+.relatedCard {
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    padding: 16px;
+    height: 100%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.relatedCard:hover {
+    border-color: rgba(34, 211, 238, 0.3);
+    transform: translateY(-4px);
+    background: rgba(15, 23, 42, 0.6);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.relatedEmoji {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.relatedPostTitle {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+.relatedReadMore {
+    color: var(--cyan-powa);
+    font-size: 0.7rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.relatedCard:hover .relatedReadMore {
+    transform: translateX(4px);
+}
+
+/* ============================================
+   CLEAR SEARCH
+   ============================================ */
+.clearSearch {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-radius: 50%;
+    color: var(--slate-500);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.clearSearch:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+/* ============================================
+   RESPONSIVE ADICIONES
+   ============================================ */
+@media (max-width: 768px) {
+    .tagsWrapper {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .scrollTopButton {
+        bottom: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        font-size: 1rem;
+    }
+
+    .relatedCard {
+        padding: 12px;
+    }
+
+    .relatedPostTitle {
+        font-size: 0.8rem;
+    }
+
+    .relatedEmoji {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .scrollTopButton {
+        bottom: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+        font-size: 0.9rem;
+    }
+
+    .tagsCloud {
+        gap: 4px;
+    }
+
+    .tagButton {
+        font-size: 0.6rem;
+        padding: 3px 8px;
+    }
+}
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 

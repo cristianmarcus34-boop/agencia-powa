@@ -6,7 +6,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import {
     FaArrowLeft, FaCalendarAlt, FaUserCircle, FaWhatsapp,
     FaClock, FaShareAlt, FaCopy, FaCheck, FaTag,
-    FaTwitter, FaLinkedin, FaLink
+    FaTwitter, FaLinkedin, FaLink, FaArrowUp
 } from 'react-icons/fa';
 import Link from 'next/link';
 import { blogPosts } from '../../../data/posts';
@@ -18,8 +18,22 @@ export default function PostPage() {
     const params = useParams();
     const postId = params?.id;
     const [copied, setCopied] = useState(false);
+    const [showScrollTop, setShowScrollTop] = useState(false);
 
     const post = blogPosts.find((p) => p.id === postId);
+
+    // ===== SCROLL TOP =====
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowScrollTop(window.scrollY > 500);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     // Scroll al inicio
     useEffect(() => {
@@ -51,7 +65,12 @@ export default function PostPage() {
         window.open(urls[platform], '_blank', 'width=600,height=400');
     };
 
-    // ===== SCHEMA PARA EL POST =====
+    // ===== ARTÍCULOS RELACIONADOS =====
+    const relatedPosts = post ? blogPosts
+        .filter(p => p.id !== post.id && p.category === post.category)
+        .slice(0, 3) : [];
+
+    // ===== SCHEMA =====
     const postSchema = post ? {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
@@ -110,7 +129,7 @@ export default function PostPage() {
                                 <FaArrowLeft className="me-2" size={14} /> Volver a Insights
                             </Link>
 
-                            {/* ===== CABECERA DEL ARTÍCULO ===== */}
+                            {/* ===== CABECERA ===== */}
                             <header className="mb-5">
                                 <div className={styles.postHeader}>
                                     <span className={`${styles.postCategory} mb-3 d-inline-block`}>
@@ -141,7 +160,7 @@ export default function PostPage() {
                                 </div>
                             </header>
 
-                            {/* ===== CUERPO DEL ARTÍCULO ===== */}
+                            {/* ===== CUERPO ===== */}
                             <article className={styles.articleContainer}>
                                 <div className={styles.articleHeroEmoji} aria-hidden="true">
                                     {post.emoji}
@@ -153,7 +172,7 @@ export default function PostPage() {
                                 />
                             </article>
 
-                            {/* ===== BOTONES DE COMPARTIR ===== */}
+                            {/* ===== COMPARTIR ===== */}
                             <div className={styles.shareSection}>
                                 <span className={styles.shareLabel}>Compartir este artículo</span>
                                 <div className={styles.shareButtons}>
@@ -181,6 +200,28 @@ export default function PostPage() {
                                 </div>
                             </div>
 
+                            {/* ===== ARTÍCULOS RELACIONADOS ===== */}
+                            {relatedPosts.length > 0 && (
+                                <section className={styles.relatedSection}>
+                                    <h3 className={styles.relatedTitle}>
+                                        📚 Artículos relacionados
+                                    </h3>
+                                    <Row className="g-3">
+                                        {relatedPosts.map((related) => (
+                                            <Col md={4} key={related.id}>
+                                                <Link href={`/blog/${related.id}`} className={styles.relatedLink}>
+                                                    <div className={styles.relatedCard}>
+                                                        <span className={styles.relatedEmoji}>{related.emoji}</span>
+                                                        <h4 className={styles.relatedPostTitle}>{related.title}</h4>
+                                                        <span className={styles.relatedReadMore}>Leer más →</span>
+                                                    </div>
+                                                </Link>
+                                            </Col>
+                                        ))}
+                                    </Row>
+                                </section>
+                            )}
+
                             {/* ===== CTA FINAL ===== */}
                             <div className={styles.postCtaBox}>
                                 <div className={styles.ctaContent}>
@@ -205,6 +246,17 @@ export default function PostPage() {
                         </Col>
                     </Row>
                 </Container>
+
+                {/* ===== BOTÓN VOLVER ARRIBA ===== */}
+                {showScrollTop && (
+                    <button
+                        onClick={scrollToTop}
+                        className={styles.scrollTopButton}
+                        aria-label="Volver arriba"
+                    >
+                        <FaArrowUp />
+                    </button>
+                )}
             </div>
         </>
     );

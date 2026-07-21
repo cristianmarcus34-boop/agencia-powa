@@ -110,9 +110,6 @@ const SERVICES_DATA: ServiceData[] = [
       "🔄 Iteración continua"
     ]
   },
-  // ============================================================ //
-  // 🚀 NUEVOS SERVICIOS PARA EMPRENDEDORES
-  // ============================================================ //
   {
     icon: <FaRocket />,
     title: "Lanzamiento de Micro-SaaS",
@@ -219,7 +216,6 @@ const ServiceCardItem = ({ service, index }: ServiceCardProps) => {
             <div>
               <p className={styles.fullDescription}>{fullDescription}</p>
 
-              {/* Beneficios destacados */}
               <div className={styles.benefitsList}>
                 {benefits.map((benefit, idx) => (
                   <span key={idx} className={styles.benefitItem}>
@@ -243,7 +239,7 @@ const ServiceCardItem = ({ service, index }: ServiceCardProps) => {
           aria-expanded={isExpanded}
           aria-controls={`service-desc-${index}`}
         >
-          <span>{isExpanded ? 'COLAPSAR' : 'EXPLORAR SOLUCIÓN'}</span>
+          <span>{isExpanded ? 'MENOS DETALLES' : 'VER MÁS'}</span>
           <FaChevronDown className={`${styles.iconChevron} ${isExpanded ? styles.rotate180 : ''}`} />
         </button>
       </div>
@@ -252,12 +248,20 @@ const ServiceCardItem = ({ service, index }: ServiceCardProps) => {
 };
 
 export default function ServicesPage() {
-  // Stats de impacto
-  const impactStats = [
-    { value: "99.9%", label: "Uptime Garantizado", icon: <FaClock /> },
-    { value: "<1s", label: "Tiempo de Carga", icon: <FaRocket /> },
-    { value: "24+", label: "Proyectos Entregados", icon: <FaAward /> },
-    { value: "100%", label: "Propiedad Intelectual", icon: <FaShieldAlt /> }
+  // 🔥 TRUST SIGNALS (reemplaza stats falsas)
+  const trustSignals = [
+    { text: "✅ Código 100% tuyo", icon: <FaShieldAlt /> },
+    { text: "✅ Entregas cada 15 días", icon: <FaClock /> },
+    { text: "✅ Sin dependencia tecnológica", icon: <FaHandshake /> },
+    { text: "✅ Soporte post-lanzamiento", icon: <FaRocket /> }
+  ];
+
+  // FAQ de confianza
+  const faqTrust = [
+    { q: "¿El código es mío al finalizar?", a: "Sí. Te entregamos el repositorio completo con toda la propiedad intelectual. No quedás atado a nosotros." },
+    { q: "¿Puedo ver avances durante el desarrollo?", a: "Sí. Hacemos entregas parciales cada 15 días para que veas el progreso y puedas hacer ajustes a tiempo." },
+    { q: "¿Qué pasa si necesito cambios después del lanzamiento?", a: "Ofrecemos planes de mantenimiento flexibles. También te capacitamos para que puedas hacer cambios simples vos mismo." },
+    { q: "No tengo mucho presupuesto, ¿pueden ayudarme?", a: "Sí. Trabajamos con pagos escalonados y priorizamos features para que puedas lanzar con lo esencial y crecer después." }
   ];
 
   return (
@@ -275,14 +279,13 @@ export default function ServicesPage() {
           </p>
         </header>
 
-        {/* ===== STATS DE IMPACTO ===== */}
-        <Row className="g-4 mb-5">
-          {impactStats.map((stat, index) => (
-            <Col key={index} xs={6} md={3}>
-              <div className={styles.statCard}>
-                <div className={styles.statIcon}>{stat.icon}</div>
-                <div className={styles.statValue}>{stat.value}</div>
-                <div className={styles.statLabel}>{stat.label}</div>
+        {/* ===== TRUST SIGNALS (reemplaza stats) ===== */}
+        <Row className="g-3 mb-5">
+          {trustSignals.map((item, index) => (
+            <Col key={index} xs={12} sm={6} md={3}>
+              <div className={styles.trustSignalCard}>
+                <div className={styles.trustSignalIcon}>{item.icon}</div>
+                <div className={styles.trustSignalText}>{item.text}</div>
               </div>
             </Col>
           ))}
@@ -302,6 +305,97 @@ export default function ServicesPage() {
               </Col>
             ))}
           </Row>
+        </section>
+
+        {/* ===== SECCIÓN: PARA QUIÉN ES POWA ===== */}
+        <section className="my-5">
+          <div className="text-center mb-4">
+            <span className={styles.badgePowa}>A QUIÉNES AYUDAMOS</span>
+            <h2 className={styles.titleMain}>
+              ¿Tu negocio encaja con <span className={styles.textGradient}>POWA</span>?
+            </h2>
+            <p className={styles.subtitle} style={{ marginBottom: 0 }}>
+              Trabajamos con personas y empresas que necesitan tecnología para crecer.
+            </p>
+          </div>
+          <Row className="g-4">
+            <Col md={4}>
+              <div className={styles.audienceCard}>
+                <div className={styles.audienceIcon}>🚀</div>
+                <h3 className={styles.audienceTitle}>Emprendedores</h3>
+                <p className={styles.audienceDesc}>
+                  Tenés una idea y necesitás validarla con un MVP profesional, sin gastar una fortuna ni perder tiempo en tecnología.
+                </p>
+              </div>
+            </Col>
+            <Col md={4}>
+              <div className={styles.audienceCard}>
+                <div className={styles.audienceIcon}>🏢</div>
+                <h3 className={styles.audienceTitle}>Empresas con web obsoleta</h3>
+                <p className={styles.audienceDesc}>
+                  Tu sitio actual es lento, no convierte o no se ve bien en celular. Necesitás un upgrade urgente para no perder ventas.
+                </p>
+              </div>
+            </Col>
+            <Col md={4}>
+              <div className={styles.audienceCard}>
+                <div className={styles.audienceIcon}>🛒</div>
+                <h3 className={styles.audienceTitle}>Negocios que quieren vender online</h3>
+                <p className={styles.audienceDesc}>
+                  Ya tenés clientes, pero querés escalar con un e-commerce o plataforma de servicios que funcione 24/7.
+                </p>
+              </div>
+            </Col>
+          </Row>
+        </section>
+
+        {/* ===== SECCIÓN: SIN RIESGO ===== */}
+        <section className="my-5">
+          <div className={styles.riskFreeSection}>
+            <Row className="align-items-center g-4">
+              <Col lg={5}>
+                <span className={styles.badgePowa}>GARANTÍA POWA</span>
+                <h2 className={styles.titleMain} style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)' }}>
+                  Empezar con <span className={styles.textGradient}>POWA</span> es sin riesgo
+                </h2>
+                <p className={styles.subtitle} style={{ marginBottom: 0 }}>
+                  No creemos en contratos que te aten. Creemos en resultados que te hagan querer quedarte.
+                </p>
+              </Col>
+              <Col lg={7}>
+                <div className={styles.riskFreeGrid}>
+                  <div className={styles.riskFreeItem}>
+                    <FaCheckCircle className={styles.riskFreeIcon} />
+                    <div>
+                      <h4>Sin permanencia</h4>
+                      <p>Podés cancelar cuando quieras. No hay multas ni contratos de fidelización.</p>
+                    </div>
+                  </div>
+                  <div className={styles.riskFreeItem}>
+                    <FaCheckCircle className={styles.riskFreeIcon} />
+                    <div>
+                      <h4>Pago por hitos</h4>
+                      <p>Pagás a medida que avanzamos. No ponés todo el dinero al inicio.</p>
+                    </div>
+                  </div>
+                  <div className={styles.riskFreeItem}>
+                    <FaCheckCircle className={styles.riskFreeIcon} />
+                    <div>
+                      <h4>Código 100% tuyo</h4>
+                      <p>Te llevás todo al finalizar. No dependés de nosotros para nada.</p>
+                    </div>
+                  </div>
+                  <div className={styles.riskFreeItem}>
+                    <FaCheckCircle className={styles.riskFreeIcon} />
+                    <div>
+                      <h4>Consulta gratuita</h4>
+                      <p>Sin compromiso. Analizamos tu proyecto y te damos un plan claro.</p>
+                    </div>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </div>
         </section>
 
         {/* ===== SECCIÓN: EL PROCESO TÉCNICO BLINDADO ===== */}
@@ -384,21 +478,41 @@ export default function ServicesPage() {
                   <div className={styles.whyUsBadge}>
                     <FaHandshake className={styles.whyUsBadgeIcon} />
                     <div>
-                      <strong>24+</strong>
-                      <span>clientes satisfechos</span>
+                      <strong>Fundador</strong>
+                      <span>de agencia digital POWA</span>
                     </div>
                   </div>
                   <div className={styles.whyUsBadge}>
                     <FaBrain className={styles.whyUsBadgeIcon} />
                     <div>
-                      <strong>24+</strong>
-                      <span>proyectos entregados</span>
+                      <strong>Fullstack</strong>
+                      <span>Next.js · TypeScript · Node.js</span>
                     </div>
                   </div>
                 </div>
               </Col>
             </Row>
           </div>
+        </section>
+
+        {/* ===== MINI FAQ DE CONFIANZA ===== */}
+        <section className="my-5">
+          <div className="text-center mb-4">
+            <span className={styles.badgePowa}>PREGUNTAS FRECUENTES</span>
+            <h2 className={styles.titleMain} style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)' }}>
+              Lo que siempre preguntan <span className={styles.textGradient}>antes de empezar</span>
+            </h2>
+          </div>
+          <Row className="g-3">
+            {faqTrust.map((faq, idx) => (
+              <Col key={idx} md={6}>
+                <div className={styles.miniFaqItem}>
+                  <h4 className={styles.miniFaqQ}>❓ {faq.q}</h4>
+                  <p className={styles.miniFaqA}>{faq.a}</p>
+                </div>
+              </Col>
+            ))}
+          </Row>
         </section>
 
         {/* ===== BANNER ESTRATÉGICO DE REDIRECCIÓN A FAQ ===== */}
@@ -437,7 +551,7 @@ export default function ServicesPage() {
             </div>
             <div className={styles.ctaActions}>
               <Link href="/contact" className={`text-decoration-none ${styles.btnPowaMain}`}>
-                INICIAR PROYECTO <FaRocket className="ms-2" />
+                RESERVÁ TU CONSULTORÍA GRATIS <FaRocket className="ms-2" />
               </Link>
               <a
                 href="https://wa.me/5491138305837"
