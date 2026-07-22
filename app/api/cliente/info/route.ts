@@ -1,11 +1,9 @@
+// app/api/cliente/info/route.ts
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../lib/auth'; // ✅ Importación correcta
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+import { authOptions } from '../../../lib/auth';
+// app/api/cliente/info/route.ts
+import { createClient } from '../../../lib/server'; // ✅ Ruta correcta
 
 export async function GET() {
     try {
@@ -18,21 +16,23 @@ export async function GET() {
             );
         }
 
-        const { data: cliente, error } = await supabase
-            .from('clientes')
-            .select('id, nombre_empresa, nombre_contacto, email, telefono, sitio_web, industria, tamaño_empresa')
-            .eq('usuario_id', session.user.id)
+        const supabase = createClient();
+
+        const { data: usuario, error } = await supabase
+            .from('usuarios')
+            .select('id, email, nombre_completo, nombre_empresa, telefono, sitio_web, industria, tamaño_empresa, rol, activo')
+            .eq('id', session.user.id)
             .single();
 
         if (error) {
-            console.error('Error al obtener cliente:', error);
+            console.error('Error al obtener usuario:', error);
             return NextResponse.json(
-                { success: false, error: 'Cliente no encontrado' },
+                { success: false, error: 'Usuario no encontrado' },
                 { status: 404 }
             );
         }
 
-        return NextResponse.json({ success: true, data: cliente });
+        return NextResponse.json({ success: true, data: usuario });
     } catch (error) {
         console.error('Error en API:', error);
         return NextResponse.json(

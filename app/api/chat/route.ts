@@ -8,7 +8,7 @@ import {
   guardarMensaje,
   obtenerUltimosMensajes,
   guardarMetrica
-} from '../../lib/supabase';
+} from '../../lib/supabase/functions';
 
 export const runtime = 'edge';
 
@@ -159,8 +159,8 @@ export async function POST(req: Request) {
       history?: ChatMessageInput[];
       profile?: "gastronomia" | "empresa_emprendedor" | "senior_software";
       conversacionId?: string;
-      usuarioId?: string; // 🔥 AGREGADO
-      esAdmin?: boolean; // 🔥 AGREGADO
+      usuarioId?: string;
+      esAdmin?: boolean;
     };
 
     console.log('📧 Message:', message);
@@ -179,8 +179,8 @@ export async function POST(req: Request) {
       try {
         const nuevaConversacion = await crearConversacion(
           profile || 'empresa_emprendedor',
-          usuarioId, // 🔥 PASAR USUARIO ID
-          esAdmin // 🔥 PASAR SI ES ADMIN
+          usuarioId,
+          esAdmin
         );
         chatId = nuevaConversacion.id;
         console.log('✅ Conversación creada:', chatId);

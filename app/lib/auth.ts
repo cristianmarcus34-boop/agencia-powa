@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         console.log('========================================');
-        console.log('🔍 INTENTANDO LOGIN CON SUPABASE AUTH');
+        console.log('🔍 INTENTANDO LOGIN');
         console.log('📧 Email:', credentials?.email);
 
         if (!credentials?.email || !credentials?.password) {
@@ -37,19 +37,21 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
+          // ✅ Usar Supabase para autenticar (simple!)
           const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
             email: credentials.email,
             password: credentials.password,
           });
 
           if (authError || !authData.user) {
-            console.log('❌ Error de autenticación en Supabase:', authError);
+            console.log('❌ Error de autenticación en Supabase:', authError?.message);
             return null;
           }
 
           console.log('✅ Autenticación exitosa en Supabase');
           console.log('👤 User ID:', authData.user.id);
 
+          // Obtener datos del usuario desde la tabla 'usuarios'
           const { data: usuario, error: usuarioError } = await supabase
             .from('usuarios')
             .select('*')
@@ -68,9 +70,9 @@ export const authOptions: NextAuthOptions = {
 
           return {
             id: authData.user.id,
-            email: authData.user.email,
-            name: usuario.nombre_completo,
-            rol: usuario.rol,
+            email: authData.user.email!,
+            name: usuario.nombre_completo || usuario.nombre_contacto || usuario.nombre_empresa || 'Usuario',
+            rol: usuario.rol || 'cliente',
           };
 
         } catch (error) {
@@ -100,7 +102,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/login',
-    signOut: '/logout',  // ← 🔥 AGREGAR ESTA LÍNEA
+    signOut: '/logout',
     error: '/login',
   },
   session: {
