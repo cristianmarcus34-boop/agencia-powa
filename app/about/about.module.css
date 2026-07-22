@@ -10,6 +10,8 @@
   --slate-600: #475569;
 }
 
+
+
 /* ===== WRAPPER ===== */
 .aboutWrapper {
   background-color: var(--dark-powa);
@@ -17,6 +19,8 @@
   padding-top: 120px;
   overflow-x: hidden;
   position: relative;
+  box-sizing: border-box;
+  /* ✅ Agregado aquí */
   background-image:
     radial-gradient(circle at 15% 25%, rgba(0, 242, 254, 0.04) 0%, transparent 45%),
     radial-gradient(circle at 85% 75%, rgba(0, 242, 254, 0.04) 0%, transparent 45%);
@@ -84,6 +88,18 @@
   z-index: 1;
 }
 
+.pulseRingSecondary {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  border-radius: 50%;
+  border: 1px solid rgba(34, 211, 238, 0.05);
+  animation: pulseRing 3s ease-in-out infinite 0.5s;
+  z-index: 0;
+}
+
 @keyframes pulseRing {
 
   0%,
@@ -109,6 +125,10 @@
   text-transform: uppercase;
   letter-spacing: 2.5px;
   display: inline-block;
+}
+
+.badgeIcon {
+  margin-right: 6px;
 }
 
 .aboutHeaderTitle {
@@ -186,6 +206,15 @@
 .heroButtonIcon {
   font-size: 1.1rem;
   color: var(--cyan-powa);
+}
+
+.heroButtonArrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.heroButton:hover .heroButtonArrow {
+  transform: translateX(4px);
 }
 
 /* ===== ESTADÍSTICAS ===== */
@@ -297,6 +326,19 @@
   margin-right: 12px;
 }
 
+.profileIconWrapper {
+  width: 40px;
+  height: 40px;
+  background: rgba(34, 211, 238, 0.08);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cyan-powa);
+  font-size: 1.2rem;
+  margin-right: 12px;
+}
+
 .profileName {
   font-weight: 800;
   font-size: 2.2rem;
@@ -372,6 +414,91 @@
   transform: rotate(360deg) scale(1.15);
 }
 
+/* ===== TECH SECTION ===== */
+.techSection {
+  margin: 4rem 0;
+}
+
+.techCard {
+  background: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  padding: 20px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  min-height: 72px;
+}
+
+.techCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(34, 211, 238, 0.2);
+  background: rgba(15, 23, 42, 0.5);
+  box-shadow: 0 8px 30px rgba(34, 211, 238, 0.08);
+}
+
+.techIcon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.techName {
+  color: #e2e8f0;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ===== TESTIMONIALS SECTION ===== */
+.testimonialsSection {
+  margin: 4rem 0;
+}
+
+.testimonialCard {
+  background: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
+  padding: 32px 28px;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.testimonialCard:hover {
+  border-color: rgba(34, 211, 238, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.testimonialQuoteIcon {
+  color: var(--gold-powa);
+  font-size: 1.2rem;
+  opacity: 0.4;
+  margin-bottom: 12px;
+}
+
+.testimonialText {
+  color: var(--slate-300);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  font-style: italic;
+  margin-bottom: 16px;
+}
+
+.testimonialAuthor {
+  display: flex;
+  flex-direction: column;
+}
+
+.testimonialAuthor strong {
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.testimonialAuthor span {
+  color: var(--slate-400);
+  font-size: 0.8rem;
+}
+
 /* ===== SECCIÓN DE VALORES ===== */
 .valuesSection {
   margin: 5rem 0 4rem;
@@ -383,7 +510,8 @@
 }
 
 .sectionBadge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   padding: 4px 14px;
   background: rgba(34, 211, 238, 0.05);
   border: 1px solid rgba(34, 211, 238, 0.1);
@@ -394,6 +522,11 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 1rem;
+}
+
+.sectionBadgeIcon {
+  margin-right: 6px;
+  font-size: 0.6rem;
 }
 
 .sectionTitle {
@@ -549,7 +682,18 @@
   font-size: 1.2rem;
 }
 
-/* ===== ANIMACIONES ===== */
+.ctaButtonArrow {
+  font-size: 0.9rem;
+  transition: transform 0.3s ease;
+}
+
+.ctaButton:hover .ctaButtonArrow {
+  transform: translateX(4px);
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
 @keyframes floating {
 
   0%,
@@ -574,7 +718,11 @@
   }
 }
 
-/* ===== RESPONSIVE ===== */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Tablet y pantallas medianas */
 @media (max-width: 992px) {
   .profileImgFrame {
     min-height: 380px;
@@ -594,8 +742,21 @@
   .statValue {
     font-size: 1.8rem;
   }
+
+  .techCard {
+    padding: 16px 14px;
+  }
+
+  .techIcon {
+    font-size: 1.6rem;
+  }
+
+  .techName {
+    font-size: 0.8rem;
+  }
 }
 
+/* Móviles */
 @media (max-width: 768px) {
   .aboutWrapper {
     padding-top: 80px;
@@ -608,6 +769,10 @@
   .profileGlassCard {
     border-radius: 28px;
     margin-bottom: 2.5rem;
+  }
+
+  .profileGlassCard:hover {
+    transform: translateY(-4px);
   }
 
   .profileName {
@@ -639,5 +804,227 @@
     height: 38px;
     bottom: 0px;
     right: 0px;
+  }
+
+  .flex-row-reverse {
+    flex-direction: column !important;
+  }
+
+  .techCard {
+    padding: 14px 12px;
+    min-height: 60px;
+  }
+
+  .techIcon {
+    font-size: 1.4rem;
+  }
+
+  .techName {
+    font-size: 0.75rem;
+  }
+
+  .testimonialCard {
+    padding: 24px 20px;
+  }
+
+  .testimonialText {
+    font-size: 0.85rem;
+  }
+
+  .profileIconWrapper {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+
+  .profileBio {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+  }
+
+  .valueCard {
+    padding: 24px 20px;
+  }
+
+  .processStep {
+    padding: 16px 12px;
+  }
+
+  .finalCTA {
+    padding: 32px 20px;
+  }
+
+  .ctaTitle {
+    font-size: 1.3rem;
+  }
+
+  .ctaButton {
+    font-size: 0.95rem;
+    padding: 14px 28px;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .aboutWrapper {
+    padding-top: 60px;
+  }
+
+  .aboutHeaderTitle {
+    font-size: 1.8rem;
+  }
+
+  .badgePowa {
+    font-size: 0.6rem;
+    padding: 4px 12px;
+  }
+
+  .aboutHeroLogo {
+    width: 120px;
+    height: 120px;
+  }
+
+  .heroButton {
+    font-size: 0.85rem;
+    padding: 12px 24px;
+  }
+
+  .techCard {
+    padding: 10px 8px;
+    gap: 6px;
+    min-height: 56px;
+    border-radius: 10px;
+  }
+
+  .techIcon {
+    font-size: 1.2rem;
+  }
+
+  .techName {
+    font-size: 0.65rem;
+  }
+
+  .testimonialCard {
+    padding: 20px 16px;
+  }
+
+  .testimonialText {
+    font-size: 0.8rem;
+  }
+
+  .testimonialQuoteIcon {
+    font-size: 1rem;
+  }
+
+  .statCard {
+    padding: 16px 12px;
+    border-radius: 12px;
+  }
+
+  .statValue {
+    font-size: 1.4rem;
+  }
+
+  .statIcon {
+    font-size: 1.5rem;
+  }
+
+  .statLabel {
+    font-size: 0.7rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.6rem;
+  }
+
+  .sectionSubtitle {
+    font-size: 0.9rem;
+  }
+
+  .valueCard {
+    padding: 20px 16px;
+  }
+
+  .valueIcon {
+    font-size: 2rem;
+  }
+
+  .valueTitle {
+    font-size: 1rem;
+  }
+
+  .valueDescription {
+    font-size: 0.85rem;
+  }
+
+  .stepNumber {
+    font-size: 2rem;
+  }
+
+  .stepIcon {
+    font-size: 1.5rem;
+  }
+
+  .stepTitle {
+    font-size: 0.9rem;
+  }
+
+  .stepDescription {
+    font-size: 0.8rem;
+  }
+
+  .finalCTA {
+    padding: 24px 16px;
+    border-radius: 16px;
+  }
+
+  .ctaTitle {
+    font-size: 1.1rem;
+  }
+
+  .ctaText {
+    font-size: 0.9rem;
+  }
+
+  .ctaButton {
+    font-size: 0.85rem;
+    padding: 12px 20px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .profileName {
+    font-size: 1.3rem;
+  }
+
+  .profileRole {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+  }
+
+  .profileBio {
+    font-size: 0.85rem !important;
+    margin-top: 1rem;
+  }
+
+  .profileImgFrame {
+    min-height: 200px;
+  }
+
+  .cornerLogo {
+    width: 30px;
+    height: 30px;
+    bottom: 0px;
+    right: 0px;
+  }
+
+  .expertiseTags {
+    gap: 6px;
+    margin-top: 16px;
+  }
+
+  .expertiseTags span {
+    font-size: 0.6rem;
+    padding: 4px 10px;
   }
 }

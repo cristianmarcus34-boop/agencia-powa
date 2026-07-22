@@ -24,11 +24,11 @@ import styles from './lab.module.css';
 // ============================================
 // TIPOS
 // ============================================
-type ToolType = 'optimizer' | 'roi' | 'video' | 'svg' | 'vitals' | 'schema' | 'font' | null;
+type ToolType = 'optimizer' | 'roi' | 'video' | 'svg' | 'vitals' | 'schema' | 'font';
 
 export default function LabPage() {
-  // ===== STATE CON TIPOS =====
-  const [activeTool, setActiveTool] = useState<ToolType>('optimizer');
+  // ===== STATE =====
+  const [activeTool, setActiveTool] = useState<ToolType | null>('optimizer');
   const [feedbackEmail, setFeedbackEmail] = useState<string>('');
   const [feedbackMessage, setFeedbackMessage] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
@@ -52,9 +52,9 @@ export default function LabPage() {
     }
   }, [searchParams]);
 
-  // ===== HANDLERS CON TIPOS =====
-  const toggleTool = (tool: Exclude<ToolType, null>): void => {
-    setActiveTool(activeTool === tool ? null : tool);
+  // ===== HANDLERS =====
+  const toggleTool = (toolId: string): void => {
+    setActiveTool(activeTool === toolId ? null : toolId as ToolType);
   };
 
   const handleFeedbackEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -71,7 +71,6 @@ export default function LabPage() {
     setIsLoading(true);
     setErrorMessage('');
 
-    // Validar mensaje (obligatorio)
     if (!feedbackMessage.trim()) {
       setErrorMessage('Por favor, describí tu idea.');
       setIsLoading(false);
@@ -134,6 +133,66 @@ https://agencia-powa.vercel.app/lab
     { value: "Open", label: "Beta Pública", icon: <FaRocket /> }
   ];
 
+  // ===== INFO TIPS POR HERRAMIENTA =====
+  const toolTips: Record<ToolType, { icon: React.ReactNode; title: string; text: string }> = {
+    optimizer: {
+      icon: <FaImages />,
+      title: "💡 Tip Powa:",
+      text: "Las imágenes optimizadas pueden mejorar la velocidad de carga en un <strong>60%</strong>, impactando directamente en tus conversiones."
+    },
+    roi: {
+      icon: <FaChartLine />,
+      title: "📊 Métrica Clave:",
+      text: "Un ROI positivo es el indicador más importante de que tu estrategia digital está funcionando."
+    },
+    video: {
+      icon: <FaCode />,
+      title: "⚙️ Tecnología Powa:",
+      text: "Utilizamos <strong>WebAssembly</strong> para procesar el video directamente en tu hardware, garantizando <strong>100% de privacidad</strong>."
+    },
+    svg: {
+      icon: <FaCode />,
+      title: "🎨 Optimización de SVG:",
+      text: "Reduce el peso de tus gráficos vectoriales eliminando metadatos innecesarios y optimizando la estructura del código."
+    },
+    vitals: {
+      icon: <FaRocket />,
+      title: "🚀 Core Web Vitals:",
+      text: "Google utiliza estas métricas para posicionar tu sitio. Mejora tu LCP, FID y CLS para dominar los buscadores."
+    },
+    schema: {
+      icon: <FaStar />,
+      title: "⭐ Schema Markup:",
+      text: "Los datos estructurados mejoran tu visibilidad en Google y aumentan el CTR de tus resultados de búsqueda."
+    },
+    font: {
+      icon: <FaCloudUploadAlt />,
+      title: "🔤 Fuentes Optimizadas:",
+      text: "Las fuentes web pueden sumar hasta 500ms al tiempo de carga. Optimizamos su carga para una experiencia instantánea."
+    }
+  };
+
+  // ===== HERRAMIENTAS CONFIG =====
+  const tools: { id: ToolType; icon: React.ReactNode; title: string; subtitle: string; status: string; color: string }[] = [
+    { id: 'optimizer', icon: <FaImages />, title: 'Image Optimizer v1.0', subtitle: 'Reducción de peso sin pérdida de fidelidad', status: 'Activo', color: '#10b981' },
+    { id: 'roi', icon: <FaCalculator />, title: 'ROI Business Metrics', subtitle: 'Calculá tu retorno de inversión en segundos', status: '💰 Nuevo', color: '#f59e0b' },
+    { id: 'video', icon: <FaVideo />, title: 'Video Core Engine', subtitle: 'Compresión de video ultra-rápida (WASM)', status: 'Beta', color: '#8b5cf6' },
+    { id: 'svg', icon: <FaImage />, title: 'SVG Optimizer', subtitle: 'Compresión de gráficos vectoriales sin pérdida', status: 'Nuevo', color: '#22d3ee' },
+    { id: 'vitals', icon: <FaTachometerAlt />, title: 'Core Web Vitals Analyzer', subtitle: 'Mide el rendimiento de tu sitio en tiempo real', status: 'Nuevo', color: '#f472b6' },
+    { id: 'schema', icon: <FaFileCode />, title: 'Schema Markup Generator', subtitle: 'Crea datos estructurados para SEO en segundos', status: 'Nuevo', color: '#f59e0b' },
+    { id: 'font', icon: <FaFont />, title: 'Font Optimizer', subtitle: 'Carga de fuentes web optimizada y eficiente', status: 'Nuevo', color: '#10b981' }
+  ];
+
+  const toolComponents: Record<ToolType, React.ReactNode> = {
+    optimizer: <ImageOptimizer />,
+    roi: <RoiCalculator />,
+    video: <VideoCompressor />,
+    svg: <SvgOptimizer />,
+    vitals: <WebVitalsAnalyzer />,
+    schema: <SchemaGenerator />,
+    font: <FontOptimizer />
+  };
+
   return (
     <div className={styles.labPageWrapper}>
       {/* ===== GLOW AMBIENTAL ===== */}
@@ -185,242 +244,47 @@ https://agencia-powa.vercel.app/lab
               <span className={styles.dividerLine} />
             </div>
 
-            {/* ===== TOOL 1: IMAGE OPTIMIZER ===== */}
-            <div className={`${styles.labAccordionItem} ${activeTool === 'optimizer' ? styles.active : ''}`}>
-              <div className={styles.labAccordionHeader} onClick={() => toggleTool('optimizer')}>
-                <div className="d-flex align-items-center">
-                  <div className={`${styles.iconCircle} me-3`}>
-                    <FaImages />
-                  </div>
-                  <div>
-                    <h4 className="mb-0 text-white">Image Optimizer v1.0</h4>
-                    <small className={styles.labSubtitleCustom}>
-                      Reducción de peso sin pérdida de fidelidad
-                    </small>
-                  </div>
-                </div>
-                <div className={styles.headerRight}>
-                  <span className={styles.toolStatus}>Activo</span>
-                  {activeTool === 'optimizer' ? <FaChevronUp /> : <FaChevronDown />}
-                </div>
-              </div>
-
-              {activeTool === 'optimizer' && (
-                <div className={styles.labAccordionBody}>
-                  <div className={styles.infoBoxLab}>
-                    <FaShieldAlt className={styles.infoIcon} />
+            {/* ===== HERRAMIENTAS ===== */}
+            {tools.map((tool) => (
+              <div
+                key={tool.id}
+                id={tool.id === 'roi' ? 'roi-tool' : undefined}
+                className={`${styles.labAccordionItem} ${activeTool === tool.id ? styles.active : ''}`}
+              >
+                <div className={styles.labAccordionHeader} onClick={() => toggleTool(tool.id)}>
+                  <div className="d-flex align-items-center">
+                    <div className={`${styles.iconCircle} me-3`} style={{ borderColor: activeTool === tool.id ? tool.color : 'rgba(0,212,255,0.05)' }}>
+                      {tool.icon}
+                    </div>
                     <div>
-                      <strong>💡 Tip Powa:</strong> Las imágenes optimizadas pueden mejorar la velocidad de carga en un <strong>60%</strong>, impactando directamente en tus conversiones.
+                      <h4 className="mb-0 text-white">{tool.title}</h4>
+                      <small className={styles.labSubtitleCustom}>{tool.subtitle}</small>
                     </div>
                   </div>
-                  <ImageOptimizer />
-                </div>
-              )}
-            </div>
-
-            {/* ===== TOOL 2: ROI CALCULATOR ===== */}
-            <div
-              id="roi-tool"
-              className={`${styles.labAccordionItem} ${activeTool === 'roi' ? styles.active : ''}`}
-            >
-              <div className={styles.labAccordionHeader} onClick={() => toggleTool('roi')}>
-                <div className="d-flex align-items-center">
-                  <div className={`${styles.iconCircle} me-3`}>
-                    <FaCalculator />
-                  </div>
-                  <div>
-                    <h4 className="mb-0 text-white">ROI Business Metrics</h4>
-                    <small className={styles.labSubtitleCustom}>
-                      Calculá tu retorno de inversión en segundos
-                    </small>
+                  <div className={styles.headerRight}>
+                    <span className={styles.toolStatus} style={{ color: tool.color, borderColor: tool.color + '44' }}>
+                      {tool.status}
+                    </span>
+                    {activeTool === tool.id ? <FaChevronUp /> : <FaChevronDown />}
                   </div>
                 </div>
-                <div className={styles.headerRight}>
-                  <span className={styles.toolStatus}>💰 Nuevo</span>
-                  {activeTool === 'roi' ? <FaChevronUp /> : <FaChevronDown />}
-                </div>
-              </div>
 
-              {activeTool === 'roi' && (
-                <div className={styles.labAccordionBody}>
-                  <div className={styles.infoBoxLab}>
-                    <FaChartLine className={styles.infoIcon} />
-                    <div>
-                      <strong>📊 Métrica Clave:</strong> Un ROI positivo es el indicador más importante de que tu estrategia digital está funcionando. <br />
-                      <span className={styles.infoHighlight}>"Cada negocio es único. Te ayudamos a calcular cuánto estás perdiendo hoy y cuánto podrías ganar con una solución a medida."</span>
+                {activeTool === tool.id && (
+                  <div className={styles.labAccordionBody}>
+                    <div className={styles.infoBoxLab}>
+                      <span className={styles.infoIcon}>{toolTips[tool.id].icon}</span>
+                      <div>
+                        <strong>{toolTips[tool.id].title}</strong>
+                        <span dangerouslySetInnerHTML={{ __html: toolTips[tool.id].text }} />
+                      </div>
                     </div>
+                    {toolComponents[tool.id]}
                   </div>
-                  <RoiCalculator />
-                </div>
-              )}
-            </div>
-
-            {/* ===== TOOL 3: VIDEO COMPRESSOR ===== */}
-            <div className={`${styles.labAccordionItem} ${activeTool === 'video' ? styles.active : ''}`}>
-              <div className={styles.labAccordionHeader} onClick={() => toggleTool('video')}>
-                <div className="d-flex align-items-center">
-                  <div className={`${styles.iconCircle} me-3`}>
-                    <FaVideo />
-                  </div>
-                  <div>
-                    <h4 className="mb-0 text-white">Video Core Engine</h4>
-                    <small className={styles.labSubtitleCustom}>
-                      Compresión de video ultra-rápida (WASM)
-                    </small>
-                  </div>
-                </div>
-                <div className={styles.headerRight}>
-                  <span className={styles.toolStatus}>Beta</span>
-                  {activeTool === 'video' ? <FaChevronUp /> : <FaChevronDown />}
-                </div>
+                )}
               </div>
+            ))}
 
-              {activeTool === 'video' && (
-                <div className={styles.labAccordionBody}>
-                  <div className={styles.infoBoxLab}>
-                    <FaCode className={styles.infoIcon} />
-                    <div>
-                      <strong>⚙️ Tecnología Powa:</strong> Utilizamos <strong>WebAssembly</strong> para procesar el video directamente en tu hardware, garantizando <strong>100% de privacidad</strong>.
-                    </div>
-                  </div>
-                  <VideoCompressor />
-                </div>
-              )}
-            </div>
-
-            {/* ===== TOOL 4: SVG OPTIMIZER ===== */}
-            <div className={`${styles.labAccordionItem} ${activeTool === 'svg' ? styles.active : ''}`}>
-              <div className={styles.labAccordionHeader} onClick={() => toggleTool('svg')}>
-                <div className="d-flex align-items-center">
-                  <div className={`${styles.iconCircle} me-3`}>
-                    <FaImage />
-                  </div>
-                  <div>
-                    <h4 className="mb-0 text-white">SVG Optimizer</h4>
-                    <small className={styles.labSubtitleCustom}>
-                      Compresión de gráficos vectoriales sin pérdida
-                    </small>
-                  </div>
-                </div>
-                <div className={styles.headerRight}>
-                  <span className={styles.toolStatus}>Nuevo</span>
-                  {activeTool === 'svg' ? <FaChevronUp /> : <FaChevronDown />}
-                </div>
-              </div>
-
-              {activeTool === 'svg' && (
-                <div className={styles.labAccordionBody}>
-                  <div className={styles.infoBoxLab}>
-                    <FaCode className={styles.infoIcon} />
-                    <div>
-                      <strong>🎨 Optimización de SVG:</strong> Reduce el peso de tus gráficos vectoriales eliminando metadatos innecesarios y optimizando la estructura del código.
-                    </div>
-                  </div>
-                  <SvgOptimizer />
-                </div>
-              )}
-            </div>
-
-            {/* ===== TOOL 5: WEB VITALS ANALYZER ===== */}
-            <div className={`${styles.labAccordionItem} ${activeTool === 'vitals' ? styles.active : ''}`}>
-              <div className={styles.labAccordionHeader} onClick={() => toggleTool('vitals')}>
-                <div className="d-flex align-items-center">
-                  <div className={`${styles.iconCircle} me-3`}>
-                    <FaTachometerAlt />
-                  </div>
-                  <div>
-                    <h4 className="mb-0 text-white">Core Web Vitals Analyzer</h4>
-                    <small className={styles.labSubtitleCustom}>
-                      Mide el rendimiento de tu sitio en tiempo real
-                    </small>
-                  </div>
-                </div>
-                <div className={styles.headerRight}>
-                  <span className={styles.toolStatus}>Nuevo</span>
-                  {activeTool === 'vitals' ? <FaChevronUp /> : <FaChevronDown />}
-                </div>
-              </div>
-
-              {activeTool === 'vitals' && (
-                <div className={styles.labAccordionBody}>
-                  <div className={styles.infoBoxLab}>
-                    <FaRocket className={styles.infoIcon} />
-                    <div>
-                      <strong>🚀 Core Web Vitals:</strong> Google utiliza estas métricas para posicionar tu sitio. Mejora tu LCP, FID y CLS para dominar los buscadores.
-                    </div>
-                  </div>
-                  <WebVitalsAnalyzer />
-                </div>
-              )}
-            </div>
-
-            {/* ===== TOOL 6: SCHEMA GENERATOR ===== */}
-            <div className={`${styles.labAccordionItem} ${activeTool === 'schema' ? styles.active : ''}`}>
-              <div className={styles.labAccordionHeader} onClick={() => toggleTool('schema')}>
-                <div className="d-flex align-items-center">
-                  <div className={`${styles.iconCircle} me-3`}>
-                    <FaFileCode />
-                  </div>
-                  <div>
-                    <h4 className="mb-0 text-white">Schema Markup Generator</h4>
-                    <small className={styles.labSubtitleCustom}>
-                      Crea datos estructurados para SEO en segundos
-                    </small>
-                  </div>
-                </div>
-                <div className={styles.headerRight}>
-                  <span className={styles.toolStatus}>Nuevo</span>
-                  {activeTool === 'schema' ? <FaChevronUp /> : <FaChevronDown />}
-                </div>
-              </div>
-
-              {activeTool === 'schema' && (
-                <div className={styles.labAccordionBody}>
-                  <div className={styles.infoBoxLab}>
-                    <FaStar className={styles.infoIcon} />
-                    <div>
-                      <strong>⭐ Schema Markup:</strong> Los datos estructurados mejoran tu visibilidad en Google y aumentan el CTR de tus resultados de búsqueda.
-                    </div>
-                  </div>
-                  <SchemaGenerator />
-                </div>
-              )}
-            </div>
-
-            {/* ===== TOOL 7: FONT OPTIMIZER ===== */}
-            <div className={`${styles.labAccordionItem} ${activeTool === 'font' ? styles.active : ''}`}>
-              <div className={styles.labAccordionHeader} onClick={() => toggleTool('font')}>
-                <div className="d-flex align-items-center">
-                  <div className={`${styles.iconCircle} me-3`}>
-                    <FaFont />
-                  </div>
-                  <div>
-                    <h4 className="mb-0 text-white">Font Optimizer</h4>
-                    <small className={styles.labSubtitleCustom}>
-                      Carga de fuentes web optimizada y eficiente
-                    </small>
-                  </div>
-                </div>
-                <div className={styles.headerRight}>
-                  <span className={styles.toolStatus}>Nuevo</span>
-                  {activeTool === 'font' ? <FaChevronUp /> : <FaChevronDown />}
-                </div>
-              </div>
-
-              {activeTool === 'font' && (
-                <div className={styles.labAccordionBody}>
-                  <div className={styles.infoBoxLab}>
-                    <FaCloudUploadAlt className={styles.infoIcon} />
-                    <div>
-                      <strong>🔤 Fuentes Optimizadas:</strong> Las fuentes web pueden sumar hasta 500ms al tiempo de carga. Optimizamos su carga para una experiencia instantánea.
-                    </div>
-                  </div>
-                  <FontOptimizer />
-                </div>
-              )}
-            </div>
-
-            {/* ===== FEEDBACK SECTION CON WEB3FORMS ===== */}
+            {/* ===== FEEDBACK SECTION ===== */}
             <div className={styles.feedbackSection}>
               <div className={styles.feedbackHeader}>
                 <FaStar className={styles.feedbackIcon} />

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -7,16 +7,67 @@ import {
   FaCode, FaPaintBrush, FaRocket, FaUsers,
   FaShieldAlt, FaClock, FaAward, FaLightbulb,
   FaCheckCircle, FaHeart, FaHandshake, FaStar,
-  FaLaptopCode, FaPalette
+  FaLaptopCode, FaPalette, FaArrowRight, FaQuoteRight,
+  FaMedal, FaReact, FaNodeJs, FaPython, FaDocker,
+  FaDatabase, FaCloud, FaBrain
 } from 'react-icons/fa';
 import Script from 'next/script';
 import styles from './about.module.css';
 
 export default function AboutPage() {
   const [isVisible, setIsVisible] = useState(false);
+  const [counters, setCounters] = useState({ projects: 0, clients: 0, experience: 0 });
   const revealRefs = useRef<(HTMLDivElement | null)[]>([]);
   const statsRef = useRef<HTMLDivElement | null>(null);
+  const [statsAnimated, setStatsAnimated] = useState(false);
 
+  // ===== ANIMACIÓN DE CONTADORES =====
+  useEffect(() => {
+    if (isVisible && !statsAnimated) {
+      setStatsAnimated(true);
+      const duration = 2000;
+      const steps = 60;
+      const interval = duration / steps;
+
+      let currentProjects = 0;
+      let currentClients = 0;
+      let currentExperience = 0;
+      let step = 0;
+
+      const timer = setInterval(() => {
+        step++;
+        const progress = step / steps;
+        const eased = 1 - Math.pow(1 - progress, 3);
+
+        const targetProjects = 24;
+        const targetClients = 24;
+        const targetExperience = 7;
+
+        currentProjects = Math.round(eased * targetProjects);
+        currentClients = Math.round(eased * targetClients);
+        currentExperience = Math.round(eased * targetExperience);
+
+        setCounters({
+          projects: currentProjects,
+          clients: currentClients,
+          experience: currentExperience
+        });
+
+        if (step >= steps) {
+          setCounters({
+            projects: targetProjects,
+            clients: targetClients,
+            experience: targetExperience
+          });
+          clearInterval(timer);
+        }
+      }, interval);
+
+      return () => clearInterval(timer);
+    }
+  }, [isVisible, statsAnimated]);
+
+  // ===== INTERSECTION OBSERVER =====
   useEffect(() => {
     const observerOptions = {
       threshold: 0.15,
@@ -38,6 +89,7 @@ export default function AboutPage() {
     return () => observer.disconnect();
   }, []);
 
+  // ===== STATS OBSERVER =====
   useEffect(() => {
     const statsObserver = new IntersectionObserver(
       (entries) => {
@@ -63,11 +115,12 @@ export default function AboutPage() {
     }
   };
 
+  // ===== DATA =====
   const stats = [
-    { icon: <FaRocket />, value: '24+', label: 'Proyectos Entregados' },
-    { icon: <FaUsers />, value: '24+', label: 'Clientes Satisfechos' },
-    { icon: <FaClock />, value: '7+', label: 'Años de Experiencia' },
-    { icon: <FaAward />, value: '100%', label: 'Compromiso con la Calidad' },
+    { icon: <FaRocket />, value: `${counters.projects}+`, label: 'Proyectos Entregados' },
+    { icon: <FaUsers />, value: `${counters.clients}+`, label: 'Clientes Satisfechos' },
+    { icon: <FaClock />, value: `${counters.experience}+`, label: 'Años de Experiencia' },
+    { icon: <FaAward />, value: '99%', label: 'Satisfacción' },
   ];
 
   const values = [
@@ -93,11 +146,40 @@ export default function AboutPage() {
     },
   ];
 
+  const technologies = [
+    { name: 'React / Next.js', icon: <FaReact />, color: '#61dafb' },
+    { name: 'Node.js', icon: <FaNodeJs />, color: '#68a063' },
+    { name: 'Python / Django', icon: <FaPython />, color: '#3776ab' },
+    { name: 'Docker / Kubernetes', icon: <FaDocker />, color: '#2496ed' },
+    { name: 'PostgreSQL / MongoDB', icon: <FaDatabase />, color: '#336791' },
+    { name: 'AWS / Azure / GCP', icon: <FaCloud />, color: '#ff9900' },
+    // ===== NUEVAS TECNOLOGÍAS =====
+    { name: 'Inteligencia Artificial (OpenAI)', icon: <FaBrain />, color: '#10a37f' },
+    { name: 'TypeScript', icon: <FaCode />, color: '#3178c6' },
+    { name: 'GraphQL', icon: <FaCode />, color: '#e10098' },
+    { name: 'Redis / RabbitMQ', icon: <FaDatabase />, color: '#dc382d' },
+    { name: 'Terraform / IaC', icon: <FaCloud />, color: '#7b42bc' },
+    { name: 'Kubernetes / DevOps', icon: <FaDocker />, color: '#326ce5' },
+  ];
+
+  const testimonials = [
+    {
+      quote: "Powa transformó nuestra plataforma en tiempo récord. La arquitectura que implementaron nos permitió escalar de 500 a 15,000 usuarios sin problemas.",
+      author: "Carlos R.",
+      role: "CEO, FintechPro"
+    },
+    {
+      quote: "El rediseño aumentó nuestras conversiones en un 180%. El equipo entendió perfectamente nuestra audiencia.",
+      author: "Laura M.",
+      role: "CMO, EcomStore"
+    }
+  ];
+
   const aboutSchema = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     "name": "Sobre Powa - Agencia Digital",
-    "description": "Conoce a Powa, la agencia digital que fusiona ingeniería avanzada con diseño premium. Especialistas en desarrollo web, UX/UI y estrategia digital.",
+    "description": "Conoce a Powa, la agencia digital que fusiona ingeniería avanzada con diseño premium.",
     "url": "https://agencia-powa.vercel.app/about",
     "mainEntity": {
       "@type": "Organization",
@@ -110,8 +192,8 @@ export default function AboutPage() {
       "employee": [
         {
           "@type": "Person",
-          "name": "Mariana",
-          "jobTitle": "UX/UI Designer & Strategy Manager"
+          "name": "Mariana Juarez",
+          "jobTitle": "Head of Design & UX Strategy"
         }
       ]
     }
@@ -131,7 +213,7 @@ export default function AboutPage() {
 
         <Container className="pb-5">
 
-          {/* ===== SECCIÓN HERO ===== */}
+          {/* ===== HERO ===== */}
           <div className={`${styles.aboutHeroSection} text-center`}>
             <div className={styles.logoGlowContainer}>
               <Image
@@ -143,13 +225,16 @@ export default function AboutPage() {
                 priority
               />
               <div className={styles.pulseRing} />
+              <div className={styles.pulseRingSecondary} />
             </div>
 
             <div className="mb-4">
-              <span className={styles.badgePowa}>NUESTRA ESENCIA</span>
+              <span className={styles.badgePowa}>
+                <FaMedal className={styles.badgeIcon} /> NUESTRA ESENCIA
+              </span>
             </div>
 
-            <h1 className={`${styles.aboutHeaderTitle}`}>
+            <h1 className={styles.aboutHeaderTitle}>
               La Mente <br />
               <span className={styles.textGradient}>detrás de Powa</span>
             </h1>
@@ -171,11 +256,12 @@ export default function AboutPage() {
               >
                 <FaRocket className={styles.heroButtonIcon} />
                 Trabajemos Juntos
+                <FaArrowRight className={styles.heroButtonArrow} />
               </a>
             </div>
           </div>
 
-          {/* ===== SECCIÓN DE ESTADÍSTICAS ===== */}
+          {/* ===== STATS ===== */}
           <div ref={statsRef} className={styles.statsSection}>
             <Row className="g-4">
               {stats.map((stat, index) => (
@@ -193,7 +279,9 @@ export default function AboutPage() {
             </Row>
           </div>
 
-          {/* ===== PERFIL CRISTIAN ===== */}
+          {/* ============================================================ */}
+          {/* PERFIL CRISTIAN - CON TODO EL CONTENIDO ORIGINAL */}
+          {/* ============================================================ */}
           <div ref={addToRefs} className={`${styles.profileGlassCard} ${styles.reveal}`}>
             <Row className="align-items-center g-0">
               <Col md={5}>
@@ -217,7 +305,9 @@ export default function AboutPage() {
               <Col md={7}>
                 <div className="p-4 p-md-5">
                   <div className="d-flex align-items-center mb-2">
-                    <FaLaptopCode className={styles.profileIcon} size={24} />
+                    <div className={styles.profileIconWrapper}>
+                      <FaLaptopCode size={22} />
+                    </div>
                     <h2 className={styles.profileName}>Cristian Marcus</h2>
                   </div>
                   <h4 className={styles.profileRole}>CTO & Lead Software Architect</h4>
@@ -251,7 +341,9 @@ export default function AboutPage() {
             </Row>
           </div>
 
-          {/* ===== PERFIL MARIANA ===== */}
+          {/* ============================================================ */}
+          {/* PERFIL MARIANA - CON TODO EL CONTENIDO ORIGINAL */}
+          {/* ============================================================ */}
           <div ref={addToRefs} className={`${styles.profileGlassCard} ${styles.reveal}`}>
             <Row className="align-items-center g-0 flex-row-reverse">
               <Col md={5}>
@@ -275,7 +367,9 @@ export default function AboutPage() {
               <Col md={7}>
                 <div className="p-4 p-md-5">
                   <div className="d-flex align-items-center mb-2">
-                    <FaPalette className={styles.profileIcon} size={22} />
+                    <div className={styles.profileIconWrapper}>
+                      <FaPalette size={22} />
+                    </div>
                     <h2 className={styles.profileName}>Mariana Juarez</h2>
                   </div>
                   <h4 className={styles.profileRole}>Head of Design & UX Strategy</h4>
@@ -303,15 +397,72 @@ export default function AboutPage() {
             </Row>
           </div>
 
-          {/* ===== SECCIÓN DE VALORES ===== */}
+          {/* ===== TECNOLOGÍAS ===== */}
+          <div ref={addToRefs} className={`${styles.techSection} ${styles.reveal}`}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionBadge}>
+                <FaCode className={styles.sectionBadgeIcon} /> STACK TECNOLÓGICO
+              </span>
+              <h2 className={styles.sectionTitle}>
+                Tecnologías que <span className={styles.textGradient}>dominamos</span>
+              </h2>
+              <p className={styles.sectionSubtitle}>
+                El ecosistema de herramientas que utilizamos para construir soluciones de clase mundial.
+              </p>
+            </div>
+
+            <Row className="g-3">
+              {technologies.map((tech, index) => (
+                <Col key={index} xs={6} md={4} lg={3}>
+                  <div className={styles.techCard}>
+                    <div className={styles.techIcon} style={{ color: tech.color }}>
+                      {tech.icon}
+                    </div>
+                    <span className={styles.techName}>{tech.name}</span>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          </div>
+
+          {/* ===== TESTIMONIOS ===== */}
+          <div ref={addToRefs} className={`${styles.testimonialsSection} ${styles.reveal}`}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionBadge}>
+                <FaQuoteRight className={styles.sectionBadgeIcon} /> TESTIMONIOS
+              </span>
+              <h2 className={styles.sectionTitle}>
+                Lo que dicen <span className={styles.textGradient}>nuestros clientes</span>
+              </h2>
+            </div>
+
+            <Row className="g-4">
+              {testimonials.map((t, idx) => (
+                <Col key={idx} md={6}>
+                  <div className={styles.testimonialCard}>
+                    <FaQuoteRight className={styles.testimonialQuoteIcon} />
+                    <p className={styles.testimonialText}>"{t.quote}"</p>
+                    <div className={styles.testimonialAuthor}>
+                      <strong>{t.author}</strong>
+                      <span>{t.role}</span>
+                    </div>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          </div>
+
+          {/* ===== VALORES ===== */}
           <div className={styles.valuesSection}>
             <div className={styles.sectionHeader}>
-              <span className={styles.sectionBadge}>NUESTROS PILARES</span>
+              <span className={styles.sectionBadge}>
+                <FaHeart className={styles.sectionBadgeIcon} /> NUESTROS PILARES
+              </span>
               <h2 className={styles.sectionTitle}>
                 Los valores que <span className={styles.textGradient}>nos definen</span>
               </h2>
               <p className={styles.sectionSubtitle}>
-                Cinco principios que guían cada decisión y cada línea de código que escribimos.
+                Cuatro principios que guían cada decisión y cada línea de código que escribimos.
               </p>
             </div>
 
@@ -332,10 +483,12 @@ export default function AboutPage() {
             </Row>
           </div>
 
-          {/* ===== SECCIÓN DE PROCESO ===== */}
+          {/* ===== PROCESO ===== */}
           <div className={styles.processSection}>
             <div className={styles.sectionHeader}>
-              <span className={styles.sectionBadge}>CÓMO TRABAJAMOS</span>
+              <span className={styles.sectionBadge}>
+                <FaClock className={styles.sectionBadgeIcon} /> CÓMO TRABAJAMOS
+              </span>
               <h2 className={styles.sectionTitle}>
                 Nuestro <span className={styles.textGradient}>proceso</span>
               </h2>
@@ -345,38 +498,21 @@ export default function AboutPage() {
             </div>
 
             <Row className="g-4">
-              <Col md={3} sm={6}>
-                <div className={styles.processStep}>
-                  <div className={styles.stepNumber}>01</div>
-                  <div className={styles.stepIcon}><FaCheckCircle /></div>
-                  <h4 className={styles.stepTitle}>Descubrimiento</h4>
-                  <p className={styles.stepDescription}>Entendemos tu negocio, objetivos y desafíos para definir la estrategia.</p>
-                </div>
-              </Col>
-              <Col md={3} sm={6}>
-                <div className={styles.processStep}>
-                  <div className={styles.stepNumber}>02</div>
-                  <div className={styles.stepIcon}><FaPaintBrush /></div>
-                  <h4 className={styles.stepTitle}>Diseño</h4>
-                  <p className={styles.stepDescription}>Creamos experiencias visuales que conectan con tu audiencia y transmiten confianza.</p>
-                </div>
-              </Col>
-              <Col md={3} sm={6}>
-                <div className={styles.processStep}>
-                  <div className={styles.stepNumber}>03</div>
-                  <div className={styles.stepIcon}><FaCode /></div>
-                  <h4 className={styles.stepTitle}>Desarrollo</h4>
-                  <p className={styles.stepDescription}>Escribimos código limpio y escalable, con entregas parciales cada 15 días.</p>
-                </div>
-              </Col>
-              <Col md={3} sm={6}>
-                <div className={styles.processStep}>
-                  <div className={styles.stepNumber}>04</div>
-                  <div className={styles.stepIcon}><FaRocket /></div>
-                  <h4 className={styles.stepTitle}>Lanzamiento</h4>
-                  <p className={styles.stepDescription}>Desplegamos, monitoreamos y optimizamos para garantizar el éxito continuo.</p>
-                </div>
-              </Col>
+              {[
+                { num: '01', icon: <FaCheckCircle />, title: 'Descubrimiento', desc: 'Entendemos tu negocio, objetivos y desafíos para definir la estrategia.' },
+                { num: '02', icon: <FaPaintBrush />, title: 'Diseño', desc: 'Creamos experiencias visuales que conectan con tu audiencia y transmiten confianza.' },
+                { num: '03', icon: <FaCode />, title: 'Desarrollo', desc: 'Escribimos código limpio y escalable, con entregas parciales cada 15 días.' },
+                { num: '04', icon: <FaRocket />, title: 'Lanzamiento', desc: 'Desplegamos, monitoreamos y optimizamos para garantizar el éxito continuo.' }
+              ].map((step, idx) => (
+                <Col key={idx} md={3} sm={6}>
+                  <div className={styles.processStep}>
+                    <div className={styles.stepNumber}>{step.num}</div>
+                    <div className={styles.stepIcon}>{step.icon}</div>
+                    <h4 className={styles.stepTitle}>{step.title}</h4>
+                    <p className={styles.stepDescription}>{step.desc}</p>
+                  </div>
+                </Col>
+              ))}
             </Row>
           </div>
 
@@ -396,6 +532,7 @@ export default function AboutPage() {
               >
                 <FaRocket className={styles.ctaButtonIcon} />
                 Empezar ahora
+                <FaArrowRight className={styles.ctaButtonArrow} />
               </a>
             </div>
           </div>
