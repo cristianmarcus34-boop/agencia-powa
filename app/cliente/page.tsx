@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react'; // ✅ AGREGADO signOut
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
@@ -57,7 +57,7 @@ interface Factura {
 interface ClienteInfo {
     id: string;
     nombre_empresa: string;
-    nombre_completo: string;  // ✅ CAMBIADO
+    nombre_completo: string;
     email: string;
     telefono: string;
     sitio_web: string;
@@ -84,10 +84,12 @@ export default function ClienteDashboard() {
     const [selectedFactura, setSelectedFactura] = useState<Factura | null>(null);
     const [showPreviewModal, setShowPreviewModal] = useState(false);
 
-    // ===== CERRAR SESIÓN =====
+    // ===== CERRAR SESIÓN CON signOut =====
     const handleLogout = async () => {
-        await fetch('/api/auth/signout', { method: 'POST' });
-        router.push('/login');
+        await signOut({
+            redirect: true,
+            callbackUrl: '/login'
+        });
     };
 
     useEffect(() => {
@@ -142,7 +144,6 @@ export default function ClienteDashboard() {
     const fetchDashboardData = async () => {
         try {
             setLoading(true);
-            // 🔥 Obtener información del cliente
             const infoRes = await fetch('/api/cliente/info');
             const infoData = await infoRes.json();
             console.log('📊 Datos de empresa (desde tabla):', infoData.data);
