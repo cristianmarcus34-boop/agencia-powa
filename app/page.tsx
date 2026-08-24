@@ -20,7 +20,6 @@ import {
     SiReact, SiNodedotjs, SiTypescript, SiNextdotjs, SiDocker,
     SiAmazonwebservices, SiPostgresql, SiOpenai, SiSupabase,
     SiTailwindcss, SiVercel, SiJavascript, SiRedux,
-    // 🆕 NUEVOS IMPORTS
     SiPython, SiDjango, SiFlask, SiFastapi, SiGraphql,
     SiMongodb, SiRedis, SiElasticsearch, SiApachekafka,
     SiKubernetes, SiTerraform, SiAnsible, SiGithubactions,
@@ -71,7 +70,6 @@ export default function HomePage() {
 
     // ===== 🚀 TECH STACK AMPLIADO =====
     const techStack = [
-        // --- FRONTEND ---
         { id: "react", icon: <SiReact color="#61DAFB" />, name: "React" },
         { id: "nextjs", icon: <SiNextdotjs color="#ffffff" />, name: "Next.js" },
         { id: "angular", icon: <SiAngular color="#DD0031" />, name: "Angular" },
@@ -80,8 +78,6 @@ export default function HomePage() {
         { id: "typescript", icon: <SiTypescript color="#3178C6" />, name: "TypeScript" },
         { id: "javascript", icon: <SiJavascript color="#F7DF1E" />, name: "JavaScript" },
         { id: "tailwind", icon: <SiTailwindcss color="#38BDF8" />, name: "Tailwind" },
-
-        // --- BACKEND ---
         { id: "nodejs", icon: <SiNodedotjs color="#339933" />, name: "Node.js" },
         { id: "python", icon: <SiPython color="#3776AB" />, name: "Python" },
         { id: "django", icon: <SiDjango color="#092E20" />, name: "Django" },
@@ -92,8 +88,6 @@ export default function HomePage() {
         { id: "spring", icon: <SiSpring color="#6DB33F" />, name: "Spring Boot" },
         { id: "laravel", icon: <SiLaravel color="#FF2D20" />, name: "Laravel" },
         { id: "php", icon: <SiPhp color="#777BB4" />, name: "PHP" },
-
-        // --- BASES DE DATOS ---
         { id: "postgres", icon: <SiPostgresql color="#4169E1" />, name: "PostgreSQL" },
         { id: "mysql", icon: <SiMysql color="#4479A1" />, name: "MySQL" },
         { id: "mongodb", icon: <SiMongodb color="#47A248" />, name: "MongoDB" },
@@ -102,12 +96,8 @@ export default function HomePage() {
         { id: "sqlite", icon: <SiSqlite color="#003B57" />, name: "SQLite" },
         { id: "supabase", icon: <SiSupabase color="#3ECF8E" />, name: "Supabase" },
         { id: "firebase", icon: <SiFirebase color="#FFCA28" />, name: "Firebase" },
-
-        // --- ORM ---
         { id: "prisma", icon: <SiPrisma color="#2D3748" />, name: "Prisma" },
         { id: "sequelize", icon: <SiSequelize color="#52B0E7" />, name: "Sequelize" },
-
-        // --- DEVOPS & CLOUD ---
         { id: "aws", icon: <SiAmazonwebservices color="#FF9900" />, name: "AWS" },
         { id: "docker", icon: <SiDocker color="#2496ED" />, name: "Docker" },
         { id: "kubernetes", icon: <SiKubernetes color="#326CE5" />, name: "Kubernetes" },
@@ -117,56 +107,34 @@ export default function HomePage() {
         { id: "heroku", icon: <SiHeroku color="#430098" />, name: "Heroku" },
         { id: "netlify", icon: <SiNetlify color="#00C7B7" />, name: "Netlify" },
         { id: "cloudflare", icon: <SiCloudflare color="#F38020" />, name: "Cloudflare" },
-
-        // --- CI/CD ---
         { id: "githubactions", icon: <SiGithubactions color="#2088FF" />, name: "GitHub Actions" },
         { id: "jenkins", icon: <SiJenkins color="#D24939" />, name: "Jenkins" },
-
-        // --- MONITORING ---
         { id: "prometheus", icon: <SiPrometheus color="#E6522C" />, name: "Prometheus" },
         { id: "grafana", icon: <SiGrafana color="#F46800" />, name: "Grafana" },
-
-        // --- BLOCKCHAIN ---
         { id: "solidity", icon: <SiSolidity color="#363636" />, name: "Solidity" },
-
-        // --- IA / ML ---
         { id: "openai", icon: <SiOpenai color="#74AA9C" />, name: "OpenAI" },
         { id: "pytorch", icon: <SiPytorch color="#EE4C2C" />, name: "PyTorch" },
         { id: "tensorflow", icon: <SiTensorflow color="#FF6F00" />, name: "TensorFlow" },
         { id: "keras", icon: <SiKeras color="#D00000" />, name: "Keras" },
-
-        // --- MENSAJERÍA ---
         { id: "kafka", icon: <SiApachekafka color="#231F20" />, name: "Kafka" },
         { id: "rabbitmq", icon: <SiRabbitmq color="#FF6600" />, name: "RabbitMQ" },
         { id: "nats", icon: <SiNatsdotio color="#27AAE1" />, name: "NATS" },
-
-        // --- ESTADO ---
         { id: "redux", icon: <SiRedux color="#764ABC" />, name: "Redux" },
-
-        // --- WEBPACK / BUILD ---
         { id: "webpack", icon: <SiWebpack color="#8DD6F9" />, name: "Webpack" },
         { id: "babel", icon: <SiBabel color="#F9DC3E" />, name: "Babel" },
         { id: "npm", icon: <SiNpm color="#CB3837" />, name: "npm" },
         { id: "yarn", icon: <SiYarn color="#2C8EBB" />, name: "Yarn" },
-
-        // --- TESTING ---
         { id: "jest", icon: <SiJest color="#C21325" />, name: "Jest" },
         { id: "cypress", icon: <SiCypress color="#17202C" />, name: "Cypress" },
         { id: "mocha", icon: <SiMocha color="#8D6748" />, name: "Mocha" },
-
-        // --- SERVERS ---
         { id: "linux", icon: <SiLinux color="#FCC624" />, name: "Linux" },
         { id: "ubuntu", icon: <SiUbuntu color="#E95420" />, name: "Ubuntu" },
         { id: "debian", icon: <SiDebian color="#A81D33" />, name: "Debian" },
         { id: "nginx", icon: <SiNginx color="#009639" />, name: "Nginx" },
         { id: "apache", icon: <SiApache color="#D22128" />, name: "Apache" },
-
-        // --- DISEÑO ---
         { id: "figma", icon: <SiFigma color="#F24E1E" />, name: "Figma" },
         { id: "adobe", icon: <SiAdobe color="#FF0000" />, name: "Adobe" },
         { id: "sketch", icon: <SiSketch color="#F7B500" />, name: "Sketch" },
-
-        // --- GRAPHQL ---
         { id: "graphql", icon: <SiGraphql color="#E10098" />, name: "GraphQL" },
     ];
 
@@ -206,37 +174,43 @@ export default function HomePage() {
             id: "web",
             icon: <FaCode />,
             title: "Sistemas Web Escalables",
-            desc: "No usamos plantillas genéricas. Desarrollamos plataformas robustas con Next.js preparadas para soportar tráfico masivo y SEO crítico."
+            desc: "No usamos plantillas genéricas. Desarrollamos plataformas robustas con Next.js preparadas para soportar tráfico masivo y SEO crítico.",
+            link: "/servicios/desarrollo"
         },
         {
             id: "mobile",
             icon: <FaMobileAlt />,
             title: "Desarrollo Mobile Nativo",
-            desc: "Diseñamos aplicaciones nativas fluidas para iOS y Android utilizando arquitecturas modernas que escalan a la par de tu negocio."
+            desc: "Diseñamos aplicaciones nativas fluidas para iOS y Android utilizando arquitecturas modernas que escalan a la par de tu negocio.",
+            link: "/servicios/desarrollo"
         },
         {
             id: "data",
             icon: <FaDatabase />,
             title: "Gestión de Datos & Cloud",
-            desc: "Modelamos bases de datos seguras y paneles administrativos a medida para centralizar y proteger los activos de información de tu empresa."
+            desc: "Modelamos bases de datos seguras y paneles administrativos a medida para centralizar y proteger los activos de información de tu empresa.",
+            link: "/servicios/desarrollo"
         },
         {
             id: "auto",
             icon: <FaCogs />,
             title: "Automatización de Procesos",
-            desc: "Diseñamos flujos internos de software que eliminan las tareas manuales reiterativas, reduciendo drásticamente tus costos operativos."
+            desc: "Diseñamos flujos internos de software que eliminan las tareas manuales reiterativas, reduciendo drásticamente tus costos operativos.",
+            link: "/servicios/desarrollo"
         },
         {
             id: "ai",
             icon: <SiOpenai />,
             title: "Integración de IA",
-            desc: "Implementamos agentes inteligentes y modelos avanzados de IA para optimizar análisis de datos internos o flujos automatizados de atención."
+            desc: "Implementamos agentes inteligentes y modelos avanzados de IA para optimizar análisis de datos internos o flujos automatizados de atención.",
+            link: "/servicios/desarrollo"
         },
         {
             id: "maint",
             icon: <FaCloudUploadAlt />,
             title: "Mantenimiento Evolutivo",
-            desc: "Tu software no queda obsoleto. Aseguramos su evolución continua con monitoreo proactivo, actualizaciones de seguridad y optimizaciones de performance."
+            desc: "Tu software no queda obsoleto. Aseguramos su evolución continua con monitoreo proactivo, actualizaciones de seguridad y optimizaciones de performance.",
+            link: "/planes"
         }
     ];
 
@@ -332,9 +306,13 @@ export default function HomePage() {
                                         <FaWhatsapp className={styles.trustBadgeIcon} />
                                         Soporte 24/7
                                     </span>
+                                    <Link href="/planes/servicios/desarrollo" className={styles.trustBadgeLink}>
+                                        <FaCode className={styles.trustBadgeIcon} />
+                                        Desarrollo Web
+                                    </Link>
                                     <Link href="/planes" className={styles.trustBadgeLink}>
                                         <FaShieldAlt className={styles.trustBadgeIcon} />
-                                        Planes de Mantenimiento
+                                        Mantenimiento
                                     </Link>
                                 </div>
                             </Col>
@@ -427,7 +405,7 @@ export default function HomePage() {
                                     <div className={styles.iconBox}>{item.icon}</div>
                                     <h3>{item.title}</h3>
                                     <p>{item.desc}</p>
-                                    <Link href="/servicios" className={styles.cardLink}>
+                                    <Link href={item.link} className={styles.cardLink}>
                                         Saber más <FaArrowRight className="ms-2" />
                                     </Link>
                                 </div>
@@ -636,8 +614,8 @@ export default function HomePage() {
             </section>
 
             {/* ============================================
-   🚀 SECCIÓN ROI - DINÁMICA
-   ============================================ */}
+               🚀 SECCIÓN ROI - DINÁMICA
+            ============================================ */}
             <section className={styles.roiSection} ref={refROI}>
                 <Container>
                     <div className={styles.sectionHeader}>
@@ -652,7 +630,6 @@ export default function HomePage() {
                     </div>
 
                     <Row className="g-4">
-                        {/* Tarjeta 1: El problema - GENÉRICA */}
                         <Col lg={4} md={6}>
                             <div className={styles.roiCard}>
                                 <div className={styles.roiIconWrapper}>
@@ -684,7 +661,6 @@ export default function HomePage() {
                             </div>
                         </Col>
 
-                        {/* Tarjeta 2: La solución - GENÉRICA */}
                         <Col lg={4} md={6}>
                             <div className={styles.roiCard}>
                                 <div className={styles.roiIconWrapper}>
@@ -716,7 +692,6 @@ export default function HomePage() {
                             </div>
                         </Col>
 
-                        {/* Tarjeta 3: Calculá tu ROI - CON BOTÓN */}
                         <Col lg={4} md={6}>
                             <div className={`${styles.roiCard} ${styles.roiCardHighlight}`}>
                                 <div className={styles.roiIconWrapper}>
@@ -742,25 +717,22 @@ export default function HomePage() {
                                 </div>
 
                                 <div className={styles.roiCta}>
-                                    <div className={styles.roiCta}>
-                                        <button
-                                            onClick={() => {
-                                                const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-                                                window.open(`${baseUrl}/lab?tool=roi`, '_blank');
-                                            }}
-                                            className={styles.roiButtonNeon}
-                                        >
-                                            <FaCalculator className={styles.roiButtonIcon} />
-                                            <span>Calculá tu ROI exacto</span>
-                                            <FaArrowRight className={styles.roiButtonIcon} />
-                                        </button>
-                                    </div>
+                                    <button
+                                        onClick={() => {
+                                            const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+                                            window.open(`${baseUrl}/lab?tool=roi`, '_blank');
+                                        }}
+                                        className={styles.roiButtonNeon}
+                                    >
+                                        <FaCalculator className={styles.roiButtonIcon} />
+                                        <span>Calculá tu ROI exacto</span>
+                                        <FaArrowRight className={styles.roiButtonIcon} />
+                                    </button>
                                 </div>
                             </div>
                         </Col>
                     </Row>
 
-                    {/* ===== EJEMPLOS POR INDUSTRIA ===== */}
                     <div className={styles.roiIndustries}>
                         <p className={styles.roiIndustriesLabel}>
                             Ejemplos de pérdidas en diferentes industrias:
@@ -870,7 +842,6 @@ export default function HomePage() {
                                             value="Diagnóstico - Página Principal"
                                         />
 
-                                        {/* 🔥 NUEVO: Nombre */}
                                         <div className={styles.diagnosticoInputGroup}>
                                             <input
                                                 type="text"
@@ -881,7 +852,6 @@ export default function HomePage() {
                                             />
                                         </div>
 
-                                        {/* 🔥 NUEVO: URL + Email en la misma fila */}
                                         <div className={styles.diagnosticoInputGroup}>
                                             <input
                                                 type="url"
@@ -899,7 +869,6 @@ export default function HomePage() {
                                             />
                                         </div>
 
-                                        {/* 🔥 NUEVO: Teléfono (opcional) */}
                                         <div className={styles.diagnosticoInputGroup}>
                                             <input
                                                 type="tel"
@@ -909,7 +878,6 @@ export default function HomePage() {
                                             />
                                         </div>
 
-                                        {/* 🔥 NUEVO: Mensaje */}
                                         <div className={styles.diagnosticoInputGroup}>
                                             <textarea
                                                 name="mensaje"
@@ -919,7 +887,6 @@ export default function HomePage() {
                                             />
                                         </div>
 
-                                        {/* 🔥 Botón de enviar */}
                                         <button
                                             type="submit"
                                             className={styles.diagnosticoButton}
@@ -1019,6 +986,9 @@ export default function HomePage() {
                                 </Link>
                                 <Link href="/faq" className={styles.btnCtaSecondary}>
                                     Ver Preguntas Frecuentes
+                                </Link>
+                                <Link href="/servicios/desarrollo" className={styles.btnCtaSecondary}>
+                                    Ver Desarrollo Web
                                 </Link>
                                 <Link href="/planes" className={styles.btnCtaSecondary}>
                                     Ver Planes de Mantenimiento
