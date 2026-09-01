@@ -1,17 +1,16 @@
-// app/robots.ts
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: '*',     // Se aplica a todos los buscadores (Google, Bing, etc.)
-      allow: '/',         // Permite rastrear todo el sitio
+      userAgent: '*',
+      allow: '/',
       disallow: [
-        '/private/',      // Ejemplo: carpetas que no quieres que salgan en Google
+        '/private/',
         '/admin/',
+        '/api/',
       ],
     },
-    // Muy importante: Le indica a Google dónde está tu mapa del sitio
-    sitemap: 'https://agencia-powa.vercel.app/sitemap.xml',
+    sitemap: 'https://www.agenciadigitalpowa.com.ar/sitemap.xml', // ✅ CAMBIADO
   }
 }

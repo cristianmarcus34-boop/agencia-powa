@@ -1,4 +1,3 @@
-// app/metadata.ts
 import type { Metadata, Viewport } from "next";
 
 export const viewport: Viewport = {
@@ -8,10 +7,10 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://agencia-powa.vercel.app"),
+  metadataBase: new URL("https://www.agenciadigitalpowa.com.ar"), // ✅ CAMBIADO
   title: {
-    default: "Powa Digital | Ingeniería de Software & Growth en Quilmes",
-    template: "%s | Powa Digital"
+    default: "Agencia Powa | Desarrollo Web y Marketing Digital",
+    template: "%s | Agencia Powa"
   },
   description: "Agencia de software y diseño web en Villa La Florida, San Francisco Solano y Quilmes. Creamos ecosistemas digitales de alto impacto con Next.js e IA.",
   keywords: [
@@ -20,11 +19,12 @@ export const metadata: Metadata = {
     "Agencia Digital San Francisco Solano",
     "Programación Zona Sur",
     "Páginas Web Quilmes",
-    "Next.js Argentina"
+    "Next.js Argentina",
+    "agenciadigitalpowa"
   ],
-  applicationName: "Powa Digital",
+  applicationName: "Agencia Powa",
   appleWebApp: {
-    title: "Powa Digital",
+    title: "Agencia Powa",
     statusBarStyle: "default",
     capable: true,
   },
@@ -39,10 +39,10 @@ export const metadata: Metadata = {
     google: "VvJGBIv8ZsOakwktbJC0PxehMBx4ZfTAxxZf_rSEreI",
   },
   openGraph: {
-    title: "Powa Digital | Ingeniería de Software en Zona Sur",
+    title: "Agencia Powa | Desarrollo Web y Marketing Digital",
     description: "Desarrollo de ecosistemas digitales en Quilmes, Solano y Florida.",
-    url: "https://agencia-powa.vercel.app",
-    siteName: "Powa Digital",
+    url: "https://www.agenciadigitalpowa.com.ar",
+    siteName: "Agencia Powa",
     locale: "es_AR",
     type: "website",
     images: [
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
         url: "/desarrollo-de-sitios-web.webp",
         width: 1200,
         height: 630,
-        alt: "Powa Digital - Agencia de Software",
+        alt: "Agencia Powa - Desarrollo Web",
       },
     ],
   },

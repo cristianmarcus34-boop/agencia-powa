@@ -1,15 +1,14 @@
-// app/sitemap.ts
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://agencia-powa.vercel.app'
+  const baseUrl = 'https://www.agenciadigitalpowa.com.ar' // ✅ CAMBIADO
   const currentDate = new Date()
 
   return [
     {
       url: `${baseUrl}/`,
       lastModified: currentDate,
-      changeFrequency: 'always', // La home cambia seguido si hay blog o novedades
+      changeFrequency: 'always',
       priority: 1,
     },
     {
@@ -21,7 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/portfolio`,
       lastModified: currentDate,
-      changeFrequency: 'weekly', // Si subes trabajos seguido, mejor weekly
+      changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
@@ -33,7 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/blog`,
       lastModified: currentDate,
-      changeFrequency: 'daily', // El blog suele ser lo que más se actualiza
+      changeFrequency: 'daily',
       priority: 0.7,
     },
     {
