@@ -1,19 +1,36 @@
+'use client';  // ✅ AGREGAR ESTO
+
 import { supabase } from '../../lib/supabase'
 import Link from 'next/link'
 import { Pencil, Trash2, Eye } from 'lucide-react'
+import { useState, useEffect } from 'react'
 
-async function getPosts() {
-    const { data, error } = await supabase
-        .from('posts')
-        .select('*')
-        .order('created_at', { ascending: false })
+export default function AdminBlogPage() {
+    const [posts, setPosts] = useState<any[]>([])
+    const [loading, setLoading] = useState(true)
 
-    if (error) throw error
-    return data
-}
+    // Cargar posts al montar
+    useEffect(() => {
+        async function fetchPosts() {
+            const { data, error } = await supabase
+                .from('posts')
+                .select('*')
+                .order('created_at', { ascending: false })
 
-export default async function AdminBlogPage() {
-    const posts = await getPosts()
+            if (!error) setPosts(data || [])
+            setLoading(false)
+        }
+        fetchPosts()
+    }, [])
+
+    const handleDelete = async (id: string) => {
+        if (confirm('¿Eliminar este post?')) {
+            await supabase.from('posts').delete().eq('id', id)
+            setPosts(posts.filter(p => p.id !== id))
+        }
+    }
+
+    if (loading) return <div className="p-6 text-center">Cargando...</div>
 
     return (
         <div className="max-w-6xl mx-auto p-6">
@@ -31,18 +48,10 @@ export default async function AdminBlogPage() {
                 <table className="w-full">
                     <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Título
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Estado
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Fecha
-                            </th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Acciones
-                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
@@ -62,8 +71,8 @@ export default async function AdminBlogPage() {
                                     <td className="px-6 py-4">
                                         <span
                                             className={`px-2 py-1 text-xs font-medium rounded-full ${post.publicado
-                                                ? 'bg-green-100 text-green-800'
-                                                : 'bg-yellow-100 text-yellow-800'
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : 'bg-yellow-100 text-yellow-800'
                                                 }`}
                                         >
                                             {post.publicado ? 'Publicado' : 'Borrador'}
@@ -88,12 +97,7 @@ export default async function AdminBlogPage() {
                                         </Link>
                                         <button
                                             className="inline-flex p-2 text-red-400 hover:text-red-600 transition-colors"
-                                            onClick={async () => {
-                                                if (confirm('¿Eliminar este post?')) {
-                                                    await supabase.from('posts').delete().eq('id', post.id)
-                                                    window.location.reload()
-                                                }
-                                            }}
+                                            onClick={() => handleDelete(post.id)}
                                         >
                                             <Trash2 size={18} />
                                         </button>
