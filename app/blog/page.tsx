@@ -10,9 +10,8 @@ import {
 } from 'react-icons/fa';
 import Link from 'next/link';
 import Script from 'next/script';
+import { supabase } from '../lib/supabase';
 
-// Importación de datos estáticos descentralizados
-import { blogPosts, Post } from '../../data/posts';
 import styles from './blog.module.css';
 
 // ===== CONSTANTES =====
@@ -35,16 +34,58 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
     'Estrategia': <FaChartLine />
 };
 
-// ===== TAGS POPULARES =====
 const POPULAR_TAGS = [
     'Next.js', 'TypeScript', 'Performance', 'SEO',
     'Arquitectura', 'DevOps', 'UX/UI', 'Cloud'
 ];
 
+// ===== TIPO DE POST DESDE SUPABASE =====
+interface PostFromDB {
+    id: string
+    titulo: string
+    slug: string
+    contenido: string
+    extracto: string
+    imagen_url: string
+    imagen_alt: string
+    publicado: boolean
+    created_at: string
+    updated_at: string
+    autor_id: string
+    proyecto_id: string | null
+    vistas: number
+    meta_descripcion: string | null
+    meta_keywords: string | null
+}
+
 export default function BlogPage() {
+    const [posts, setPosts] = useState<PostFromDB[]>([]);
+    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [activeCategory, setActiveCategory] = useState<string>('Todos');
     const [showScrollTop, setShowScrollTop] = useState(false);
+
+    // ===== CARGAR POSTS DESDE SUPABASE =====
+    useEffect(() => {
+        async function fetchPosts() {
+            try {
+                const { data, error } = await supabase
+                    .from('posts')
+                    .select('*')
+                    .eq('publicado', true)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+                setPosts(data || []);
+            } catch (error) {
+                console.error('Error cargando posts:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchPosts();
+    }, []);
 
     // ===== SCROLL TOP =====
     useEffect(() => {
@@ -63,22 +104,23 @@ export default function BlogPage() {
     const filteredPosts = useMemo(() => {
         const searchLower = searchTerm.toLowerCase().trim();
 
-        return blogPosts.filter(post => {
+        return posts.filter(post => {
             if (!searchLower && activeCategory === 'Todos') {
                 return true;
             }
 
             const matchesSearch = !searchLower ||
-                post.title.toLowerCase().includes(searchLower) ||
-                post.excerpt.toLowerCase().includes(searchLower) ||
-                post.category.toLowerCase().includes(searchLower);
+                post.titulo.toLowerCase().includes(searchLower) ||
+                post.extracto?.toLowerCase().includes(searchLower) ||
+                post.meta_keywords?.toLowerCase().includes(searchLower);
 
-            const matchesCategory = activeCategory === 'Todos' ||
-                post.category === activeCategory;
+            // 🔥 TEMPORAL: mientras no tengas categoría en la DB, usamos un campo fijo o lo dejamos pasar
+            // Podés agregar una columna 'categoria' a la tabla posts si querés filtrar por categoría
+            const matchesCategory = activeCategory === 'Todos' || true; // ⚠️ CAMBIAR CUANDO TENGAS CATEGORÍA
 
             return matchesSearch && matchesCategory;
         });
-    }, [searchTerm, activeCategory]);
+    }, [searchTerm, activeCategory, posts]);
 
     // ===== LIMPIAR BÚSQUEDA =====
     const clearSearch = () => {
@@ -92,22 +134,31 @@ export default function BlogPage() {
         "@type": "Blog",
         "name": "Powa Insights - Blog de Ingeniería Web",
         "description": "Perspectivas globales sobre ingeniería de software, optimización de performance y arquitectura escalable.",
-        "url": "https://tu-dominio.com/blog",
-        "blogPosts": blogPosts.map(post => ({
+        "url": "https://www.agenciadigitalpowa.com.ar/blog",
+        "blogPosts": posts.map(post => ({
             "@type": "BlogPosting",
-            "headline": post.title,
-            "description": post.excerpt,
-            "datePublished": post.date,
+            "headline": post.titulo,
+            "description": post.extracto,
+            "datePublished": post.created_at,
             "author": {
                 "@type": "Organization",
-                "name": "Powa Agency"
+                "name": "Agencia Powa"
             }
         }))
     };
 
+    // ===== LOADING =====
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-[#0a0f1a] flex items-center justify-center">
+                <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
+    }
+
+    // ===== RENDER =====
     return (
         <>
-            {/* ===== SCHEMA ===== */}
             <Script
                 id="blog-schema"
                 type="application/ld+json"
@@ -119,7 +170,6 @@ export default function BlogPage() {
                 <div className={styles.ambientGlowSecondary} />
 
                 <Container className="py-5 mt-5 relative z-10">
-                    {/* ===== HEADER ===== */}
                     <header className="text-center mb-5">
                         <span className={styles.badgePowaAccent}>Conocimiento Técnico</span>
                         <h1 className={styles.blogMainTitle}>
@@ -129,10 +179,9 @@ export default function BlogPage() {
                             Perspectivas globales sobre ingeniería de software, optimización de performance y arquitectura escalable.
                         </p>
 
-                        {/* ===== CONTADOR DE POSTS ===== */}
                         <div className={styles.postCounter}>
                             <FaClock className={styles.counterIcon} />
-                            <span>{blogPosts.length} artículos publicados</span>
+                            <span>{posts.length} artículos publicados</span>
                         </div>
                     </header>
 
@@ -140,7 +189,6 @@ export default function BlogPage() {
                     <Row className="justify-content-center mb-4">
                         <Col lg={10}>
                             <div className={styles.filtersWrapper}>
-                                {/* Buscador */}
                                 <div className={styles.searchWrapper}>
                                     <FaSearch className={styles.searchIcon} />
                                     <input
@@ -162,7 +210,6 @@ export default function BlogPage() {
                                     )}
                                 </div>
 
-                                {/* Filtros por categoría */}
                                 <div className={styles.categoryFilters}>
                                     {CATEGORIES.map((cat) => (
                                         <button
@@ -176,7 +223,6 @@ export default function BlogPage() {
                                     ))}
                                 </div>
 
-                                {/* ===== TAGS POPULARES ===== */}
                                 <div className={styles.tagsWrapper}>
                                     <span className={styles.tagsLabel}>
                                         <FaTag className={styles.tagsIcon} />
@@ -207,22 +253,30 @@ export default function BlogPage() {
                             <FaSearch className={styles.emptyIcon} />
                             <h3 className={styles.emptyTitle}>No encontramos resultados</h3>
                             <p className={styles.emptyText}>
-                                No hay artículos que coincidan con <strong>"{searchTerm}"</strong> en la categoría <strong>{activeCategory}</strong>.
+                                {searchTerm || activeCategory !== 'Todos' ? (
+                                    <>
+                                        No hay artículos que coincidan con <strong>"{searchTerm}"</strong>
+                                        {activeCategory !== 'Todos' && ` en la categoría ${activeCategory}`}
+                                    </>
+                                ) : (
+                                    'No hay artículos publicados aún.'
+                                )}
                             </p>
-                            <button
-                                className={styles.emptyButton}
-                                onClick={clearSearch}
-                            >
-                                Ver todos los artículos
-                            </button>
+                            {(searchTerm || activeCategory !== 'Todos') && (
+                                <button
+                                    className={styles.emptyButton}
+                                    onClick={clearSearch}
+                                >
+                                    Ver todos los artículos
+                                </button>
+                            )}
                         </div>
                     ) : (
                         <>
-                            {/* ===== RESULTADOS COUNT ===== */}
                             <div className={styles.resultsCount}>
                                 {searchTerm || activeCategory !== 'Todos' ? (
                                     <>
-                                        Mostrando <strong>{filteredPosts.length}</strong> de <strong>{blogPosts.length}</strong> artículos
+                                        Mostrando <strong>{filteredPosts.length}</strong> de <strong>{posts.length}</strong> artículos
                                         {searchTerm && ` que coinciden con "${searchTerm}"`}
                                         {activeCategory !== 'Todos' && ` en ${activeCategory}`}
                                     </>
@@ -231,52 +285,43 @@ export default function BlogPage() {
                                 )}
                             </div>
 
-                            {/* ===== GRID DE POSTS ===== */}
                             <Row className="g-4">
-                                {filteredPosts.map((post: Post, index: number) => (
+                                {filteredPosts.map((post: PostFromDB, index: number) => (
                                     <Col lg={6} key={post.id}>
-                                        <Link href={`/blog/${post.id}`} className="text-decoration-none d-block h-100">
+                                        <Link href={`/blog/${post.slug}`} className="text-decoration-none d-block h-100">
                                             <Card
                                                 className={`${styles.blogCardPowa} border-0 h-100 fadeInUp`}
                                                 style={{ animationDelay: `${(index + 1) * 0.05}s` }}
                                             >
                                                 <Card.Body className="d-flex flex-column p-4">
 
-                                                    {/* ===== CATEGORÍA Y FECHA ===== */}
                                                     <div className="d-flex justify-content-between align-items-center mb-4">
                                                         <span className={styles.postCategory}>
-                                                            {post.category}
+                                                            {post.meta_keywords?.split(',')[0] || 'Artículo'}
                                                         </span>
                                                         <span className={styles.postDate}>
                                                             <FaCalendarAlt className="me-2" size={12} />
-                                                            {post.date}
+                                                            {new Date(post.created_at).toLocaleDateString('es-AR', {
+                                                                year: 'numeric',
+                                                                month: 'short',
+                                                                day: 'numeric'
+                                                            })}
                                                         </span>
                                                     </div>
 
-                                                    {/* ===== TÍTULO CON EMOJI ===== */}
                                                     <div className="d-flex align-items-start mb-3">
                                                         <div className={styles.postEmoji} aria-hidden="true">
-                                                            {post.emoji}
+                                                            📝
                                                         </div>
                                                         <h3 className={`${styles.postTitle} mb-0 ms-3`}>
-                                                            {post.title}
+                                                            {post.titulo}
                                                         </h3>
                                                     </div>
 
-                                                    {/* ===== EXTRACTO ===== */}
                                                     <p className={styles.postExcerpt}>
-                                                        {post.excerpt}
+                                                        {post.extracto || 'Sin extracto disponible.'}
                                                     </p>
 
-                                                    {/* ===== META INFO ===== */}
-                                                    {post.readTime && (
-                                                        <div className={styles.postMeta}>
-                                                            <FaClock className={styles.metaIcon} />
-                                                            <span>{post.readTime} de lectura</span>
-                                                        </div>
-                                                    )}
-
-                                                    {/* ===== BOTÓN DE ACCIÓN ===== */}
                                                     <div className="mt-auto pt-3">
                                                         <span className={styles.btnReadMore}>
                                                             Leer Artículo
@@ -294,7 +339,6 @@ export default function BlogPage() {
                     )}
                 </Container>
 
-                {/* ===== BOTÓN VOLVER ARRIBA ===== */}
                 {showScrollTop && (
                     <button
                         onClick={scrollToTop}
