@@ -1,40 +1,61 @@
-import { supabase } from '../../lib/supabase'
-import Image from 'next/image'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { ArrowLeft, Calendar, Clock } from 'lucide-react'
+'use client';
 
-// 🔥 GENERAR RUTAS ESTÁTICAS EN EL BUILD
-export async function generateStaticParams() {
-    const { data: posts } = await supabase
-        .from('posts')
-        .select('slug')
-        .eq('publicado', true)
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import { supabase } from '../../lib/supabase';
+import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 
-    return posts?.map((post) => ({
-        slug: post.slug,
-    })) || []
-}
+export default function PostPage() {
+    const params = useParams();
+    const slug = params?.slug; // ✅ OBTENER SLUG DE LA URL
+    const [post, setPost] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
 
-async function getPost(slug: string) {
-    const { data, error } = await supabase
-        .from('posts')
-        .select('*')
-        .eq('slug', slug)
-        .eq('publicado', true)
-        .single()
+    // ===== CARGAR POST DESDE SUPABASE =====
+    useEffect(() => {
+        async function fetchPost() {
+            if (!slug) return;
 
-    if (error) return null
-    return data
-}
+            const { data, error } = await supabase
+                .from('posts')
+                .select('*')
+                .eq('slug', slug)
+                .eq('publicado', true)
+                .single();
 
-export default async function PostPage({ params }: { params: { slug: string } }) {
-    const post = await getPost(params.slug)
+            if (!error) {
+                setPost(data);
+            }
+            setLoading(false);
+        }
 
-    if (!post) {
-        notFound()
+        fetchPost();
+    }, [slug]);
+
+    // ===== LOADING =====
+    if (loading) {
+        return (
+            <div className="max-w-4xl mx-auto px-4 py-8 text-center text-gray-400">
+                Cargando artículo...
+            </div>
+        );
     }
 
+    // ===== POST NO ENCONTRADO =====
+    if (!post) {
+        return (
+            <div className="max-w-4xl mx-auto px-4 py-8 text-center">
+                <h1 className="text-2xl font-bold text-white mb-4">Artículo no encontrado</h1>
+                <Link href="/blog" className="text-orange-500 hover:underline">
+                    Volver al blog
+                </Link>
+            </div>
+        );
+    }
+
+    // ===== RENDER =====
     return (
         <div className="max-w-4xl mx-auto px-4 py-8">
             <Link
@@ -90,5 +111,5 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 />
             </article>
         </div>
-    )
+    );
 }
