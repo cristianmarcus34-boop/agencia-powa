@@ -4,6 +4,18 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 
+// 🔥 GENERAR RUTAS ESTÁTICAS EN EL BUILD
+export async function generateStaticParams() {
+    const { data: posts } = await supabase
+        .from('posts')
+        .select('slug')
+        .eq('publicado', true)
+
+    return posts?.map((post) => ({
+        slug: post.slug,
+    })) || []
+}
+
 async function getPost(slug: string) {
     const { data, error } = await supabase
         .from('posts')

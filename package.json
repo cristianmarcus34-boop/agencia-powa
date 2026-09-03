@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "migrar-posts": "npx tsx scripts/migrar-posts.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -26,6 +27,7 @@
     "@vercel/speed-insights": "^2.0.0",
     "bcryptjs": "^3.0.3",
     "bootstrap": "^5.3.8",
+    "dotenv": "^17.4.2",
     "framer-motion": "^12.40.0",
     "groq-sdk": "^1.3.0",
     "html2canvas": "^1.4.1",
@@ -55,6 +57,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
+    "tsx": "^4.23.13",
     "typescript": "^5"
   }
 }
