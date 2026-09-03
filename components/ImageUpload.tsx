@@ -43,6 +43,8 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
             const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
             const filePath = `${folder}/${fileName}`;
 
+            console.log('📤 Subiendo imagen a:', filePath);
+
             // Subir a Supabase
             const { data, error: uploadError } = await supabase.storage
                 .from('blog-images')
@@ -51,7 +53,12 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
                     upsert: false,
                 });
 
-            if (uploadError) throw uploadError;
+            if (uploadError) {
+                console.error('❌ Error de upload:', uploadError);
+                throw uploadError;
+            }
+
+            console.log('✅ Datos de upload:', data);
 
             // Obtener URL pública
             const { data: publicUrl } = supabase.storage
@@ -59,14 +66,23 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
                 .getPublicUrl(filePath);
 
             const imageUrl = publicUrl.publicUrl;
+            console.log('✅ URL pública:', imageUrl);
 
             // Actualizar preview
             setPreview(imageUrl);
             onUpload(imageUrl);
 
-        } catch (error) {
-            console.error('Error al subir imagen:', error);
-            setError('Error al subir la imagen. Intentá de nuevo.');
+        } catch (error: any) {
+            console.error('❌ Error al subir imagen:', error);
+
+            // Mostrar mensaje más específico
+            if (error.message?.includes('row-level security')) {
+                setError('Error de permisos. Asegurate de haber iniciado sesión como administrador.');
+            } else if (error.message?.includes('bucket')) {
+                setError('Error: El bucket "blog-images" no existe o no es público.');
+            } else {
+                setError('Error al subir la imagen. Intentá de nuevo.');
+            }
         } finally {
             setUploading(false);
             // Limpiar input
