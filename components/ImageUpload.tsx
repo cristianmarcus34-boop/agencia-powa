@@ -38,6 +38,27 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
         setUploading(true);
 
         try {
+            // ✅ VERIFICAR SESIÓN ANTES DE SUBIR
+            const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+            console.log('🔐 Verificando sesión...');
+
+            if (sessionError) {
+                console.error('❌ Error al obtener sesión:', sessionError);
+                setError('Error al verificar sesión. Intentá de nuevo.');
+                setUploading(false);
+                return;
+            }
+
+            if (!session) {
+                console.error('❌ No hay sesión activa');
+                setError('No hay sesión activa. Iniciá sesión como administrador.');
+                setUploading(false);
+                return;
+            }
+
+            console.log('✅ Sesión activa - Usuario:', session.user.email);
+
             // Generar nombre único
             const fileExt = file.name.split('.').pop();
             const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
@@ -80,6 +101,8 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
                 setError('Error de permisos. Asegurate de haber iniciado sesión como administrador.');
             } else if (error.message?.includes('bucket')) {
                 setError('Error: El bucket "blog-images" no existe o no es público.');
+            } else if (error.message?.includes('JWT')) {
+                setError('Error de autenticación. Cerra sesión y volvé a iniciar.');
             } else {
                 setError('Error al subir la imagen. Intentá de nuevo.');
             }
