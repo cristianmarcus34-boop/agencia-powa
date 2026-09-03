@@ -14,11 +14,13 @@ import {
     FaStar, FaQuoteRight, FaWhatsapp, FaCloudUploadAlt,
     FaAward, FaBrain, FaLightbulb, FaHandshake,
     FaUser, FaCalculator, FaMoneyBillWave, FaChartBar,
+    FaCloud, FaPalette, FaAws // ✅ AGREGÁ FaAws y FaCloud
 } from 'react-icons/fa';
+
 import { HiOutlineArrowNarrowRight } from 'react-icons/hi';
 import {
     SiReact, SiNodedotjs, SiTypescript, SiNextdotjs, SiDocker,
-    SiAmazonwebservices, SiPostgresql, SiOpenai, SiSupabase,
+    SiPostgresql, SiSupabase,
     SiTailwindcss, SiVercel, SiJavascript, SiRedux,
     SiPython, SiDjango, SiFlask, SiFastapi, SiGraphql,
     SiMongodb, SiRedis, SiElasticsearch, SiApachekafka,
@@ -26,9 +28,9 @@ import {
     SiJenkins, SiPrometheus, SiGrafana,
     SiAngular, SiVuedotjs, SiSvelte, SiSolidity,
     SiRust, SiGo, SiSpring, SiLaravel, SiPhp,
-    SiFirebase, SiHeroku, SiNetlify, SiCloudflare,
+    SiFirebase, SiNetlify, SiCloudflare,
     SiMysql, SiSqlite, SiPrisma, SiSequelize,
-    SiFigma, SiAdobe, SiSketch,
+    SiFigma, SiSketch,
     SiJest, SiCypress, SiMocha,
     SiWebpack, SiBabel, SiNpm, SiYarn,
     SiPytorch, SiTensorflow, SiKeras,
@@ -98,13 +100,13 @@ export default function HomePage() {
         { id: "firebase", icon: <SiFirebase color="#FFCA28" />, name: "Firebase" },
         { id: "prisma", icon: <SiPrisma color="#2D3748" />, name: "Prisma" },
         { id: "sequelize", icon: <SiSequelize color="#52B0E7" />, name: "Sequelize" },
-        { id: "aws", icon: <SiAmazonwebservices color="#FF9900" />, name: "AWS" },
+        { id: "aws", icon: <FaAws color="#FF9900" />, name: "AWS" },
         { id: "docker", icon: <SiDocker color="#2496ED" />, name: "Docker" },
         { id: "kubernetes", icon: <SiKubernetes color="#326CE5" />, name: "Kubernetes" },
         { id: "terraform", icon: <SiTerraform color="#7B42BC" />, name: "Terraform" },
         { id: "ansible", icon: <SiAnsible color="#EE0000" />, name: "Ansible" },
         { id: "vercel", icon: <SiVercel color="#ffffff" />, name: "Vercel" },
-        { id: "heroku", icon: <SiHeroku color="#430098" />, name: "Heroku" },
+        { id: "heroku", icon: <FaCloud color="#430098" />, name: "Heroku" }, // ✅ CAMBIADO
         { id: "netlify", icon: <SiNetlify color="#00C7B7" />, name: "Netlify" },
         { id: "cloudflare", icon: <SiCloudflare color="#F38020" />, name: "Cloudflare" },
         { id: "githubactions", icon: <SiGithubactions color="#2088FF" />, name: "GitHub Actions" },
@@ -112,7 +114,7 @@ export default function HomePage() {
         { id: "prometheus", icon: <SiPrometheus color="#E6522C" />, name: "Prometheus" },
         { id: "grafana", icon: <SiGrafana color="#F46800" />, name: "Grafana" },
         { id: "solidity", icon: <SiSolidity color="#363636" />, name: "Solidity" },
-        { id: "openai", icon: <SiOpenai color="#74AA9C" />, name: "OpenAI" },
+        { id: "openai", icon: <FaBrain color="#74AA9C" />, name: "OpenAI" }, // ✅ CAMBIADO
         { id: "pytorch", icon: <SiPytorch color="#EE4C2C" />, name: "PyTorch" },
         { id: "tensorflow", icon: <SiTensorflow color="#FF6F00" />, name: "TensorFlow" },
         { id: "keras", icon: <SiKeras color="#D00000" />, name: "Keras" },
@@ -133,7 +135,7 @@ export default function HomePage() {
         { id: "nginx", icon: <SiNginx color="#009639" />, name: "Nginx" },
         { id: "apache", icon: <SiApache color="#D22128" />, name: "Apache" },
         { id: "figma", icon: <SiFigma color="#F24E1E" />, name: "Figma" },
-        { id: "adobe", icon: <SiAdobe color="#FF0000" />, name: "Adobe" },
+        { id: "adobe", icon: <FaPalette color="#FF0000" />, name: "Adobe" },
         { id: "sketch", icon: <SiSketch color="#F7B500" />, name: "Sketch" },
         { id: "graphql", icon: <SiGraphql color="#E10098" />, name: "GraphQL" },
     ];
@@ -200,7 +202,7 @@ export default function HomePage() {
         },
         {
             id: "ai",
-            icon: <SiOpenai />,
+            icon: <FaBrain />,
             title: "Integración de IA",
             desc: "Implementamos agentes inteligentes y modelos avanzados de IA para optimizar análisis de datos internos o flujos automatizados de atención.",
             link: "/servicios/desarrollo"
@@ -647,8 +649,7 @@ export default function HomePage() {
                                     </li>
                                     <li>
                                         <FaUsers className={styles.roiListIcon} />
-                                        Clientes perdidos por mala experiencia
-                                    </li>
+                                        Clientes perdidos por mala experiencia                                    </li>
                                     <li>
                                         <FaChartBar className={styles.roiListIcon} />
                                         Oportunidades de venta no aprovechadas
