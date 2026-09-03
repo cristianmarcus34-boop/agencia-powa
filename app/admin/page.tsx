@@ -8,7 +8,7 @@ import Link from 'next/link';
 import {
     FaUsers, FaProjectDiagram, FaUserTie, FaComments,
     FaStar, FaEnvelope, FaHome, FaArrowLeft, FaFileInvoice,
-    FaBars, FaTimes, FaSignOutAlt, FaChevronLeft, FaChevronRight
+    FaBars, FaTimes, FaSignOutAlt, FaChevronLeft, FaChevronRight, FaChartBar, FaNewspaper
 } from 'react-icons/fa';
 import styles from './admin.module.css';
 
@@ -41,6 +41,8 @@ const navItems = [
     { path: '/admin/clientes', label: 'Clientes', icon: <FaUserTie /> },
     { path: '/admin/facturas', label: 'Facturas', icon: <FaFileInvoice /> },
     { path: '/admin/conversaciones', label: 'Conversaciones', icon: <FaComments /> },
+    { path: '/admin/metricas', label: 'Métricas', icon: <FaChartBar /> },
+    { path: '/admin/blog', label: 'Blog', icon: <FaNewspaper /> },
 ];
 
 export default function AdminDashboard() {
