@@ -11,6 +11,7 @@ import {
     FaChevronLeft, FaChevronRight, FaFileInvoice, FaNewspaper
 } from 'react-icons/fa';
 import styles from './admin.module.css';
+import '../globals.css';
 
 const menuItems = [
     { name: 'Dashboard', icon: <FaHome />, path: '/admin' },
