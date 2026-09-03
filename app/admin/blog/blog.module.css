@@ -1,0 +1,169 @@
+/* app/admin/blog/blog.module.css */
+
+.container {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background: #f3f4f6;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.btnPrimary {
+    padding: 0.5rem 1rem;
+    background: #f97316;
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btnPrimary:hover {
+    background: #ea580c;
+}
+
+.tableWrapper {
+    background: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.table th {
+    padding: 0.75rem 1.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+}
+
+.table td {
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #111827;
+}
+
+.table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.titleCell {
+    font-weight: 500;
+}
+
+.slugCell {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.badge {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px;
+}
+
+.badgePublished {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badgeDraft {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.dateCell {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.actionBtn {
+    display: inline-flex;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: color 0.2s;
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.actionBtn.view {
+    color: #9ca3af;
+}
+
+.actionBtn.view:hover {
+    color: #4b5563;
+}
+
+.actionBtn.edit {
+    color: #60a5fa;
+}
+
+.actionBtn.edit:hover {
+    color: #2563eb;
+}
+
+.actionBtn.delete {
+    color: #f87171;
+}
+
+.actionBtn.delete:hover {
+    color: #dc2626;
+}
+
+.emptyState {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: #6b7280;
+}
+
+.emptyState a {
+    color: #f97316;
+    text-decoration: underline;
+}
+
+.emptyState a:hover {
+    color: #ea580c;
+}
+
+.loading {
+    padding: 1.5rem;
+    text-align: center;
+    color: #9ca3af;
+}

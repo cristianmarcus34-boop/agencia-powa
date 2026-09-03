@@ -1,6 +1,7 @@
 import { supabase } from '../../../lib/supabase'
 import BlogForm from '@/components/BlogForm'
 import { notFound } from 'next/navigation'
+import styles from '../blog.module.css' // ✅ IMPORTAR ESTILOS
 
 async function getPost(id: string) {
     const { data, error } = await supabase
@@ -21,8 +22,8 @@ export default async function EditarPostPage({ params }: { params: { id: string 
     }
 
     return (
-        <div className="max-w-4xl mx-auto p-6">
-            <h1 className="text-2xl font-bold mb-6">Editar post</h1>
+        <div className={styles.container}>
+            <h1 className={styles.title}>✏️ Editar post</h1>
             <BlogForm post={post} isEditing />
         </div>
     )
