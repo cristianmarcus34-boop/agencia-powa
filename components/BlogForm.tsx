@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../app/lib/supabase';
+import ImageUpload from './ImageUpload'; // ✅ IMPORTAR
 
 interface BlogFormProps {
     post?: {
@@ -17,11 +18,6 @@ interface BlogFormProps {
     };
     isEditing?: boolean;
 }
-
-// ⚠️ IMPORTANTE: No podemos importar CSS Modules desde components/ directamente
-// porque el CSS Modules está en admin/blog/blog.module.css
-// Vamos a usar estilos en línea o Tailwind (pero Tailwind no está cargando)
-// La solución más limpia es usar estilos en línea para este componente
 
 export default function BlogForm({ post, isEditing = false }: BlogFormProps) {
     const router = useRouter();
@@ -181,25 +177,17 @@ export default function BlogForm({ post, isEditing = false }: BlogFormProps) {
                 </p>
             </div>
 
-            {/* Imagen destacada */}
+            {/* ============================================
+                🔥 IMAGEN DESTACADA CON UPLOAD (REEMPLAZADO)
+                ============================================ */}
             <div>
                 <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.25rem' }}>
-                    URL de la imagen destacada
+                    Imagen destacada
                 </label>
-                <input
-                    type="url"
-                    value={formData.imagen_url}
-                    onChange={(e) => setFormData({ ...formData, imagen_url: e.target.value })}
-                    style={{
-                        width: '100%',
-                        padding: '0.5rem 1rem',
-                        border: '1px solid #d1d5db',
-                        borderRadius: '0.5rem',
-                        background: '#ffffff',
-                        color: '#111827',
-                        fontSize: '1rem',
-                    }}
-                    placeholder="https://ejemplo.com/imagen.jpg"
+                <ImageUpload
+                    onUpload={(url) => setFormData({ ...formData, imagen_url: url })}
+                    currentImage={formData.imagen_url}
+                    folder="blog"
                 />
             </div>
 
