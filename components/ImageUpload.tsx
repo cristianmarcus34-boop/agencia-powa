@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import { useSession } from 'next-auth/react'; // ✅ IMPORTAR
 import { supabase } from '../app/lib/supabase';
 import { FaUpload, FaTimes, FaImage, FaSpinner } from 'react-icons/fa';
 import Image from 'next/image';
@@ -12,6 +13,7 @@ interface ImageUploadProps {
 }
 
 export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }: ImageUploadProps) {
+    const { data: session, status } = useSession(); // ✅ OBTENER SESIÓN DE NEXT-AUTH
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState<string | null>(currentImage || null);
     const [error, setError] = useState<string | null>(null);
@@ -38,26 +40,20 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
         setUploading(true);
 
         try {
-            // ✅ VERIFICAR SESIÓN ANTES DE SUBIR
-            const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+            // ✅ VERIFICAR SESIÓN DE NEXT-AUTH
+            console.log('🔐 Verificando sesión de Next-Auth...');
+            console.log('📊 Estado de sesión:', status);
+            console.log('👤 Usuario:', session?.user?.email);
 
-            console.log('🔐 Verificando sesión...');
-
-            if (sessionError) {
-                console.error('❌ Error al obtener sesión:', sessionError);
-                setError('Error al verificar sesión. Intentá de nuevo.');
-                setUploading(false);
-                return;
-            }
-
-            if (!session) {
-                console.error('❌ No hay sesión activa');
+            if (status === 'unauthenticated' || !session) {
                 setError('No hay sesión activa. Iniciá sesión como administrador.');
                 setUploading(false);
                 return;
             }
 
-            console.log('✅ Sesión activa - Usuario:', session.user.email);
+            // ✅ Para operaciones de storage, usamos la clave ANON de Supabase
+            // La sesión de Supabase se maneja con el token JWT de Next-Auth
+            // pero para storage, el bucket ya es público y las políticas permiten a authenticated
 
             // Generar nombre único
             const fileExt = file.name.split('.').pop();
@@ -66,7 +62,7 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
 
             console.log('📤 Subiendo imagen a:', filePath);
 
-            // Subir a Supabase
+            // ✅ Subir a Supabase (usando la URL pública, no necesita token)
             const { data, error: uploadError } = await supabase.storage
                 .from('blog-images')
                 .upload(filePath, file, {
@@ -96,7 +92,6 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
         } catch (error: any) {
             console.error('❌ Error al subir imagen:', error);
 
-            // Mostrar mensaje más específico
             if (error.message?.includes('row-level security')) {
                 setError('Error de permisos. Asegurate de haber iniciado sesión como administrador.');
             } else if (error.message?.includes('bucket')) {
@@ -108,7 +103,6 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
             }
         } finally {
             setUploading(false);
-            // Limpiar input
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
