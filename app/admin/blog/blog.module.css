@@ -167,3 +167,144 @@
     text-align: center;
     color: #9ca3af;
 }
+
+/* ============================================
+   FORMULARIO
+   ============================================ */
+
+.formWrapper {
+    max-width: 64rem;
+    /* 4xl */
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 640px) {
+    .formWrapper {
+        padding: 1rem;
+        border-radius: 0.75rem;
+    }
+}
+
+/* ============================================
+   INPUTS Y CAMPOS DEL FORMULARIO
+   ============================================ */
+
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.formLabel {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+
+.formInput {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    color: #111827;
+    transition: all 0.2s;
+}
+
+.formInput:focus {
+    outline: 2px solid #f97316;
+    outline-offset: 2px;
+    border-color: transparent;
+}
+
+.formInput::placeholder {
+    color: #9ca3af;
+}
+
+.formTextarea {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    color: #111827;
+    transition: all 0.2s;
+    min-height: 100px;
+    font-family: monospace;
+    font-size: 0.875rem;
+}
+
+.formTextarea:focus {
+    outline: 2px solid #f97316;
+    outline-offset: 2px;
+    border-color: transparent;
+}
+
+.formCheckbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.formCheckbox input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    accent-color: #f97316;
+    cursor: pointer;
+}
+
+.formCheckbox label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    margin: 0;
+}
+
+.formActions {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 1rem;
+}
+
+.btnSubmit {
+    padding: 0.5rem 1.5rem;
+    background: #f97316;
+    color: #ffffff;
+    font-weight: 700;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btnSubmit:hover {
+    background: #ea580c;
+}
+
+.btnSubmit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btnCancel {
+    padding: 0.5rem 1.5rem;
+    background: #e5e7eb;
+    color: #374151;
+    font-weight: 700;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btnCancel:hover {
+    background: #d1d5db;
+}
