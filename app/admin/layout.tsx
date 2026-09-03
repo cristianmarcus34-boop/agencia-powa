@@ -8,7 +8,7 @@ import Link from 'next/link';
 import {
     FaHome, FaUsers, FaProjectDiagram, FaUserTie,
     FaComments, FaChartBar, FaSignOutAlt, FaBars,
-    FaChevronLeft, FaChevronRight, FaFileInvoice
+    FaChevronLeft, FaChevronRight, FaFileInvoice, FaNewspaper
 } from 'react-icons/fa';
 import styles from './admin.module.css';
 
@@ -20,6 +20,7 @@ const menuItems = [
     { name: 'Facturas', icon: <FaFileInvoice />, path: '/admin/facturas' },
     { name: 'Conversaciones', icon: <FaComments />, path: '/admin/conversaciones' },
     { name: 'Métricas', icon: <FaChartBar />, path: '/admin/metricas' },
+    { name: 'Blog', icon: <FaNewspaper />, path: '/admin/blog' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
