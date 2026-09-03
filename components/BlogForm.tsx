@@ -3,10 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../app/lib/supabase';
-// Si usás TipTap:
-// import BlogEditor from './BlogEditor';
 
-// ✅ INTERFAZ CORRECTA
 interface BlogFormProps {
     post?: {
         id: string;
@@ -20,6 +17,11 @@ interface BlogFormProps {
     };
     isEditing?: boolean;
 }
+
+// ⚠️ IMPORTANTE: No podemos importar CSS Modules desde components/ directamente
+// porque el CSS Modules está en admin/blog/blog.module.css
+// Vamos a usar estilos en línea o Tailwind (pero Tailwind no está cargando)
+// La solución más limpia es usar estilos en línea para este componente
 
 export default function BlogForm({ post, isEditing = false }: BlogFormProps) {
     const router = useRouter();
@@ -81,24 +83,32 @@ export default function BlogForm({ post, isEditing = false }: BlogFormProps) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {/* Título */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.25rem' }}>
                     Título *
                 </label>
                 <input
                     type="text"
                     value={formData.titulo}
                     onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                    style={{
+                        width: '100%',
+                        padding: '0.5rem 1rem',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '0.5rem',
+                        background: '#ffffff',
+                        color: '#111827',
+                        fontSize: '1rem',
+                    }}
                     required
                 />
             </div>
 
             {/* Slug */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.25rem' }}>
                     Slug (URL amigable) *
                 </label>
                 <input
@@ -106,100 +116,158 @@ export default function BlogForm({ post, isEditing = false }: BlogFormProps) {
                     value={formData.slug}
                     onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                     placeholder="ejemplo: mi-primer-post"
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                    style={{
+                        width: '100%',
+                        padding: '0.5rem 1rem',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '0.5rem',
+                        background: '#ffffff',
+                        color: '#111827',
+                        fontSize: '1rem',
+                    }}
                     required
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
                     Ejemplo: <strong>mi-primer-post</strong> → URL: /blog/mi-primer-post
                 </p>
             </div>
 
             {/* Extracto */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.25rem' }}>
                     Resumen (extracto)
                 </label>
                 <textarea
                     value={formData.extracto}
                     onChange={(e) => setFormData({ ...formData, extracto: e.target.value })}
                     rows={2}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                    style={{
+                        width: '100%',
+                        padding: '0.5rem 1rem',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '0.5rem',
+                        background: '#ffffff',
+                        color: '#111827',
+                        fontSize: '1rem',
+                    }}
                     placeholder="Breve resumen del post..."
                 />
             </div>
 
             {/* Contenido */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.25rem' }}>
                     Contenido *
                 </label>
                 <textarea
                     value={formData.contenido}
                     onChange={(e) => setFormData({ ...formData, contenido: e.target.value })}
                     rows={10}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-800 dark:text-white font-mono text-sm"
+                    style={{
+                        width: '100%',
+                        padding: '0.5rem 1rem',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '0.5rem',
+                        background: '#ffffff',
+                        color: '#111827',
+                        fontSize: '0.875rem',
+                        fontFamily: 'monospace',
+                    }}
                     placeholder="Escribí el contenido del post (podés usar HTML)"
                     required
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
                     Podés usar HTML para dar formato: <strong>&lt;p&gt;</strong>, <strong>&lt;h4&gt;</strong>, <strong>&lt;ul&gt;</strong>, <strong>&lt;li&gt;</strong>, etc.
                 </p>
             </div>
 
             {/* Imagen destacada */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.25rem' }}>
                     URL de la imagen destacada
                 </label>
                 <input
                     type="url"
                     value={formData.imagen_url}
                     onChange={(e) => setFormData({ ...formData, imagen_url: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                    style={{
+                        width: '100%',
+                        padding: '0.5rem 1rem',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '0.5rem',
+                        background: '#ffffff',
+                        color: '#111827',
+                        fontSize: '1rem',
+                    }}
                     placeholder="https://ejemplo.com/imagen.jpg"
                 />
             </div>
 
-            {/* Texto alternativo de la imagen */}
+            {/* Texto alternativo */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.25rem' }}>
                     Texto alternativo de la imagen (SEO)
                 </label>
                 <input
                     type="text"
                     value={formData.imagen_alt}
                     onChange={(e) => setFormData({ ...formData, imagen_alt: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                    style={{
+                        width: '100%',
+                        padding: '0.5rem 1rem',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '0.5rem',
+                        background: '#ffffff',
+                        color: '#111827',
+                        fontSize: '1rem',
+                    }}
                     placeholder="Descripción de la imagen para SEO"
                 />
             </div>
 
             {/* Publicado */}
-            <div className="flex items-center gap-4">
-                <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                        type="checkbox"
-                        checked={formData.publicado}
-                        onChange={(e) => setFormData({ ...formData, publicado: e.target.checked })}
-                        className="w-4 h-4 text-orange-500 focus:ring-orange-500"
-                    />
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Publicado</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <input
+                    type="checkbox"
+                    checked={formData.publicado}
+                    onChange={(e) => setFormData({ ...formData, publicado: e.target.checked })}
+                    style={{ width: '1rem', height: '1rem', accentColor: '#f97316' }}
+                />
+                <label style={{ fontSize: '0.875rem', fontWeight: '500', color: '#374151' }}>
+                    Publicado
                 </label>
             </div>
 
             {/* Botones */}
-            <div className="flex gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div style={{ display: 'flex', gap: '0.5rem', paddingTop: '1.5rem', borderTop: '1px solid #e5e7eb', marginTop: '1rem' }}>
                 <button
                     type="submit"
                     disabled={loading}
-                    className="px-6 py-2 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50"
+                    style={{
+                        padding: '0.5rem 1.5rem',
+                        background: loading ? '#f97316' : '#f97316',
+                        color: '#ffffff',
+                        fontWeight: '700',
+                        border: 'none',
+                        borderRadius: '0.5rem',
+                        cursor: loading ? 'not-allowed' : 'pointer',
+                        opacity: loading ? 0.5 : 1,
+                    }}
                 >
                     {loading ? 'Guardando...' : isEditing ? 'Actualizar' : 'Publicar'}
                 </button>
                 <button
                     type="button"
                     onClick={() => router.push('/admin/blog')}
-                    className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                    style={{
+                        padding: '0.5rem 1.5rem',
+                        background: '#e5e7eb',
+                        color: '#374151',
+                        fontWeight: '700',
+                        border: 'none',
+                        borderRadius: '0.5rem',
+                        cursor: 'pointer',
+                    }}
                 >
                     Cancelar
                 </button>
