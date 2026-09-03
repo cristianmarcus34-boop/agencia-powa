@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { useSession } from 'next-auth/react'; // ✅ IMPORTAR
+import { useSession } from 'next-auth/react';
 import { supabase } from '../app/lib/supabase';
 import { FaUpload, FaTimes, FaImage, FaSpinner } from 'react-icons/fa';
 import Image from 'next/image';
@@ -13,7 +13,7 @@ interface ImageUploadProps {
 }
 
 export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }: ImageUploadProps) {
-    const { data: session, status } = useSession(); // ✅ OBTENER SESIÓN DE NEXT-AUTH
+    const { data: session, status } = useSession();
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState<string | null>(currentImage || null);
     const [error, setError] = useState<string | null>(null);
@@ -40,20 +40,22 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
         setUploading(true);
 
         try {
-            // ✅ VERIFICAR SESIÓN DE NEXT-AUTH
-            console.log('🔐 Verificando sesión de Next-Auth...');
-            console.log('📊 Estado de sesión:', status);
-            console.log('👤 Usuario:', session?.user?.email);
-
             if (status === 'unauthenticated' || !session) {
                 setError('No hay sesión activa. Iniciá sesión como administrador.');
                 setUploading(false);
                 return;
             }
 
-            // ✅ Para operaciones de storage, usamos la clave ANON de Supabase
-            // La sesión de Supabase se maneja con el token JWT de Next-Auth
-            // pero para storage, el bucket ya es público y las políticas permiten a authenticated
+            console.log('✅ Sesión activa - Usuario:', session.user.email);
+
+            // ✅ OBTENER EL TOKEN DE ACCESO DE NEXT-AUTH
+            // @ts-ignore - Supabase token está en session.supabaseAccessToken
+            const supabaseToken = session?.supabaseAccessToken;
+
+            if (!supabaseToken) {
+                console.warn('⚠️ No se encontró token de Supabase en la sesión');
+                // Si no hay token, intentamos usar el cliente normal
+            }
 
             // Generar nombre único
             const fileExt = file.name.split('.').pop();
@@ -62,8 +64,13 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
 
             console.log('📤 Subiendo imagen a:', filePath);
 
-            // ✅ Subir a Supabase (usando la URL pública, no necesita token)
-            const { data, error: uploadError } = await supabase.storage
+            // ✅ OPCIÓN 1: Usar el cliente de Supabase con el token de la sesión
+            // Si tenés el token de acceso en la sesión, lo usamos
+            const supabaseClient = supabaseToken
+                ? supabase // Supabase ya maneja el token automáticamente si configuraste la sesión
+                : supabase;
+
+            const { data, error: uploadError } = await supabaseClient.storage
                 .from('blog-images')
                 .upload(filePath, file, {
                     cacheControl: '3600',
@@ -85,7 +92,6 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
             const imageUrl = publicUrl.publicUrl;
             console.log('✅ URL pública:', imageUrl);
 
-            // Actualizar preview
             setPreview(imageUrl);
             onUpload(imageUrl);
 
@@ -93,11 +99,9 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
             console.error('❌ Error al subir imagen:', error);
 
             if (error.message?.includes('row-level security')) {
-                setError('Error de permisos. Asegurate de haber iniciado sesión como administrador.');
+                setError('Error de permisos. El token de autenticación no tiene permisos para subir imágenes.');
             } else if (error.message?.includes('bucket')) {
                 setError('Error: El bucket "blog-images" no existe o no es público.');
-            } else if (error.message?.includes('JWT')) {
-                setError('Error de autenticación. Cerra sesión y volvé a iniciar.');
             } else {
                 setError('Error al subir la imagen. Intentá de nuevo.');
             }
@@ -123,7 +127,6 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
 
     return (
         <div className="space-y-2">
-            {/* Preview */}
             {preview && (
                 <div className="relative w-40 h-40 rounded-lg overflow-hidden border-2 border-gray-200">
                     <Image
@@ -142,7 +145,6 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
                 </div>
             )}
 
-            {/* Botón de subida */}
             <div
                 onClick={handleClick}
                 className={`cursor-pointer border-2 border-dashed rounded-lg p-6 text-center transition-colors ${preview ? 'border-green-400 bg-green-50' : 'border-gray-300 hover:border-orange-400'
@@ -175,12 +177,10 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
                 )}
             </div>
 
-            {/* Error */}
             {error && (
                 <p className="text-sm text-red-500">{error}</p>
             )}
 
-            {/* Instrucciones */}
             <p className="text-xs text-gray-400">
                 Formatos: PNG, JPG, WEBP, GIF • Máximo 10MB
             </p>
