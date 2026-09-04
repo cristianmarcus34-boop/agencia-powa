@@ -10,11 +10,11 @@ import { useInView } from 'react-intersection-observer';
 import {
     FaCode, FaArrowRight, FaDatabase, FaMobileAlt, FaRocket,
     FaMapMarkerAlt, FaSearch, FaCogs, FaCheckCircle, FaShieldAlt,
-    FaFileContract, FaLock, FaUsers, FaChartLine, FaClock,
-    FaStar, FaQuoteRight, FaWhatsapp, FaCloudUploadAlt,
-    FaAward, FaBrain, FaLightbulb, FaHandshake,
+    FaFileContract, FaLock, FaUsers, FaClock,
+    FaQuoteRight, FaWhatsapp, FaCloudUploadAlt,
+    FaBrain, 
     FaUser, FaCalculator, FaMoneyBillWave, FaChartBar,
-    FaCloud, FaPalette, FaAws // ✅ AGREGÁ FaAws y FaCloud
+    FaCloud, FaPalette, FaAws
 } from 'react-icons/fa';
 
 import { HiOutlineArrowNarrowRight } from 'react-icons/hi';
@@ -106,7 +106,7 @@ export default function HomePage() {
         { id: "terraform", icon: <SiTerraform color="#7B42BC" />, name: "Terraform" },
         { id: "ansible", icon: <SiAnsible color="#EE0000" />, name: "Ansible" },
         { id: "vercel", icon: <SiVercel color="#ffffff" />, name: "Vercel" },
-        { id: "heroku", icon: <FaCloud color="#430098" />, name: "Heroku" }, // ✅ CAMBIADO
+        { id: "heroku", icon: <FaCloud color="#430098" />, name: "Heroku" },
         { id: "netlify", icon: <SiNetlify color="#00C7B7" />, name: "Netlify" },
         { id: "cloudflare", icon: <SiCloudflare color="#F38020" />, name: "Cloudflare" },
         { id: "githubactions", icon: <SiGithubactions color="#2088FF" />, name: "GitHub Actions" },
@@ -114,7 +114,7 @@ export default function HomePage() {
         { id: "prometheus", icon: <SiPrometheus color="#E6522C" />, name: "Prometheus" },
         { id: "grafana", icon: <SiGrafana color="#F46800" />, name: "Grafana" },
         { id: "solidity", icon: <SiSolidity color="#363636" />, name: "Solidity" },
-        { id: "openai", icon: <FaBrain color="#74AA9C" />, name: "OpenAI" }, // ✅ CAMBIADO
+        { id: "openai", icon: <FaBrain color="#74AA9C" />, name: "OpenAI" },
         { id: "pytorch", icon: <SiPytorch color="#EE4C2C" />, name: "PyTorch" },
         { id: "tensorflow", icon: <SiTensorflow color="#FF6F00" />, name: "TensorFlow" },
         { id: "keras", icon: <SiKeras color="#D00000" />, name: "Keras" },
@@ -649,7 +649,8 @@ export default function HomePage() {
                                     </li>
                                     <li>
                                         <FaUsers className={styles.roiListIcon} />
-                                        Clientes perdidos por mala experiencia                                    </li>
+                                        Clientes perdidos por mala experiencia
+                                    </li>
                                     <li>
                                         <FaChartBar className={styles.roiListIcon} />
                                         Oportunidades de venta no aprovechadas
@@ -918,7 +919,7 @@ export default function HomePage() {
                             <Col key={testimonial.id} lg={4} md={6}>
                                 <div className={styles.testimonialCard}>
                                     <FaQuoteRight className={styles.quoteIcon} />
-                                    <p className={styles.testimonialText}>"{testimonial.quote}"</p>
+                                    <p className={styles.testimonialText}>,{testimonial.quote}</p>
                                     <div className={styles.testimonialAuthor}>
                                         <div className={styles.testimonialAvatar}>{testimonial.avatar}</div>
                                         <div>
