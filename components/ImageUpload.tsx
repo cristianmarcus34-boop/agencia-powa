@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
-import { supabase } from '../app/lib/supabase';
 import { FaUpload, FaTimes, FaImage, FaSpinner } from 'react-icons/fa';
 import Image from 'next/image';
 
@@ -23,14 +22,12 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
         const file = e.target.files?.[0];
         if (!file) return;
 
-        // Validar tipo
         const validTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
         if (!validTypes.includes(file.type)) {
             setError('Solo se permiten imágenes PNG, JPG, WEBP o GIF');
             return;
         }
 
-        // Validar tamaño (10MB)
         if (file.size > 10 * 1024 * 1024) {
             setError('La imagen no puede superar los 10MB');
             return;
@@ -46,65 +43,27 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
                 return;
             }
 
-            console.log('✅ Sesión activa - Usuario:', session.user.email);
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('folder', folder);
 
-            // ✅ OBTENER EL TOKEN DE ACCESO DE NEXT-AUTH
-            // @ts-ignore - Supabase token está en session.supabaseAccessToken
-            const supabaseToken = session?.supabaseAccessToken;
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            });
 
-            if (!supabaseToken) {
-                console.warn('⚠️ No se encontró token de Supabase en la sesión');
-                // Si no hay token, intentamos usar el cliente normal
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.error || 'Error al subir la imagen');
             }
 
-            // Generar nombre único
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
-            const filePath = `${folder}/${fileName}`;
-
-            console.log('📤 Subiendo imagen a:', filePath);
-
-            // ✅ OPCIÓN 1: Usar el cliente de Supabase con el token de la sesión
-            // Si tenés el token de acceso en la sesión, lo usamos
-            const supabaseClient = supabaseToken
-                ? supabase // Supabase ya maneja el token automáticamente si configuraste la sesión
-                : supabase;
-
-            const { data, error: uploadError } = await supabaseClient.storage
-                .from('blog-images')
-                .upload(filePath, file, {
-                    cacheControl: '3600',
-                    upsert: false,
-                });
-
-            if (uploadError) {
-                console.error('❌ Error de upload:', uploadError);
-                throw uploadError;
-            }
-
-            console.log('✅ Datos de upload:', data);
-
-            // Obtener URL pública
-            const { data: publicUrl } = supabase.storage
-                .from('blog-images')
-                .getPublicUrl(filePath);
-
-            const imageUrl = publicUrl.publicUrl;
-            console.log('✅ URL pública:', imageUrl);
-
-            setPreview(imageUrl);
-            onUpload(imageUrl);
+            setPreview(result.url);
+            onUpload(result.url);
 
         } catch (error: any) {
             console.error('❌ Error al subir imagen:', error);
-
-            if (error.message?.includes('row-level security')) {
-                setError('Error de permisos. El token de autenticación no tiene permisos para subir imágenes.');
-            } else if (error.message?.includes('bucket')) {
-                setError('Error: El bucket "blog-images" no existe o no es público.');
-            } else {
-                setError('Error al subir la imagen. Intentá de nuevo.');
-            }
+            setError(error.message || 'Error al subir la imagen. Intentá de nuevo.');
         } finally {
             setUploading(false);
             if (fileInputRef.current) {
@@ -126,62 +85,93 @@ export default function ImageUpload({ onUpload, currentImage, folder = 'blog' }:
     };
 
     return (
-        <div className="space-y-2">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {/* Preview */}
             {preview && (
-                <div className="relative w-40 h-40 rounded-lg overflow-hidden border-2 border-gray-200">
+                <div style={{
+                    position: 'relative',
+                    width: '160px',
+                    height: '160px',
+                    borderRadius: '0.5rem',
+                    overflow: 'hidden',
+                    border: '2px solid #e5e7eb',
+                }}>
                     <Image
                         src={preview}
                         alt="Previsualización"
                         fill
-                        className="object-cover"
+                        style={{ objectFit: 'cover' }}
+                        unoptimized
                     />
                     <button
                         type="button"
                         onClick={handleRemove}
-                        className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                        style={{
+                            position: 'absolute',
+                            top: '4px',
+                            right: '4px',
+                            padding: '4px',
+                            background: '#ef4444',
+                            color: '#ffffff',
+                            borderRadius: '50%',
+                            border: 'none',
+                            cursor: 'pointer',
+                        }}
                     >
                         <FaTimes size={12} />
                     </button>
                 </div>
             )}
 
+            {/* Botón de subida */}
             <div
                 onClick={handleClick}
-                className={`cursor-pointer border-2 border-dashed rounded-lg p-6 text-center transition-colors ${preview ? 'border-green-400 bg-green-50' : 'border-gray-300 hover:border-orange-400'
-                    } ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                style={{
+                    cursor: 'pointer',
+                    border: `2px dashed ${preview ? '#4ade80' : '#d1d5db'}`,
+                    borderRadius: '0.5rem',
+                    padding: '1.5rem',
+                    textAlign: 'center',
+                    backgroundColor: preview ? '#f0fdf4' : 'transparent',
+                    transition: 'all 0.2s',
+                    opacity: uploading ? 0.5 : 1,
+                    pointerEvents: uploading ? 'none' : 'auto',
+                }}
             >
                 <input
                     type="file"
                     ref={fileInputRef}
                     onChange={handleFileChange}
                     accept="image/png,image/jpeg,image/webp,image/gif"
-                    className="hidden"
+                    style={{ display: 'none' }}
                     disabled={uploading}
                 />
 
                 {uploading ? (
-                    <div className="flex items-center justify-center gap-2 text-gray-500">
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#6b7280' }}>
                         <FaSpinner className="animate-spin" />
                         <span>Subiendo imagen...</span>
                     </div>
                 ) : preview ? (
-                    <div className="flex items-center justify-center gap-2 text-green-600">
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#16a34a' }}>
                         <FaImage size={24} />
                         <span>Imagen cargada</span>
                     </div>
                 ) : (
-                    <div className="flex items-center justify-center gap-2 text-gray-400">
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#9ca3af' }}>
                         <FaUpload size={24} />
                         <span>Hacé clic para subir una imagen</span>
                     </div>
                 )}
             </div>
 
+            {/* Error */}
             {error && (
-                <p className="text-sm text-red-500">{error}</p>
+                <p style={{ fontSize: '0.875rem', color: '#ef4444' }}>{error}</p>
             )}
 
-            <p className="text-xs text-gray-400">
+            {/* Instrucciones */}
+            <p style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
                 Formatos: PNG, JPG, WEBP, GIF • Máximo 10MB
             </p>
         </div>

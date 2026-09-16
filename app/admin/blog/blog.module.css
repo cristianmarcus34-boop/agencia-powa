@@ -1,5 +1,8 @@
 /* app/admin/blog/blog.module.css */
 
+/* ============================================
+   CONTENEDOR PRINCIPAL
+   ============================================ */
 .container {
     max-width: 72rem;
     margin: 0 auto;
@@ -8,11 +11,36 @@
     min-height: 100vh;
 }
 
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0.75rem;
+    }
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+@media (max-width: 640px) {
+    .header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
 }
 
 .title {
@@ -21,6 +49,21 @@
     color: #111827;
 }
 
+@media (max-width: 768px) {
+    .title {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.1rem;
+    }
+}
+
+/* ============================================
+   BOTÓN PRIMARIO
+   ============================================ */
 .btnPrimary {
     padding: 0.5rem 1rem;
     background: #f97316;
@@ -32,12 +75,25 @@
     transition: background 0.2s;
     text-decoration: none;
     display: inline-block;
+    text-align: center;
+    font-size: 0.875rem;
 }
 
 .btnPrimary:hover {
     background: #ea580c;
 }
 
+@media (max-width: 640px) {
+    .btnPrimary {
+        width: 100%;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* ============================================
+   TABLA
+   ============================================ */
 .tableWrapper {
     background: #ffffff;
     border-radius: 0.75rem;
@@ -45,9 +101,23 @@
     overflow: hidden;
 }
 
+@media (max-width: 768px) {
+    .tableWrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 0.5rem;
+    }
+}
+
 .table {
     width: 100%;
     border-collapse: collapse;
+}
+
+@media (max-width: 768px) {
+    .table {
+        min-width: 600px;
+    }
 }
 
 .table thead {
@@ -65,10 +135,38 @@
     color: #6b7280;
 }
 
+@media (max-width: 768px) {
+    .table th {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .table th {
+        padding: 0.4rem 0.5rem;
+        font-size: 0.65rem;
+    }
+}
+
 .table td {
     padding: 0.75rem 1.5rem;
     border-bottom: 1px solid #e5e7eb;
     color: #111827;
+}
+
+@media (max-width: 768px) {
+    .table td {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .table td {
+        padding: 0.4rem 0.5rem;
+        font-size: 0.75rem;
+    }
 }
 
 .table tbody tr:hover {
@@ -79,16 +177,38 @@
     font-weight: 500;
 }
 
+@media (max-width: 480px) {
+    .titleCell {
+        font-size: 0.8rem;
+    }
+}
+
 .slugCell {
     font-size: 0.875rem;
     color: #6b7280;
 }
 
+@media (max-width: 480px) {
+    .slugCell {
+        font-size: 0.7rem;
+    }
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
 .badge {
     padding: 0.25rem 0.5rem;
     font-size: 0.75rem;
     font-weight: 600;
     border-radius: 9999px;
+}
+
+@media (max-width: 480px) {
+    .badge {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.65rem;
+    }
 }
 
 .badgePublished {
@@ -106,10 +226,25 @@
     color: #6b7280;
 }
 
+@media (max-width: 480px) {
+    .dateCell {
+        font-size: 0.7rem;
+    }
+}
+
+/* ============================================
+   ACCIONES
+   ============================================ */
 .actions {
     display: flex;
     gap: 0.5rem;
     justify-content: flex-end;
+}
+
+@media (max-width: 480px) {
+    .actions {
+        gap: 0.25rem;
+    }
 }
 
 .actionBtn {
@@ -121,6 +256,17 @@
     background: none;
     cursor: pointer;
     text-decoration: none;
+}
+
+@media (max-width: 480px) {
+    .actionBtn {
+        padding: 0.35rem;
+    }
+
+    .actionBtn svg {
+        width: 14px;
+        height: 14px;
+    }
 }
 
 .actionBtn.view {
@@ -147,10 +293,20 @@
     color: #dc2626;
 }
 
+/* ============================================
+   ESTADOS VACÍOS Y LOADING
+   ============================================ */
 .emptyState {
     padding: 3rem 1.5rem;
     text-align: center;
     color: #6b7280;
+}
+
+@media (max-width: 480px) {
+    .emptyState {
+        padding: 2rem 1rem;
+        font-size: 0.85rem;
+    }
 }
 
 .emptyState a {
@@ -171,10 +327,8 @@
 /* ============================================
    FORMULARIO
    ============================================ */
-
 .formWrapper {
     max-width: 64rem;
-    /* 4xl */
     margin: 0 auto;
     background: #ffffff;
     border-radius: 1rem;
@@ -182,17 +336,23 @@
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+    .formWrapper {
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
     .formWrapper {
         padding: 1rem;
-        border-radius: 0.75rem;
+        border-radius: 0.5rem;
     }
 }
 
 /* ============================================
    INPUTS Y CAMPOS DEL FORMULARIO
    ============================================ */
-
 .formGroup {
     margin-bottom: 1.5rem;
 }
@@ -205,6 +365,12 @@
     margin-bottom: 0.25rem;
 }
 
+@media (max-width: 480px) {
+    .formLabel {
+        font-size: 0.8rem;
+    }
+}
+
 .formInput {
     width: 100%;
     padding: 0.5rem 1rem;
@@ -213,6 +379,7 @@
     background: #ffffff;
     color: #111827;
     transition: all 0.2s;
+    font-size: 1rem;
 }
 
 .formInput:focus {
@@ -223,6 +390,13 @@
 
 .formInput::placeholder {
     color: #9ca3af;
+}
+
+@media (max-width: 480px) {
+    .formInput {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
 }
 
 .formTextarea {
@@ -242,6 +416,14 @@
     outline: 2px solid #f97316;
     outline-offset: 2px;
     border-color: transparent;
+}
+
+@media (max-width: 480px) {
+    .formTextarea {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+        min-height: 80px;
+    }
 }
 
 .formCheckbox {
@@ -272,6 +454,14 @@
     padding-top: 1.5rem;
     border-top: 1px solid #e5e7eb;
     margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+    .formActions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }
 
 .btnSubmit {
@@ -283,6 +473,7 @@
     border-radius: 0.5rem;
     cursor: pointer;
     transition: background 0.2s;
+    font-size: 0.875rem;
 }
 
 .btnSubmit:hover {
@@ -294,6 +485,14 @@
     cursor: not-allowed;
 }
 
+@media (max-width: 480px) {
+    .btnSubmit {
+        width: 100%;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
 .btnCancel {
     padding: 0.5rem 1.5rem;
     background: #e5e7eb;
@@ -303,8 +502,17 @@
     border-radius: 0.5rem;
     cursor: pointer;
     transition: background 0.2s;
+    font-size: 0.875rem;
 }
 
 .btnCancel:hover {
     background: #d1d5db;
+}
+
+@media (max-width: 480px) {
+    .btnCancel {
+        width: 100%;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
 }

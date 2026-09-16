@@ -1,26 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { supabase } from '../app/lib/supabase';
-import ImageUpload from './ImageUpload'; // ✅ IMPORTAR
+import ImageUpload from '../components/ImageUpload';
+import BlogEditor from '../components/BlogEditor';
+import type { Post } from '../app/types/blog';
 
 interface BlogFormProps {
-    post?: {
-        id: string;
-        titulo: string;
-        slug: string;
-        contenido: string;
-        extracto: string;
-        imagen_url: string;
-        imagen_alt: string;
-        publicado: boolean;
-    };
+    post?: Post;
     isEditing?: boolean;
 }
 
 export default function BlogForm({ post, isEditing = false }: BlogFormProps) {
     const router = useRouter();
+    const { data: session, status } = useSession();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         titulo: post?.titulo || '',
@@ -32,47 +27,103 @@ export default function BlogForm({ post, isEditing = false }: BlogFormProps) {
         publicado: post?.publicado || false,
     });
 
+    useEffect(() => {
+        if (post) {
+            setFormData({
+                titulo: post.titulo || '',
+                slug: post.slug || '',
+                contenido: post.contenido || '',
+                extracto: post.extracto || '',
+                imagen_url: post.imagen_url || '',
+                imagen_alt: post.imagen_alt || '',
+                publicado: post.publicado || false,
+            });
+        }
+    }, [post]);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // ✅ LOGS DE DEPURACIÓN
+        console.log('🚀 handleSubmit ejecutado');
+        console.log('📊 Status:', status);
+        console.log('👤 Session:', session);
+        console.log('📝 isEditing:', isEditing);
+        console.log('📦 post:', post);
+        console.log('📋 formData:', formData);
+
+        if (status === 'unauthenticated' || !session) {
+            alert('Debes iniciar sesión');
+            return;
+        }
+
         setLoading(true);
 
         try {
-            const { data: { user } } = await supabase.auth.getUser();
-
-            if (!user) {
-                alert('Debes iniciar sesión');
-                setLoading(false);
-                return;
-            }
+            const autorId = (session.user as any)?.id || null;
+            console.log('👤 Autor ID:', autorId);
 
             const payload = {
                 ...formData,
-                autor_id: user.id,
+                autor_id: autorId,
                 updated_at: new Date().toISOString(),
             };
+
+            console.log('📦 Payload a enviar:', payload);
 
             let error;
 
             if (isEditing && post?.id) {
-                const { error: updateError } = await supabase
+                console.log('✏️ Editando post con ID:', post.id);
+
+                const { data, error: updateError } = await supabase
                     .from('posts')
                     .update(payload)
-                    .eq('id', post.id);
+                    .eq('id', post.id)
+                    .select();
+
+                console.log('📥 Respuesta de Supabase:', data);
+                console.log('❌ Error de Supabase:', updateError);
+
                 error = updateError;
             } else {
-                const { error: insertError } = await supabase
+                console.log('➕ Creando nuevo post');
+
+                const { data, error: insertError } = await supabase
                     .from('posts')
-                    .insert([payload]);
+                    .insert([payload])
+                    .select();
+
+                console.log('📥 Respuesta de Supabase:', data);
+                console.log('❌ Error de Supabase:', insertError);
+
                 error = insertError;
             }
 
             if (error) throw error;
 
+            console.log('✅ Post guardado correctamente');
+
+            // ✅ REVALIDAR EL BLOG PÚBLICO
+            try {
+                await fetch('/api/revalidate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        path: '/blog',
+                        slug: formData.slug
+                    }),
+                });
+                console.log('✅ Blog revalidado');
+            } catch (revalidateError) {
+                console.warn('⚠️ Error al revalidar:', revalidateError);
+            }
+
             router.push('/admin/blog');
             router.refresh();
         } catch (error) {
-            console.error('Error al guardar:', error);
-            alert('Error al guardar el post');
+            console.error('❌ Error al guardar:', error);
+            alert('Error al guardar el post: ' + (error as any)?.message);
         } finally {
             setLoading(false);
         }
@@ -150,43 +201,25 @@ export default function BlogForm({ post, isEditing = false }: BlogFormProps) {
                 />
             </div>
 
-            {/* Contenido */}
+            {/* Contenido con editor visual */}
             <div>
                 <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.25rem' }}>
                     Contenido *
                 </label>
-                <textarea
-                    value={formData.contenido}
-                    onChange={(e) => setFormData({ ...formData, contenido: e.target.value })}
-                    rows={10}
-                    style={{
-                        width: '100%',
-                        padding: '0.5rem 1rem',
-                        border: '1px solid #d1d5db',
-                        borderRadius: '0.5rem',
-                        background: '#ffffff',
-                        color: '#111827',
-                        fontSize: '0.875rem',
-                        fontFamily: 'monospace',
-                    }}
-                    placeholder="Escribí el contenido del post (podés usar HTML)"
-                    required
+                <BlogEditor
+                    content={formData.contenido}
+                    onChange={(contenido) => setFormData({ ...formData, contenido })}
                 />
-                <p style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
-                    Podés usar HTML para dar formato: <strong>&lt;p&gt;</strong>, <strong>&lt;h4&gt;</strong>, <strong>&lt;ul&gt;</strong>, <strong>&lt;li&gt;</strong>, etc.
-                </p>
             </div>
 
-            {/* ============================================
-                🔥 IMAGEN DESTACADA CON UPLOAD (REEMPLAZADO)
-                ============================================ */}
+            {/* Imagen destacada */}
             <div>
                 <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.25rem' }}>
                     Imagen destacada
                 </label>
                 <ImageUpload
                     onUpload={(url) => setFormData({ ...formData, imagen_url: url })}
-                    currentImage={formData.imagen_url}
+                    currentImage={formData.imagen_url || undefined}
                     folder="blog"
                 />
             </div>

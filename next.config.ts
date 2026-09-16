@@ -5,12 +5,11 @@ const nextConfig: NextConfig = {
   // 🔧 BUILD
   // ==========================================
   typescript: {
-    ignoreBuildErrors: true,   // Ya lo tenías, evita frenar el build por errores TS
+    ignoreBuildErrors: true,
   },
-  reactStrictMode: true,       // Buenas prácticas de React
-  poweredByHeader: false,      // Oculta "X-Powered-By: Next.js"
+  reactStrictMode: true,
+  poweredByHeader: false,
 
-  // Necesario para que Three.js y React Bootstrap funcionen sin errores de ESM
   transpilePackages: [
     'three',
     '@react-three/fiber',
@@ -25,12 +24,34 @@ const nextConfig: NextConfig = {
   // ==========================================
   images: {
     formats: ['image/avif', 'image/webp'],
-    qualities: [75, 85, 90, 100],          // Soluciona el warning de quality=85
+    qualities: [75, 85, 90, 100],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60 * 60 * 24 * 7,    // 1 semana de caché
-    dangerouslyAllowSVG: true,             // Por si usás SVG en <Image>
+    minimumCacheTTL: 60 * 60 * 24 * 7,
+    dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+
+    // ✅ AGREGAR ESTO: Dominios permitidos para next/image
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ojhpjnxazpfpwcllerut.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
 
   // ==========================================
@@ -38,7 +59,6 @@ const nextConfig: NextConfig = {
   // ==========================================
   async headers() {
     return [
-      // Tus headers originales para /lab
       {
         source: "/lab/:path*",
         headers: [
@@ -46,7 +66,6 @@ const nextConfig: NextConfig = {
           { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
         ],
       },
-      // Headers generales para todo el sitio
       {
         source: "/(.*)",
         headers: [
@@ -70,22 +89,17 @@ const nextConfig: NextConfig = {
       '@react-three/fiber',
       '@react-three/drei',
     ],
-    // optimizeCss lo dejo comentado por si en el futuro usás CSS tradicional
-    // Con Tailwind 4 no es necesario
   },
 
   // ==========================================
-  // 🌪️ TURBOPACK (Next.js 16)
+  // 🌪️ TURBOPACK
   // ==========================================
-  turbopack: {
-    // Configuración vacía para silenciar el error de "webpack config without turbopack"
-    // Si no tuvieras ninguna sección webpack, podrías omitirlo
-  },
+  turbopack: {},
 
   // ==========================================
   // 🌍 ENTORNO
   // ==========================================
-  trailingSlash: false,   // URLs limpias sin barra final
+  trailingSlash: false,
 };
 
 export default nextConfig;

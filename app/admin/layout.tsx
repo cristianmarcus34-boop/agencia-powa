@@ -31,9 +31,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [mobileOpen, setMobileOpen] = useState(false);
 
+    // ✅ REDIRECCIÓN CORREGIDA
     useEffect(() => {
-        if (status === 'unauthenticated') router.push('/login');
-        if (session?.user?.rol !== 'admin') router.push('/cliente');
+        // ✅ Esperar a que la sesión esté cargada
+        if (status === 'loading') return;
+
+        // ✅ Si no está autenticado, redirigir al login
+        if (status === 'unauthenticated') {
+            router.push('/login');
+            return;
+        }
+
+        // ✅ Solo redirigir si el rol está cargado y NO es admin
+        if (session?.user?.rol && session.user.rol !== 'admin') {
+            router.push('/cliente');
+            return;
+        }
     }, [status, session, router]);
 
     // Cerrar sidebar móvil al cambiar de página

@@ -114,9 +114,7 @@ export default function BlogPage() {
                 post.extracto?.toLowerCase().includes(searchLower) ||
                 post.meta_keywords?.toLowerCase().includes(searchLower);
 
-            // 🔥 TEMPORAL: mientras no tengas categoría en la DB, usamos un campo fijo o lo dejamos pasar
-            // Podés agregar una columna 'categoria' a la tabla posts si querés filtrar por categoría
-            const matchesCategory = activeCategory === 'Todos' || true; // ⚠️ CAMBIAR CUANDO TENGAS CATEGORÍA
+            const matchesCategory = activeCategory === 'Todos' || true;
 
             return matchesSearch && matchesCategory;
         });

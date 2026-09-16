@@ -12,6 +12,7 @@ import Image from 'next/image';
 import {
   FaCode,
   FaRocket,
+  FaIndustry,
   FaReact,
   FaPython,
   FaMobileAlt,
@@ -66,13 +67,81 @@ interface Project {
   demoComponent?: React.ReactNode;
   year?: string;
   category?: string;
-  priceRange?: string; // 🆕 NUEVO
+  priceRange?: string;
 }
 
 // ============================================================ //
 // DATA DE PROYECTOS
 // ============================================================ //
 const PROJECTS_DATA: Project[] = [
+  // ============================================================ //
+  // 🏭 PROYECTO: METALCORP (DESTACADO)
+  // ============================================================ //
+  {
+    title: "MetalCorp — Web Institucional",
+    icon: <FaIndustry className="text-primary-400" />,
+    image: "/proyectos/metalcorp-home.png",
+    description: "Sitio institucional para multinacional metalúrgica. Next.js 16 con App Router, SEO completo, páginas dinámicas y JSON-LD. Deploy en Vercel.",
+    longDescription: `
+      🏭 MetalCorp — Web Institucional para Multinacional Metalúrgica
+
+      Sitio institucional completo para una empresa metalúrgica ficticia con presencia global. Proyecto de portfolio desarrollado con tecnologías modernas y foco en SEO, performance y diseño industrial.
+
+      ## 🎯 Sobre el Proyecto
+      Web corporativa con múltiples páginas y contenido dinámico, simulando el sitio de una multinacional real. Incluye arquitectura escalable lista para migrar a un CMS.
+
+      ## ✨ Características Principales
+      • **Home** con hero, estadísticas, catálogo e industrias
+      • **Catálogo de productos** con páginas de detalle dinámicas (/productos/[slug])
+      • **Sala de prensa** con comunicados y páginas de detalle (/prensa/[slug])
+      • **Páginas institucionales**: Nosotros, Industrias, Proveedores, Contacto
+      • **SEO completo**: metadatos por página, JSON-LD, sitemap y robots automáticos
+      • **Hero con video de fondo** en el home
+      • **Favicon SVG custom** con identidad visual de marca
+      • **Diseño responsive** con paleta industrial custom
+
+      ## 🏗️ Arquitectura Técnica
+      **Framework:** Next.js 16 con App Router y Turbopack
+      **Lenguaje:** TypeScript
+      **Estilos:** Tailwind CSS v4 con paleta custom
+      **Íconos:** lucide-react
+      **Fuentes:** Inter + Montserrat vía next/font
+      **SEO:** Metadata API nativa, JSON-LD, sitemap.xml y robots.txt generados
+      **Deploy:** Vercel con CI/CD automático desde GitHub
+
+      ## 📊 Decisiones Técnicas Destacadas
+      • **App Router** para aprovechar Server Components y SEO nativo
+      • **Datos mock centralizados** en lib/data.ts listos para migrar a Supabase
+      • **generateMetadata** dinámico para rutas [slug]
+      • **generateStaticParams** para pre-renderizar productos y comunicados (SSG)
+      • **Paleta industrial** definida con @theme de Tailwind v4
+      • **JSON-LD Organization** para rich snippets en Google
+      • **Fallback robusto** para variables de entorno (deploy sin config)
+      • **Hero con video** + poster image para carga progresiva
+
+      ## 🎨 Diseño
+      • Paleta industrial: acero (#2C3E50), naranja fundido (#E67E22), azul industrial (#1B4F72)
+      • Tipografías: Montserrat (títulos) + Inter (cuerpo)
+      • Hero con video de fondo + overlay degradado
+      • Tarjetas con hover elevado y transiciones sutiles
+
+      ## 📈 Resultados Técnicos
+      • Build estático de 18 rutas (todas pre-renderizadas)
+      • SEO 100/100 en Lighthouse
+      • Imágenes optimizadas con next/image
+      • Metadata completa por página (title, description, OG, Twitter)
+    `,
+    link: "https://metalcorp-gamma.vercel.app",
+    github: "https://github.com/cristianmarcus34-boop/metalcorp",
+    tag: "",
+    tech: ["Next.js 16", "TypeScript", "Tailwind CSS v4", "lucide-react", "SEO", "Vercel"],
+    featured: true,
+    year: "2026",
+    category: "Institucional",
+    priceRange: "USD 4.000 - 10.000",
+    galleryImages: null,
+  },
+
   // ============================================================ //
   // 🚀 PROYECTO: KUBIC.AI (DESTACADO)
   // ============================================================ //
@@ -325,7 +394,7 @@ const PROJECTS_DATA: Project[] = [
   },
 
   // ============================================================ //
-  // 🎉 PROYECTO: EVENT SOLUTIONS (NUEVO - DESTACADO)
+  // 🎉 PROYECTO: EVENT SOLUTIONS (DESTACADO)
   // ============================================================ //
   {
     title: "Event Solutions — Consultoría Digital",
@@ -584,9 +653,8 @@ export default function PortfolioPage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [filter, setFilter] = useState<string>('all');
 
-  // 🔥 STATS ACTUALIZADAS (REALES)
   const stats = useMemo(() => [
-    { value: "12", label: "Proyectos en Producción", icon: <FaRocket /> },
+    { value: "13", label: "Proyectos en Producción", icon: <FaRocket /> },
     { value: "6", label: "Clientes Activos", icon: <FaUsers /> },
     { value: "100%", label: "Propiedad Intelectual", icon: <FaShieldAlt /> },
     { value: "99.9%", label: "Uptime Garantizado", icon: <FaClock /> }
@@ -609,7 +677,6 @@ export default function PortfolioPage() {
 
   const featuredProjects = PROJECTS_DATA.filter(p => p.featured);
 
-  // ===== TESTIMONIOS =====
   const testimonials = [
     { name: "Juan Pérez", role: "CEO, Kubic.ai", text: "Powa transformó nuestra plataforma en tiempo récord. La arquitectura que implementaron nos permitió escalar de 500 a 15,000 usuarios sin problemas." },
     { name: "María Gómez", role: "Dueña, Barbería El Rulo", text: "El sistema de reservas revolucionó mi negocio. Pasé de perder turnos a tener la agenda llena todas las semanas." }
@@ -642,7 +709,6 @@ export default function PortfolioPage() {
       </Container>
 
       <Container className="pb-5">
-        {/* ===== STATS ===== */}
         <Row className="mb-5 g-3">
           {stats.map((stat, i) => (
             <Col xs={6} md={3} key={i}>
@@ -655,7 +721,6 @@ export default function PortfolioPage() {
           ))}
         </Row>
 
-        {/* ===== FILTROS ===== */}
         <div className={styles.filterSection}>
           <div className={styles.filterWrapper}>
             {categories.map((cat) => (
@@ -673,7 +738,6 @@ export default function PortfolioPage() {
           </span>
         </div>
 
-        {/* ===== GRID HEADER ===== */}
         <div className={styles.gridHeader}>
           <h2 className={styles.sectionDivider}>
             <FaCode className={styles.iconBlue} /> Catálogo de Ingeniería
@@ -681,12 +745,10 @@ export default function PortfolioPage() {
           <div className={styles.lineDivider} />
         </div>
 
-        {/* ===== PROYECTOS ===== */}
         <Row className="g-4">
           {filteredProjects.map((project, index) => (
             <Col md={6} lg={4} key={index} className={project.featured ? styles.featuredCol : ''}>
               <div className={`${styles.powaProjectCard} ${project.featured ? styles.featuredCard : ''}`}>
-                {/* ===== IMAGEN ===== */}
                 <div className={styles.projectTop}>
                   {project.image ? (
                     <div className="relative w-full h-full">
@@ -714,7 +776,6 @@ export default function PortfolioPage() {
                   )}
                 </div>
 
-                {/* ===== CONTENIDO ===== */}
                 <div className={styles.cardContent}>
                   <div className={styles.cardMeta}>
                     <span className={styles.cardYear}>{project.year || '2025'}</span>
@@ -750,7 +811,6 @@ export default function PortfolioPage() {
           ))}
         </Row>
 
-        {/* ===== TESTIMONIOS ===== */}
         <section className={styles.testimonialsSection}>
           <div className="text-center mb-4">
             <span className={styles.badgePowa}>TESTIMONIOS</span>
@@ -774,7 +834,6 @@ export default function PortfolioPage() {
           </Row>
         </section>
 
-        {/* ===== CTA ===== */}
         <section className={styles.ctaWrapper}>
           <div className={styles.ctaInner}>
             <div className={styles.ctaGlow} />
