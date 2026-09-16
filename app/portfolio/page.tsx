@@ -786,9 +786,9 @@ export default function PortfolioPage() {
                   </div>
                   <h3 className={styles.cardTitle}>{project.title}</h3>
                   <p className={styles.cardDescription}>{project.description}</p>
-                  {project.priceRange && (
+                  {/*{project.priceRange && (
                     <span className={styles.cardPrice}>💰 {project.priceRange}</span>
-                  )}
+                  )}*/}
 
                   <div className={styles.cardFooter}>
                     <Button
