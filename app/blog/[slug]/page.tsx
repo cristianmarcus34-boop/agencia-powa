@@ -8,6 +8,7 @@ import {
     FaClock, FaTag
 } from 'react-icons/fa';
 import Link from 'next/link';
+import Image from 'next/image';
 import Script from 'next/script';
 import DOMPurify from 'isomorphic-dompurify';
 import { supabase } from '../../lib/supabase';
@@ -107,6 +108,7 @@ export default function PostPage() {
         '@type': 'BlogPosting',
         'headline': post.titulo,
         'description': post.extracto,
+        'image': post.imagen_url || undefined,
         'datePublished': post.created_at,
         'author': {
             '@type': 'Organization',
@@ -215,9 +217,23 @@ export default function PostPage() {
                             </header>
 
                             <article className={styles.articleContainer}>
-                                <div className={styles.articleHeroEmoji} aria-hidden="true">
-                                    {post.emoji || '📝'}
-                                </div>
+                                {/* Imagen de portada o fallback */}
+                                {post.imagen_url ? (
+                                    <div className={styles.articleCoverWrapper}>
+                                        <Image
+                                            src={post.imagen_url}
+                                            alt={post.imagen_alt || post.titulo}
+                                            fill
+                                            sizes="(max-width: 992px) 100vw, 800px"
+                                            className={styles.articleCoverImage}
+                                            priority
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className={styles.articleHeroEmoji} aria-hidden="true">
+                                        {post.emoji || '📝'}
+                                    </div>
+                                )}
 
                                 <PostContent html={sanitizedContent} />
                             </article>

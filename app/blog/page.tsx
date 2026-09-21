@@ -9,6 +9,7 @@ import {
     FaArrowUp
 } from 'react-icons/fa';
 import Link from 'next/link';
+import Image from 'next/image';
 import Script from 'next/script';
 import { supabase } from '../lib/supabase';
 
@@ -97,20 +98,18 @@ export default function BlogPage() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // ===== FILTRADO (BUG ARREGLADO) =====
+    // ===== FILTRADO =====
     const filteredPosts = useMemo(() => {
         const searchLower = searchTerm.toLowerCase().trim();
         const catLower = activeCategory.toLowerCase();
 
         return posts.filter(post => {
-            // Búsqueda por texto (título, extracto, keywords)
             const matchesSearch =
                 !searchLower ||
                 post.titulo.toLowerCase().includes(searchLower) ||
                 post.extracto?.toLowerCase().includes(searchLower) ||
                 post.meta_keywords?.toLowerCase().includes(searchLower);
 
-            // Filtro por categoría: compara contra meta_keywords del post
             const matchesCategory =
                 activeCategory === 'Todos' ||
                 (post.meta_keywords?.toLowerCase().includes(catLower) ?? false);
@@ -294,8 +293,27 @@ export default function BlogPage() {
                                                 className={`${styles.blogCardPowa} border-0 h-100 fadeInUp`}
                                                 style={{ animationDelay: `${(index + 1) * 0.05}s` }}
                                             >
+                                                {/* Imagen de portada o fallback */}
+                                                {post.imagen_url ? (
+                                                    <div className={styles.cardCoverWrapper}>
+                                                        <Image
+                                                            src={post.imagen_url}
+                                                            alt={post.imagen_alt || post.titulo}
+                                                            fill
+                                                            sizes="(max-width: 992px) 100vw, 50vw"
+                                                            className={styles.cardCoverImage}
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <div className={styles.cardCoverWrapper}>
+                                                        <div className={styles.cardCoverFallback}>
+                                                            <span className={styles.cardFallbackIcon}>📝</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+
                                                 <Card.Body className="d-flex flex-column p-4">
-                                                    <div className="d-flex justify-content-between align-items-center mb-4">
+                                                    <div className="d-flex justify-content-between align-items-center mb-3">
                                                         <span className={styles.postCategory}>
                                                             {post.meta_keywords?.split(',')[0]?.trim() || 'Artículo'}
                                                         </span>
@@ -309,14 +327,9 @@ export default function BlogPage() {
                                                         </span>
                                                     </div>
 
-                                                    <div className="d-flex align-items-start mb-3">
-                                                        <div className={styles.postEmoji} aria-hidden="true">
-                                                            📝
-                                                        </div>
-                                                        <h3 className={`${styles.postTitle} mb-0 ms-3`}>
-                                                            {post.titulo}
-                                                        </h3>
-                                                    </div>
+                                                    <h3 className={styles.postTitle}>
+                                                        {post.titulo}
+                                                    </h3>
 
                                                     <p className={styles.postExcerpt}>
                                                         {post.extracto || 'Sin extracto disponible.'}
