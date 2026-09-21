@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabase';
 import Link from 'next/link';
 import { Pencil, Trash2, Eye } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import styles from './blog.module.css'; // ✅ Importar los estilos
+import styles from './blog.module.css';
 
 export default function AdminBlogPage() {
     const [posts, setPosts] = useState<any[]>([]);
@@ -23,11 +23,29 @@ export default function AdminBlogPage() {
         fetchPosts();
     }, []);
 
-    const handleDelete = async (id: string) => {
-        if (confirm('¿Eliminar este post?')) {
-            await supabase.from('posts').delete().eq('id', id);
-            setPosts(posts.filter(p => p.id !== id));
+    const handleDelete = async (id: string, slug: string) => {
+        if (!confirm('¿Eliminar este post?')) return;
+
+        const { error } = await supabase.from('posts').delete().eq('id', id);
+
+        if (error) {
+            alert('Error al eliminar el post');
+            console.error(error);
+            return;
         }
+
+        // Revalidar blog y sitemap
+        try {
+            await fetch('/api/revalidate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ slug }),
+            });
+        } catch (err) {
+            console.warn('⚠️ Error al revalidar tras borrar:', err);
+        }
+
+        setPosts(posts.filter(p => p.id !== id));
     };
 
     if (loading) return <div className={styles.loading}>Cargando posts...</div>;
@@ -82,7 +100,10 @@ export default function AdminBlogPage() {
                                             <Link href={`/admin/blog/${post.id}`} className={`${styles.actionBtn} ${styles.edit}`}>
                                                 <Pencil size={18} />
                                             </Link>
-                                            <button className={`${styles.actionBtn} ${styles.delete}`} onClick={() => handleDelete(post.id)}>
+                                            <button
+                                                className={`${styles.actionBtn} ${styles.delete}`}
+                                                onClick={() => handleDelete(post.id, post.slug)}
+                                            >
                                                 <Trash2 size={18} />
                                             </button>
                                         </div>

@@ -14,6 +14,7 @@ interface BlogFormProps {
 }
 
 export default function BlogForm({ post, isEditing = false }: BlogFormProps) {
+    const originalSlug = post?.slug;
     const router = useRouter();
     const { data: session, status } = useSession();
     const [loading, setLoading] = useState(false);
@@ -105,16 +106,17 @@ export default function BlogForm({ post, isEditing = false }: BlogFormProps) {
             console.log('✅ Post guardado correctamente');
 
             // ✅ REVALIDAR EL BLOG PÚBLICO
+            // ✅ REVALIDAR EL BLOG PÚBLICO Y EL SITEMAP
             try {
                 await fetch('/api/revalidate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        path: '/blog',
-                        slug: formData.slug
+                        slug: formData.slug,
+                        previousSlug: isEditing ? originalSlug : undefined,
                     }),
                 });
-                console.log('✅ Blog revalidado');
+                console.log('✅ Blog y sitemap revalidados');
             } catch (revalidateError) {
                 console.warn('⚠️ Error al revalidar:', revalidateError);
             }

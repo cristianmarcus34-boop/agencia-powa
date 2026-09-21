@@ -41,21 +41,15 @@ const POPULAR_TAGS = [
 
 // ===== TIPO DE POST DESDE SUPABASE =====
 interface PostFromDB {
-    id: string
-    titulo: string
-    slug: string
-    contenido: string
-    extracto: string
-    imagen_url: string
-    imagen_alt: string
-    publicado: boolean
-    created_at: string
-    updated_at: string
-    autor_id: string
-    proyecto_id: string | null
-    vistas: number
-    meta_descripcion: string | null
-    meta_keywords: string | null
+    id: string;
+    titulo: string;
+    slug: string;
+    extracto: string;
+    imagen_url: string | null;
+    imagen_alt: string | null;
+    created_at: string;
+    meta_keywords: string | null;
+    meta_descripcion: string | null;
 }
 
 export default function BlogPage() {
@@ -71,14 +65,19 @@ export default function BlogPage() {
             try {
                 const { data, error } = await supabase
                     .from('posts')
-                    .select('*')
+                    .select('id, titulo, slug, extracto, imagen_url, imagen_alt, created_at, meta_keywords, meta_descripcion')
                     .eq('publicado', true)
                     .order('created_at', { ascending: false });
 
-                if (error) throw error;
-                setPosts(data || []);
-            } catch (error) {
-                console.error('Error cargando posts:', error);
+                if (error) {
+                    console.error('Error cargando posts:', error);
+                    setPosts([]);
+                } else {
+                    setPosts((data || []) as PostFromDB[]);
+                }
+            } catch (err) {
+                console.error('Error inesperado:', err);
+                setPosts([]);
             } finally {
                 setLoading(false);
             }
@@ -89,10 +88,8 @@ export default function BlogPage() {
 
     // ===== SCROLL TOP =====
     useEffect(() => {
-        const handleScroll = () => {
-            setShowScrollTop(window.scrollY > 500);
-        };
-        window.addEventListener('scroll', handleScroll);
+        const handleScroll = () => setShowScrollTop(window.scrollY > 500);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -100,21 +97,23 @@ export default function BlogPage() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // ===== FILTRADO =====
+    // ===== FILTRADO (BUG ARREGLADO) =====
     const filteredPosts = useMemo(() => {
         const searchLower = searchTerm.toLowerCase().trim();
+        const catLower = activeCategory.toLowerCase();
 
         return posts.filter(post => {
-            if (!searchLower && activeCategory === 'Todos') {
-                return true;
-            }
-
-            const matchesSearch = !searchLower ||
+            // Búsqueda por texto (título, extracto, keywords)
+            const matchesSearch =
+                !searchLower ||
                 post.titulo.toLowerCase().includes(searchLower) ||
                 post.extracto?.toLowerCase().includes(searchLower) ||
                 post.meta_keywords?.toLowerCase().includes(searchLower);
 
-            const matchesCategory = activeCategory === 'Todos' || true;
+            // Filtro por categoría: compara contra meta_keywords del post
+            const matchesCategory =
+                activeCategory === 'Todos' ||
+                (post.meta_keywords?.toLowerCase().includes(catLower) ?? false);
 
             return matchesSearch && matchesCategory;
         });
@@ -128,19 +127,19 @@ export default function BlogPage() {
 
     // ===== SCHEMA JSON-LD PARA SEO =====
     const blogSchema = {
-        "@context": "https://schema.org",
-        "@type": "Blog",
-        "name": "Powa Insights - Blog de Ingeniería Web",
-        "description": "Perspectivas globales sobre ingeniería de software, optimización de performance y arquitectura escalable.",
-        "url": "https://www.agenciadigitalpowa.com.ar/blog",
-        "blogPosts": posts.map(post => ({
-            "@type": "BlogPosting",
-            "headline": post.titulo,
-            "description": post.extracto,
-            "datePublished": post.created_at,
-            "author": {
-                "@type": "Organization",
-                "name": "Agencia Powa"
+        '@context': 'https://schema.org',
+        '@type': 'Blog',
+        'name': 'Powa Insights - Blog de Ingeniería Web',
+        'description': 'Perspectivas globales sobre ingeniería de software, optimización de performance y arquitectura escalable.',
+        'url': 'https://www.agenciadigitalpowa.com.ar/blog',
+        'blogPosts': posts.map(post => ({
+            '@type': 'BlogPosting',
+            'headline': post.titulo,
+            'description': post.extracto,
+            'datePublished': post.created_at,
+            'author': {
+                '@type': 'Organization',
+                'name': 'Agencia Powa'
             }
         }))
     };
@@ -148,8 +147,15 @@ export default function BlogPage() {
     // ===== LOADING =====
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#0a0f1a] flex items-center justify-center">
-                <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+            <div className={styles.blogPageWrapper}>
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: '60vh'
+                }}>
+                    <div className="text-white">Cargando artículos...</div>
+                </div>
             </div>
         );
     }
@@ -167,7 +173,7 @@ export default function BlogPage() {
                 <div className={styles.ambientGlow} />
                 <div className={styles.ambientGlowSecondary} />
 
-                <Container className="py-5 mt-5 relative z-10">
+                <Container className="py-5 mt-5" style={{ position: 'relative', zIndex: 10 }}>
                     <header className="text-center mb-5">
                         <span className={styles.badgePowaAccent}>Conocimiento Técnico</span>
                         <h1 className={styles.blogMainTitle}>
@@ -253,7 +259,7 @@ export default function BlogPage() {
                             <p className={styles.emptyText}>
                                 {searchTerm || activeCategory !== 'Todos' ? (
                                     <>
-                                        No hay artículos que coincidan con <strong>"{searchTerm}"</strong>
+                                        No hay artículos que coincidan con <strong>&quot;{searchTerm}&quot;</strong>
                                         {activeCategory !== 'Todos' && ` en la categoría ${activeCategory}`}
                                     </>
                                 ) : (
@@ -261,10 +267,7 @@ export default function BlogPage() {
                                 )}
                             </p>
                             {(searchTerm || activeCategory !== 'Todos') && (
-                                <button
-                                    className={styles.emptyButton}
-                                    onClick={clearSearch}
-                                >
+                                <button className={styles.emptyButton} onClick={clearSearch}>
                                     Ver todos los artículos
                                 </button>
                             )}
@@ -284,7 +287,7 @@ export default function BlogPage() {
                             </div>
 
                             <Row className="g-4">
-                                {filteredPosts.map((post: PostFromDB, index: number) => (
+                                {filteredPosts.map((post, index) => (
                                     <Col lg={6} key={post.id}>
                                         <Link href={`/blog/${post.slug}`} className="text-decoration-none d-block h-100">
                                             <Card
@@ -292,10 +295,9 @@ export default function BlogPage() {
                                                 style={{ animationDelay: `${(index + 1) * 0.05}s` }}
                                             >
                                                 <Card.Body className="d-flex flex-column p-4">
-
                                                     <div className="d-flex justify-content-between align-items-center mb-4">
                                                         <span className={styles.postCategory}>
-                                                            {post.meta_keywords?.split(',')[0] || 'Artículo'}
+                                                            {post.meta_keywords?.split(',')[0]?.trim() || 'Artículo'}
                                                         </span>
                                                         <span className={styles.postDate}>
                                                             <FaCalendarAlt className="me-2" size={12} />
@@ -326,7 +328,6 @@ export default function BlogPage() {
                                                             <FaArrowRight className={`${styles.iconArrow} ms-2`} size={12} />
                                                         </span>
                                                     </div>
-
                                                 </Card.Body>
                                             </Card>
                                         </Link>

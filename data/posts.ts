@@ -1,4 +1,4 @@
-// data/posts.ts
+/*}// data/posts.ts
 
 export interface Post {
     id: string;
@@ -1285,4 +1285,4 @@ CMD ["node", "server.js"]</code></pre>
             <p>¿Querés diseñar tu estrategia Cloud +? <a href="https://wa.me/5491138305837">Agendá una consultoría →</a></p>
         `
     }
-];
+];/*/
