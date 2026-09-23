@@ -30,7 +30,7 @@ export default function FooterPowa() {
             <div className={styles.footerRight}>
               <div className={styles.socialWrapper}>
                 <a
-                  href="https://wa.me/5491138305837?text=Hola!%20Quiero%20consultar%20por%20el%20c%C3%B3digo%20de%20GitHub%20de%20Powa%20Digital..."
+                  href="https://github.com/cristianmarcus34-boop"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.socialLink}
@@ -40,7 +40,7 @@ export default function FooterPowa() {
                   <FaGithub />
                 </a>
                 <a
-                  href="https://wa.me/5491138305837?text=Hola!%20Quiero%20consultar%20por%20el%20perfil%20de%20LinkedIn%20de%20Powa%20Digital..."
+                  href="https://www.linkedin.com/in/cristian-marcus2025/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.socialLink}
