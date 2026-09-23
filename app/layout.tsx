@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Orbitron } from 'next/font/google';
+import { Toaster } from 'react-hot-toast'; // 🔥 Importamos Toaster de react-hot-toast
 import 'bootstrap/dist/css/bootstrap.min.css'; // ✅ Bootstrap DESPUÉS
-import 'react-toastify/dist/ReactToastify.css';
 import './globals.css'; // ✅ Tailwind PRIMERO
 
 import Providers from './providers';
@@ -39,6 +39,18 @@ export default function RootLayout({
   return (
     <html lang="es" className={orbitron.variable}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* 🔥 Componente Toaster global */}
+        <Toaster
+          position="top-right"
+          containerStyle={{ zIndex: 99999 }}
+          toastOptions={{
+            style: {
+              background: '#1e293b',
+              color: '#fff',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+            },
+          }}
+        />
         <Providers>
           <LayoutWrapper>{children}</LayoutWrapper>
         </Providers>

@@ -3,16 +3,17 @@
 
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import {
     FaUsers, FaProjectDiagram, FaUserTie, FaComments,
-    FaStar, FaEnvelope, FaHome, FaArrowLeft, FaFileInvoice,
-    FaBars, FaTimes, FaSignOutAlt, FaChevronLeft, FaChevronRight, FaChartBar, FaNewspaper
+    FaStar, FaHome, FaArrowLeft, FaFileInvoice,
+    FaBars, FaSignOutAlt, FaChevronLeft, FaChevronRight,
+    FaChartBar, FaNewspaper, FaTasks, FaPlus, FaExclamationTriangle, FaCheckCircle
 } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 import styles from './admin.module.css';
 
-// ✅ INTERFAZ ACTUALIZADA CON LAS NUEVAS PROPIEDADES
 interface DashboardData {
     totalUsuarios: number;
     usuariosActivos: number;
@@ -24,6 +25,7 @@ interface DashboardData {
     promedioCalificacion: number;
     totalFacturas: number;
     facturasPendientes: number;
+    tareasCriticas?: number;
     ultimasConversaciones: Array<{
         id: string;
         perfil: string;
@@ -33,10 +35,10 @@ interface DashboardData {
     actividadPorTipo: Record<string, number>;
 }
 
-// 🔥 NAVEGACIÓN DEL SIDEBAR
 const navItems = [
     { path: '/admin', label: 'Dashboard', icon: <FaHome /> },
     { path: '/admin/usuarios', label: 'Usuarios', icon: <FaUsers /> },
+    { path: '/admin/tareas', label: 'Tareas', icon: <FaTasks /> },
     { path: '/admin/proyectos', label: 'Proyectos', icon: <FaProjectDiagram /> },
     { path: '/admin/clientes', label: 'Clientes', icon: <FaUserTie /> },
     { path: '/admin/facturas', label: 'Facturas', icon: <FaFileInvoice /> },
@@ -48,116 +50,116 @@ const navItems = [
 export default function AdminDashboard() {
     const { data: session, status } = useSession();
     const router = useRouter();
+
     const [data, setData] = useState<DashboardData | null>(null);
     const [loading, setLoading] = useState(true);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-    // 🔥 REDIRECCIONES
     useEffect(() => {
-        if (status === 'unauthenticated') {
-            router.push('/login');
-        }
-        if (session?.user?.rol !== 'admin') {
-            router.push('/cliente');
-        }
+        if (status === 'unauthenticated') router.push('/login');
+        if (session?.user && (session.user as any).rol !== 'admin') router.push('/cliente');
     }, [status, session, router]);
 
-    // 🔥 FETCH DATA
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await fetch('/api/admin/dashboard');
-                const result = await res.json();
-                if (result.success) {
-                    setData(result.data);
-                }
-            } catch (error) {
-                console.error('Error fetching dashboard data:', error);
-            } finally {
-                setLoading(false);
+    const fetchData = useCallback(async () => {
+        try {
+            setLoading(true);
+            const res = await fetch('/api/admin/dashboard');
+            const result = await res.json();
+            if (result.success) {
+                setData(result.data);
+            } else {
+                toast.error(result.error || 'Error al obtener datos del dashboard');
             }
-        };
+        } catch (error) {
+            console.error('Error fetching dashboard data:', error);
+            toast.error('Error de conexión al cargar métricas');
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
-        if (session?.user?.rol === 'admin') {
+    useEffect(() => {
+        if ((session?.user as any)?.rol === 'admin') {
             fetchData();
         }
-    }, [session]);
+    }, [session, fetchData]);
 
-    // 🔥 CERRAR SIDEBAR EN MÓVIL AL HACER CLICK
     const handleNavClick = () => {
-        if (window.innerWidth <= 768) {
+        if (typeof window !== 'undefined' && window.innerWidth <= 768) {
             setSidebarOpen(false);
         }
     };
 
-    // 🔥 LOGOUT
     const handleLogout = async () => {
+        const toastId = toast.loading('Cerrando sesión...');
         await signOut({ redirect: false });
+        toast.success('Sesión cerrada', { id: toastId });
         router.push('/login');
     };
 
-    if (status === 'loading' || loading) {
-        return (
-            <div className={styles.loadingContainer}>
-                <div className={styles.loadingSpinner}></div>
-                <p>Cargando panel...</p>
-            </div>
-        );
-    }
-
-    // Tarjetas principales
-    const cards = [
+    const cards = useMemo(() => [
         {
             icon: <FaUsers />,
             value: data?.totalUsuarios || 0,
-            label: 'Usuarios',
-            sub: `${data?.usuariosActivos || 0} activos`,
+            label: 'Usuarios Registrados',
+            sub: `${data?.usuariosActivos || 0} activos en la plataforma`,
             color: '#3b82f6',
             link: '/admin/usuarios'
         },
         {
             icon: <FaProjectDiagram />,
             value: data?.totalProyectos || 0,
-            label: 'Proyectos',
-            sub: `${data?.proyectosActivos || 0} activos`,
+            label: 'Proyectos en Agencia',
+            sub: `${data?.proyectosActivos || 0} activos actualmente`,
             color: '#22d3ee',
             link: '/admin/proyectos'
         },
         {
             icon: <FaUserTie />,
             value: data?.totalClientes || 0,
-            label: 'Clientes',
+            label: 'Empresas Clientes',
+            sub: 'Base de datos CRM',
             color: '#10b981',
             link: '/admin/clientes'
         },
         {
             icon: <FaFileInvoice />,
             value: data?.totalFacturas || 0,
-            label: 'Facturas',
-            sub: `${data?.facturasPendientes || 0} pendientes`,
+            label: 'Facturación / Pagos',
+            sub: `${data?.facturasPendientes || 0} pend. de cobro`,
             color: '#f59e0b',
             link: '/admin/facturas'
         },
         {
             icon: <FaComments />,
             value: data?.totalConversaciones || 0,
-            label: 'Conversaciones',
-            sub: `${data?.totalMensajes || 0} mensajes`,
-            color: '#f59e0b',
+            label: 'Interacciones IA',
+            sub: `${data?.totalMensajes || 0} mensajes procesados`,
+            color: '#8b5cf6',
             link: '/admin/conversaciones'
         },
         {
             icon: <FaStar />,
-            value: data?.promedioCalificacion || '—',
-            label: 'Calificación promedio',
-            color: '#8b5cf6'
+            value: data?.promedioCalificacion ? `${data.promedioCalificacion} / 5` : '—',
+            label: 'Calificación Promedio',
+            sub: 'Feedback de clientes',
+            color: '#eab308'
         },
-    ];
+    ], [data]);
+
+    if (status === 'loading' || (loading && !data)) {
+        return (
+            <div className={styles.loadingContainer}>
+                <div className={styles.loadingSpinner}></div>
+                <p>Cargando panel de control...</p>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.adminContainer}>
-            {/* 🔥 MOBILE HEADER */}
+            {/* Header Mobile */}
             <header className={styles.mobileHeader}>
                 <button
                     className={styles.menuButton}
@@ -166,13 +168,13 @@ export default function AdminDashboard() {
                 >
                     <FaBars />
                 </button>
-                <span className={styles.mobileTitle}>📊 Admin</span>
+                <span className={styles.mobileTitle}>⚡ Powa Admin</span>
                 <span className={styles.mobileUser}>
                     {session?.user?.name?.split(' ')[0] || 'Admin'}
                 </span>
             </header>
 
-            {/* 🔥 OVERLAY (mobile) */}
+            {/* Overlay Mobile */}
             {sidebarOpen && (
                 <div
                     className={styles.overlayActive}
@@ -180,13 +182,12 @@ export default function AdminDashboard() {
                 />
             )}
 
-            {/* 🔥 SIDEBAR */}
+            {/* Sidebar Lateral */}
             <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarMobileOpen : ''} ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
-                {/* Header del sidebar */}
                 <div className={styles.sidebarHeader}>
                     <div className={styles.logo}>
                         <span className={styles.logoIcon}>⚡</span>
-                        <span className={styles.logoText}>Admin</span>
+                        <span className={styles.logoText}>Powa Admin</span>
                     </div>
                     <button
                         className={styles.collapseBtn}
@@ -197,7 +198,6 @@ export default function AdminDashboard() {
                     </button>
                 </div>
 
-                {/* Navegación */}
                 <nav className={styles.sidebarNav}>
                     {navItems.map((item) => (
                         <Link
@@ -212,7 +212,6 @@ export default function AdminDashboard() {
                     ))}
                 </nav>
 
-                {/* Footer del sidebar */}
                 <div className={styles.sidebarFooter}>
                     <div className={styles.userInfo}>
                         <div className={styles.userAvatar}>
@@ -220,62 +219,74 @@ export default function AdminDashboard() {
                         </div>
                         <div className={styles.userDetails}>
                             <span className={styles.userName}>{session?.user?.name || 'Admin'}</span>
-                            <span className={styles.userRole}>{session?.user?.rol || 'admin'}</span>
+                            <span className={styles.userRole}>{(session?.user as any)?.rol || 'admin'}</span>
                         </div>
                     </div>
-                    <button
-                        onClick={handleLogout}
-                        className={styles.logoutBtn}
-                    >
+                    <button onClick={handleLogout} className={styles.logoutBtn}>
                         <FaSignOutAlt />
                         <span>Cerrar sesión</span>
                     </button>
                 </div>
             </aside>
 
-            {/* 🔥 MAIN CONTENT */}
+            {/* Contenido Principal */}
             <main className={`${styles.mainContent} ${sidebarCollapsed ? styles.mainContentFull : ''}`}>
                 <div className={styles.pageContent}>
-                    {/* HEADER CON BOTÓN VOLVER */}
-                    <div style={{
-                        marginBottom: '24px',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        flexWrap: 'wrap',
-                        gap: '12px'
-                    }}>
+
+                    {/* Top Bar Executive */}
+                    <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
                         <div>
-                            <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>📊 Dashboard</h1>
+                            <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px', color: '#ffffff' }}>📊 Dashboard Ejecutivo</h1>
                             <p style={{ color: '#94a3b8' }}>
-                                Bienvenido, {session?.user?.name}
+                                Hola <strong>{session?.user?.name}</strong>, aquí tenés la actividad general de Agencia Powa.
                             </p>
                         </div>
 
-                        <Link
-                            href="/"
-                            className={styles.btnSecondary}
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                padding: '10px 20px',
-                                background: 'rgba(255,255,255,0.05)',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                borderRadius: '10px',
-                                color: '#e2e8f0',
-                                textDecoration: 'none',
-                                transition: 'all 0.2s ease',
-                                fontSize: '14px',
-                                fontWeight: 600
-                            }}
-                        >
-                            <FaArrowLeft /> Volver al inicio
-                        </Link>
+                        {/* Atajos Rápidos */}
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            <Link href="/admin/tareas" className={styles.btnPrimary} style={{ fontSize: '13px', padding: '8px 14px' }}>
+                                <FaPlus style={{ marginRight: '6px' }} /> Nueva Tarea
+                            </Link>
+                            <Link href="/admin/proyectos" className={styles.btnPrimary} style={{ fontSize: '13px', padding: '8px 14px', background: 'linear-gradient(135deg, #22d3ee, #3b82f6)' }}>
+                                <FaPlus style={{ marginRight: '6px' }} /> Nuevo Proyecto
+                            </Link>
+                            <Link href="/" className={styles.btnSecondary} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 14px', borderRadius: '10px', fontSize: '13px' }}>
+                                <FaArrowLeft /> Web Principal
+                            </Link>
+                        </div>
                     </div>
 
-                    {/* Tarjetas */}
-                    <div className={styles.dashboardGrid}>
+                    {/* Banner Alerta de Operaciones */}
+                    {(data?.facturasPendientes || 0) > 0 && (
+                        <div style={{
+                            background: 'rgba(245, 158, 11, 0.1)',
+                            border: '1px solid rgba(245, 158, 11, 0.25)',
+                            padding: '14px 20px',
+                            borderRadius: '12px',
+                            marginBottom: '24px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: '12px',
+                            flexWrap: 'wrap'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <FaExclamationTriangle style={{ color: '#f59e0b', fontSize: '20px' }} />
+                                <div>
+                                    <strong style={{ color: '#ffffff', fontSize: '14px' }}>Atención en Facturación</strong>
+                                    <p style={{ color: '#94a3b8', fontSize: '13px', margin: 0 }}>
+                                        Tenés <strong>{data?.facturasPendientes}</strong> facturas pendientes de cobro o revisión.
+                                    </p>
+                                </div>
+                            </div>
+                            <Link href="/admin/facturas" style={{ color: '#f59e0b', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}>
+                                Revisar Facturas →
+                            </Link>
+                        </div>
+                    )}
+
+                    {/* Dashboard Cards Grid */}
+                    <div className={styles.dashboardGrid} style={{ marginBottom: '28px' }}>
                         {cards.map((card, index) => (
                             card.link ? (
                                 <Link
@@ -290,7 +301,7 @@ export default function AdminDashboard() {
                                     <div className={styles.cardValue}>{card.value}</div>
                                     <div className={styles.cardLabel}>{card.label}</div>
                                     {card.sub && (
-                                        <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>
+                                        <div style={{ fontSize: '12px', color: '#64748b', marginTop: '6px' }}>
                                             {card.sub}
                                         </div>
                                     )}
@@ -303,7 +314,7 @@ export default function AdminDashboard() {
                                     <div className={styles.cardValue}>{card.value}</div>
                                     <div className={styles.cardLabel}>{card.label}</div>
                                     {card.sub && (
-                                        <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>
+                                        <div style={{ fontSize: '12px', color: '#64748b', marginTop: '6px' }}>
                                             {card.sub}
                                         </div>
                                     )}
@@ -312,40 +323,41 @@ export default function AdminDashboard() {
                         ))}
                     </div>
 
-                    {/* Actividad reciente */}
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr',
-                        gap: '20px'
-                    }}>
+                    {/* Grilla de Actividad e Interacciones */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+
                         {/* Últimas conversaciones */}
                         <div className={styles.tableContainer}>
-                            <div className={styles.tableHeader}>
-                                <span className={styles.tableTitle}>💬 Últimas conversaciones</span>
+                            <div className={styles.tableHeader} style={{ padding: '16px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span className={styles.tableTitle} style={{ fontWeight: 700, fontSize: '15px' }}>💬 Últimas Consultas e IA</span>
+                                <Link href="/admin/conversaciones" style={{ fontSize: '12px', color: '#3b82f6', textDecoration: 'none' }}>Ver todas</Link>
                             </div>
                             {data?.ultimasConversaciones && data.ultimasConversaciones.length > 0 ? (
                                 <div style={{ overflowX: 'auto' }}>
                                     <table className={styles.table}>
                                         <thead>
                                             <tr>
-                                                <th>Perfil</th>
+                                                <th>Perfil / Cliente</th>
                                                 <th>Estado</th>
                                                 <th>Fecha</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {data.ultimasConversaciones.map((conv: any) => (
+                                            {data.ultimasConversaciones.map((conv) => (
                                                 <tr key={conv.id}>
-                                                    <td>{conv.perfil}</td>
+                                                    <td style={{ fontWeight: 600, color: '#ffffff' }}>{conv.perfil || 'Usuario Anónimo'}</td>
                                                     <td>
-                                                        <span className={`${styles.statusBadge} ${conv.estado === 'activo' ? styles.statusActive :
-                                                            conv.estado === 'cerrado' ? styles.statusInactive :
-                                                                styles.statusPending
-                                                            }`}>
+                                                        <span style={{
+                                                            padding: '2px 8px', borderRadius: '6px', fontSize: '11px', fontWeight: 600,
+                                                            background: conv.estado === 'activo' ? 'rgba(34, 197, 94, 0.15)' : 'rgba(148, 163, 184, 0.15)',
+                                                            color: conv.estado === 'activo' ? '#22c55e' : '#94a3b8'
+                                                        }}>
                                                             {conv.estado}
                                                         </span>
                                                     </td>
-                                                    <td>{new Date(conv.creado_en).toLocaleDateString()}</td>
+                                                    <td style={{ fontSize: '12px', color: '#94a3b8' }}>
+                                                        {new Date(conv.creado_en).toLocaleDateString('es-AR')}
+                                                    </td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -353,45 +365,50 @@ export default function AdminDashboard() {
                                 </div>
                             ) : (
                                 <div style={{ padding: '40px', textAlign: 'center', color: '#94a3b8' }}>
-                                    No hay conversaciones recientes
+                                    No hay conversaciones registradas recientemente.
                                 </div>
                             )}
                         </div>
 
-                        {/* Resumen de actividad */}
+                        {/* Métrica de eventos y sistema */}
                         <div className={styles.tableContainer}>
-                            <div className={styles.tableHeader}>
-                                <span className={styles.tableTitle}>📈 Actividad (7 días)</span>
+                            <div className={styles.tableHeader} style={{ padding: '16px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span className={styles.tableTitle} style={{ fontWeight: 700, fontSize: '15px' }}>📈 Métricas del Sistema (7 días)</span>
+                                <Link href="/admin/metricas" style={{ fontSize: '12px', color: '#3b82f6', textDecoration: 'none' }}>Ver detalle</Link>
                             </div>
                             <div style={{ padding: '20px' }}>
                                 {data?.actividadPorTipo && Object.keys(data.actividadPorTipo).length > 0 ? (
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                         {Object.entries(data.actividadPorTipo).map(([tipo, count]) => (
                                             <div key={tipo} style={{
                                                 display: 'flex',
                                                 justifyContent: 'space-between',
-                                                padding: '8px 12px',
+                                                alignItems: 'center',
+                                                padding: '10px 14px',
                                                 background: 'rgba(255,255,255,0.02)',
-                                                borderRadius: '8px'
+                                                borderRadius: '8px',
+                                                border: '1px solid rgba(255,255,255,0.03)'
                                             }}>
-                                                <span style={{ color: '#94a3b8' }}>
-                                                    {tipo === 'inicio_chat' ? '🚀 Inicios de chat' :
-                                                        tipo === 'mensaje' ? '💬 Mensajes' :
-                                                            tipo === 'satisfaccion' ? '⭐ Calificaciones' :
-                                                                tipo === 'acierto_cache' ? '⚡ Aciertos caché' :
-                                                                    tipo === 'fallo_cache' ? '❌ Fallos caché' : tipo}
+                                                <span style={{ color: '#cbd5e1', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                    <FaCheckCircle style={{ color: '#22c55e', fontSize: '12px' }} />
+                                                    {tipo === 'inicio_chat' ? '🚀 Sesiones de Chat' :
+                                                        tipo === 'mensaje' ? '💬 Mensajes Recibidos' :
+                                                            tipo === 'satisfaccion' ? '⭐ Reseñas Enviadas' :
+                                                                tipo === 'acierto_cache' ? '⚡ Caché Hit' :
+                                                                    tipo === 'fallo_cache' ? '❌ Caché Miss' : tipo}
                                                 </span>
-                                                <span style={{ color: '#ffffff', fontWeight: 600 }}>{count}</span>
+                                                <span style={{ color: '#ffffff', fontWeight: 700, fontSize: '14px' }}>{count}</span>
                                             </div>
                                         ))}
                                     </div>
                                 ) : (
-                                    <div style={{ textAlign: 'center', color: '#94a3b8', padding: '10px' }}>
-                                        Sin actividad reciente
+                                    <div style={{ textAlign: 'center', color: '#94a3b8', padding: '20px' }}>
+                                        Sin actividad o logs registrados en los últimos días.
                                     </div>
                                 )}
                             </div>
                         </div>
+
                     </div>
                 </div>
             </main>

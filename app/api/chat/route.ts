@@ -1,6 +1,5 @@
-// app/api/chat/route.ts
 import { NextResponse } from "next/server";
-import Groq from 'groq-sdk';
+import { GoogleGenAI } from "@google/genai";
 import { ResponseCache } from '../../lib/cache';
 import { metrics } from '../../lib/metrics';
 import {
@@ -12,22 +11,16 @@ import {
 
 export const runtime = 'edge';
 
-console.log('🔵 CARGANDO /api/chat/route.ts');
+console.log('🔵 CARGANDO /api/chat/route.ts (Gemini Edition)');
 
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
+// Inicializar cliente de Google Gen AI
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const cache = ResponseCache.getInstance();
 
 interface ChatMessageInput {
   role: "user" | "model" | string;
   text: string;
-}
-
-interface GroqChatMessage {
-  role: "user" | "assistant" | "system";
-  content: string;
 }
 
 // ============================================
@@ -79,7 +72,7 @@ R: Comunicación garantizada: Reunión semanal de 30 min para alinear prioridade
 ========================================
 
 P: ¿Qué tipo de soluciones digitales desarrollan?
-R: Diseñamos e implementamos ecosistemas digitales a la medida de los objetivos de tu empresa. Nos especializamos en landings de conversión optimizada y plataformas SaaS complejas. Al desarrollar con arquitectura pura sobre Next.js, eliminamos las restricciones estructurales de las plantillas genéricas: tu producto final será exactamente como lo proyectás, con un código limpio, seguro y arquitecturado para escalar verticalmente.
+R: Diseñamos e implementamos ecosistemas digitales a la medida de los objetivos de tu empresa. Nos especializamos en landings de conversión optimizada y plataformas SaaS complexes. Al desarrollar con arquitectura pura sobre Next.js, eliminamos las restricciones estructurales de las plantillas genéricas: tu producto final será exactamente como lo proyectás, con un código limpio, seguro y arquitecturado para escalar verticalmente.
 
 P: ¿Por qué priorizan arquitecturas en Next.js por sobre sistemas monolíticos como WordPress?
 R: Los CMS tradicionales como WordPress presentan serias deficiencias en seguridad, dependencia de plugins de terceros y sobrecarga de procesamiento en el cliente. Next.js nos permite compilar sitios estáticos e híbridos de velocidad ultra-instantánea. Al desacoplar el frontend, reducimos la superficie de ataque a niveles prácticamente nulos, entregando un activo robusto que Google posiciona prioritariamente.
@@ -107,7 +100,7 @@ P: ¿Las plataformas son compatibles con ecosistemas de adquisición (Ads & Meta
 R: Sí, es uno de nuestros pilares de ingeniería. Los algoritmos de Google Ads y Meta penalizan las experiencias de carga ineficientes incrementando tu Costo por Clic (CPC). Nuestras soluciones implementan Server-Side Rendering (SSR), garantizando una indexación técnica perfecta que eleva el Quality Score de tus campañas, permitiéndote adquirir más clientes con el mismo presupuesto publicitario.
 
 P: ¿Cuál es el cronograma estimado de entrega?
-R: Nuestros ciclos promedio varían entre 4 y 6 semanas. No operamos con soluciones prefabricadas; cada desarrollo atraviesa etapas rigurosas de consultoría estratégica, diseño modular de alta fidelidad en Figma e ingeniería frontend a medida. Entregamos soluciones tecnológicas de nivel corporativo concebidas para perdurar en el tiempo.
+R: Nuestros ciclos promedio varían entre 4 y 6 semanas. Não operamos con soluciones prefabricadas; cada desarrollo atraviesa etapas rigurosas de consultoría estratégica, diseño modular de alta fidelidad en Figma e ingeniería frontend a medida. Entregamos soluciones tecnológicas de nivel corporativo concebidas para perdurar en el tiempo.
 
 P: ¿Una vez finalizado el proyecto, la propiedad intelectual me pertenece?
 R: Totalmente. Al tratarse de ingeniería de software a medida, el 100% de los derechos de propiedad intelectual y el código fuente le pertenecen a tu empresa. No implementamos contratos de permanencia obligatorios ni dependencia tecnológica. Te entregamos un activo digital autónomo, auditable y de libre gestión, con toda la documentación técnica necesaria para que cualquier equipo pueda continuar el desarrollo.
@@ -134,26 +127,41 @@ P: ¿Proveen servicios de soporte y acuerdos de nivel de servicio (SLA)?
 R: Sí. El despliegue a producción es solo el inicio de la relación técnica. Ofrecemos planes avanzados de mantenimiento preventivo, monitoreo continuo de infraestructura, auditorías periódicas de seguridad y optimizaciones de rendimiento en tiempo real, garantizando la continuidad operativa de tu negocio 24/7.
 `;
 
+// Función auxiliar para reintentar llamadas ante errores temporales (como 503 Service Unavailable)
+async function generarConReintentos(fn: () => Promise<any>, maxRetries = 3, delayMs = 1000) {
+  for (let intento = 1; intento <= maxRetries; intento++) {
+    try {
+      return await fn();
+    } catch (error: any) {
+      const status = error?.status || error?.error?.code;
+      const esTemporal = status === 503 || status === 429 || error?.message?.includes('503') || error?.message?.includes('UNAVAILABLE');
+
+      if (intento === maxRetries || !esTemporal) {
+        throw error;
+      }
+
+      console.warn(`⚠️ [Gemini] Intento ${intento} falló por saturación (503/Overloaded). Reintentando en ${delayMs}ms...`);
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+      delayMs *= 2; // Backoff exponencial
+    }
+  }
+}
+
 export async function POST(req: Request) {
-  console.log('🔵 POST /api/chat - INICIANDO');
+  console.log('🔵 POST /api/chat (Gemini) - INICIANDO');
 
   try {
     const startTime = Date.now();
-    const apiKey = process.env.GROQ_API_KEY;
-
-    console.log('🔑 API Key existe?', !!apiKey);
-    console.log('🔑 API Key preview:', apiKey ? apiKey.substring(0, 15) + '...' : '❌ NO HAY KEY');
+    const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      console.log('❌ GROQ_API_KEY no configurada');
+      console.log('❌ GEMINI_API_KEY no configurada');
       return NextResponse.json({
-        text: "Error: Configuración de IA pendiente."
+        text: "Error: Configuración de API Key de Gemini pendiente."
       }, { status: 500 });
     }
 
     const body = await req.json();
-    console.log('📦 Body recibido:', JSON.stringify(body, null, 2));
-
     const { message, history, profile, conversacionId, usuarioId, esAdmin } = body as {
       message: string;
       history?: ChatMessageInput[];
@@ -163,15 +171,6 @@ export async function POST(req: Request) {
       esAdmin?: boolean;
     };
 
-    console.log('📧 Message:', message);
-    console.log('📋 Profile:', profile);
-    console.log('🆔 ConversacionId:', conversacionId);
-    console.log('👤 UsuarioId:', usuarioId);
-    console.log('🔑 EsAdmin:', esAdmin);
-
-    // ============================================
-    // 🔥 CREAR O USAR CONVERSACIÓN EXISTENTE
-    // ============================================
     let chatId: string = conversacionId || '';
 
     if (!chatId) {
@@ -183,42 +182,29 @@ export async function POST(req: Request) {
           esAdmin
         );
         chatId = nuevaConversacion.id;
-        console.log('✅ Conversación creada:', chatId);
-        await guardarMetrica('inicio_chat', chatId);
+        try { await guardarMetrica('inicio_chat', chatId); } catch (e) { /* Evita romper por RLS */ }
       } catch (dbError) {
         console.error('❌ Error creando conversación en DB:', dbError);
       }
-    } else {
-      console.log('📋 Usando conversación existente:', chatId);
     }
 
-    // ============================================
-    // 🔥 GUARDAR MENSAJE DEL USUARIO
-    // ============================================
     try {
       if (chatId) {
         await guardarMensaje(chatId, 'usuario', message);
-        await guardarMetrica('mensaje', chatId, { rol: 'usuario' });
-        console.log('✅ Mensaje guardado en DB');
+        try { await guardarMetrica('mensaje', chatId, { rol: 'usuario' }); } catch (e) { /* Evita romper por RLS */ }
       }
     } catch (dbError) {
       console.error('❌ Error guardando mensaje en DB:', dbError);
     }
 
-    // ============================================
-    // 🔥 VERIFICAR CACHÉ
-    // ============================================
     const cacheKey = cache.generateKey(message, profile || 'default');
-    console.log('🔑 Cache key:', cacheKey);
 
     try {
       const cachedResponse = cache.get(cacheKey);
       if (cachedResponse) {
-        console.log('💾 Respuesta desde caché');
         metrics.recordCacheHit();
-        await guardarMetrica('acierto_cache', chatId);
-        await guardarMensaje(chatId, 'asistente', cachedResponse);
-        await guardarMetrica('mensaje', chatId, { rol: 'asistente' });
+        try { await guardarMetrica('acierto_cache', chatId); } catch (e) { /* Evita romper por RLS */ }
+        try { await guardarMensaje(chatId, 'asistente', cachedResponse); } catch (e) { }
 
         const encoder = new TextEncoder();
         const stream = new ReadableStream({
@@ -243,34 +229,27 @@ export async function POST(req: Request) {
 
     metrics.recordCacheMiss();
 
-    // ============================================
-    // 🔥 PREPARAR HISTORIAL
-    // ============================================
-    let chatHistory: GroqChatMessage[] = [];
+    // Historial para Gemini SDK
+    let contents: any[] = [];
 
+    let previousMessages: any[] = [];
     if (history && history.length > 0) {
-      console.log('📜 Usando historial del frontend:', history.length, 'mensajes');
-      chatHistory = history.slice(-6).map((m: ChatMessageInput) => ({
-        role: m.role === "user" ? "user" : "assistant",
-        content: m.text,
+      previousMessages = history.slice(-6).map((m: ChatMessageInput) => ({
+        role: m.role === "user" ? "user" : "model",
+        parts: [{ text: m.text }],
       }));
     } else if (chatId) {
       try {
-        console.log('📜 Cargando historial de DB...');
         const mensajesDB = await obtenerUltimosMensajes(chatId, 6);
-        chatHistory = mensajesDB.map((m: any) => ({
-          role: m.rol === 'usuario' ? 'user' : 'assistant',
-          content: m.contenido,
+        previousMessages = mensajesDB.map((m: any) => ({
+          role: m.rol === 'usuario' ? 'user' : 'model',
+          parts: [{ text: m.contenido }],
         }));
-        console.log('✅ Historial cargado:', chatHistory.length, 'mensajes');
       } catch (dbError) {
         console.error('❌ Error cargando historial de DB:', dbError);
       }
     }
 
-    // ============================================
-    // 🔥 CONTEXTUALIZACIÓN POR PERFIL
-    // ============================================
     let profileContext = "";
     let fewShotExamples = "";
 
@@ -283,8 +262,8 @@ export async function POST(req: Request) {
 
       fewShotExamples = `
       EJEMPLO:
-      User: "Hola, ¿cuánto cuesta una página para mi local?"
-      Assistant: "En Powa no armamos páginas web comunes. Desarrollamos un Activo Digital gastronómico. En lugar de regalarle un 30% a apps de delivery, te armamos tu propia plataforma. ¿Cuántos pedidos manejás por semana?"`;
+      User: "¿Cuánto cuesta una página para mi local?"
+      Assistant: "En Powa no armamos páginas web comunes. Desarrollamos un Activo Digital gastronómico para que dejes de pagar comisiones abusivas. ¿Cuántos pedidos manejás por semana?"`;
     } else if (profile === "empresa_emprendedor") {
       profileContext = `
       CONTEXTO DE ENFOQUE EMPRESAS Y EMPRENDEDORES:
@@ -294,7 +273,7 @@ export async function POST(req: Request) {
       fewShotExamples = `
       EJEMPLO:
       User: "Quiero una tienda online que no se caiga en ofertas."
-      Assistant: "Las tiendas baratas se saturan y te hacen perder ventas. En Powa usamos arquitectura Serverless de nivel internacional. Tu e-commerce soporta miles de usuarios en simultáneo. ¿Qué pasarela de pagos usás?"`;
+      Assistant: "Las tiendas baratas te hacen perder ventas. En Powa usamos arquitectura Serverless para soportar miles de usuarios en simultáneo. ¿Qué pasarela de pagos usás?"`;
     } else if (profile === "senior_software") {
       profileContext = `
       CONTEXTO DE ENFOQUE INGENIERÍA:
@@ -304,60 +283,52 @@ export async function POST(req: Request) {
       fewShotExamples = `
       EJEMPLO:
       User: "Necesito migrar mi sistema porque quedó obsoleto."
-      Assistant: "Nos especializamos en evoluciones técnicas complejas. Migramos sistemas obsoletos a arquitecturas modernas con Next.js y Supabase. Te garantizamos propiedad absoluta del código. ¿En qué stack está tu desarrollo actual?"`;
+      Assistant: "Migramos sistemas obsoletos a arquitecturas modernas con Next.js y Supabase garantizando propiedad absoluta del código. ¿En qué stack está tu desarrollo actual?"`;
     }
 
-    // ============================================
-    // 🔥 SYSTEM PROMPT CON FAQS
-    // ============================================
-    const systemPrompt = `Eres PowaBot, el Growth Hacker de 'Agencia Digital Powa'. 
-    Tu objetivo es asesorar a clientes y convertirlos en casos de éxito.
+    const systemInstruction = `Eres PowaBot, el Growth Hacker de 'Agencia Digital Powa'. 
+    Tu objetivo es asesorar a clientes y convertirlos en casos de éxito mediante una charla fluida y natural (tipo chat de WhatsApp).
 
     FILOSOFÍA: No vendemos páginas web, construimos ACTIVOS DIGITALES.
     UBICACIÓN: Base en Buenos Aires (Zona Sur), operamos global.
 
     SERVICIOS:
-    - Web: Next.js 16, React 19, Serverless
+    - Web: Next.js, React, Serverless
     - E-commerce: Ventas masivas con integraciones de pago
     - IA: Automatización de procesos
     - Mobile: Apps nativas con Expo, Kotlin, Flutter
 
-    REGLAS:
-    1. TONO: Profesional, audaz, experto, resolutivo.
-    2. CIERRE: Si el usuario muestra interés, DERIVÁ A WHATSAPP: https://wa.me/5491138305837?text=Hola%20Powa!%20Vengo%20del%20chat.
-    3. PRECIOS: No des presupuestos fijos.
-    4. Siempre respondé en español.
+    REGLAS DE ESTILO Y FORMATO (CRÍTICO):
+    1. RESPUESTAS CORTAS Y AL PIE: Sé directo, evita bloques largos de texto o listas infinitas. Da la información clave por partes, fomentando que la conversación avance de a un tema por vez.
+    2. TONO: Profesional, audaz, experto, resolutivo y cercano.
+    3. CIERRE OBLIGATORIO: Cierra siempre con UNA sola pregunta breve o invitación para conocer más, o derivá a WhatsApp si hay interés real: https://wa.me/5491138305837?text=Hola%20Powa!%20Vengo%20del%20chat.
+    4. PRECIOS: No des presupuestos fijos de entrada.
+    5. Idioma: Siempre en español.
 
     ${profileContext}
     ${fewShotExamples}
 
     ${faqContext}`;
 
-    console.log('📝 System prompt generado (longitud):', systemPrompt.length);
-
-    const messagesForGroq: GroqChatMessage[] = [
-      { role: "system", content: systemPrompt },
-      ...chatHistory,
-      { role: "user", content: message },
+    // Construir estructura de contenidos para Gemini
+    contents = [
+      ...previousMessages,
+      { role: "user", parts: [{ text: message }] }
     ];
 
-    console.log('📨 Mensajes para Groq:', messagesForGroq.length);
-
-    // ============================================
-    // 🔥 STREAMING
-    // ============================================
-    console.log('🔄 Llamando a Groq...');
-
-    const stream = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      messages: messagesForGroq,
-      temperature: 0.75,
-      max_tokens: 1000,
-      top_p: 0.95,
-      stream: true,
-    });
-
-    console.log('✅ Groq respondiendo...');
+    // Envolver la llamada con reintentos automáticos para evitar errores 503 puntuales
+    const responseStream = await generarConReintentos(async () => {
+      return await ai.models.generateContentStream({
+        model: 'gemini-2.5-flash',
+        contents: contents,
+        config: {
+          systemInstruction: systemInstruction,
+          temperature: 0.75,
+          maxOutputTokens: 1000, // Ajustado a 1000 para forzar respuestas concisas y dinámicas
+          topP: 0.95,
+        }
+      });
+    }, 3, 1500);
 
     const encoder = new TextEncoder();
     let fullResponse = '';
@@ -365,15 +336,13 @@ export async function POST(req: Request) {
     const readableStream = new ReadableStream({
       async start(controller) {
         try {
-          for await (const chunk of stream) {
-            const text = chunk.choices[0]?.delta?.content || '';
+          for await (const chunk of responseStream) {
+            const text = chunk.text || '';
             if (text) {
               fullResponse += text;
               controller.enqueue(encoder.encode(text));
             }
           }
-
-          console.log('✅ Respuesta completa recibida, longitud:', fullResponse.length);
 
           if (fullResponse.length > 50) {
             try {
@@ -386,8 +355,7 @@ export async function POST(req: Request) {
           try {
             if (chatId) {
               await guardarMensaje(chatId, 'asistente', fullResponse);
-              await guardarMetrica('mensaje', chatId, { rol: 'asistente' });
-              console.log('✅ Respuesta guardada en DB');
+              try { await guardarMetrica('mensaje', chatId, { rol: 'asistente' }); } catch (e) { }
             }
           } catch (dbError) {
             console.error('❌ Error guardando respuesta en DB:', dbError);
@@ -395,17 +363,15 @@ export async function POST(req: Request) {
 
           const responseTime = Date.now() - startTime;
           metrics.recordResponseTime(responseTime);
-          console.log('⏱️ Tiempo de respuesta:', responseTime, 'ms');
 
           controller.close();
         } catch (error) {
-          console.error('❌ Error en streaming:', error);
+          console.error('❌ Error en streaming de Gemini:', error);
           controller.error(error);
         }
       },
     });
 
-    console.log('✅ Devolviendo respuesta al cliente');
     return new Response(readableStream, {
       headers: {
         'Content-Type': 'text/plain; charset=utf-8',
@@ -417,12 +383,11 @@ export async function POST(req: Request) {
 
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : "Error desconocido";
-    console.error('❌ Critical API Error:', errorMessage);
-    console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack disponible');
+    console.error('❌ Critical API Error (Gemini):', errorMessage);
     metrics.recordError(errorMessage);
 
     return NextResponse.json(
-      { text: "Estoy recalibrando mis circuitos. ¿Podrías repetirme eso o prefieres hablar por WhatsApp?" },
+      { text: "Estoy recalibrando mis circuitos con Gemini debido a alta demanda momentánea. ¿Podrías repetirme eso o prefieres que lo charlemos directo por WhatsApp?" },
       { status: 500 }
     );
   }

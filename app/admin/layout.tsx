@@ -8,13 +8,14 @@ import Link from 'next/link';
 import {
     FaHome, FaUsers, FaProjectDiagram, FaUserTie,
     FaComments, FaChartBar, FaSignOutAlt, FaBars,
-    FaChevronLeft, FaChevronRight, FaFileInvoice, FaNewspaper
+    FaChevronLeft, FaChevronRight, FaFileInvoice, FaNewspaper, FaTasks
 } from 'react-icons/fa';
 import styles from './admin.module.css';
 import '../globals.css';
 
 const menuItems = [
     { name: 'Dashboard', icon: <FaHome />, path: '/admin' },
+    { name: 'Tareas', icon: <FaTasks />, path: '/admin/tareas' },
     { name: 'Usuarios', icon: <FaUsers />, path: '/admin/usuarios' },
     { name: 'Clientes', icon: <FaUserTie />, path: '/admin/clientes' },
     { name: 'Proyectos', icon: <FaProjectDiagram />, path: '/admin/proyectos' },

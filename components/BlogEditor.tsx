@@ -6,9 +6,9 @@ import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import {
     Bold, Italic, List, ListOrdered, Link as LinkIcon, Image as ImageIcon,
-    Heading2, Heading3, Quote, Undo, Redo, Code, Smile, Upload
+    Heading2, Heading3, Quote, Undo, Redo, Code, Smile, Upload, FileCode
 } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 
 interface BlogEditorProps {
@@ -20,10 +20,11 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [uploading, setUploading] = useState(false);
+    const [htmlMode, setHtmlMode] = useState(false);
+    const [htmlContent, setHtmlContent] = useState(content);
 
     const editor = useEditor({
         extensions: [
-            // ✅ StarterKit SIN Link (para evitar duplicado)
             StarterKit.configure({
                 link: false,
             }),
@@ -33,11 +34,36 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
             }),
         ],
         content,
-        immediatelyRender: false, // ✅ Evitar hydration mismatch
+        immediatelyRender: false,
         onUpdate: ({ editor }) => {
-            onChange(editor.getHTML());
+            const html = editor.getHTML();
+            setHtmlContent(html);
+            onChange(html);
         },
     });
+
+    // ===== SINCRONIZAR CUANDO CAMBIA DE MODO =====
+    useEffect(() => {
+        if (!editor) return;
+
+        if (htmlMode) {
+            // Entrando a modo HTML: tomar el contenido actual del editor
+            setHtmlContent(editor.getHTML());
+        } else {
+            // Saliendo de modo HTML: cargar el HTML pegado en el editor
+            if (htmlContent !== editor.getHTML()) {
+                editor.commands.setContent(htmlContent, { emitUpdate: false });
+                onChange(htmlContent);
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [htmlMode]);
+
+    // ===== ACTUALIZAR CONTENIDO EN MODO HTML =====
+    const handleHtmlChange = (value: string) => {
+        setHtmlContent(value);
+        onChange(value);
+    };
 
     if (!editor) return null;
 
@@ -78,7 +104,6 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
             }
 
             editor.chain().focus().setImage({ src: result.url }).run();
-
         } catch (error: any) {
             console.error('❌ Error al subir imagen:', error);
             alert(error.message || 'Error al subir la imagen');
@@ -98,6 +123,88 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
         setShowEmojiPicker(false);
     };
 
+    // ============================================
+    // 📝 MODO HTML
+    // ============================================
+    if (htmlMode) {
+        return (
+            <div style={{ border: '1px solid #d1d5db', borderRadius: '0.5rem', overflow: 'hidden' }}>
+                {/* Toolbar modo HTML */}
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.75rem 1rem',
+                    background: '#1f2937',
+                    borderBottom: '1px solid #374151',
+                }}>
+                    <span style={{
+                        color: '#22d3ee',
+                        fontSize: '0.8rem',
+                        fontWeight: '700',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                    }}>
+                        📝 Modo HTML — pegá el código directamente
+                    </span>
+                    <button
+                        type="button"
+                        onClick={() => setHtmlMode(false)}
+                        style={{
+                            padding: '0.4rem 0.8rem',
+                            borderRadius: '0.35rem',
+                            border: '1px solid #22d3ee',
+                            background: 'transparent',
+                            cursor: 'pointer',
+                            color: '#22d3ee',
+                            fontSize: '0.75rem',
+                            fontWeight: '600',
+                        }}
+                        title="Volver al editor visual"
+                    >
+                        Volver al editor visual
+                    </button>
+                </div>
+
+                {/* Textarea para HTML crudo */}
+                <textarea
+                    value={htmlContent}
+                    onChange={(e) => handleHtmlChange(e.target.value)}
+                    style={{
+                        width: '100%',
+                        minHeight: '400px',
+                        padding: '1rem',
+                        border: 'none',
+                        outline: 'none',
+                        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+                        fontSize: '0.85rem',
+                        lineHeight: '1.5',
+                        color: '#e2e8f0',
+                        background: '#0f172a',
+                        resize: 'vertical',
+                    }}
+                    placeholder="Pegá tu HTML acá..."
+                    spellCheck={false}
+                />
+
+                {/* Info al pie */}
+                <div style={{
+                    padding: '0.5rem 1rem',
+                    background: '#1f2937',
+                    borderTop: '1px solid #374151',
+                    fontSize: '0.7rem',
+                    color: '#94a3b8',
+                }}>
+                    💡 Pegá el HTML completo (con etiquetas <code>&lt;p&gt;</code>, <code>&lt;h2&gt;</code>, etc.) y después volvé al editor visual. El contenido se va a renderizar correctamente.
+                </div>
+            </div>
+        );
+    }
+
+    // ============================================
+    // 🎨 EDITOR VISUAL (modo normal)
+    // ============================================
     return (
         <div style={{ border: '1px solid #d1d5db', borderRadius: '0.5rem', overflow: 'visible', position: 'relative' }}>
             {/* Toolbar */}
@@ -375,6 +482,32 @@ export default function BlogEditor({ content, onChange }: BlogEditorProps) {
                     title="Rehacer"
                 >
                     <Redo size={16} />
+                </button>
+
+                {/* Separador */}
+                <div style={{ width: '1px', background: '#e5e7eb', margin: '0 0.25rem' }} />
+
+                {/* 🆕 BOTÓN MODO HTML */}
+                <button
+                    type="button"
+                    onClick={() => setHtmlMode(true)}
+                    style={{
+                        padding: '0.5rem 0.75rem',
+                        borderRadius: '0.25rem',
+                        border: '1px solid #22d3ee',
+                        background: 'transparent',
+                        cursor: 'pointer',
+                        color: '#0891b2',
+                        fontSize: '0.75rem',
+                        fontWeight: '600',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.35rem',
+                    }}
+                    title="Cambiar a modo HTML (para pegar código)"
+                >
+                    <FileCode size={14} />
+                    HTML
                 </button>
 
                 {/* Panel de emojis */}
