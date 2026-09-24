@@ -13,9 +13,7 @@ export const runtime = 'edge';
 
 console.log('🔵 CARGANDO /api/chat/route.ts (Gemini Edition)');
 
-// Inicializar cliente de Google Gen AI
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
 const cache = ResponseCache.getInstance();
 
 interface ChatMessageInput {
@@ -84,7 +82,7 @@ P: ¿Mi proyecto va a funcionar bien en celulares y tablets?
 R: No es opcional, es obligatorio. El 60% del tráfico web viene de móviles. Diseño Mobile-First: empezamos por pantallas pequeñas, interacciones táctiles optimizadas, testing en +30 dispositivos reales. Rendimiento: carga en <2 segundos en 4G, Core Web Vitals optimizados, uso eficiente de datos. Bonus: Video mostrando el proyecto en diferentes dispositivos antes del lanzamiento.
 
 P: ¿Qué pasa si quiero integrar mi proyecto con herramientas que ya uso?
-R: La integración es uno de nuestros superpoderes. Soporte para Mailchimp, Sendinblue, HubSpot (email); Mercado Pago, Stripe, PayPal (pagos); Google Analytics, Meta Pixel, Hotjar (analytics); Salesforce, Zoho, Monday.com (CRMs); Shopify, WooCommerce (ecommerce). Metodología: Auditoría de APIs, arquitectura modular, pruebas de integración, documentación completa.
+R: La integración es uno de nuestros superpoderes. Soporte para Mailchimp, Sendinblue, HubSpot (email); Mercado Pago, Stripe, PayPal (payments); Google Analytics, Meta Pixel, Hotjar (analytics); Salesforce, Zoho, Monday.com (CRMs); Shopify, WooCommerce (ecommerce). Metodología: Auditoría de APIs, arquitectura modular, pruebas de integración, documentación completa.
 
 P: ¿Puedo migrar mi proyecto a otro hosting o proveedor si quiero?
 R: ¡Absolutamente! No creemos en vendor lock-in. Código 100% portable con estándares abiertos (React, Next.js, Node.js), sin dependencias propietarias, documentación completa de despliegue, arquitectura cloud-agnostic (AWS, Google Cloud, Azure, Vercel, Netlify). Incluso te ayudamos a migrar si encuentras un proveedor más barato o quieres llevarlo a tu propio servidor.
@@ -100,7 +98,7 @@ P: ¿Las plataformas son compatibles con ecosistemas de adquisición (Ads & Meta
 R: Sí, es uno de nuestros pilares de ingeniería. Los algoritmos de Google Ads y Meta penalizan las experiencias de carga ineficientes incrementando tu Costo por Clic (CPC). Nuestras soluciones implementan Server-Side Rendering (SSR), garantizando una indexación técnica perfecta que eleva el Quality Score de tus campañas, permitiéndote adquirir más clientes con el mismo presupuesto publicitario.
 
 P: ¿Cuál es el cronograma estimado de entrega?
-R: Nuestros ciclos promedio varían entre 4 y 6 semanas. Não operamos con soluciones prefabricadas; cada desarrollo atraviesa etapas rigurosas de consultoría estratégica, diseño modular de alta fidelidad en Figma e ingeniería frontend a medida. Entregamos soluciones tecnológicas de nivel corporativo concebidas para perdurar en el tiempo.
+R: Nuestros ciclos promedio varían entre 4 y 6 semanas. No operamos con soluciones prefabricadas; cada desarrollo atraviesa etapas rigurosas de consultoría estratégica, diseño modular de alta fidelidad en Figma e ingeniería frontend a medida. Entregamos soluciones tecnológicas de nivel corporativo concebidas para perdurar en el tiempo.
 
 P: ¿Una vez finalizado el proyecto, la propiedad intelectual me pertenece?
 R: Totalmente. Al tratarse de ingeniería de software a medida, el 100% de los derechos de propiedad intelectual y el código fuente le pertenecen a tu empresa. No implementamos contratos de permanencia obligatorios ni dependencia tecnológica. Te entregamos un activo digital autónomo, auditable y de libre gestión, con toda la documentación técnica necesaria para que cualquier equipo pueda continuar el desarrollo.
@@ -127,7 +125,6 @@ P: ¿Proveen servicios de soporte y acuerdos de nivel de servicio (SLA)?
 R: Sí. El despliegue a producción es solo el inicio de la relación técnica. Ofrecemos planes avanzados de mantenimiento preventivo, monitoreo continuo de infraestructura, auditorías periódicas de seguridad y optimizaciones de rendimiento en tiempo real, garantizando la continuidad operativa de tu negocio 24/7.
 `;
 
-// Función auxiliar para reintentar llamadas ante errores temporales (como 503 Service Unavailable)
 async function generarConReintentos(fn: () => Promise<any>, maxRetries = 3, delayMs = 1000) {
   for (let intento = 1; intento <= maxRetries; intento++) {
     try {
@@ -140,9 +137,9 @@ async function generarConReintentos(fn: () => Promise<any>, maxRetries = 3, dela
         throw error;
       }
 
-      console.warn(`⚠️ [Gemini] Intento ${intento} falló por saturación (503/Overloaded). Reintentando en ${delayMs}ms...`);
+      console.warn(`⚠️ [Gemini] Intento ${intento} falló por saturación. Reintentando en ${delayMs}ms...`);
       await new Promise((resolve) => setTimeout(resolve, delayMs));
-      delayMs *= 2; // Backoff exponencial
+      delayMs *= 2;
     }
   }
 }
@@ -155,92 +152,89 @@ export async function POST(req: Request) {
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      console.log('❌ GEMINI_API_KEY no configurada');
       return NextResponse.json({
         text: "Error: Configuración de API Key de Gemini pendiente."
       }, { status: 500 });
     }
 
     const body = await req.json();
-    const { message, history, profile, conversacionId, usuarioId, esAdmin } = body as {
+    const { message, history, profile, conversacionId, usuarioId, esAdmin, isContinuation } = body as {
       message: string;
       history?: ChatMessageInput[];
       profile?: "gastronomia" | "empresa_emprendedor" | "senior_software";
       conversacionId?: string;
       usuarioId?: string;
       esAdmin?: boolean;
+      isContinuation?: boolean;
     };
 
     let chatId: string = conversacionId || '';
 
     if (!chatId) {
-      console.log('🆕 Creando nueva conversación...');
       try {
-        const nuevaConversacion = await crearConversacion(
-          profile || 'empresa_emprendedor',
-          usuarioId,
-          esAdmin
-        );
+        const nuevaConversacion = await crearConversacion(profile || 'empresa_emprendedor', usuarioId, esAdmin);
         chatId = nuevaConversacion.id;
-        try { await guardarMetrica('inicio_chat', chatId); } catch (e) { /* Evita romper por RLS */ }
+        try { await guardarMetrica('inicio_chat', chatId); } catch (e) { }
       } catch (dbError) {
         console.error('❌ Error creando conversación en DB:', dbError);
       }
     }
 
-    try {
-      if (chatId) {
-        await guardarMensaje(chatId, 'usuario', message);
-        try { await guardarMetrica('mensaje', chatId, { rol: 'usuario' }); } catch (e) { /* Evita romper por RLS */ }
+    if (!isContinuation) {
+      try {
+        if (chatId) {
+          await guardarMensaje(chatId, 'usuario', message);
+          try { await guardarMetrica('mensaje', chatId, { rol: 'usuario' }); } catch (e) { }
+        }
+      } catch (dbError) {
+        console.error('❌ Error guardando mensaje en DB:', dbError);
       }
-    } catch (dbError) {
-      console.error('❌ Error guardando mensaje en DB:', dbError);
     }
 
     const cacheKey = cache.generateKey(message, profile || 'default');
 
-    try {
-      const cachedResponse = cache.get(cacheKey);
-      if (cachedResponse) {
-        metrics.recordCacheHit();
-        try { await guardarMetrica('acierto_cache', chatId); } catch (e) { /* Evita romper por RLS */ }
-        try { await guardarMensaje(chatId, 'asistente', cachedResponse); } catch (e) { }
+    if (!isContinuation) {
+      try {
+        const cachedResponse = cache.get(cacheKey);
+        if (cachedResponse) {
+          metrics.recordCacheHit();
+          try { await guardarMetrica('acierto_cache', chatId); } catch (e) { }
+          try { await guardarMensaje(chatId, 'asistente', cachedResponse); } catch (e) { }
 
-        const encoder = new TextEncoder();
-        const stream = new ReadableStream({
-          start(controller) {
-            controller.enqueue(encoder.encode(cachedResponse));
-            controller.close();
-          },
-        });
+          const encoder = new TextEncoder();
+          const stream = new ReadableStream({
+            start(controller) {
+              controller.enqueue(encoder.encode(cachedResponse));
+              controller.close();
+            },
+          });
 
-        return new Response(stream, {
-          headers: {
-            'Content-Type': 'text/plain; charset=utf-8',
-            'Cache-Control': 'no-cache',
-            'X-Cache': 'HIT',
-            'X-Chat-Id': chatId,
-          },
-        });
+          return new Response(stream, {
+            headers: {
+              'Content-Type': 'text/plain; charset=utf-8',
+              'Cache-Control': 'no-cache',
+              'X-Cache': 'HIT',
+              'X-Chat-Id': chatId,
+              'X-Finish-Reason': 'STOP',
+            },
+          });
+        }
+      } catch (cacheError) {
+        console.error('❌ Error en caché:', cacheError);
       }
-    } catch (cacheError) {
-      console.error('❌ Error en caché:', cacheError);
     }
 
     metrics.recordCacheMiss();
 
-    // Historial para Gemini SDK
-    let contents: any[] = [];
-
     let previousMessages: any[] = [];
     if (history && history.length > 0) {
-      previousMessages = history.slice(-6).map((m: ChatMessageInput) => ({
+      previousMessages = history.slice(-8).map((m: ChatMessageInput) => ({
         role: m.role === "user" ? "user" : "model",
         parts: [{ text: m.text }],
       }));
     } else if (chatId) {
       try {
-        const mensajesDB = await obtenerUltimosMensajes(chatId, 6);
+        const mensajesDB = await obtenerUltimosMensajes(chatId, 8);
         previousMessages = mensajesDB.map((m: any) => ({
           role: m.rol === 'usuario' ? 'user' : 'model',
           parts: [{ text: m.contenido }],
@@ -286,36 +280,33 @@ export async function POST(req: Request) {
       Assistant: "Migramos sistemas obsoletos a arquitecturas modernas con Next.js y Supabase garantizando propiedad absoluta del código. ¿En qué stack está tu desarrollo actual?"`;
     }
 
-    // Actualización del systemInstruction para hacerlo más cercano y bajado a tierra:
-
     const systemInstruction = `Eres PowaBot, el asesor comercial estrella de 'Agencia Digital Powa' (de Zona Sur, Buenos Aires).
-Tu objetivo es actuar como un filtro inteligente y humano: charlar con el cliente, entender qué negocio tiene, qué le duele (si se le cae la página, si paga mucha comisión, si le cuesta conseguir clientes) y explicarle las cosas de forma súper sencilla, sin tecnicismos raros.
+Tu objetivo es actuar como un filtro inteligente y humano: charlar con el cliente, entender qué negocio tiene, qué le duele y explicarle las cosas de forma súper sencilla, sin tecnicismos raros.
 
-FILOSOFÍA (Explicada fácil):
-- No vendemos páginas web comunes; armamos herramientas digitales que funcionan de verdad (tiendas que no se cuelgan, apps propias, webs que cargan al toque).
-- Queremos que el negocio sea dueño de su plataforma y deje de regalar plata en comisiones o depender de plantillas baratas que se rompen.
+FILOSOFÍA:
+- No vendemos páginas web comunes; armamos herramientas digitales que funcionan de verdad.
+- Queremos que el negocio sea dueño de su plataforma y deje de regalar plata en comisiones.
 
-REGLAS DE CONVERSACIÓN Y FILTRADO:
-1. TONO CRIOLLO Y CERCANO: Hablá de forma amigable, natural y directa (argentino moderado, cálido, usando un "vos" bien llevado). Explicá las cosas con peras y manzanas. Si dice algo técnico, traducírselo a beneficios para su bolsillo o su tiempo.
-2. NUNCA mandes a WhatsApp de entrada. Primero hay que charlar, entender qué necesita y calificarlo.
-3. PREGUNTAS CLAVE: Hacé de a una pregunta por vez para no abrumar (ej: "¿Qué tipo de negocio tenés?", "¿Ya venís vendiendo por internet o arrancás de cero?", "¿Qué te da más dolor de cabeza hoy con tu sistema actual?").
-4. DERIVACIÓN A WHATSAPP: Solo pasale el link de WhatsApp ( https://wa.me/5491138305837?text=Hola%20Powa! ) cuando la charla esté avanzada, veas que tiene un proyecto serio y amerite que Cristian lo atienda personalmente.
+REGLAS DE CONVERSACIÓN:
+1. TONO CRIOLLO Y CERCANO: Hablá de forma amigable, natural y directa (argentino moderado, cálido, usando un "vos" bien llevado).
+2. NUNCA mandes a WhatsApp de entrada. Primero hay que charlar y calificar al cliente.
+3. PREGUNTAS CLAVE: Hacé de a una pregunta por vez para no abrumar.
+4. DERIVACIÓN A WHATSAPP: Solo pasale el link de WhatsApp ( https://wa.me/5491138305837?text=Hola%20Powa! ) cuando la charla esté avanzada.
 5. Idioma: Español.
 
+${profileContext}
+${fewShotExamples}
+${faqContext}`;
 
-
-    ${profileContext}
-    ${fewShotExamples}
-
-    ${faqContext}`;
-
-    // Construir estructura de contenidos para Gemini
-    contents = [
+    let contents = [
       ...previousMessages,
-      { role: "user", parts: [{ text: message }] }
+      ...(isContinuation ? [] : [{ role: "user", parts: [{ text: message }] }])
     ];
 
-    // Envolver la llamada con reintentos automáticos para evitar errores 503 puntuales
+    if (isContinuation) {
+      contents.push({ role: "user", parts: [{ text: "Por favor, continúa exactamente desde donde te quedaste sin repetir nada." }] });
+    }
+
     const responseStream = await generarConReintentos(async () => {
       return await ai.models.generateContentStream({
         model: 'gemini-2.5-flash',
@@ -323,7 +314,7 @@ REGLAS DE CONVERSACIÓN Y FILTRADO:
         config: {
           systemInstruction: systemInstruction,
           temperature: 0.75,
-          maxOutputTokens: 1000, // Ajustado a 1000 para forzar respuestas concisas y dinámicas
+          maxOutputTokens: 3072, // 👈 Límite aumentado para evitar cortes cortos
           topP: 0.95,
         }
       });
@@ -331,6 +322,7 @@ REGLAS DE CONVERSACIÓN Y FILTRADO:
 
     const encoder = new TextEncoder();
     let fullResponse = '';
+    let finishReason = 'STOP';
 
     const readableStream = new ReadableStream({
       async start(controller) {
@@ -341,14 +333,13 @@ REGLAS DE CONVERSACIÓN Y FILTRADO:
               fullResponse += text;
               controller.enqueue(encoder.encode(text));
             }
+            if (chunk.candidates?.[0]?.finishReason) {
+              finishReason = chunk.candidates[0].finishReason;
+            }
           }
 
-          if (fullResponse.length > 50) {
-            try {
-              cache.set(cacheKey, fullResponse);
-            } catch (cacheError) {
-              console.error('❌ Error guardando en caché:', cacheError);
-            }
+          if (fullResponse.length > 50 && !isContinuation) {
+            try { cache.set(cacheKey, fullResponse); } catch (e) { }
           }
 
           try {
@@ -360,9 +351,7 @@ REGLAS DE CONVERSACIÓN Y FILTRADO:
             console.error('❌ Error guardando respuesta en DB:', dbError);
           }
 
-          const responseTime = Date.now() - startTime;
-          metrics.recordResponseTime(responseTime);
-
+          metrics.recordResponseTime(Date.now() - startTime);
           controller.close();
         } catch (error) {
           console.error('❌ Error en streaming de Gemini:', error);
@@ -377,16 +366,15 @@ REGLAS DE CONVERSACIÓN Y FILTRADO:
         'Cache-Control': 'no-cache',
         'X-Cache': 'MISS',
         'X-Chat-Id': chatId,
+        'X-Finish-Reason': finishReason, // 👈 Cabecera enviada al cliente
       },
     });
 
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : "Error desconocido";
-    console.error('❌ Critical API Error (Gemini):', errorMessage);
     metrics.recordError(errorMessage);
-
     return NextResponse.json(
-      { text: "Estoy recalibrando mis circuitos con Gemini debido a alta demanda momentánea. ¿Podrías repetirme eso o prefieres que lo charlemos directo por WhatsApp?" },
+      { text: "Estoy recalibrando mis circuitos debido a alta demanda. ¿Lo charlemos por WhatsApp?" },
       { status: 500 }
     );
   }

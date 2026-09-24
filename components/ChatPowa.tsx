@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { IoSend, IoClose } from 'react-icons/io5';
 import Image from 'next/image';
-import { useSession } from 'next-auth/react'; // 🔥 AGREGADO
+import { useSession } from 'next-auth/react';
 import styles from './ChatPowa.module.css';
 
 type Message = {
@@ -24,7 +24,7 @@ const suggestedQuestions = [
 ];
 
 export default function ChatPowa() {
-  const { data: session } = useSession(); // 🔥 OBTENER SESIÓN
+  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [profile, setProfile] = useState<ClientProfile>(null);
@@ -32,6 +32,8 @@ export default function ChatPowa() {
   const [conversacionId, setConversacionId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
+  const [needsContinue, setNeedsContinue] = useState(false); // 👈 Controla si se cortó por tokens
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const streamingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -41,14 +43,13 @@ export default function ChatPowa() {
     const context = lastUserMsg
       ? ` Estaba consultando sobre: "${lastUserMsg.substring(0, 70)}${lastUserMsg.length > 70 ? '...' : ''}"`
       : " Me gustaría recibir asesoría personalizada para mi proyecto.";
-    const fullMessage = `${intro}${context} ¿Podemos hablar?`;
-    return `https://wa.me/5491138305837?text=${encodeURIComponent(fullMessage)}`;
+    return `https://wa.me/5491138305837?text=${encodeURIComponent(intro + context + " ¿Podemos hablar?")}`;
   }, [messages]);
 
   const playRobotSound = () => {
     const audio = new Audio('/sonido-robot.mp3');
     audio.volume = 0.4;
-    audio.play().catch(() => console.log("Audio play blocked until interaction"));
+    audio.play().catch(() => { });
   };
 
   const scrollToBottom = () => {
@@ -67,41 +68,9 @@ export default function ChatPowa() {
 
   useEffect(() => {
     return () => {
-      if (streamingTimeoutRef.current) {
-        clearTimeout(streamingTimeoutRef.current);
-      }
+      if (streamingTimeoutRef.current) clearTimeout(streamingTimeoutRef.current);
     };
   }, []);
-
-  useEffect(() => {
-    if (isStreaming && !loading) {
-      console.log('⚠️ Streaming activo sin loading - forzando reset');
-      setIsStreaming(false);
-    }
-  }, [isStreaming, loading]);
-
-  const handleToggleChat = () => {
-    if (!isOpen) {
-      playRobotSound();
-      setMessages([]);
-      setConversacionId(null);
-    }
-    setIsOpen(!isOpen);
-  };
-
-  const renderText = (text: string) => {
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.split(urlRegex).map((part, i) => {
-      if (part.match(urlRegex)) {
-        return (
-          <a key={i} href={part} target="_blank" rel="noopener noreferrer" className={styles.chatLink}>
-            {part}
-          </a>
-        );
-      }
-      return part;
-    });
-  };
 
   const resetStreamingState = useCallback(() => {
     if (streamingTimeoutRef.current) {
@@ -131,25 +100,29 @@ export default function ChatPowa() {
     }
   };
 
-  const handleSelectProfile = async (selectedProfile: ClientProfile, label: string) => {
-    setProfile(selectedProfile);
-    const userMsg: Message = { role: 'user', text: `Mi proyecto es del rubro: ${label}` };
-    const newHistory = [...messages, userMsg];
-    setMessages(newHistory);
+  const renderText = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.split(urlRegex).map((part, i) => {
+      if (part.match(urlRegex)) {
+        return (
+          <a key={i} href={part} target="_blank" rel="noopener noreferrer" className={styles.chatLink}>
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  };
+
+  const ejecutarPeticionChat = async (bodyPayload: any) => {
     setLoading(true);
+    setNeedsContinue(false);
 
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: `Hola, seleccioné la opción de ${label}. Contame cómo me pueden ayudar con soluciones Senior y Growth.`,
-          history: newHistory,
-          profile: selectedProfile,
-          conversacionId: conversacionId,
-          usuarioId: session?.user?.id || null, // 🔥 AGREGADO
-          esAdmin: session?.user?.rol === 'admin', // 🔥 AGREGADO
-        }),
+        body: JSON.stringify(bodyPayload),
       });
 
       if (!res.ok) throw new Error('Error en la respuesta');
@@ -159,8 +132,9 @@ export default function ChatPowa() {
         setConversacionId(newChatId);
       }
 
+      const finishReason = res.headers.get('X-Finish-Reason');
       const reader = res.body?.getReader();
-      const decoder = new TextDecoder();
+      const textDecoder = new TextDecoder();
       const botMessageId = (Date.now() + 1).toString();
 
       setMessages(prev => [...prev, {
@@ -173,18 +147,15 @@ export default function ChatPowa() {
       let accumulatedText = '';
 
       streamingTimeoutRef.current = setTimeout(() => {
-        console.log('⏱️ Timeout: streaming forzado a false');
         resetStreamingState();
-      }, 15000);
+      }, 20000);
 
       if (reader) {
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
-          const chunk = decoder.decode(value);
-          if (chunk) {
-            accumulatedText += chunk;
-          }
+          const chunk = textDecoder.decode(value);
+          if (chunk) accumulatedText += chunk;
 
           setMessages(prev => {
             const newMessages = [...prev];
@@ -200,27 +171,11 @@ export default function ChatPowa() {
         }
       }
 
-      if (streamingTimeoutRef.current) {
-        clearTimeout(streamingTimeoutRef.current);
-        streamingTimeoutRef.current = null;
+      resetStreamingState();
+
+      if (finishReason === 'MAX_TOKENS') {
+        setNeedsContinue(true);
       }
-
-      setMessages(prev => {
-        const newMessages = [...prev];
-        const botIndex = newMessages.findIndex(m => m.id === botMessageId);
-        if (botIndex !== -1 && !newMessages[botIndex].text.trim()) {
-          newMessages[botIndex] = {
-            ...newMessages[botIndex],
-            text: 'Gracias por tu consulta. ¿Querés que profundicemos en algún aspecto en particular?'
-          };
-        }
-        return newMessages;
-      });
-
-      setTimeout(() => {
-        setIsStreaming(false);
-        setLoading(false);
-      }, 50);
 
     } catch (error) {
       console.error("Error:", error);
@@ -228,14 +183,24 @@ export default function ChatPowa() {
         role: 'bot',
         text: "Lo siento, hubo un problema técnico. ¿Prefieres contactarnos por WhatsApp?"
       }]);
-      setIsStreaming(false);
-      setLoading(false);
-    } finally {
-      if (streamingTimeoutRef.current) {
-        clearTimeout(streamingTimeoutRef.current);
-        streamingTimeoutRef.current = null;
-      }
+      resetStreamingState();
     }
+  };
+
+  const handleSelectProfile = async (selectedProfile: ClientProfile, label: string) => {
+    setProfile(selectedProfile);
+    const userMsg: Message = { role: 'user', text: `Mi proyecto es del rubro: ${label}` };
+    const newHistory = [...messages, userMsg];
+    setMessages(newHistory);
+
+    await ejecutarPeticionChat({
+      message: `Hola, seleccioné la opción de ${label}. Contame cómo me pueden ayudar con soluciones Senior y Growth.`,
+      history: newHistory,
+      profile: selectedProfile,
+      conversacionId,
+      usuarioId: session?.user?.id || null,
+      esAdmin: session?.user?.rol === 'admin',
+    });
   };
 
   const sendMessage = async () => {
@@ -251,106 +216,29 @@ export default function ChatPowa() {
     setMessages(newHistory);
     const currentInput = input;
     setInput("");
-    setLoading(true);
 
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: currentInput,
-          history: newHistory,
-          profile: profile,
-          conversacionId: conversacionId,
-          usuarioId: session?.user?.id || null, // 🔥 AGREGADO
-          esAdmin: session?.user?.rol === 'admin', // 🔥 AGREGADO
-        }),
-      });
+    await ejecutarPeticionChat({
+      message: currentInput,
+      history: newHistory,
+      profile: profile,
+      conversacionId: conversacionId,
+      usuarioId: session?.user?.id || null,
+      esAdmin: session?.user?.rol === 'admin',
+    });
+  };
 
-      if (!response.ok) throw new Error('Error en la respuesta');
+  const handleContinueGeneration = async () => {
+    if (loading || isStreaming) return;
 
-      const newChatId = response.headers.get('X-Chat-Id');
-      if (newChatId && !conversacionId) {
-        setConversacionId(newChatId);
-      }
-
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      const botMessageId = (Date.now() + 1).toString();
-
-      setMessages(prev => [...prev, {
-        role: 'bot',
-        text: '',
-        id: botMessageId
-      }]);
-
-      setIsStreaming(true);
-      let accumulatedText = '';
-
-      streamingTimeoutRef.current = setTimeout(() => {
-        console.log('⏱️ Timeout: streaming forzado a false');
-        resetStreamingState();
-      }, 15000);
-
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          const chunk = decoder.decode(value);
-          if (chunk) {
-            accumulatedText += chunk;
-          }
-
-          setMessages(prev => {
-            const newMessages = [...prev];
-            const botIndex = newMessages.findIndex(m => m.id === botMessageId);
-            if (botIndex !== -1) {
-              newMessages[botIndex] = {
-                ...newMessages[botIndex],
-                text: accumulatedText || '✍️ Escribiendo...'
-              };
-            }
-            return newMessages;
-          });
-        }
-      }
-
-      if (streamingTimeoutRef.current) {
-        clearTimeout(streamingTimeoutRef.current);
-        streamingTimeoutRef.current = null;
-      }
-
-      setMessages(prev => {
-        const newMessages = [...prev];
-        const botIndex = newMessages.findIndex(m => m.id === botMessageId);
-        if (botIndex !== -1 && !newMessages[botIndex].text.trim()) {
-          newMessages[botIndex] = {
-            ...newMessages[botIndex],
-            text: 'Gracias por tu consulta. ¿Querés que profundicemos en algún aspecto en particular?'
-          };
-        }
-        return newMessages;
-      });
-
-      setTimeout(() => {
-        setIsStreaming(false);
-        setLoading(false);
-      }, 50);
-
-    } catch (error: any) {
-      console.error("Error:", error);
-      setMessages(prev => [...prev, {
-        role: 'bot',
-        text: "Lo siento, hubo un problema técnico. ¿Prefieres contactarnos por WhatsApp?"
-      }]);
-      setIsStreaming(false);
-      setLoading(false);
-    } finally {
-      if (streamingTimeoutRef.current) {
-        clearTimeout(streamingTimeoutRef.current);
-        streamingTimeoutRef.current = null;
-      }
-    }
+    await ejecutarPeticionChat({
+      message: "Continúa",
+      history: messages,
+      profile: profile,
+      conversacionId: conversacionId,
+      usuarioId: session?.user?.id || null,
+      esAdmin: session?.user?.rol === 'admin',
+      isContinuation: true,
+    });
   };
 
   const handleSuggestedQuestion = (question: string, questionProfile: string) => {
@@ -381,7 +269,7 @@ export default function ChatPowa() {
         role: 'bot',
         text: `¡Gracias por tu calificación! ${ratingMsg}`
       }]);
-    } catch (e) { /* ignorar */ }
+    } catch (e) { }
   };
 
   return (
@@ -389,7 +277,7 @@ export default function ChatPowa() {
       {!isOpen && <div className={styles.notificationBadge}>1</div>}
 
       {!isOpen && (
-        <button onClick={handleToggleChat} className={styles.chatToggleButton} aria-label="Abrir Chat de Ayuda">
+        <button onClick={() => { playRobotSound(); setMessages([]); setConversacionId(null); setIsOpen(true); }} className={styles.chatToggleButton} aria-label="Abrir Chat de Ayuda">
           <Image
             src="/iconoia.jpg"
             alt="Powa Bot Ayuda"
@@ -406,13 +294,7 @@ export default function ChatPowa() {
           <div className={styles.header} style={{ position: 'relative', zIndex: 10 }}>
             <div className={styles.headerInfo}>
               <div className={styles.headerAvatarContainer}>
-                <Image
-                  src="/iconoia.jpg"
-                  alt="Avatar Powa AI"
-                  width={30}
-                  height={30}
-                  className={styles.headerAvatar}
-                />
+                <Image src="/iconoia.jpg" alt="Avatar Powa AI" width={30} height={30} className={styles.headerAvatar} />
                 <div className={styles.onlineStatus}></div>
               </div>
               <div className={styles.headerText}>
@@ -438,22 +320,13 @@ export default function ChatPowa() {
 
             {!profile && !loading && (
               <div className={styles.profileOptionsContainer}>
-                <button
-                  onClick={() => handleSelectProfile('gastronomia', 'Gastronomía (Restaurantes/Delivery)')}
-                  className={styles.profileButton}
-                >
+                <button onClick={() => handleSelectProfile('gastronomia', 'Gastronomía (Restaurantes/Delivery)')} className={styles.profileButton}>
                   🍔 Gastronomía (Restaurantes, Delivery, Apps)
                 </button>
-                <button
-                  onClick={() => handleSelectProfile('empresa_emprendedor', 'Empresas y Emprendedores (Webs, E-commerce)')}
-                  className={styles.profileButton}
-                >
+                <button onClick={() => handleSelectProfile('empresa_emprendedor', 'Empresas y Emprendedores (Webs, E-commerce)')} className={styles.profileButton}>
                   📈 Empresas / E-commerce / Automatización
                 </button>
-                <button
-                  onClick={() => handleSelectProfile('senior_software', 'Desarrollo Senior a Medida (Next.js, APIS)')}
-                  className={styles.profileButton}
-                >
+                <button onClick={() => handleSelectProfile('senior_software', 'Desarrollo Senior a Medida (Next.js, APIS)')} className={styles.profileButton}>
                   ⚙️ Consultoría & Software Senior a Medida
                 </button>
               </div>
@@ -468,15 +341,33 @@ export default function ChatPowa() {
                   )}
                 </div>
 
-                {m.role === 'bot' && i === messages.length - 1 && !isStreaming && m.text.length > 20 && (
+                {/* 👈 Botón dinámico de continuar si se cortó por tokens */}
+                {m.role === 'bot' && i === messages.length - 1 && needsContinue && !isStreaming && !loading && (
+                  <div style={{ margin: '8px 0', textAlign: 'left' }}>
+                    <button
+                      onClick={handleContinueGeneration}
+                      style={{
+                        background: '#10B981',
+                        color: '#fff',
+                        border: 'none',
+                        padding: '6px 12px',
+                        borderRadius: '6px',
+                        fontSize: '13px',
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                      }}
+                    >
+                      ▶️ Continuar generando...
+                    </button>
+                  </div>
+                )}
+
+                {m.role === 'bot' && i === messages.length - 1 && !isStreaming && !needsContinue && m.text.length > 20 && (
                   <div className={styles.ratingContainer}>
                     <span className={styles.ratingLabel}>¿Te fue útil?</span>
                     {[1, 2, 3, 4, 5].map((rating) => (
-                      <button
-                        key={rating}
-                        onClick={() => rateResponse(rating)}
-                        className={styles.ratingButton}
-                      >
+                      <button key={rating} onClick={() => rateResponse(rating)} className={styles.ratingButton}>
                         {rating}
                       </button>
                     ))}
@@ -487,19 +378,11 @@ export default function ChatPowa() {
                   <div className={styles.suggestedQuestionsContainer}>
                     <span className={styles.suggestedLabel}>Preguntas frecuentes:</span>
                     <div className={styles.suggestedGrid}>
-                      {suggestedQuestions
-                        .filter(q => q.profile === profile)
-                        .slice(0, 4)
-                        .map((q, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => handleSuggestedQuestion(q.text, q.profile)}
-                            className={styles.suggestedButton}
-                            disabled={loading || isStreaming}
-                          >
-                            {q.icon} {q.text}
-                          </button>
-                        ))}
+                      {suggestedQuestions.filter(q => q.profile === profile).slice(0, 4).map((q, idx) => (
+                        <button key={idx} onClick={() => handleSuggestedQuestion(q.text, q.profile)} className={styles.suggestedButton} disabled={loading || isStreaming}>
+                          {q.icon} {q.text}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -532,12 +415,7 @@ export default function ChatPowa() {
               placeholder={profile ? "¿Cómo escalamos tu proyecto?" : "Selecciona un rubro arriba primero..."}
               disabled={!profile || loading || isStreaming}
             />
-
-            <button
-              onClick={sendMessage}
-              disabled={loading || !input.trim() || !profile || isStreaming}
-              className={styles.sendButton}
-            >
+            <button onClick={sendMessage} disabled={loading || !input.trim() || !profile || isStreaming} className={styles.sendButton}>
               <IoSend size={20} />
             </button>
           </div>
