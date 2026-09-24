@@ -26,13 +26,13 @@ html {
 body {
   /* Prioridad a las fuentes variables de Next.js (Geist) definidas en el layout */
   font-family: var(--font-geist-sans), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  color: var(--text-main);
-  background-color: var(--dark-powa);
+  color: #ffffff;
+  background-color: #06090f;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
   /* 🔥 COMPENSAR EL NAVBAR FIJO EN EL BODY */
-  padding-top: var(--navbar-height);
+  padding-top: 0;
   /* Optimización de renderizado de texto */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

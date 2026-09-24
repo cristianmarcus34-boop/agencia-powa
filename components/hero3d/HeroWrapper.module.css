@@ -12,6 +12,7 @@
     z-index: 10;
     display: flex;
     align-items: center;
+    /* Quitamos el padding-top de acá para que no empuje de más */
     pointer-events: none;
 }
 

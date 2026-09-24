@@ -10,8 +10,6 @@
   --slate-600: #475569;
 }
 
-
-
 /* ===== WRAPPER ===== */
 .aboutWrapper {
   background-color: var(--dark-powa);
@@ -20,7 +18,6 @@
   overflow-x: hidden;
   position: relative;
   box-sizing: border-box;
-  /* ✅ Agregado aquí */
   background-image:
     radial-gradient(circle at 15% 25%, rgba(0, 242, 254, 0.04) 0%, transparent 45%),
     radial-gradient(circle at 85% 75%, rgba(0, 242, 254, 0.04) 0%, transparent 45%);
@@ -414,6 +411,190 @@
   transform: rotate(360deg) scale(1.15);
 }
 
+/* ============================================================
+   SECCIÓN EQUIPO CORE
+   ============================================================ */
+.teamHeader {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* ============================================================
+   SECCIÓN COLABORADORES ON-DEMAND
+   ============================================================ */
+.collabSection {
+  margin: 5rem 0 4rem;
+  padding: 3rem 1.5rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.5), rgba(34, 211, 238, 0.03));
+  border: 1px solid rgba(34, 211, 238, 0.1);
+  border-radius: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.collabSection::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.collabHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.collabBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 18px;
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  border-radius: 50px;
+  color: var(--cyan-powa);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1.2rem;
+}
+
+.collabTitle {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -1px;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.collabSubtitle {
+  color: var(--slate-400);
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.collabSubtitle strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* ===== CARDS DE COLABORADORES ===== */
+.collabCard {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 24px 20px;
+  height: 100%;
+  transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.collabCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.collabCard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(34, 211, 238, 0.25);
+  background: rgba(15, 23, 42, 0.7);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+}
+
+.collabCard:hover::before {
+  opacity: 1;
+}
+
+.collabIconWrapper {
+  width: 56px;
+  height: 56px;
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--cyan-powa);
+  margin-bottom: 1rem;
+  transition: all 0.35s ease;
+}
+
+.collabCard:hover .collabIconWrapper {
+  background: rgba(34, 211, 238, 0.15);
+  border-color: rgba(34, 211, 238, 0.35);
+  transform: scale(1.08) rotate(-3deg);
+}
+
+.collabRole {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.3px;
+}
+
+.collabDesc {
+  font-size: 0.85rem;
+  color: var(--slate-400);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ===== NOTA AL PIE ===== */
+.collabNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 2.5rem;
+  padding: 1.2rem 1.5rem;
+  background: rgba(34, 211, 238, 0.04);
+  border: 1px solid rgba(34, 211, 238, 0.12);
+  border-radius: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.collabNoteIcon {
+  color: var(--cyan-powa);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.collabNote p {
+  color: var(--slate-300);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.collabNote strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
 /* ===== TECH SECTION ===== */
 .techSection {
   margin: 4rem 0;
@@ -449,54 +630,125 @@
   font-weight: 600;
 }
 
-/* ===== TESTIMONIALS SECTION ===== */
-.testimonialsSection {
+/* ============================================
+   SECCIÓN CASOS REALES
+   ============================================ */
+.casesSection {
   margin: 4rem 0;
 }
 
-.testimonialCard {
-  background: rgba(15, 23, 42, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+.caseCard {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 20px;
-  padding: 32px 28px;
+  padding: 24px 22px;
   height: 100%;
-  transition: all 0.3s ease;
-}
-
-.testimonialCard:hover {
-  border-color: rgba(34, 211, 238, 0.15);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-}
-
-.testimonialQuoteIcon {
-  color: var(--gold-powa);
-  font-size: 1.2rem;
-  opacity: 0.4;
-  margin-bottom: 12px;
-}
-
-.testimonialText {
-  color: var(--slate-300);
-  font-size: 0.95rem;
-  line-height: 1.7;
-  font-style: italic;
-  margin-bottom: 16px;
-}
-
-.testimonialAuthor {
+  transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
   display: flex;
   flex-direction: column;
 }
 
-.testimonialAuthor strong {
-  color: #ffffff;
-  font-size: 0.95rem;
+.caseCard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(34, 211, 238, 0.25);
+  background: rgba(15, 23, 42, 0.6);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
 }
 
-.testimonialAuthor span {
+.caseHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.caseEmoji {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.caseRubro {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 2px;
+  letter-spacing: -0.3px;
+}
+
+.caseUbicacion {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
   color: var(--slate-400);
-  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.caseUbicacionIcon {
+  color: var(--cyan-powa);
+  font-size: 0.65rem;
+}
+
+.caseBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  flex: 1;
+}
+
+.caseRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.caseLabel {
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--slate-500);
+}
+
+.caseText {
+  font-size: 0.85rem;
+  color: var(--slate-300);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.caseRowResult {
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(34, 211, 238, 0.1);
+  margin-top: auto;
+}
+
+.caseLabelResult {
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--cyan-powa);
+}
+
+.caseTextResult {
+  font-size: 0.88rem;
+  color: #ffffff;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.casesNote {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--slate-500);
+  font-style: italic;
+  margin-top: 2rem;
+  padding: 0 1rem;
+  line-height: 1.5;
 }
 
 /* ===== SECCIÓN DE VALORES ===== */
@@ -691,6 +943,41 @@
   transform: translateX(4px);
 }
 
+.midCTA {
+  text-align: center;
+  padding: 2rem 1rem;
+  margin: 3rem 0;
+  background: rgba(34, 211, 238, 0.04);
+  border: 1px dashed rgba(34, 211, 238, 0.2);
+  border-radius: 16px;
+}
+
+.midCTA p {
+  color: var(--slate-300);
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.midCTAButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #22d3ee, #0891b2);
+  color: #0a0f1a !important;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  text-decoration: none !important;
+  transition: all 0.3s ease;
+}
+
+.midCTAButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(34, 211, 238, 0.3);
+}
+
 /* ============================================
    ANIMACIONES
    ============================================ */
@@ -719,10 +1006,8 @@
 }
 
 /* ============================================
-   RESPONSIVE
+   RESPONSIVE - TABLET (max 992px)
    ============================================ */
-
-/* Tablet y pantallas medianas */
 @media (max-width: 992px) {
   .profileImgFrame {
     min-height: 380px;
@@ -756,7 +1041,9 @@
   }
 }
 
-/* Móviles */
+/* ============================================
+   RESPONSIVE - MOBILE (max 768px)
+   ============================================ */
 @media (max-width: 768px) {
   .aboutWrapper {
     padding-top: 80px;
@@ -823,14 +1110,6 @@
     font-size: 0.75rem;
   }
 
-  .testimonialCard {
-    padding: 24px 20px;
-  }
-
-  .testimonialText {
-    font-size: 0.85rem;
-  }
-
   .profileIconWrapper {
     width: 34px;
     height: 34px;
@@ -862,9 +1141,78 @@
     font-size: 0.95rem;
     padding: 14px 28px;
   }
+
+  /* Colaboradores en mobile */
+  .collabSection {
+    margin: 3rem 0 2.5rem;
+    padding: 2.5rem 1.2rem;
+    border-radius: 24px;
+  }
+
+  .collabHeader {
+    margin-bottom: 2rem;
+  }
+
+  .collabTitle {
+    font-size: 1.5rem;
+  }
+
+  .collabSubtitle {
+    font-size: 0.95rem;
+  }
+
+  .collabCard {
+    padding: 20px 16px;
+  }
+
+  .collabIconWrapper {
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+  }
+
+  .collabRole {
+    font-size: 0.92rem;
+  }
+
+  .collabDesc {
+    font-size: 0.8rem;
+  }
+
+  .collabNote {
+    flex-direction: column;
+    padding: 1rem 1.2rem;
+  }
+
+  .collabNote p {
+    font-size: 0.85rem;
+  }
+
+  /* Casos reales en mobile */
+  .caseCard {
+    padding: 20px 18px;
+  }
+
+  .caseEmoji {
+    font-size: 1.7rem;
+  }
+
+  .caseRubro {
+    font-size: 0.95rem;
+  }
+
+  .caseText {
+    font-size: 0.82rem;
+  }
+
+  .caseTextResult {
+    font-size: 0.85rem;
+  }
 }
 
-/* Móviles pequeños */
+/* ============================================
+   RESPONSIVE - MOBILE CHICO (max 480px)
+   ============================================ */
 @media (max-width: 480px) {
   .aboutWrapper {
     padding-top: 60px;
@@ -902,18 +1250,6 @@
 
   .techName {
     font-size: 0.65rem;
-  }
-
-  .testimonialCard {
-    padding: 20px 16px;
-  }
-
-  .testimonialText {
-    font-size: 0.8rem;
-  }
-
-  .testimonialQuoteIcon {
-    font-size: 1rem;
   }
 
   .statCard {
@@ -1026,5 +1362,52 @@
   .expertiseTags span {
     font-size: 0.6rem;
     padding: 4px 10px;
+  }
+
+  /* Colaboradores en mobile chico */
+  .collabSection {
+    padding: 2rem 1rem;
+    border-radius: 20px;
+  }
+
+  .collabTitle {
+    font-size: 1.3rem;
+  }
+
+  .collabSubtitle {
+    font-size: 0.85rem;
+  }
+
+  .collabRole {
+    font-size: 0.85rem;
+  }
+
+  .collabDesc {
+    font-size: 0.75rem;
+  }
+
+  /* Casos reales en mobile chico */
+  .caseCard {
+    padding: 18px 16px;
+  }
+
+  .caseEmoji {
+    font-size: 1.5rem;
+  }
+
+  .caseRubro {
+    font-size: 0.9rem;
+  }
+
+  .caseText {
+    font-size: 0.8rem;
+  }
+
+  .caseTextResult {
+    font-size: 0.82rem;
+  }
+
+  .casesNote {
+    font-size: 0.7rem;
   }
 }

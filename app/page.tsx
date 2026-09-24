@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -12,9 +12,9 @@ import {
     FaMapMarkerAlt, FaSearch, FaCogs, FaCheckCircle, FaShieldAlt,
     FaFileContract, FaLock, FaUsers, FaClock,
     FaQuoteRight, FaWhatsapp, FaCloudUploadAlt,
-    FaBrain, 
+    FaBrain,
     FaUser, FaCalculator, FaMoneyBillWave, FaChartBar,
-    FaCloud, FaPalette, FaAws
+    FaCloud, FaPalette, FaAws, FaSyncAlt
 } from 'react-icons/fa';
 
 import { HiOutlineArrowNarrowRight } from 'react-icons/hi';
@@ -46,6 +46,88 @@ export default function HomePage() {
     const [diagnosticoEmail, setDiagnosticoEmail] = useState('');
     const [diagnosticoEnviado, setDiagnosticoEnviado] = useState(false);
 
+    // ===== STATE PARA COTIZACIÓN DEL DÓLAR =====
+    const [dolarVenta, setDolarVenta] = useState<number>(1488.27); // Valor por defecto de respaldo
+    const [dolarFecha, setDolarFecha] = useState<string>('');
+    const [loadingDolar, setLoadingDolar] = useState<boolean>(true);
+    const [errorDolar, setErrorDolar] = useState<boolean>(false);
+    const [moneda, setMoneda] = useState<'ARS' | 'USD'>('ARS'); // Toggle ARS/USD
+
+    useEffect(() => {
+        async function fetchDolar() {
+            try {
+                const response = await fetch('https://dolarapi.com/v1/dolares/oficial');
+                const data = await response.json();
+                if (data && data.venta) {
+                    setDolarVenta(data.venta);
+                    setDolarFecha(data.fechaActualizacion || new Date().toISOString());
+                    setErrorDolar(false);
+                }
+            } catch (error) {
+                console.error('Error al obtener la cotización del dólar:', error);
+                setErrorDolar(true);
+            } finally {
+                setLoadingDolar(false);
+            }
+        }
+        fetchDolar();
+
+        // Refrescar cada 30 minutos
+        const interval = setInterval(fetchDolar, 30 * 60 * 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    // ===== HELPER: FORMATEO DE PRECIOS =====
+    const formatearPrecio = (valorUSD: number): string => {
+        if (moneda === 'USD') {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+            }).format(valorUSD);
+        }
+        const valorARS = valorUSD * dolarVenta;
+        return new Intl.NumberFormat('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        }).format(valorARS);
+    };
+
+    // Formato corto para tablas: sin "K", solo "M" para millones
+    const formatearPrecioCorto = (valorUSD: number): string => {
+        const valor = moneda === 'USD' ? valorUSD : valorUSD * dolarVenta;
+        const simbolo = moneda === 'USD' ? 'US$' : '$';
+
+        // Solo usamos "M" para millones (ej: $ 1,7M)
+        if (valor >= 1_000_000) {
+            return `${simbolo} ${(valor / 1_000_000).toFixed(1).replace('.', ',')}M`;
+        }
+
+        // Para miles, mostramos el número completo con separador de miles
+        return `${simbolo} ${new Intl.NumberFormat('es-AR', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        }).format(valor)}`;
+    };
+
+    const formatearFecha = (iso: string): string => {
+        try {
+            const fecha = new Date(iso);
+            return fecha.toLocaleString('es-AR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+            });
+        } catch {
+            return '';
+        }
+    };
+
     const handleDiagnosticoSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (diagnosticoEmail) {
@@ -69,6 +151,74 @@ export default function HomePage() {
     const [refTestimonials] = useInView(options);
     const [refStats] = useInView(options);
     const [refROI] = useInView(options);
+
+    // ===== PRECIOS BASE EN USD (fuente de verdad) =====
+    // ===== PRECIOS BASE EN USD (fuente de verdad) =====
+    const preciosBase = useMemo(() => ({
+        perfiles: [
+            { id: 'junior', label: 'Junior', badge: '🌱', rangoUSD: [8, 15], exp: '0-2 años', destacado: false },
+            { id: 'semi', label: 'Semi-Senior', badge: '⚡', rangoUSD: [15, 30], exp: '2-5 años', destacado: true },
+            { id: 'senior', label: 'Senior', badge: '🔥', rangoUSD: [30, 50], exp: '5-8 años', destacado: false, senior: true },
+            { id: 'agencia', label: 'Agencia', badge: '🏢', rangoUSD: [50, 90], exp: 'Equipo completo', destacado: false },
+        ],
+        proyectos: [
+            {
+                id: 'landing',
+                nombre: 'Landing Page',
+                rangos: {
+                    junior: [200, 400],
+                    semi: [400, 700],
+                    senior: [700, 1200],
+                    agencia: [1200, 2000],
+                },
+                destacado: false,
+            },
+            {
+                id: 'inst',
+                nombre: 'Sitio Institucional',
+                rangos: {
+                    junior: [500, 900],
+                    semi: [900, 1500],
+                    senior: [1500, 2500],
+                    agencia: [2500, 4000],
+                },
+                destacado: false,
+            },
+            {
+                id: 'ecom',
+                nombre: 'E-commerce',
+                rangos: {
+                    junior: [800, 1500],
+                    semi: [1500, 2800],
+                    senior: [2800, 4500],
+                    agencia: [4500, 7000],
+                },
+                destacado: false,
+            },
+            {
+                id: 'saas',
+                nombre: 'SaaS / Web App',
+                rangos: {
+                    junior: [1500, 3000],
+                    semi: [3000, 6000],
+                    senior: [6000, 12000],
+                    agencia: [12000, 25000],
+                },
+                destacado: true,
+            },
+            {
+                id: 'dash',
+                nombre: 'Dashboard Admin',
+                rangos: {
+                    junior: [1000, 2000],
+                    semi: [2000, 4000],
+                    senior: [4000, 7000],
+                    agencia: [7000, 12000],
+                },
+                destacado: false,
+            },
+        ],
+    }), []);
 
     // ===== 🚀 TECH STACK AMPLIADO =====
     const techStack = [
@@ -146,28 +296,28 @@ export default function HomePage() {
             step: "01",
             icon: <FaSearch />,
             title: "Requerimientos & Briefing",
-            desc: "Estructuramos un Formulario Técnico exhaustivo para entender tus objetivos de negocio, integraciones necesarias y cuellos de botella."
+            desc: "Armamos un formulario técnico bien detallado para entender tu negocio, qué integraciones necesitás y dónde se te está yendo la plata."
         },
         {
             id: "dev",
             step: "02",
             icon: <FaCode />,
             title: "Desarrollo & Staging",
-            desc: "Iteramos bajo un Manual de Estilo de código riguroso. Dispondrás de un entorno de pruebas privado para ver los avances en tiempo real."
+            desc: "Codeamos bajo un manual de estilo riguroso. Vas a tener un entorno de pruebas privado para ver los avances en tiempo real, sin sorpresas."
         },
         {
             id: "qa",
             step: "03",
             icon: <FaCheckCircle />,
             title: "QA & Despliegue Cloud",
-            desc: "Sometemos el código a pruebas de carga y seguridad. El lanzamiento se ejecuta en infraestructura escalable bajo control de cambios."
+            desc: "Probamos todo bajo presión: carga, seguridad y performance. El lanzamiento se hace con infraestructura escalable y control de cambios."
         },
         {
             id: "delivery",
             step: "04",
             icon: <FaRocket />,
             title: "Acta de Entrega Final",
-            desc: "Te transferimos la propiedad absoluta del repositorio, credenciales limpias y documentación técnica completa para garantizar tu autonomía."
+            desc: "Te transferimos el repositorio, credenciales limpias y toda la documentación técnica. El código es tuyo, sin vueltas."
         }
     ];
 
@@ -176,42 +326,42 @@ export default function HomePage() {
             id: "web",
             icon: <FaCode />,
             title: "Sistemas Web Escalables",
-            desc: "No usamos plantillas genéricas. Desarrollamos plataformas robustas con Next.js preparadas para soportar tráfico masivo y SEO crítico.",
+            desc: "No usamos plantillas genéricas. Desarrollamos plataformas robustas con Next.js preparadas para bancarse tráfico pesado y SEO crítico.",
             link: "/servicios/desarrollo"
         },
         {
             id: "mobile",
             icon: <FaMobileAlt />,
             title: "Desarrollo Mobile Nativo",
-            desc: "Diseñamos aplicaciones nativas fluidas para iOS y Android utilizando arquitecturas modernas que escalan a la par de tu negocio.",
+            desc: "Apps nativas fluidas para iOS y Android, con arquitecturas modernas que crecen al mismo ritmo que tu negocio.",
             link: "/servicios/desarrollo"
         },
         {
             id: "data",
             icon: <FaDatabase />,
             title: "Gestión de Datos & Cloud",
-            desc: "Modelamos bases de datos seguras y paneles administrativos a medida para centralizar y proteger los activos de información de tu empresa.",
+            desc: "Modelamos bases de datos seguras y paneles administrativos a medida para centralizar y proteger la información de tu empresa.",
             link: "/servicios/desarrollo"
         },
         {
             id: "auto",
             icon: <FaCogs />,
             title: "Automatización de Procesos",
-            desc: "Diseñamos flujos internos de software que eliminan las tareas manuales reiterativas, reduciendo drásticamente tus costos operativos.",
+            desc: "Armamos flujos internos que eliminan las tareas manuales repetitivas. Menos horas perdidas, menos costos operativos.",
             link: "/servicios/desarrollo"
         },
         {
             id: "ai",
             icon: <FaBrain />,
             title: "Integración de IA",
-            desc: "Implementamos agentes inteligentes y modelos avanzados de IA para optimizar análisis de datos internos o flujos automatizados de atención.",
+            desc: "Metemos agentes inteligentes y modelos avanzados para optimizar análisis de datos internos o flujos automatizados de atención.",
             link: "/servicios/desarrollo"
         },
         {
             id: "maint",
             icon: <FaCloudUploadAlt />,
             title: "Mantenimiento Evolutivo",
-            desc: "Tu software no queda obsoleto. Aseguramos su evolución continua con monitoreo proactivo, actualizaciones de seguridad y optimizaciones de performance.",
+            desc: "Tu software no queda obsoleto. Monitoreo proactivo, actualizaciones de seguridad y optimizaciones de performance mes a mes.",
             link: "/planes"
         }
     ];
@@ -233,7 +383,7 @@ export default function HomePage() {
             id: "repo",
             icon: <FaCode className={styles.securityListIcon} />,
             boldText: "Repositorio Privado Exclusivo:",
-            text: " Tu código base se despliega en un entorno Git único e independiente, garantizando transparencia absoluta de cara a auditorías futuras."
+            text: " Tu código base vive en un entorno Git único e independiente, listo para cualquier auditoría futura."
         }
     ];
 
@@ -242,21 +392,21 @@ export default function HomePage() {
             id: "test1",
             name: "Carlos Rodríguez",
             role: "CEO, FintechPro",
-            quote: "Powa transformó nuestra plataforma en tiempo récord. La arquitectura que implementaron nos permitió escalar de 500 a 15,000 usuarios sin problemas.",
+            quote: "Powa nos transformó la plataforma en tiempo récord. La arquitectura que metieron nos dejó escalar de 500 a 15.000 usuarios sin un solo problema.",
             avatar: "👨‍💼"
         },
         {
             id: "test2",
             name: "Laura Méndez",
             role: "CMO, EcomStore",
-            quote: "El rediseño aumentó nuestras conversiones en un 180%. El equipo entendió perfectamente nuestra audiencia y creó una experiencia que realmente conecta.",
+            quote: "El rediseño nos subió las conversiones un 180%. El equipo entendió perfecto a nuestra audiencia y armó una experiencia que realmente conecta.",
             avatar: "👩‍💼"
         },
         {
             id: "test3",
             name: "Andrés Silva",
             role: "CTO, HealthTech",
-            quote: "La seguridad y el cumplimiento normativo fueron críticos para nosotros. Powa no solo cumplió, superó nuestras expectativas con creces.",
+            quote: "La seguridad y el cumplimiento normativo eran críticos para nosotros. Powa no solo cumplió, nos pasó el trapo.",
             avatar: "👨‍🔬"
         }
     ];
@@ -273,7 +423,7 @@ export default function HomePage() {
             {/* --- HERO SECTION (CON 3D) --- */}
             <HeroWrapper>
                 <section className={styles.heroSectionModern}>
-                    <Container className="position-relative z-3">
+                    <Container className="position-relative z-3 pt-5 pt-md-4">
                         <Row className="align-items-center">
                             <Col lg={7}>
                                 <div className={styles.badgePowa}>
@@ -283,8 +433,8 @@ export default function HomePage() {
                                     Transformamos Ideas en <span className={styles.textGradient}>Software de Alto Impacto.</span>
                                 </h1>
                                 <p className={styles.heroSubtitleModern}>
-                                    No solo creamos webs; desarrollamos la <strong>infraestructura digital</strong> que tu empresa necesita para escalar.
-                                    Ingeniería Senior aplicada a negocios de <strong>Todo el Mundo.</strong>
+                                    No hacemos webs de adorno; construimos la <strong>infraestructura digital</strong> que tu empresa necesita para escalar.
+                                    Ingeniería Senior aplicada a negocios de <strong>todo el mundo.</strong>
                                 </p>
                                 <div className="d-flex flex-wrap gap-3 mt-4">
                                     <Link href="/contact" className={`${styles.btnPowaPrimary} text-decoration-none`}>
@@ -429,29 +579,29 @@ export default function HomePage() {
                                         Mejoramos <span className={styles.textGradient}>Cualquier Presupuesto</span>
                                     </h2>
                                     <p className={styles.budgetSubtitle}>
-                                        No importa el tamaño de tu proyecto ni tu inversión inicial.
-                                        En Powa diseñamos soluciones a medida que se ajustan a tus posibilidades.
+                                        No importa el tamaño de tu proyecto ni la plata que tengas hoy.
+                                        En Powa armamos soluciones a medida que se ajustan a tus posibilidades reales.
                                     </p>
                                     <div className={styles.budgetFeatures}>
                                         <div className={styles.budgetFeature}>
                                             <FaCheckCircle className={styles.budgetFeatureIcon} />
                                             <div>
                                                 <h4>Planes flexibles</h4>
-                                                <p>Desde proyectos pequeños hasta soluciones enterprise. Adaptamos nuestro proceso a tu realidad.</p>
+                                                <p>Desde proyectos chicos hasta soluciones enterprise. Nos adaptamos a tu realidad, no al revés.</p>
                                             </div>
                                         </div>
                                         <div className={styles.budgetFeature}>
                                             <FaCheckCircle className={styles.budgetFeatureIcon} />
                                             <div>
                                                 <h4>Entregas escalonadas</h4>
-                                                <p>No necesitas todo el capital upfront. Dividimos el proyecto en fases para que inviertas a tu ritmo.</p>
+                                                <p>No necesitás toda la plata por adelantado. Dividimos el proyecto en fases para que inviertas a tu ritmo.</p>
                                             </div>
                                         </div>
                                         <div className={styles.budgetFeature}>
                                             <FaCheckCircle className={styles.budgetFeatureIcon} />
                                             <div>
                                                 <h4>ROI garantizado</h4>
-                                                <p>Cada inversión está diseñada para generar retorno. Si no ves resultados, ajustamos la estrategia.</p>
+                                                <p>Cada peso invertido está pensado para volver. Si no ves resultados, ajustamos la estrategia.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -461,77 +611,96 @@ export default function HomePage() {
                             <Col lg={6}>
                                 <div className={styles.budgetVisual}>
                                     <div className={styles.budgetCard}>
+                                        {/* ===== HEADER CON COTIZACIÓN Y TOGGLE ===== */}
                                         <div className={styles.budgetCardHeader}>
-                                            <span className={styles.budgetCardBadge}>📊 COMPARATIVA</span>
-                                            <h3>¿Cuánto cuesta invertir en tecnología?</h3>
-                                            <p className={styles.budgetCardSubtitle}>
-                                                Precios referenciales según el perfil del desarrollador y tipo de proyecto.
-                                                <br />
-                                                <span className={styles.budgetCardNote}>
-                                                    *En pesos argentinos, cotización al día: <strong>$1.488,27 ARS/USD</strong>
-                                                </span>
-                                            </p>
-                                        </div>
+                                            <div className={styles.budgetCardHeaderTop}>
+                                                <span className={styles.budgetCardBadge}>📊 COMPARATIVA</span>
 
-                                        <div className={styles.budgetCardBody}>
-                                            <div className={styles.budgetProfiles}>
-                                                <div className={styles.budgetProfileCard}>
-                                                    <span className={styles.budgetProfileBadge}>Junior</span>
-                                                    <div className={styles.budgetProfileRange}>
-                                                        <span className={styles.budgetProfilePrice}>$22.324</span>
-                                                        <span className={styles.budgetProfileSeparator}>—</span>
-                                                        <span className={styles.budgetProfilePrice}>$37.206</span>
-                                                    </div>
-                                                    <span className={styles.budgetProfileLabel}>por hora</span>
-                                                    <div className={styles.budgetProfileTag}>
-                                                        <FaUser className={styles.budgetProfileIcon} />
-                                                        0-2 años
-                                                    </div>
-                                                </div>
-
-                                                <div className={`${styles.budgetProfileCard} ${styles.budgetProfileActive}`}>
-                                                    <span className={styles.budgetProfileBadge}>Semi-Senior</span>
-                                                    <div className={styles.budgetProfileRange}>
-                                                        <span className={styles.budgetProfilePrice}>$44.648</span>
-                                                        <span className={styles.budgetProfileSeparator}>—</span>
-                                                        <span className={styles.budgetProfilePrice}>$74.413</span>
-                                                    </div>
-                                                    <span className={styles.budgetProfileLabel}>por hora</span>
-                                                    <div className={styles.budgetProfileTag}>
-                                                        <FaUser className={styles.budgetProfileIcon} />
-                                                        2-5 años
-                                                    </div>
-                                                </div>
-
-                                                <div className={`${styles.budgetProfileCard} ${styles.budgetProfileSenior}`}>
-                                                    <span className={styles.budgetProfileBadge}>🔥 Senior</span>
-                                                    <div className={styles.budgetProfileRange}>
-                                                        <span className={styles.budgetProfilePrice}>$74.413</span>
-                                                        <span className={styles.budgetProfileSeparator}>—</span>
-                                                        <span className={styles.budgetProfilePrice}>$119.062</span>
-                                                    </div>
-                                                    <span className={styles.budgetProfileLabel}>por hora</span>
-                                                    <div className={styles.budgetProfileTag}>
-                                                        <FaUser className={styles.budgetProfileIcon} />
-                                                        5-8 años
-                                                    </div>
-                                                </div>
-
-                                                <div className={styles.budgetProfileCard}>
-                                                    <span className={styles.budgetProfileBadge}>🏢 Agencia</span>
-                                                    <div className={styles.budgetProfileRange}>
-                                                        <span className={styles.budgetProfilePrice}>$119.062</span>
-                                                        <span className={styles.budgetProfileSeparator}>—</span>
-                                                        <span className={styles.budgetProfilePrice}>$223.240</span>
-                                                    </div>
-                                                    <span className={styles.budgetProfileLabel}>por hora</span>
-                                                    <div className={styles.budgetProfileTag}>
-                                                        <FaUsers className={styles.budgetProfileIcon} />
-                                                        Equipo completo
-                                                    </div>
+                                                {/* Toggle ARS / USD */}
+                                                <div className={styles.budgetToggle}>
+                                                    <button
+                                                        type="button"
+                                                        className={`${styles.budgetToggleBtn} ${moneda === 'ARS' ? styles.budgetToggleActive : ''}`}
+                                                        onClick={() => setMoneda('ARS')}
+                                                        aria-pressed={moneda === 'ARS'}
+                                                    >
+                                                        ARS
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={`${styles.budgetToggleBtn} ${moneda === 'USD' ? styles.budgetToggleActive : ''}`}
+                                                        onClick={() => setMoneda('USD')}
+                                                        aria-pressed={moneda === 'USD'}
+                                                    >
+                                                        USD
+                                                    </button>
                                                 </div>
                                             </div>
 
+                                            <h3 className={styles.budgetCardTitle}>¿Cuánto sale invertir en tecnología?</h3>
+                                            <p className={styles.budgetCardSubtitle}>
+                                                Precios referenciales según el perfil del desarrollador y el tipo de proyecto.
+                                            </p>
+
+                                            {/* Cotización destacada */}
+                                            <div className={styles.budgetRateBox}>
+                                                <div className={styles.budgetRateLeft}>
+                                                    <FaSyncAlt className={styles.budgetRateIcon} />
+                                                    <div className={styles.budgetRateInfo}>
+                                                        <span className={styles.budgetRateLabel}>Dólar oficial</span>
+                                                        <span className={styles.budgetRateValue}>
+                                                            {loadingDolar
+                                                                ? 'Cargando...'
+                                                                : `$ ${new Intl.NumberFormat('es-AR', {
+                                                                    minimumFractionDigits: 2,
+                                                                    maximumFractionDigits: 2,
+                                                                }).format(dolarVenta)}`}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div className={styles.budgetRateRight}>
+                                                    {errorDolar ? (
+                                                        <span className={styles.budgetRateError}>⚠ Valor de respaldo</span>
+                                                    ) : (
+                                                        <>
+                                                            <span className={styles.budgetRateUpdatedLabel}>Actualizado</span>
+                                                            <span className={styles.budgetRateUpdatedValue}>
+                                                                {formatearFecha(dolarFecha)}
+                                                            </span>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className={styles.budgetCardBody}>
+                                            {/* ===== PERFILES ===== */}
+                                            <div className={styles.budgetProfiles}>
+                                                {preciosBase.perfiles.map((perfil) => (
+                                                    <div
+                                                        key={perfil.id}
+                                                        className={`${styles.budgetProfileCard} ${perfil.destacado ? styles.budgetProfileActive : ''} ${perfil.senior ? styles.budgetProfileSenior : ''}`}
+                                                    >
+                                                        <span className={styles.budgetProfileBadge}>{perfil.badge} {perfil.label}</span>
+                                                        <div className={styles.budgetProfileRange}>
+                                                            <span className={styles.budgetProfilePrice}>
+                                                                {formatearPrecio(perfil.rangoUSD[0])}
+                                                            </span>
+                                                            <span className={styles.budgetProfileSeparator}>—</span>
+                                                            <span className={styles.budgetProfilePrice}>
+                                                                {formatearPrecio(perfil.rangoUSD[1])}
+                                                            </span>
+                                                        </div>
+                                                        <span className={styles.budgetProfileLabel}>por hora</span>
+                                                        <div className={styles.budgetProfileTag}>
+                                                            <FaUser className={styles.budgetProfileIcon} />
+                                                            {perfil.exp}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            {/* ===== TABLA DE PROYECTOS ===== */}
                                             <div className={styles.budgetProjectTable}>
                                                 <h4 className={styles.budgetTableTitle}>
                                                     <FaCode className={styles.budgetTableIcon} />
@@ -539,36 +708,39 @@ export default function HomePage() {
                                                 </h4>
 
                                                 <div className={styles.budgetTable}>
-                                                    <div className={styles.budgetTableRow}>
-                                                        <div className={styles.budgetTableCell}>Landing Page</div>
-                                                        <div className={styles.budgetTableCell}>$178K - $297K</div>
-                                                        <div className={styles.budgetTableCell}>$595K - $1.19M</div>
-                                                        <div className={styles.budgetTableCell}>$1.19M - $2.23M</div>
+                                                    {/* Header de la tabla */}
+                                                    <div className={styles.budgetTableHeader}>
+                                                        <div className={styles.budgetTableHeaderCell}>Proyecto</div>
+                                                        <div className={styles.budgetTableHeaderCell}>🌱 Junior</div>
+                                                        <div className={styles.budgetTableHeaderCell}>⚡ Semi-Senior</div>
+                                                        <div className={styles.budgetTableHeaderCell}>🔥 Senior</div>
+                                                        <div className={styles.budgetTableHeaderCell}>🏢 Agencia</div>
                                                     </div>
-                                                    <div className={styles.budgetTableRow}>
-                                                        <div className={styles.budgetTableCell}>Sitio Institucional</div>
-                                                        <div className={styles.budgetTableCell}>$446K - $892K</div>
-                                                        <div className={styles.budgetTableCell}>$1.78M - $2.97M</div>
-                                                        <div className={styles.budgetTableCell}>$2.97M - $5.35M</div>
-                                                    </div>
-                                                    <div className={styles.budgetTableRow}>
-                                                        <div className={styles.budgetTableCell}>E-commerce</div>
-                                                        <div className={styles.budgetTableCell}>$892K - $1.78M</div>
-                                                        <div className={styles.budgetTableCell}>$2.97M - $5.35M</div>
-                                                        <div className={styles.budgetTableCell}>$5.35M - $10.71M</div>
-                                                    </div>
-                                                    <div className={`${styles.budgetTableRow} ${styles.budgetTableHighlight}`}>
-                                                        <div className={styles.budgetTableCell}>SaaS / Web App</div>
-                                                        <div className={styles.budgetTableCell}>$2.67M - $4.46M</div>
-                                                        <div className={styles.budgetTableCell}>$8.92M - $14.28M</div>
-                                                        <div className={styles.budgetTableCell}>$14.28M - $26.78M</div>
-                                                    </div>
-                                                    <div className={styles.budgetTableRow}>
-                                                        <div className={styles.budgetTableCell}>Dashboard Admin</div>
-                                                        <div className={styles.budgetTableCell}>$1.78M - $3.57M</div>
-                                                        <div className={styles.budgetTableCell}>$5.95M - $10.71M</div>
-                                                        <div className={styles.budgetTableCell}>$10.71M - $17.85M</div>
-                                                    </div>
+
+                                                    {preciosBase.proyectos.map((proy) => (
+                                                        <div
+                                                            key={proy.id}
+                                                            className={`${styles.budgetTableRow} ${proy.destacado ? styles.budgetTableHighlight : ''}`}
+                                                        >
+                                                            <div className={styles.budgetTableCell}>{proy.nombre}</div>
+
+                                                            <div className={styles.budgetTableCell}>
+                                                                {formatearPrecioCorto(proy.rangos.junior[0])} - {formatearPrecioCorto(proy.rangos.junior[1])}
+                                                            </div>
+
+                                                            <div className={styles.budgetTableCell}>
+                                                                {formatearPrecioCorto(proy.rangos.semi[0])} - {formatearPrecioCorto(proy.rangos.semi[1])}
+                                                            </div>
+
+                                                            <div className={styles.budgetTableCell}>
+                                                                {formatearPrecioCorto(proy.rangos.senior[0])} - {formatearPrecioCorto(proy.rangos.senior[1])}
+                                                            </div>
+
+                                                            <div className={styles.budgetTableCell}>
+                                                                {formatearPrecioCorto(proy.rangos.agencia[0])} - {formatearPrecioCorto(proy.rangos.agencia[1])}
+                                                            </div>
+                                                        </div>
+                                                    ))}
                                                 </div>
 
                                                 <div className={styles.budgetTableLegend}>
@@ -589,14 +761,19 @@ export default function HomePage() {
                                                         Agencia
                                                     </span>
                                                 </div>
+
+                                                <p className={styles.budgetDisclaimer}>
+                                                    * Valores orientativos. Cada proyecto se cotiza según alcance, complejidad e integraciones.
+                                                </p>
                                             </div>
 
+                                            {/* ===== CTA ===== */}
                                             <div className={styles.budgetCtaBox}>
                                                 <div className={styles.budgetCtaContent}>
                                                     <FaWhatsapp className={styles.budgetCtaIcon} />
                                                     <div>
                                                         <p className={styles.budgetCtaText}>
-                                                            ¿No encontrás tu presupuesto?
+                                                            ¿No te cierra ningún número?
                                                             <strong> Hablemos y armamos algo juntos.</strong>
                                                         </p>
                                                     </div>
@@ -626,7 +803,7 @@ export default function HomePage() {
                             No es un gasto, es una <span className={styles.textGradient}>inversión</span>
                         </h2>
                         <p className={styles.sectionSubtitle}>
-                            Cada negocio es único. Te ayudamos a calcular cuánto estás perdiendo hoy
+                            Cada negocio es distinto. Te ayudamos a calcular cuánta plata estás perdiendo hoy
                             y cuánto podrías ganar con una solución a medida.
                         </p>
                     </div>
@@ -640,20 +817,20 @@ export default function HomePage() {
                                 <div className={styles.roiValue} style={{ color: '#ef4444', fontSize: '2rem' }}>
                                     ¿Cuánto <br />estás perdiendo?
                                 </div>
-                                <div className={styles.roiLabel}>Identificamos fugas de dinero y tiempo</div>
+                                <div className={styles.roiLabel}>Detectamos fugas de plata y tiempo</div>
 
                                 <ul className={styles.roiList}>
                                     <li>
                                         <FaClock className={styles.roiListIcon} />
-                                        Procesos manuales que consumen horas
+                                        Procesos manuales que te comen horas
                                     </li>
                                     <li>
                                         <FaUsers className={styles.roiListIcon} />
-                                        Clientes perdidos por mala experiencia
+                                        Clientes que se van por mala experiencia
                                     </li>
                                     <li>
                                         <FaChartBar className={styles.roiListIcon} />
-                                        Oportunidades de venta no aprovechadas
+                                        Oportunidades de venta que no aprovechás
                                     </li>
                                 </ul>
 
@@ -680,7 +857,7 @@ export default function HomePage() {
                                     </li>
                                     <li>
                                         <FaCheckCircle className={styles.roiListIcon} style={{ color: '#10b981' }} />
-                                        Mejora de la experiencia del cliente
+                                        Mejor experiencia para tus clientes
                                     </li>
                                     <li>
                                         <FaCheckCircle className={styles.roiListIcon} style={{ color: '#10b981' }} />
@@ -818,81 +995,35 @@ export default function HomePage() {
                                         method="POST"
                                         className={styles.diagnosticoForm}
                                     >
-                                        <input
-                                            type="hidden"
-                                            name="access_key"
-                                            value="6a22a375-6730-499d-ab20-b86e359f069d"
-                                        />
-                                        <input
-                                            type="hidden"
-                                            name="subject"
-                                            value="📋 Nuevo diagnóstico técnico - Agencia Digital Powa"
-                                        />
-                                        <input
-                                            type="hidden"
-                                            name="from_name"
-                                            value="Agencia Digital Powa"
-                                        />
-                                        <input
-                                            type="hidden"
-                                            name="redirect"
-                                            value="https://agencia-powa.vercel.app/gracias"
-                                        />
-                                        <input
-                                            type="hidden"
-                                            name="origen"
-                                            value="Diagnóstico - Página Principal"
-                                        />
+                                        <input type="hidden" name="access_key" value="6a22a375-6730-499d-ab20-b86e359f069d" />
+                                        <input type="hidden" name="subject" value="📋 Nuevo diagnóstico técnico - Agencia Digital Powa" />
+                                        <input type="hidden" name="from_name" value="Agencia Digital Powa" />
+                                        <input type="hidden" name="redirect" value="https://agencia-powa.vercel.app/gracias" />
+                                        <input type="hidden" name="origen" value="Diagnóstico - Página Principal" />
 
                                         <div className={styles.diagnosticoInputGroup}>
-                                            <input
-                                                type="text"
-                                                name="nombre"
-                                                className={styles.diagnosticoInput}
-                                                placeholder="Tu nombre"
-                                                required
-                                            />
+                                            <input type="text" name="nombre" className={styles.diagnosticoInput} placeholder="Tu nombre" required />
                                         </div>
 
                                         <div className={styles.diagnosticoInputGroup}>
-                                            <input
-                                                type="url"
-                                                name="url"
-                                                className={styles.diagnosticoInput}
-                                                placeholder="URL de tu sitio web (ej: mipagina.com)"
-                                                required
-                                            />
-                                            <input
-                                                type="email"
-                                                name="email"
-                                                className={styles.diagnosticoInput}
-                                                placeholder="Tu email"
-                                                required
-                                            />
+                                            <input type="url" name="url" className={styles.diagnosticoInput} placeholder="URL de tu sitio web (ej: mipagina.com)" required />
+                                            <input type="email" name="email" className={styles.diagnosticoInput} placeholder="Tu email" required />
                                         </div>
 
                                         <div className={styles.diagnosticoInputGroup}>
-                                            <input
-                                                type="tel"
-                                                name="telefono"
-                                                className={styles.diagnosticoInput}
-                                                placeholder="Tu teléfono (opcional)"
-                                            />
+                                            <input type="tel" name="telefono" className={styles.diagnosticoInput} placeholder="Tu teléfono (opcional)" />
                                         </div>
 
                                         <div className={styles.diagnosticoInputGroup}>
                                             <textarea
                                                 name="mensaje"
                                                 className={styles.diagnosticoTextarea}
-                                                placeholder="Contanos qué necesitas mejorar o qué problema tenés con tu sitio..."
+                                                placeholder="Contanos qué necesitás mejorar o qué problema tenés con tu sitio..."
                                                 rows={3}
                                             />
                                         </div>
 
-                                        <button
-                                            type="submit"
-                                            className={styles.diagnosticoButton}
-                                        >
+                                        <button type="submit" className={styles.diagnosticoButton}>
                                             Quiero mi diagnóstico
                                         </button>
 
@@ -919,7 +1050,7 @@ export default function HomePage() {
                             <Col key={testimonial.id} lg={4} md={6}>
                                 <div className={styles.testimonialCard}>
                                     <FaQuoteRight className={styles.quoteIcon} />
-                                    <p className={styles.testimonialText}>,{testimonial.quote}</p>
+                                    <p className={styles.testimonialText}>{testimonial.quote}</p>
                                     <div className={styles.testimonialAuthor}>
                                         <div className={styles.testimonialAvatar}>{testimonial.avatar}</div>
                                         <div>
@@ -947,7 +1078,7 @@ export default function HomePage() {
                                 <span className={styles.textGradient}>completamente blindada.</span>
                             </h2>
                             <p className={styles.sectionSubtitle} style={{ marginBottom: '2rem', fontSize: '1.1rem', lineHeight: '1.7' }}>
-                                En la industria del software, la seriedad no se demuestra solo escribiendo código, sino protegiendo el negocio del cliente. En cada desarrollo aplicamos protocolos de nivel enterprise.
+                                En la industria del software, la seriedad no se demuestra solo escribiendo código, sino protegiendo el negocio del cliente. En cada desarrollo metemos protocolos de nivel enterprise.
                             </p>
                             <ul className={styles.securityList}>
                                 {securityItems.map((item) => (
