@@ -6,7 +6,7 @@ import {
   FaLaptopCode, FaShoppingCart, FaTools, FaSearchDollar,
   FaLightbulb, FaMobileAlt, FaChevronDown, FaRocket, FaWhatsapp,
   FaShieldAlt, FaClock, FaCheckCircle, FaStar, FaAward,
-  FaHandshake, FaCloudUploadAlt, FaBrain, FaChartLine
+  FaHandshake, FaCloudUploadAlt, FaBrain
 } from 'react-icons/fa';
 import Link from 'next/link';
 import styles from './servicios.module.css';
@@ -248,7 +248,6 @@ const ServiceCardItem = ({ service, index }: ServiceCardProps) => {
 };
 
 export default function ServicesPage() {
-  // 🔥 TRUST SIGNALS (reemplaza stats falsas)
   const trustSignals = [
     { text: "✅ Código 100% tuyo", icon: <FaShieldAlt /> },
     { text: "✅ Entregas cada 15 días", icon: <FaClock /> },
@@ -256,7 +255,6 @@ export default function ServicesPage() {
     { text: "✅ Soporte post-lanzamiento", icon: <FaRocket /> }
   ];
 
-  // FAQ de confianza
   const faqTrust = [
     { q: "¿El código es mío al finalizar?", a: "Sí. Te entregamos el repositorio completo con toda la propiedad intelectual. No quedás atado a nosotros." },
     { q: "¿Puedo ver avances durante el desarrollo?", a: "Sí. Hacemos entregas parciales cada 15 días para que veas el progreso y puedas hacer ajustes a tiempo." },
@@ -279,7 +277,7 @@ export default function ServicesPage() {
           </p>
         </header>
 
-        {/* ===== TRUST SIGNALS (reemplaza stats) ===== */}
+        {/* ===== TRUST SIGNALS ===== */}
         <Row className="g-3 mb-5">
           {trustSignals.map((item, index) => (
             <Col key={index} xs={12} sm={6} md={3}>
@@ -515,7 +513,7 @@ export default function ServicesPage() {
           </Row>
         </section>
 
-        {/* ===== BANNER ESTRATÉGICO DE REDIRECCIÓN A FAQ ===== */}
+        {/* ===== BANNER ESTRATÉGICO ===== */}
         <section className="my-5">
           <div className={styles.ctaGlass} style={{ padding: '50px 40px', textAlign: 'left' }}>
             <Row className="align-items-center g-4">

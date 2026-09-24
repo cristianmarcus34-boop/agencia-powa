@@ -11,13 +11,16 @@
 }
 
 /* ===== WRAPPER ===== */
+/* ===== WRAPPER ===== */
 .servicesWrapper {
   background-color: var(--dark-powa);
   min-height: 100vh;
-  padding: 140px 0 100px;
+  padding: 100px 0 100px;
+  /* Redujimos la opacidad inicial del radial superior del 0.12 a 0.05 y achicamos su radio */
   background-image:
-    radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 100% 100%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+    radial-gradient(circle at 50% -20%, rgba(34, 211, 238, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(14, 165, 233, 0.03) 0%, transparent 40%),
+    linear-gradient(to bottom, #070a12 0%, var(--dark-powa) 100%);
   overflow-x: hidden;
 }
 
@@ -58,41 +61,6 @@
   margin: 0 auto 5rem;
   font-size: 1.15rem;
   line-height: 1.7;
-}
-
-/* ===== STATS ===== */
-.statCard {
-  text-align: center;
-  padding: 24px 16px;
-  background: rgba(15, 23, 42, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 16px;
-  transition: all 0.3s ease;
-}
-
-.statCard:hover {
-  border-color: rgba(34, 211, 238, 0.15);
-  transform: translateY(-4px);
-}
-
-.statIcon {
-  font-size: 1.8rem;
-  color: var(--cyan-powa);
-  margin-bottom: 8px;
-}
-
-.statValue {
-  font-size: 2rem;
-  font-weight: 900;
-  color: #ffffff;
-  letter-spacing: -0.5px;
-}
-
-.statLabel {
-  font-size: 0.85rem;
-  color: var(--slate-400);
-  font-weight: 500;
-  margin-top: 4px;
 }
 
 /* ===== SECTION DIVIDER ===== */
@@ -440,83 +408,6 @@
 }
 
 /* ============================================
-   NEGOCIOS DIGITALES
-   ============================================ */
-.negocioCard {
-  background: rgba(15, 23, 42, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 20px;
-  padding: 32px 28px;
-  height: 100%;
-  transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
-  backdrop-filter: blur(12px);
-  position: relative;
-  overflow: hidden;
-}
-
-.negocioCard:hover {
-  transform: translateY(-6px);
-  border-color: rgba(34, 211, 238, 0.6);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(34, 211, 238, 0.05);
-}
-
-.negocioIcon {
-  font-size: 2.8rem;
-  margin-bottom: 1rem;
-}
-
-.negocioTitle {
-  color: #ffffff;
-  font-size: 1.3rem;
-  font-weight: 800;
-  margin-bottom: 0.75rem;
-}
-
-.negocioDesc {
-  color: var(--slate-400);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
-
-.negocioFeatures {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 1.5rem;
-}
-
-.negocioFeatures li {
-  color: var(--slate-400);
-  font-size: 0.85rem;
-  padding: 4px 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.negocioFeatures li::before {
-  content: "▸";
-  color: var(--cyan-powa);
-  font-weight: 700;
-}
-
-.negocioLink {
-  color: var(--cyan-powa);
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-decoration: none !important;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.negocioLink:hover {
-  color: #ffffff;
-  gap: 12px;
-}
-
-/* ============================================
    CTA GLASS
    ============================================ */
 .ctaGlass {
@@ -621,7 +512,7 @@
 }
 
 /* ============================================
-   NUEVAS SECCIONES: TRUST SIGNALS
+   TRUST SIGNALS
    ============================================ */
 .trustSignalCard {
   background: rgba(255, 255, 255, 0.05);
@@ -657,7 +548,7 @@
 }
 
 /* ============================================
-   NUEVAS SECCIONES: AUDIENCE CARDS
+   AUDIENCE CARDS
    ============================================ */
 .audienceCard {
   background: rgba(255, 255, 255, 0.03);
@@ -694,7 +585,7 @@
 }
 
 /* ============================================
-   NUEVAS SECCIONES: RISK FREE
+   RISK FREE
    ============================================ */
 .riskFreeSection {
   background: rgba(34, 211, 238, 0.05);
@@ -742,7 +633,7 @@
 }
 
 /* ============================================
-   NUEVAS SECCIONES: MINI FAQ
+   MINI FAQ
    ============================================ */
 .miniFaqItem {
   background: rgba(255, 255, 255, 0.03);
@@ -796,7 +687,7 @@
 
 @media (max-width: 768px) {
   .servicesWrapper {
-    padding: 100px 0 60px;
+    padding: 80px 0 60px;
   }
 
   .titleMain {
@@ -840,15 +731,7 @@
     gap: 8px;
   }
 
-  .statValue {
-    font-size: 1.4rem;
-  }
-
   .processCard {
-    padding: 24px 20px;
-  }
-
-  .negocioCard {
     padding: 24px 20px;
   }
 }
@@ -877,26 +760,4 @@
     font-size: 0.6rem;
     gap: 10px;
   }
-
-  .whyUsItem h4 {
-    font-size: 0.95rem;
-  }
-
-  .whyUsItem p {
-    font-size: 0.85rem;
-  }
-
-  .negocioIcon {
-    font-size: 2.2rem;
-  }
-
-  .negocioTitle {
-    font-size: 1.1rem;
-  }
-
-  .negocioFeatures li {
-    font-size: 0.8rem;
-  }
-
-
 }
