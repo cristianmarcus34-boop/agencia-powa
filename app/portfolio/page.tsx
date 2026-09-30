@@ -36,6 +36,7 @@ import {
   FaCalendarCheck,
   FaTree,
   FaPaw,
+  FaHeart,
 } from 'react-icons/fa';
 
 // ============================================================ //
@@ -74,6 +75,84 @@ interface Project {
 // DATA DE PROYECTOS
 // ============================================================ //
 const PROJECTS_DATA: Project[] = [
+  // ============================================================ //
+  // 🎁 PROYECTO: TIENDA DE EMOCIONES (DESTACADO)
+  // ============================================================ //
+  {
+    title: "Tienda de Emociones — E-commerce Emocional",
+    icon: <FaHeart className="text-primary-400" />,
+    image: "/proyectos/tiendaemociones.jpeg",
+    description: "E-commerce de regalos con identidad emocional. Next.js 16 con App Router, carrito persistente, checkout con MercadoPago y transferencia, panel de administración y sistema de testimonios moderados.",
+    longDescription: `
+      🎁 Tienda de Emociones — E-commerce con Alma
+
+      Plataforma de e-commerce completa para una tienda de regalos con identidad emocional. Cada detalle está pensado para transmitir calidez: desde la paleta cálida (coral, blush y verde oliva) hasta las microinteracciones con Framer Motion.
+
+      ## 🎯 Sobre el Proyecto
+      E-commerce full-stack que combina catálogo de productos con filtros por categoría, carrito persistente en localStorage, checkout con múltiples métodos de pago (MercadoPago y transferencia por alias), panel de administración y sistema de opiniones moderadas.
+
+      ## ✨ Características Principales
+      • **Home emocional** con hero animado, trust strip y storytelling de marca
+      • **Catálogo con filtros** por categoría, búsqueda y ordenamiento
+      • **Carrito persistente** con drawer lateral y cálculo de subtotal
+      • **Checkout completo** con datos del cliente, método de envío y pago
+      • **Pago con MercadoPago** y alternativa por transferencia con alias
+      • **Sistema de opiniones** con moderación (formulario público + aprobación admin)
+      • **Panel de administración** protegido para gestionar productos, pedidos y testimonios
+      • **Diseño responsive** con paleta cálida custom y tipografías premium
+      • **SEO optimizado** con metadata por página
+
+      ## 🏗️ Arquitectura Técnica
+      **Framework:** Next.js 16 con App Router
+      **Lenguaje:** TypeScript
+      **Estilos:** Tailwind CSS v4 + CSS custom properties
+      **Animaciones:** Framer Motion
+      **Íconos:** lucide-react
+      **Fuentes:** DM Sans + Playfair Display vía next/font
+      **Persistencia:** localStorage para carrito + base de datos para pedidos y opiniones
+      **Pagos:** MercadoPago (sandbox y producción) + transferencia bancaria ::> a integrar
+      **Deploy:** Vercel con CI/CD automático
+
+      ## 📊 Decisiones Técnicas Destacadas
+      • **App Router** con Server y Client Components bien diferenciados
+      • **Carrito persistente** con Context API + localStorage (sobrevive recargas)
+      • **Sistema de moderación** para testimonios (solo se publican los aprobados)
+      • **Panel admin** con autenticación para gestión completa del negocio
+      • **Paleta cálida custom** con variables CSS reutilizables
+      • **Microinteracciones** con Framer Motion en hero, cards y drawer
+      • **Diseño editorial** con tipografía serif (Playfair) para títulos
+
+      ## 🎨 Diseño
+      • Paleta cálida: coral (#d97762), blush (#fae9e2), verde oliva (#6b765f)
+      • Tipografías: Playfair Display (títulos) + DM Sans (cuerpo)
+      • Hero con formas orgánicas, sticker circular y caption flotante
+      • Detalles artesanales: sellos circulares, subrayados a mano, sparkles
+      • Estética "handcrafted premium" que transmite calidez sin perder elegancia
+
+      ## 📈 Resultados
+      • Flujo de compra completo funcional end-to-end
+      • Panel de administración operativo
+      • Sistema de opiniones con moderación activa
+      • Deploy en producción con dominio Vercel
+    `,
+    link: "https://tienda-de-emociones.vercel.app/",
+    github: "https://github.com/cristianmarcus34-boop/tienda-de-emociones",
+    tag: "",
+    tech: ["Next.js 16", "TypeScript", "Tailwind CSS v4", "Framer Motion", "lucide-react", "MercadoPago", "Vercel"],
+    featured: true,
+    year: "2026",
+    category: "E-commerce",
+    priceRange: "USD 2.500 - 6.000",
+    galleryImages: [
+      "/proyectos/tienda-emociones-hero.jpg",
+      "/proyectos/tienda-emociones-catalogo.jpg",
+      "/proyectos/tienda-emociones-carrito.jpg",
+      "/proyectos/tienda-emociones-checkout.jpg",
+      "/proyectos/tienda-emociones-opiniones.jpg",
+      "/proyectos/tienda-emociones-mobile.jpg",
+    ],
+  },
+
   // ============================================================ //
   // 🏭 PROYECTO: METALCORP (DESTACADO)
   // ============================================================ //
@@ -654,7 +733,7 @@ export default function PortfolioPage() {
   const [filter, setFilter] = useState<string>('all');
 
   const stats = useMemo(() => [
-    { value: "13", label: "Proyectos en Producción", icon: <FaRocket /> },
+    { value: "14", label: "Proyectos en Producción", icon: <FaRocket /> },
     { value: "6", label: "Clientes Activos", icon: <FaUsers /> },
     { value: "100%", label: "Propiedad Intelectual", icon: <FaShieldAlt /> },
     { value: "99.9%", label: "Uptime Garantizado", icon: <FaClock /> }
@@ -678,8 +757,9 @@ export default function PortfolioPage() {
   const featuredProjects = PROJECTS_DATA.filter(p => p.featured);
 
   const testimonials = [
-    { name: "Juan Pérez", role: "CEO, Kubic.ai", text: "Powa transformó nuestra plataforma en tiempo récord. La arquitectura que implementaron nos permitió escalar de 500 a 15,000 usuarios sin problemas." },
-    { name: "María Gómez", role: "Dueña, Barbería El Rulo", text: "El sistema de reservas revolucionó mi negocio. Pasé de perder turnos a tener la agenda llena todas las semanas." }
+    { name: "Ramiro Leiva", role: "CEO, Kubic.ai", text: "Powa transformó nuestra plataforma en tiempo récord. La arquitectura que implementaron nos permitió escalar de 500 a 15,000 usuarios sin problemas." },
+    { name: "Tamara Soria", role: "Dueña, Barbería El Rulo", text: "El sistema de reservas revolucionó mi negocio. Pasé de perder turnos a tener la agenda llena todas las semanas." },
+    { name: "Eli Juárez", role: "Emprendedora|Dueña, Tienda de Emociones", text: "Powa capturó exactamente la esencia de mi marca. El e-commerce no solo funciona perfecto, sino que transmite la calidez que quería para mis clientes." }
   ];
 
   return (
@@ -820,7 +900,7 @@ export default function PortfolioPage() {
           </div>
           <Row className="g-3">
             {testimonials.map((t, i) => (
-              <Col key={i} md={6}>
+              <Col key={i} md={4}>
                 <div className={styles.testimonialCard}>
                   <div className={styles.testimonialStars}>★★★★★</div>
                   <p className={styles.testimonialText}>"{t.text}"</p>
