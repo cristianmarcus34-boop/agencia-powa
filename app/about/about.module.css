@@ -1020,6 +1020,127 @@
   box-shadow: 0 12px 30px rgba(34, 211, 238, 0.3);
 }
 
+/* ============================================================
+   SECCIÓN POR QUÉ POWA
+   ============================================================ */
+.whySection {
+  margin: 5rem 0 4rem;
+}
+
+.whyCard {
+  height: 100%;
+  padding: 2rem 1.5rem;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.whyCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.4), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.whyCard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(34, 211, 238, 0.25);
+  background: rgba(15, 23, 42, 0.6);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+}
+
+.whyCard:hover::before {
+  opacity: 1;
+}
+
+.whyIconWrapper {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  border-radius: 16px;
+  font-size: 1.5rem;
+  color: var(--cyan-powa);
+  transition: all 0.4s ease;
+}
+
+.whyCard:hover .whyIconWrapper {
+  background: rgba(34, 211, 238, 0.15);
+  border-color: rgba(34, 211, 238, 0.35);
+  transform: scale(1.08) rotate(-3deg);
+}
+
+.whyTitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.3px;
+  line-height: 1.35;
+}
+
+.whyDesc {
+  font-size: 0.92rem;
+  color: var(--slate-400);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ============================================================
+   RESPONSIVE — POR QUÉ POWA
+   ============================================================ */
+@media (max-width: 768px) {
+  .whySection {
+    margin: 3rem 0 2.5rem;
+  }
+
+  .whyCard {
+    padding: 1.6rem 1.2rem;
+  }
+
+  .whyIconWrapper {
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+  }
+
+  .whyTitle {
+    font-size: 1rem;
+  }
+
+  .whyDesc {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .whyCard {
+    padding: 1.4rem 1rem;
+    border-radius: 16px;
+  }
+
+  .whyTitle {
+    font-size: 0.95rem;
+  }
+
+  .whyDesc {
+    font-size: 0.8rem;
+  }
+}
+
 /* ============================================
    ANIMACIONES
    ============================================ */

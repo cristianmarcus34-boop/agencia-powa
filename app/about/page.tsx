@@ -16,7 +16,7 @@ import Script from 'next/script';
 import styles from './about.module.css';
 
 // ============================================================
-// EQUIPO CORE (perfiles reales, con bio y foto)
+// EQUIPO CORE
 // ============================================================
 const TEAM_CORE = [
   {
@@ -28,13 +28,13 @@ const TEAM_CORE = [
     imgClass: '',
     reverse: false,
     bio: [
-      '<strong>15 años</strong> trabajando en desarrollo de software. Arranqué con proyectos chicos y fui profundizando en arquitectura, producto y resolución de problemas concretos.',
+      '<strong>Hace 15 años</strong> que convivo con la tecnología. Arranqué conociendo una computadora cuando era pibe, casi como un juego, y nunca más me despegó.',
 
-      'Me manejo con el <strong>stack moderno</strong> (Next.js, React, TypeScript, Supabase, Node.js, Django), pero lo que más me importa no es la tecnología: es <strong>entender qué necesitás y armarte algo que te sirva de verdad</strong>.',
+      'Con los años eso se volvió oficio: <strong>5 años desarrollando profesionalmente</strong>, metiéndome en arquitectura, producto y resolución de problemas concretos —los que de verdad importan cuando el cliente está esperando una respuesta.',
 
-      'Desarrollo sistemas de reservas, e-commerce y aplicaciones mobile. Para mí, <strong>el código es una herramienta: entender el problema y el contexto del negocio va primero</strong>.',
+      'Me muevo con el <strong>stack moderno</strong> (Next.js, React, TypeScript, Supabase, Node.js, Django), pero te soy honesto: la tecnología es lo de menos. Lo que importa es <strong>entender qué necesitás y armarte algo que sirva de verdad</strong>, no un adorno lindo que se rompe a los dos meses.',
 
-      'Me gusta trabajar con <strong>transparencia y buena onda</strong>. Si algo no lo sé, te lo digo. Si algo se puede hacer mejor, te lo propongo. Mi objetivo no es solo entregarte un proyecto, es que <strong>tengas ganas de volver a trabajar conmigo</strong>.'
+      'Si tenés una idea dando vueltas o un proyecto que no arranca, <strong>escribime y lo charlamos sin compromiso</strong>. La primera charla es para escucharte, no para venderte nada.'
     ],
     tags: [
       'React • Next.js',
@@ -82,24 +82,42 @@ export default function AboutPage() {
   const values = [
     {
       icon: <FaCode />,
-      title: 'Excelencia Técnica',
-      description: 'Código limpio, escalable y mantenible. Priorizamos las mejores prácticas y estándares de la industria.'
+      title: 'Código que se aguanta el tiempo',
+      description: 'Escribimos pensando en el día después: fácil de mantener, fácil de escalar, difícil de romper.'
     },
     {
       icon: <FaLightbulb />,
-      title: 'Innovación Constante',
-      description: 'Exploramos nuevas tecnologías y metodologías para ofrecer soluciones vanguardistas a tus desafíos.'
+      title: 'Sin vueltas: probamos, medimos, elegimos',
+      description: 'No nos casamos con ninguna tecnología. Elegimos la que mejor resuelve tu problema, no la que está de moda.'
     },
     {
       icon: <FaHandshake />,
-      title: 'Transparencia y Confianza',
-      description: 'Comunicación clara y abierta en cada etapa del proyecto. No hay sorpresas, solo resultados.'
+      title: 'Si algo no lo sé, te lo digo',
+      description: 'Preferimos la verdad incómoda antes que una promesa que no vamos a cumplir. Transparencia desde el día uno.'
     },
     {
       icon: <FaHeart />,
-      title: 'Pasión por el Detalle',
-      description: 'Cada pixel, cada línea de código, cada interacción es cuidadosamente diseñada para la mejor experiencia.'
+      title: 'Nos importa que vuelvas',
+      description: 'No trabajamos para entregar y desaparecer. Trabajamos para que la próxima vez nos escribas sin dudar.'
     },
+  ];
+
+  const whyPowa = [
+    {
+      icon: <FaLaptopCode />,
+      title: 'Hablás con quien desarrolla',
+      desc: 'Sin vendedores ni intermediarios. La misma persona que te escucha es la que diseña y programa tu proyecto.'
+    },
+    {
+      icon: <FaRocket />,
+      title: 'Agencia chica, decisiones rápidas',
+      desc: 'Sin comités ni burocracia. Lo que acordamos hoy, empieza mañana. Respuestas en horas, no en semanas.'
+    },
+    {
+      icon: <FaMedal />,
+      title: '15 años de tecnología, 5 de oficio',
+      desc: 'Criterio real, no improvisación. Sabemos qué funciona, qué no y por qué. Y te lo explicamos sin tecnicismos.'
+    }
   ];
 
   const technologyGroups = [
@@ -235,18 +253,20 @@ export default function AboutPage() {
 
             <div className="mb-4">
               <span className={styles.badgePowa}>
-                <FaMedal className={styles.badgeIcon} /> NUESTRA ESENCIA
+                <FaHandshake className={styles.badgeIcon} /> LA HISTORIA DETRÁS DE POWA
               </span>
             </div>
 
             <h1 className={styles.aboutHeaderTitle}>
-              La Mente <br />
-              <span className={styles.textGradient}>detrás de Powa</span>
+              Tecnología con oficio,<br />
+              <span className={styles.textGradient}>trato con buena onda</span>
             </h1>
 
             <div className={styles.aboutIntroContainer}>
               <p className={styles.aboutIntroParagraph}>
-                El fundador lidera cada solución y suma especialistas según el alcance, la sofisticación del proyecto y el contexto de la empresa contratante.
+                POWA es una agencia joven con <strong>15 años de tecnología encima</strong> y
+                <strong> 5 desarrollando profesionalmente</strong>. Detrás hay una sola persona que
+                diseña, desarrolla y te responde directo —sin intermediarios, sin chamuyo.
               </p>
             </div>
 
@@ -258,7 +278,7 @@ export default function AboutPage() {
                 className={styles.heroButton}
               >
                 <FaRocket className={styles.heroButtonIcon} />
-                Trabajemos Juntos
+                Hablemos de tu proyecto
                 <FaArrowRight className={styles.heroButtonArrow} />
               </a>
             </div>
@@ -270,13 +290,13 @@ export default function AboutPage() {
           <div ref={addToRefs} className={`${styles.teamHeader} ${styles.reveal}`}>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionBadge}>
-                <FaLaptopCode className={styles.sectionBadgeIcon} /> FUNDADOR
+                <FaLaptopCode className={styles.sectionBadgeIcon} /> EL FUNDADOR
               </span>
               <h2 className={styles.sectionTitle}>
-                Desarrollo a cargo <span className={styles.textGradient}>del fundador</span>
+                El fundador, <span className={styles.textGradient}>en cada línea</span>
               </h2>
               <p className={styles.sectionSubtitle}>
-                Hablás directamente con quien define la solución y se ocupa de desarrollarla.
+                Hablás directo con quien diseña y desarrolla. Sin intermediarios.
               </p>
             </div>
           </div>
@@ -335,6 +355,35 @@ export default function AboutPage() {
               </Row>
             </div>
           ))}
+
+          {/* ============================================================ */}
+          {/* POR QUÉ POWA */}
+          {/* ============================================================ */}
+          <div ref={addToRefs} className={`${styles.whySection} ${styles.reveal}`}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionBadge}>
+                <FaStar className={styles.sectionBadgeIcon} /> POR QUÉ POWA
+              </span>
+              <h2 className={styles.sectionTitle}>
+                Tres razones <span className={styles.textGradient}>para elegirnos</span>
+              </h2>
+              <p className={styles.sectionSubtitle}>
+                No somos la agencia más grande. Somos la que te va a responder el WhatsApp.
+              </p>
+            </div>
+
+            <Row className="g-3 g-md-4">
+              {whyPowa.map((item, idx) => (
+                <Col key={idx} xs={12} md={4}>
+                  <div className={styles.whyCard}>
+                    <div className={styles.whyIconWrapper}>{item.icon}</div>
+                    <h3 className={styles.whyTitle}>{item.title}</h3>
+                    <p className={styles.whyDesc}>{item.desc}</p>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          </div>
 
           {/* ===== MODELO DE COLABORACIÓN ===== */}
           <div ref={addToRefs} className={`${styles.collabSection} ${styles.reveal}`}>
@@ -506,7 +555,7 @@ export default function AboutPage() {
                 Nuestro <span className={styles.textGradient}>proceso</span>
               </h2>
               <p className={styles.sectionSubtitle}>
-                Una metodología probada que garantiza resultados excepcionales.
+                Un método simple y transparente, pensado para que sepas en todo momento en qué etapa estás.
               </p>
             </div>
 
@@ -514,8 +563,8 @@ export default function AboutPage() {
               {[
                 { num: '01', icon: <FaCheckCircle />, title: 'Descubrimiento', desc: 'Entendemos tu negocio, objetivos y desafíos para definir la estrategia.' },
                 { num: '02', icon: <FaPaintBrush />, title: 'Diseño', desc: 'Creamos experiencias visuales que conectan con tu audiencia y transmiten confianza.' },
-                { num: '03', icon: <FaCode />, title: 'Desarrollo', desc: 'Escribimos código limpio y escalable, con entregas parciales cada 15 días.' },
-                { num: '04', icon: <FaRocket />, title: 'Lanzamiento', desc: 'Desplegamos, monitoreamos y optimizamos para garantizar el éxito continuo.' }
+                { num: '03', icon: <FaCode />, title: 'Desarrollo', desc: 'Código limpio y escalable, con entregas parciales para que veas el avance real.' },
+                { num: '04', icon: <FaRocket />, title: 'Lanzamiento', desc: 'Desplegamos, monitoreamos y optimizamos para que el producto siga creciendo.' }
               ].map((step, idx) => (
                 <Col key={idx} md={3} sm={6}>
                   <div className={styles.processStep}>
@@ -533,9 +582,9 @@ export default function AboutPage() {
           <div className={styles.finalCTA}>
             <div className={styles.ctaContent}>
               <FaStar className={styles.ctaIcon} />
-              <h3 className={styles.ctaTitle}>¿Listo para trabajar con el mejor equipo?</h3>
+              <h3 className={styles.ctaTitle}>¿Arrancamos?</h3>
               <p className={styles.ctaText}>
-                Contanos tu proyecto y te mostraremos cómo podemos transformar tu visión en realidad.
+                Contanos qué tenés en mente. Te respondemos con honestidad, sin chamuyo y sin compromiso.
               </p>
               <a
                 href="https://wa.me/5491138305837"
@@ -544,7 +593,7 @@ export default function AboutPage() {
                 className={styles.ctaButton}
               >
                 <FaRocket className={styles.ctaButtonIcon} />
-                Empezar ahora
+                Hablemos de tu proyecto
                 <FaArrowRight className={styles.ctaButtonArrow} />
               </a>
             </div>
