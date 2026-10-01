@@ -109,8 +109,26 @@ export async function POST(request: Request) {
       // Listar todos los usuarios y buscar por email
       const { data: authUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers();
 
-      if (!listError && authUsers?.users) {
-        const existingUser = authUsers.users.find((u: any) => u.email === email);
+      if (listError) {
+        console.error('❌ No se pudo verificar usuarios en Supabase Auth:', {
+          message: listError.message,
+          status: listError.status,
+          code: listError.code
+        });
+        return NextResponse.json(
+          {
+            success: false,
+            error: `No se pudo verificar el email en Supabase Auth (HTTP ${listError.status ?? 'desconocido'}${listError.code ? `, código ${listError.code}` : ''}). No se creó el usuario; revisá los logs del servidor.`
+          },
+          { status: 500 }
+        );
+      }
+
+      if (authUsers?.users) {
+        const normalizedEmail = email.trim().toLowerCase();
+        const existingUser = authUsers.users.find(
+          user => user.email?.trim().toLowerCase() === normalizedEmail
+        );
         if (existingUser) {
           userId = existingUser.id;
           userExistsInAuth = true;
@@ -118,7 +136,14 @@ export async function POST(request: Request) {
         }
       }
     } catch (listError) {
-      console.log('⚠️ Error al listar usuarios, continuando con creación...');
+      const details = listError instanceof Error
+        ? { name: listError.name, message: listError.message }
+        : { message: String(listError) };
+      console.error('❌ No se pudo consultar Supabase Auth:', details);
+      return NextResponse.json(
+        { success: false, error: 'No se pudo verificar el email en Supabase Auth. No se creó el usuario; revisá los logs del servidor.' },
+        { status: 500 }
+      );
     }
 
     // 2. CREAR O ACTUALIZAR EN SUPABASE AUTH
@@ -137,10 +162,20 @@ export async function POST(request: Request) {
         });
 
         if (authError) {
-          console.error('❌ Error en Supabase Auth:', authError);
+          console.error('❌ Error al crear usuario en Supabase Auth:', {
+            name: authError.name,
+            message: authError.message,
+            status: authError.status,
+            code: authError.code
+          });
+          const message = authError.message?.trim();
+          const diagnostic = `HTTP ${authError.status ?? 'desconocido'}${authError.code ? `, código ${authError.code}` : ''}`;
+          const publicMessage = message && message !== '{}'
+            ? `Error al crear usuario en Supabase Auth: ${message}`
+            : `Supabase Auth devolvió un error sin detalle (${diagnostic}). Revisá los logs del servidor y la configuración de la clave administrativa.`;
           return NextResponse.json(
-            { success: false, error: 'Error al crear usuario en Supabase Auth: ' + authError.message },
-            { status: 500 }
+            { success: false, error: publicMessage },
+            { status: authError.status === 400 || authError.status === 422 ? 400 : 500 }
           );
         }
 
