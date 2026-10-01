@@ -172,7 +172,7 @@ export async function POST(request: Request) {
           const diagnostic = `HTTP ${authError.status ?? 'desconocido'}${authError.code ? `, código ${authError.code}` : ''}`;
           const publicMessage = message && message !== '{}'
             ? `Error al crear usuario en Supabase Auth: ${message}`
-            : `Supabase Auth devolvió un error sin detalle (${diagnostic}). Revisá los logs del servidor y la configuración de la clave administrativa.`;
+            : `Supabase Auth falló al guardar la cuenta (${diagnostic}) y no informó la causa. La verificación previa del email sí respondió; revisá los registros de Auth del proyecto Supabase y cualquier trigger asociado a auth.users.`;
           return NextResponse.json(
             { success: false, error: publicMessage },
             { status: authError.status === 400 || authError.status === 422 ? 400 : 500 }
