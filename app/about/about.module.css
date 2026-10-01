@@ -600,34 +600,76 @@
   margin: 4rem 0;
 }
 
+.techGroup {
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.techGroupHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.techGroupTitle {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 750;
+  margin: 0;
+}
+
+.techGroupDescription {
+  max-width: 620px;
+  color: var(--slate-400);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
 .techCard {
-  background: rgba(15, 23, 42, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 14px;
-  padding: 20px 16px;
+  background: rgba(15, 23, 42, 0.38);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 8px;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: all 0.3s ease;
-  min-height: 72px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  min-height: 64px;
 }
 
 .techCard:hover {
-  transform: translateY(-4px);
-  border-color: rgba(34, 211, 238, 0.2);
-  background: rgba(15, 23, 42, 0.5);
-  box-shadow: 0 8px 30px rgba(34, 211, 238, 0.08);
+  border-color: rgba(34, 211, 238, 0.32);
+  background: rgba(15, 23, 42, 0.62);
 }
 
 .techIcon {
-  font-size: 1.8rem;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(148, 163, 184, 0.08);
+  font-size: 1.25rem;
   flex-shrink: 0;
 }
 
 .techName {
   color: #e2e8f0;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.82rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+@media (max-width: 991px) {
+  .techGroupHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
 }
 
 /* ============================================
@@ -1029,15 +1071,7 @@
   }
 
   .techCard {
-    padding: 16px 14px;
-  }
-
-  .techIcon {
-    font-size: 1.6rem;
-  }
-
-  .techName {
-    font-size: 0.8rem;
+    padding: 12px 14px;
   }
 }
 
@@ -1098,16 +1132,18 @@
   }
 
   .techCard {
-    padding: 14px 12px;
-    min-height: 60px;
+    padding: 11px 12px;
+    min-height: 58px;
   }
 
   .techIcon {
-    font-size: 1.4rem;
+    width: 34px;
+    height: 34px;
+    font-size: 1.15rem;
   }
 
   .techName {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
   }
 
   .profileIconWrapper {
@@ -1238,18 +1274,15 @@
   }
 
   .techCard {
-    padding: 10px 8px;
-    gap: 6px;
+    padding: 10px;
+    gap: 10px;
     min-height: 56px;
-    border-radius: 10px;
   }
 
   .techIcon {
-    font-size: 1.2rem;
-  }
-
-  .techName {
-    font-size: 0.65rem;
+    width: 32px;
+    height: 32px;
+    font-size: 1.05rem;
   }
 
   .statCard {

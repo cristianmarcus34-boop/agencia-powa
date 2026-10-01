@@ -34,21 +34,21 @@ interface ServiceCardProps {
 const SERVICES_DATA: ServiceData[] = [
   {
     icon: <FaLaptopCode />,
-    title: "Plataformas Web de Alta Conversión",
-    description: "Sistemas ultra-rápidos que transforman visitas en clientes estables sin perder ventas.",
-    fullDescription: "La lentitud mata el negocio. Desarrollamos con arquitectura Next.js y Supabase para garantizar cargas menores a 1 segundo. Cada milisegundo ganado reduce el abandono del carrito y escala de forma orgánica tu posicionamiento en Google (SEO), blindando tu embudo de ventas frente a la competencia. Nuestras plataformas están diseñadas para soportar picos de tráfico sin degradar la experiencia del usuario.",
+    title: "Desarrollo de Plataformas Web",
+    description: "Creamos la web o el sistema que necesitan tus clientes y tu equipo, con funciones definidas antes de empezar.",
+    fullDescription: "Diseñamos y desarrollamos con tecnologías acordes al producto. Acordamos qué páginas y dispositivos medir, qué objetivos de rendimiento perseguir y qué SEO técnico incluir. Las métricas dependen también del hosting, el contenido, las integraciones y los servicios externos; por eso se definen según el contexto del proyecto.",
     stack: ["Next.js", "TypeScript", "PostgreSQL", "Core Web Vitals"],
     benefits: [
-      "🚀 Carga en < 1 segundo",
-      "📈 SEO optimizado para Google",
-      "🛡️ Escalable para tráfico masivo",
-      "💻 Experiencia desktop y mobile"
+      "⚡ Rendimiento medido en páginas y dispositivos acordados",
+      "🔎 SEO técnico detallado en la propuesta",
+      "📊 Arquitectura dimensionada al uso previsto",
+      "📱 Interfaz adaptable a desktop y mobile"
     ]
   },
   {
     icon: <FaMobileAlt />,
-    title: "Desarrollo Mobile de Próxima Generación",
-    description: "Aplicaciones nativas robustas y fluidas para fidelizar a tu audiencia en iOS y Android.",
+    title: "Aplicaciones móviles a medida",
+    description: "Apps para que tus clientes o tu equipo resuelvan tareas desde iPhone y Android, con las funciones que tu operación necesita.",
     fullDescription: "Creamos experiencias mobile 100% nativas mediante Expo y React Native. Diseñamos sistemas con sincronización en tiempo real y persistencia de datos local (funcionamiento offline), asegurando que tus usuarios interactúen con tu marca de manera fluida, sin interrupciones ni pantallas colgadas. Ideal para apps de delivery, e-commerce y servicios on-demand.",
     stack: ["Expo Native", "React Native", "SQLite", "Real-time Sync"],
     benefits: [
@@ -60,48 +60,48 @@ const SERVICES_DATA: ServiceData[] = [
   },
   {
     icon: <FaShoppingCart />,
-    title: "E-commerce de Rendimiento Masivo",
-    description: "Infraestructura Headless diseñada para vender 24/7, incluso en picos de Hot Sale.",
-    fullDescription: "Olvidate de las caídas de servidor y las plantillas lentas. Implementamos pasarelas avanzadas (MercadoPago / Stripe), automatización de stock en tiempo real y facturación directa. Diseñamos arquitecturas modulares preparadas para resistir campañas de tráfico masivo sin perder un solo centavo. Gestión de inventario, envíos y analytics todo en un solo ecosistema.",
+    title: "Tienda online e integraciones",
+    description: "Mostrá productos, recibí pagos y organizá pedidos y envíos desde una tienda adaptada a tu negocio.",
+    fullDescription: "Integramos medios de pago, catálogo, inventario, envíos y medición según las herramientas y reglas que use tu negocio. Antes de implementar se definen los flujos, integraciones, volumen esperado y escenarios de prueba. La capacidad y disponibilidad dependen de la plataforma, la infraestructura y los proveedores elegidos.",
     stack: ["MercadoPago / Stripe", "Headless Commerce", "Automation Pipelines"],
     benefits: [
-      "💳 Pasarelas de pago integradas",
-      "📦 Stock en tiempo real",
-      "📊 Analytics de conversión",
-      "🚀 Resiste picos de tráfico"
+      "💳 Medio de pago acordado en el alcance",
+      "📦 Flujo de inventario y pedidos definido",
+      "📊 Eventos de medición especificados",
+      "🧪 Pruebas con escenarios de carga acordados"
     ]
   },
   {
     icon: <FaSearchDollar />,
-    title: "Ingeniería SEO & Captación Orgánica",
-    description: "Estrategias de posicionamiento técnico para dominar las búsquedas donde está tu dinero.",
-    fullDescription: "El SEO no es solo escribir blogs. Realizamos auditorías profundas de logs, estructuración de datos enriquecidos (Schema Markup) y optimización de arquitectura web para que los algoritmos de búsqueda te pongan arriba. Atraemos tráfico calificado directo a tu flujo de caja, disminuyendo tu dependencia de la pauta paga. Monitoreo constante de posicionamiento y ajustes estratégicos.",
+    title: "Mejoras para buscadores (SEO)",
+    description: "Preparamos la estructura del sitio para que Google entienda su contenido; no se puede garantizar una posición.",
+    fullDescription: "Revisamos arquitectura, indexabilidad, metadatos, datos estructurados y señales técnicas según el alcance acordado. Entregamos hallazgos y prioridades de mejora; el posicionamiento depende también del contenido, la competencia, la autoridad del dominio y los cambios de los buscadores, por lo que no se garantiza una posición ni un volumen de tráfico.",
     stack: ["Technical SEO", "Schema Markup", "Data Analytics", "Semrush"],
     benefits: [
-      "📊 Auditoría SEO completa",
-      "🔍 Posicionamiento en primeras posiciones",
-      "📈 Reducción de costo por adquisición",
-      "📅 Reportes mensuales de avance"
+      "📊 Auditoría técnica con hallazgos priorizados",
+      "🧭 Recomendaciones de arquitectura e indexabilidad",
+      "🧩 Metadatos y datos estructurados según alcance",
+      "📅 Seguimiento de métricas acordadas"
     ]
   },
   {
     icon: <FaTools />,
-    title: "DevOps & Continuidad de Negocio",
-    description: "Mantenimiento proactivo y monitoreo en la nube para que tu plataforma nunca se caiga.",
-    fullDescription: "El software que no se monitorea es un riesgo financiero. Automatizamos el despliegue continuo (CI/CD) con Docker y Vercel, gestionando auditorías de seguridad constantes y copias de seguridad automáticas. Tu plataforma estará respaldada las 24 horas por ingeniería especializada para que te enfoques en crecer. SLA de disponibilidad 99.9%.",
+    title: "Mantenimiento y operación de plataformas",
+    description: "Actualizaciones, copias de seguridad, alertas y monitoreo según el plan; soporte humano y tiempos se acuerdan por escrito.",
+    fullDescription: "Configuramos despliegues, registros, alertas y respaldos según la arquitectura del sistema y el plan contratado. La frecuencia de revisión, los tiempos de respuesta, las ventanas de mantenimiento y los objetivos de disponibilidad se definen por escrito en el alcance o SLA correspondiente.",
     stack: ["Docker", "Vercel Enterprise", "CI/CD Git Automation"],
     benefits: [
       "⚡ Deploy automatizado",
-      "🛡️ Auditorías de seguridad constantes",
-      "📦 Copias de seguridad automáticas",
-      "📊 Monitoreo 24/7"
+      "🛡️ Revisiones de seguridad según el plan acordado",
+      "📦 Frecuencia de respaldos documentada",
+      "📊 Monitoreo, alertas y respuesta según SLA"
     ]
   },
   {
     icon: <FaLightbulb />,
-    title: "Consultoría de Producto & MVP",
-    description: "Validamos tus ideas de negocio con el menor riesgo técnico y financiero posible.",
-    fullDescription: "Elegir el stack equivocado al inicio puede costar miles de dólares. Te guiamos en el modelado y lanzamiento de Productos Mínimos Viables (MVP) orientados a resultados de mercado rápidos. Diseñamos con escalabilidad modular: invertís exactamente lo que tu negocio necesita para validar y traccionar. Acompañamiento post-lanzamiento para iterar basado en feedback real.",
+    title: "Consultoría de producto y primera versión (MVP)",
+    description: "Priorizamos qué construir primero para probar una idea con usuarios antes de ampliar la inversión.",
+    fullDescription: "Definimos una primera versión funcional (MVP), sus funciones prioritarias y cómo recoger comentarios de usuarios. El alcance, los supuestos a validar y las siguientes etapas se detallan antes de desarrollar.",
     stack: ["MVP Architecture", "UI/UX Audit", "Cloud Cost Optimization"],
     benefits: [
       "🧪 Validación de mercado rápida",
@@ -112,9 +112,9 @@ const SERVICES_DATA: ServiceData[] = [
   },
   {
     icon: <FaRocket />,
-    title: "Lanzamiento de Micro-SaaS",
-    description: "Desarrollamos tu software como servicio para que puedas facturar mensualmente sin inversión inicial.",
-    fullDescription: "Creamos herramientas digitales que se pagan por suscripción mensual. Así generás ingresos recurrentes sin necesidad de stock, logística ni grandes inversiones. Te ayudamos a identificar oportunidades en tu nicho y desarrollamos un MVP funcional en 4 a 6 semanas.",
+    title: "Software por suscripción",
+    description: "Creamos un servicio digital que podés ofrecer mediante un abono, con funciones y costos operativos definidos para el proyecto.",
+    fullDescription: "Diseñamos una primera versión funcional, el acceso de usuarios y el flujo de suscripción. Los medios de cobro, las comisiones, el alojamiento y el soporte se revisan antes de estimar inversión y fechas.",
     stack: ["Next.js", "Supabase", "Stripe", "MVP en 4-6 semanas"],
     benefits: [
       "🚀 MVP en 4-6 semanas",
@@ -125,8 +125,8 @@ const SERVICES_DATA: ServiceData[] = [
   },
   {
     icon: <FaCloudUploadAlt />,
-    title: "Automatización de Procesos",
-    description: "Conectamos tus herramientas para que trabajen solas y ahorres horas de trabajo manual.",
+    title: "Automatización de tareas",
+    description: "Conectamos las herramientas que ya usás para reducir trabajo repetitivo, como copiar pedidos o enviar avisos.",
     fullDescription: "Tu negocio usa múltiples herramientas (WhatsApp, Google Sheets, CRMs, sistemas de stock) pero no se comunican entre sí. Nosotros las integramos y automatizamos flujos completos de trabajo. Así eliminamos tareas repetitivas, reducimos errores y liberamos tu tiempo para lo que realmente importa.",
     stack: ["Node.js", "APIs", "Webhooks", "Automatización"],
     benefits: [
@@ -138,9 +138,9 @@ const SERVICES_DATA: ServiceData[] = [
   },
   {
     icon: <FaBrain />,
-    title: "Productos Digitales Rentables",
-    description: "Creamos activos digitales que generan ingresos sin esfuerzo adicional. Vos diseñás, nosotros lo construimos.",
-    fullDescription: "Convertimos tu conocimiento en un producto digital que podés vender sin necesidad de stock ni logística. Desde plantillas especializadas hasta sistemas completos, creamos activos digitales que generan ingresos pasivos. El producto es 100% tuyo y podés comercializarlo sin depender de nosotros.",
+    title: "Productos digitales propios",
+    description: "Convertimos un servicio o conocimiento en un recurso digital para ofrecer online, como un curso, una herramienta o una plataforma.",
+    fullDescription: "Definimos el formato, las funciones, el contenido y la forma de acceso según el producto. La propuesta especifica qué se desarrolla, qué materiales aporta el cliente y qué costos externos pueden aplicar.",
     stack: ["Next.js", "Tailwind CSS", "UI/UX", "Vercel"],
     benefits: [
       "💼 Tu producto, tu propiedad",
@@ -165,7 +165,7 @@ const PROCESS_STEPS: ProcessStep[] = [
   {
     phase: "03",
     title: "QA & Pruebas de Carga",
-    desc: "Sometemos la plataforma a auditorías de seguridad, pruebas de velocidad extremas y simulación de tráfico masivo. Nos aseguramos de que el sistema resista picos de usuarios sin degradar la experiencia."
+    desc: "Definimos escenarios de prueba de rendimiento y seguridad según el uso previsto. Registramos resultados y hallazgos; la capacidad final depende de la infraestructura, las integraciones y el volumen acordado."
   },
   {
     phase: "04",
@@ -214,6 +214,7 @@ const ServiceCardItem = ({ service, index }: ServiceCardProps) => {
             aria-hidden={!isExpanded}
           >
             <div>
+              <span className={styles.detailSectionLabel}>DETALLE DE IMPLEMENTACIÓN</span>
               <p className={styles.fullDescription}>{fullDescription}</p>
 
               <div className={styles.benefitsList}>
@@ -224,6 +225,7 @@ const ServiceCardItem = ({ service, index }: ServiceCardProps) => {
                 ))}
               </div>
 
+              <span className={styles.detailSectionLabel}>TECNOLOGÍAS POSIBLES SEGÚN EL PROYECTO</span>
               <div className={styles.techStack}>
                 {stack.map((tech) => (
                   <span key={tech} className={styles.techBadge}>{tech}</span>
@@ -544,7 +546,7 @@ export default function ServicesPage() {
             </p>
             <div className={styles.ctaTrustBadges}>
               <span>🔒 Sin compromiso</span>
-              <span>⚡ Respuesta en 24hs</span>
+              <span>⚡ Respuesta en 1 día hábil</span>
               <span>📋 Diagnóstico gratuito</span>
             </div>
             <div className={styles.ctaActions}>

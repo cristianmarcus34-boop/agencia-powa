@@ -195,6 +195,14 @@
   overflow: hidden;
 }
 
+.detailSectionLabel {
+  display: block;
+  margin: 0.9rem 0 0.45rem;
+  color: #67e8f9;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
 .fullDescription {
   color: #e2e8f0;
   font-size: 0.95rem;

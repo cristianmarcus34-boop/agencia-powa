@@ -6,9 +6,9 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import Spinner from 'react-bootstrap/Spinner';
 import {
     FaEnvelope, FaMapMarkerAlt, FaPaperPlane, FaWhatsapp,
-    FaBolt, FaUserCheck, FaShieldAlt, FaClock,
+    FaBolt, FaUserCheck, FaShieldAlt,
     FaStar, FaRocket, FaAward, FaCheckCircle,
-    FaQuoteRight, FaCode, FaChartLine, FaBuilding,
+    FaCode, FaChartLine,
     FaCloudUploadAlt, FaArrowRight, FaInfoCircle,
     FaRegSmile, FaRegClock, FaShieldVirus
 } from 'react-icons/fa';
@@ -102,13 +102,7 @@ const HEARD_FROM_OPTIONS = [
     'Otro'
 ];
 
-const TESTIMONIALS = [
-    { quote: "Powa transformó nuestra plataforma en tiempo récord. La arquitectura que implementaron nos permitió escalar de 500 a 15,000 usuarios sin problemas.", author: "Carlos R.", role: "CEO, FintechPro" },
-    { quote: "El rediseño aumentó nuestras conversiones en un 180%. El equipo entendió perfectamente nuestra audiencia y creó una experiencia que realmente conecta.", author: "Laura M.", role: "CMO, EcomStore" },
-    { quote: "La seguridad y el cumplimiento normativo fueron críticos para nosotros. Powa no solo cumplió, superó nuestras expectativas.", author: "Andrés S.", role: "CTO, HealthTech" }
-];
-
-const RECENT_PROJECTS = [
+const RECENT_DEMOS = [
     { name: 'Kubic.ai', type: 'Plataforma SaaS', emoji: '🚀', url: 'https://kubic-ai.vercel.app' },
     { name: 'Barbería El Rulo', type: 'Sistema de Reservas', emoji: '✂️', url: 'https://barberia-next-indol.vercel.app' },
     { name: 'Vivero Verde', type: 'E-commerce', emoji: '🌿', url: 'https://vivero-verde.vercel.app' }
@@ -385,10 +379,11 @@ export default function ContactPage() {
                                                     {...register('budget', { required: 'Seleccioná un rango' })}
                                                 >
                                                     <option value="">Selecciona un rango...</option>
-                                                    <option value="500-1500">USD 500 - USD 1.500</option>
-                                                    <option value="1500-5000">USD 1.500 - USD 5.000</option>
-                                                    <option value="5000-15000">USD 5.000 - USD 15.000</option>
-                                                    <option value="15000+">Más de USD 15.000</option>
+                                                    <option value="150-499">USD 150 - USD 499</option>
+                                                    <option value="500-1499">USD 500 - USD 1.499</option>
+                                                    <option value="1500-4999">USD 1.500 - USD 4.999</option>
+                                                    <option value="5000-14999">USD 5.000 - USD 14.999</option>
+                                                    <option value="15000+">USD 15.000 o más</option>
                                                     <option value="no-se">No estoy seguro / Consultoría</option>
                                                 </Form.Select>
                                                 {errors.budget && <span className={styles.errorMessage}>{errors.budget.message}</span>}
@@ -466,7 +461,7 @@ export default function ContactPage() {
                                 <p className={styles.formFooterText}>
                                     🔒 Tus datos están seguros. No compartimos tu información con terceros.
                                     <br />
-                                    <span className={styles.formFooterSubtext}>Respondemos en menos de 24 horas hábiles.</span>
+                                    <span className={styles.formFooterSubtext}>Te respondemos dentro de 1 día hábil.</span>
                                 </p>
                             </Form>
                         </div>
@@ -482,7 +477,7 @@ export default function ContactPage() {
                                 <div>
                                     <h5 className="text-white mb-0">Escríbenos</h5>
                                     <small className={styles.infoText}>agenciadigitalpowa@gmail.com</small>
-                                    <span className={styles.infoCta}>Respuesta en 24hs</span>
+                                    <span className={styles.infoCta}>Respuesta en 1 día hábil</span>
                                 </div>
                             </div>
 
@@ -506,13 +501,13 @@ export default function ContactPage() {
                                 </div>
                             </div>
 
-                            {/* ===== PROYECTOS RECIENTES ===== */}
+                            {/* ===== DEMOS ===== */}
                             <div className={styles.recentProjectsBlock}>
                                 <h4 className={styles.recentProjectsTitle}>
                                     <FaRocket className={styles.recentProjectsIcon} />
-                                    Proyectos Recientes
+                                    Demos para explorar
                                 </h4>
-                                {RECENT_PROJECTS.map((project, i) => (
+                                {RECENT_DEMOS.map((project, i) => (
                                     <a
                                         key={i}
                                         href={project.url}
@@ -530,22 +525,17 @@ export default function ContactPage() {
                                 ))}
                             </div>
 
-                            {/* ===== TESTIMONIOS ===== */}
+                            {/* ===== EXPECTATIVAS DE TRABAJO ===== */}
                             <div className={styles.testimonialsBlock}>
                                 <h4 className={styles.testimonialsTitle}>
                                     <FaStar className={styles.testimonialsIcon} />
-                                    Lo que dicen nuestros clientes
+                                    Qué podés esperar
                                 </h4>
-                                {TESTIMONIALS.map((t, i) => (
-                                    <div key={i} className={styles.testimonialItem}>
-                                        <FaQuoteRight className={styles.testimonialQuote} />
-                                        <p className={styles.testimonialText}>"{t.quote}"</p>
-                                        <div className={styles.testimonialAuthor}>
-                                            <strong>{t.author}</strong>
-                                            <span>{t.role}</span>
-                                        </div>
-                                    </div>
-                                ))}
+                                <div className={styles.testimonialItem}>
+                                    <p className={styles.testimonialText}>Contacto directo con quien define y desarrolla tu solución.</p>
+                                    <p className={styles.testimonialText}>Alcance, etapas e inversión por escrito antes de empezar.</p>
+                                    <p className={styles.testimonialText}>Avances revisables y entrega de código y accesos acordados.</p>
+                                </div>
                             </div>
 
                             {/* ===== TRUST BLOCK ===== */}
@@ -556,7 +546,7 @@ export default function ContactPage() {
                                         <div className={styles.trustIcon}><FaRegClock /></div>
                                         <div>
                                             <strong>Respuesta rápida</strong>
-                                            <span>Te respondemos en menos de 24 horas hábiles.</span>
+                                            <span>Te respondemos dentro de 1 día hábil.</span>
                                         </div>
                                     </li>
                                     <li>
@@ -586,7 +576,7 @@ export default function ContactPage() {
                             {/* ===== TRUST BADGE ===== */}
                             <div className={styles.trustBadge}>
                                 <FaAward className={styles.trustBadgeIcon} />
-                                <span>+50 proyectos entregados con éxito</span>
+                                <span>Atención directa con el fundador</span>
                             </div>
 
                         </div>

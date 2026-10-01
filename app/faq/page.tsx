@@ -41,11 +41,11 @@ const WHATSAPP_MESSAGE = encodeURIComponent(
 );
 
 const TECH_ICONS: readonly { icon: React.ReactNode; label: string; tooltip: string }[] = [
-  { icon: <FaCode />, label: 'Clean Code', tooltip: 'Código Limpio y Arquitecturado' },
-  { icon: <FaBolt />, label: 'Performance', tooltip: 'Rendimiento Crítico Optimizado' },
-  { icon: <FaShieldAlt />, label: 'Security', tooltip: 'Seguridad Perimetral Avanzada' },
-  { icon: <FaServer />, label: 'Infraestructura', tooltip: 'Arquitectura Escalable y Resiliente' },
-  { icon: <FaDatabase />, label: 'Data', tooltip: 'Modelado y Gestión de Datos' },
+  { icon: <FaCode />, label: 'Código claro', tooltip: 'Organización del código para facilitar su mantenimiento' },
+  { icon: <FaBolt />, label: 'Velocidad', tooltip: 'Mediciones y objetivos acordados según cada proyecto' },
+  { icon: <FaShieldAlt />, label: 'Seguridad', tooltip: 'Controles de acceso y protección definidos en el alcance' },
+  { icon: <FaServer />, label: 'Alojamiento', tooltip: 'Elección del proveedor según las necesidades del producto' },
+  { icon: <FaDatabase />, label: 'Información', tooltip: 'Organización y acceso a los datos que usa el sistema' },
 ] as const;
 
 const CATEGORIES: Category[] = [
@@ -69,7 +69,7 @@ export default function FaqPage() {
       highlighted: true,
       question: "¿Cómo me aseguro de que el desarrollo cumpla con lo que necesito?",
       icon: <FaCheckCircle />,
-      answer: "Nuestro proceso elimina sorpresas:\n\n✅ Entregas parciales cada 2 semanas\n✅ Demostraciones en vivo del avance\n✅ Auditoría exhaustiva del código\n✅ Pruebas de rendimiento de estrés\n✅ Informe detallado de cada etapa\n\nVisibilidad 360° desde el día 1."
+      answer: "Antes de empezar dejamos por escrito el alcance, los entregables y los criterios de aceptación. La frecuencia de avances, revisiones y pruebas se define según el tamaño y la modalidad del proyecto."
     },
     {
       id: 'trust-2',
@@ -77,7 +77,7 @@ export default function FaqPage() {
       highlighted: true,
       question: "¿Qué sucede si el proyecto no cumple con el cronograma acordado?",
       icon: <FaClock />,
-      answer: "Transparencia total:\n\n✅ Sprints con objetivos claros y medibles\n✅ Comunicación inmediata de desvíos\n✅ Opciones de mitigación desde el día 1\n✅ Acuerdos de nivel de servicio (SLA)\n\nMantenerte informado es nuestra prioridad."
+      answer: "El cronograma y los hitos quedan en la propuesta. Si un riesgo afecta una fecha acordada, lo comunicamos y revisamos alternativas; un SLA aplica solo cuando se incluye expresamente en el contrato."
     },
     {
       id: 'trust-3',
@@ -85,21 +85,21 @@ export default function FaqPage() {
       highlighted: true,
       question: "¿Qué garantías tengo sobre la seguridad de mi inversión?",
       icon: <FaLock />,
-      answer: "Tu inversión protegida desde el día 1:\n\n✅ Propiedad intelectual 100% a tu nombre\n✅ Entregas parciales para mitigar riesgos\n✅ Código auditable en repositorios privados\n✅ Pausa o redirección sin penalizaciones\n✅ Plan de Continuidad Técnica (sin dependencia de Powa)"
+      answer: "La propuesta y el contrato especifican propiedad del código, repositorios, entregas, pagos y condiciones de pausa o cambio de alcance. La documentación y transferencia se detallan para que otro equipo pueda continuar según lo contratado."
     },
     {
       id: 'trust-4',
       category: 'trust',
       question: "¿Cómo manejan los cambios de última hora o imprevistos?",
       icon: <FaHandshake />,
-      answer: "Evolución ágil:\n\n✅ Sprints cortos (2 semanas)\n✅ Buffer de cambios del 20% por sprint\n✅ Evaluación conjunta de cambios mayores\n✅ Presupuesto transparente\n✅ Planificación sin afectar entregas críticas"
+      answer: "Los cambios se revisan por impacto en alcance, costo y cronograma. Si requieren trabajo adicional, se aprueban y cotizan antes de incorporarlos; no asumimos un porcentaje fijo de cambios incluido salvo que figure en la propuesta."
     },
     {
       id: 'trust-5',
       category: 'trust',
       question: "¿Puedo ver avances del proyecto antes de la entrega final?",
       icon: <FaUsers />,
-      answer: "Entregas incrementales cada 15 días:\n\n✅ Entornos de staging para pruebas en vivo\n✅ Feedback inmediato\n✅ Documentación técnica actualizada\n✅ Video explicativo de nuevas features\n✅ Ajustes de rumbo desde el día 1"
+      answer: "Las instancias de revisión, el entorno de pruebas y la documentación se acuerdan según el proyecto. Los comentarios se agrupan y priorizan para incorporarlos dentro del alcance y cronograma definidos."
     },
     {
       id: 'trust-6',
@@ -107,21 +107,21 @@ export default function FaqPage() {
       highlighted: true,
       question: "¿Por qué debería elegir a Powa por sobre una agencia tradicional o un freelancer?",
       icon: <FaStar />,
-      answer: "La diferencia está en nuestra ingeniería:\n\n✅ Equipo multidisciplinario (arquitecto, frontend, backend, QA, UX/UI)\n✅ Código empresarial con estándares ISO\n✅ Continuidad garantizada con código documentado\n✅ Escalabilidad comprobada (100 → 1M usuarios)\n✅ Soporte post-lanzamiento sin abandonarte"
+      answer: "Trabajás directamente con el fundador y desarrollador responsable:\n\n✅ Alcance y etapas definidos antes de empezar\n✅ Avances para revisar durante el desarrollo\n✅ Código y accesos entregados según lo acordado\n✅ Soporte posterior definido en la propuesta"
     },
     {
       id: 'trust-7',
       category: 'trust',
       question: "¿Qué información necesito aportar para empezar?",
       icon: <FaFileContract />,
-      answer: "Lo mínimo para empezar:\n\n✅ Brief de negocio (objetivos, mercado, competencia)\n✅ Contenido actual (textos, imágenes, logos)\n✅ Acceso a herramientas (CRM, ERP, sistemas propios)\n✅ 2-3 sesiones estratégicas de 1 hora\n\nNo necesitas conocimientos técnicos ni inversión en infraestructura cara."
+      answer: "Para estimar el trabajo necesitamos conocer el objetivo, los usuarios, los flujos actuales, las integraciones y el contenido disponible. Las reuniones y accesos requeridos se acuerdan según el alcance; no hace falta definir la solución técnica de antemano."
     },
     {
       id: 'trust-8',
       category: 'trust',
       question: "¿Cómo manejan la confidencialidad de mi idea/proyecto?",
       icon: <FaShieldVirus />,
-      answer: "Tu idea protegida desde el primer contacto:\n\n✅ NDA firmado antes de compartir detalles\n✅ Acceso restringido solo al equipo asignado\n✅ Repositorios privados con autenticación 2FA\n✅ Sin uso de tu información sin autorización\n✅ Cláusulas de exclusividad disponibles"
+      answer: "Podemos acordar confidencialidad antes de intercambiar información sensible. Los accesos, repositorios y obligaciones de privacidad se definen en el contrato y se limitan a quienes participan del proyecto."
     },
 
     // ===== CATEGORÍA: PRECIOS Y TIEMPOS (PRICING) =====
@@ -131,7 +131,7 @@ export default function FaqPage() {
       highlighted: true,
       question: "¿Cuánto cuesta aproximadamente un desarrollo con Powa?",
       icon: <FaFileContract />,
-      answer: "Cada proyecto es único. Referencia:\n\n• Landing Page / Sitio Institucional: USD 800 - 2.500\n• E-commerce / Plataforma: USD 3.000 - 10.000\n• SaaS / Proyecto a medida: USD 10.000+\n\nOfrecemos pagos escalonados (50% inicio, 25% hitos, 25% entrega) y mantenimiento desde USD 100/mes."
+      answer: "Los valores iniciales publicados son:\n\n• Landing Page: desde USD 150\n• Sitio institucional: desde USD 350\n• Tienda online: desde USD 700\n• Web app o sistema: desde USD 1.200\n\nEl total depende del alcance y la modalidad de pago elegida. Los planes de mantenimiento empiezan en USD 150/mes."
     },
     {
       id: 'pricing-2',
@@ -139,7 +139,7 @@ export default function FaqPage() {
       highlighted: true,
       question: "¿Cuánto tiempo tarda en promedio un desarrollo?",
       icon: <FaClock />,
-      answer: "Plazos promedio:\n\n• Landing Page: 2-3 semanas\n• Sitio Institucional: 3-4 semanas\n• E-commerce: 4-6 semanas\n• Plataforma/SaaS: 6-9 semanas\n\nEntregas parciales cada 15 días para ver avances reales."
+      answer: "Como referencia inicial, una landing puede llevar 2-3 semanas, un sitio institucional 3-4, un e-commerce 4-6 y una plataforma 6-9. El cronograma definitivo se acuerda tras definir alcance, disponibilidad de contenidos, integraciones y revisiones."
     },
     {
       id: 'pricing-3',
@@ -147,7 +147,7 @@ export default function FaqPage() {
       highlighted: true,
       question: "¿Qué garantía tengo de que el proyecto va a funcionar bien después del lanzamiento?",
       icon: <FaShieldVirus />,
-      answer: "Garantía post-lanzamiento:\n\n✅ 30 días de soporte gratuito (ajustes, correcciones, optimizaciones)\n✅ Monitoreo 24/7 durante el primer mes\n✅ Capacitación a tu equipo\n✅ Documentación técnica completa\n✅ Plan de continuidad (cualquier dev puede tomar el proyecto)"
+      answer: "Antes de iniciar, la propuesta especifica qué correcciones incluye la entrega y durante cuánto tiempo. El monitoreo, mantenimiento y soporte continuo se acuerdan por separado según el plan elegido."
     },
     {
       id: 'pricing-4',
@@ -155,7 +155,7 @@ export default function FaqPage() {
       highlighted: true,
       question: "¿Qué incluye el plan de mantenimiento?",
       icon: <FaCloudUploadAlt />,
-      answer: "Planes desde USD 100/mes:\n\n• Monitoreo 24/7\n• Actualizaciones de seguridad\n• Copias de seguridad automáticas\n• Soporte prioritario (respuesta <4hs)\n• Optimizaciones de rendimiento\n• Reportes mensuales de salud"
+      answer: "Hay tres niveles publicados:\n\n• Básico: USD 150/mes, con 1 hora de soporte y respuesta por email en hasta 2 días hábiles\n• Pro: USD 350/mes, con 5 horas de soporte y respuesta en hasta 1 día hábil\n• Enterprise: USD 600/mes, con horas, canales y tiempos de respuesta definidos en la propuesta\n\nEl monitoreo puede generar alertas automatizadas; la atención humana depende del horario y alcance contratados."
     },
 
     // ===== CATEGORÍA: PROCESO Y METODOLOGÍA =====
@@ -172,7 +172,7 @@ export default function FaqPage() {
       category: 'process',
       question: "¿Con qué frecuencia me van a actualizar sobre el progreso?",
       icon: <FaUsers />,
-      answer: "Comunicación garantizada:\n\n✅ Reunión semanal de 30 min\n✅ Reporte de progreso cada 15 días\n✅ Canal directo (WhatsApp/Slack) para consultas urgentes\n✅ Grabación de cada reunión\n✅ Dashboard en tiempo real para ver progreso"
+      answer: "Antes de empezar definimos cada cuánto compartimos avances, por qué canal y quién los revisa. La frecuencia de reuniones y reportes queda acordada en la propuesta según el proyecto."
     },
 
     // ===== CATEGORÍA: ARQUITECTURA TÉCNICA =====
@@ -181,42 +181,42 @@ export default function FaqPage() {
       category: 'technical',
       question: "¿Qué tipo de soluciones digitales desarrollan?",
       icon: <FaCode />,
-      answer: "Ecosistemas digitales a medida:\n\n✅ Landings de conversión optimizada\n✅ Plataformas SaaS complejas\n✅ Next.js con arquitectura pura\n✅ Código limpio, seguro y arquitecturado\n✅ Escalabilidad vertical garantizada"
+      answer: "En simple: hacemos desde páginas para presentar un negocio hasta tiendas y sistemas de uso interno. Elegimos las herramientas según las funciones, usuarios e integraciones que necesites; el alcance concreto se define antes de cotizar."
     },
     {
       id: 'technical-2',
       category: 'technical',
       question: "¿Por qué priorizan arquitecturas en Next.js por sobre sistemas monolíticos como WordPress?",
       icon: <FaBolt />,
-      answer: "Next.js vs WordPress:\n\n✅ Velocidad ultra-instantánea\n✅ Seguridad superior (menor superficie de ataque)\n✅ Sin dependencia de plugins de terceros\n✅ Sitios estáticos e híbridos\n✅ Mejor posicionamiento en Google"
+      answer: "No hay una opción que sea mejor para todos. WordPress puede convenir si necesitás editar mucho contenido; un desarrollo a medida puede ser más adecuado para funciones e integraciones específicas. Comparamos costos, facilidad de administración y necesidades antes de recomendar una opción. La tecnología por sí sola no garantiza velocidad ni posiciones en Google."
     },
     {
       id: 'technical-3',
       category: 'technical',
       question: "¿Qué viabilidad existe para escalar o iterar la plataforma en el futuro?",
       icon: <FaChartLine />,
-      answer: "Escalabilidad nativa:\n\n✅ Arquitectura modular de componentes\n✅ Integración de pasarelas complejas\n✅ Flujos automatizados de IA\n✅ Portales de autenticación\n✅ Expansión limpia sin reescribir código"
+      answer: "Podemos planificar desde el inicio cómo sumar funciones, usuarios o integraciones más adelante. Qué tan simple y costoso será dependerá del diseño inicial, la infraestructura y los cambios que se pidan; esas decisiones se documentan en la propuesta."
     },
     {
       id: 'technical-4',
       category: 'technical',
       question: "¿Mi proyecto va a funcionar bien en celulares y tablets?",
       icon: <FaMobileAlt />,
-      answer: "Mobile-First obligatorio:\n\n✅ Diseño optimizado para pantallas pequeñas\n✅ Interacciones táctiles optimizadas\n✅ Testing en +30 dispositivos reales\n✅ Carga en <2 segundos en 4G\n✅ Core Web Vitals optimizados"
+      answer: "Sí. El diseño se adapta a celulares, tablets y computadoras. Acordamos qué pantallas y dispositivos revisar; la velocidad final también depende del hosting, las imágenes, el contenido y las conexiones externas."
     },
     {
       id: 'technical-5',
       category: 'technical',
       question: "¿Qué pasa si quiero integrar mi proyecto con herramientas que ya uso?",
       icon: <FaPlug />,
-      answer: "Integración con múltiples herramientas:\n\n✅ Email: Mailchimp, Sendinblue, HubSpot\n✅ Pagos: Mercado Pago, Stripe, PayPal\n✅ Analytics: Google Analytics, Meta Pixel, Hotjar\n✅ CRMs: Salesforce, Zoho, Monday.com\n✅ Ecommerce: Shopify, WooCommerce"
+      answer: "En simple: podemos conectar tu web con herramientas de pagos, correo, ventas o gestión. Primero revisamos cuál usás, si permite conectarse y qué permisos o costos requiere; las conexiones incluidas se enumeran en la propuesta."
     },
     {
       id: 'technical-6',
       category: 'technical',
       question: "¿Puedo migrar mi proyecto a otro hosting o proveedor si quiero?",
       icon: <FaCloudUploadAlt />,
-      answer: "Código 100% portable:\n\n✅ Estándares abiertos (React, Next.js, Node.js)\n✅ Sin dependencias propietarias\n✅ Documentación completa de despliegue\n✅ Arquitectura cloud-agnostic\n✅ Soporte para migración"
+      answer: "El proyecto puede prepararse para transferir su código y documentación según lo contratado. Cambiar de proveedor también puede requerir adaptar servicios, datos o configuraciones; revisamos ese trabajo y su costo antes de una migración."
     },
 
     // ===== CATEGORÍA: NEGOCIO Y CONVERSIÓN =====
@@ -225,21 +225,21 @@ export default function FaqPage() {
       category: 'business',
       question: "¿Sus desarrollos están optimizados para la conversión y ventas?",
       icon: <FaChartLine />,
-      answer: "Optimización de conversión:\n\n✅ Core Web Vitals optimizados\n✅ Patrones de diseño UX avanzados\n✅ Guía al usuario hacia la acción comercial\n✅ Reducción de fricción en el embudo\n✅ Aumento de tasa de conversión"
+      answer: "Podemos ordenar la información, hacer más claro el siguiente paso y medir acciones como consultas o compras. Eso ayuda a evaluar la experiencia, pero las ventas también dependen de la oferta, el tráfico y el mercado; no garantizamos aumentos de conversión."
     },
     {
       id: 'business-2',
       category: 'business',
       question: "¿Las plataformas son compatibles con ecosistemas de adquisición (Ads & Meta)?",
       icon: <FaUsers />,
-      answer: "Compatibilidad con ecosistemas de ads:\n\n✅ Server-Side Rendering (SSR) para calidad de indexación\n✅ Optimización para Google Ads y Meta\n✅ Reducción de Costo por Clic (CPC)\n✅ Aumento de Quality Score\n✅ Más clientes con el mismo presupuesto"
+      answer: "Podemos preparar páginas y medición para campañas de Google o Meta si se acuerdan las plataformas y los accesos. El costo por clic, la calificación de los anuncios y la cantidad de clientes dependen de la campaña, el presupuesto, la audiencia y la oferta; no se garantizan desde el desarrollo del sitio."
     },
     {
       id: 'business-3',
       category: 'business',
       question: "¿Cuál es el cronograma estimado de entrega?",
       icon: <FaClock />,
-      answer: "Ciclos promedio: 4-6 semanas\n\n✅ No operamos con soluciones prefabricadas\n✅ Consultoría estratégica inicial\n✅ Diseño modular en Figma\n✅ Ingeniería frontend a medida\n✅ Soluciones de nivel corporativo"
+      answer: "El plazo y las etapas se estiman después de acordar qué hay que construir. Como referencia, el calendario depende del alcance, los materiales disponibles, las integraciones y el tiempo de revisión del cliente."
     },
     {
       id: 'business-4',
@@ -247,14 +247,14 @@ export default function FaqPage() {
       highlighted: true,
       question: "¿Una vez finalizado el proyecto, la propiedad intelectual me pertenece?",
       icon: <FaLock />,
-      answer: "Propiedad intelectual 100% tuya:\n\n✅ Código fuente totalmente tuyo\n✅ Sin contratos de permanencia obligatorios\n✅ Sin dependencia tecnológica\n✅ Activo digital autónomo y auditable\n✅ Documentación técnica completa para cualquier equipo"
+      answer: "La propuesta especifica qué código y materiales se entregan y qué licencias o servicios de terceros aplican. También define la documentación y los accesos incluidos para que puedas continuar el proyecto según lo contratado."
     },
     {
       id: 'business-5',
       category: 'business',
       question: "¿Cuál es la inversión requerida para iniciar un desarrollo con Powa?",
       icon: <FaFileContract />,
-      answer: "Presupuesto personalizado:\n\n✅ Análisis de requerimientos previo\n✅ ROI garantizado\n✅ Velocidad de carga superior\n✅ Seguridad corporativa\n✅ Posicionamiento estético premium"
+      answer: "Primero definimos objetivos, alcance, etapas y criterios de aceptación. La propuesta detalla la inversión y los aspectos técnicos; el impacto comercial depende también de factores externos y no se garantiza."
     },
 
     // ===== CATEGORÍA: POST-LANZAMIENTO =====
@@ -264,7 +264,7 @@ export default function FaqPage() {
       highlighted: true,
       question: "¿Qué pasa después de que lanzamos el proyecto? ¿Me dejan solo?",
       icon: <FaRocket />,
-      answer: "Plan de 90 días post-lanzamiento:\n\nMes 1: monitoreo 24/7, ajustes, correcciones críticas\nMes 2: optimización basada en datos reales\nMes 3: capacitación avanzada y transferencia\n\nServicios continuos: soporte 24/7 con SLA, mantenimiento preventivo, iteraciones basadas en datos."
+      answer: "Está disponible un acompañamiento puntual de 90 días por USD 1.200. La propuesta especifica tareas, canales, horarios de atención, correcciones cubiertas y sesiones de transferencia. El monitoreo automatizado no implica atención humana continua; los SLA y el mantenimiento mensual se contratan según su alcance."
     },
     {
       id: 'postlaunch-2',
@@ -272,7 +272,7 @@ export default function FaqPage() {
       highlighted: true,
       question: "¿Qué costos adicionales puedo esperar después del desarrollo?",
       icon: <FaFileContract />,
-      answer: "Costos claros y transparentes:\n\n✅ Hosting, SSL y analytics incluidos\n✅ Dominio .com: ~$20/año (a tu nombre)\n\nCostos opcionales:\n• Mantenimiento: desde $100/mes\n• Marketing digital: según campaña\n• Integraciones premium: según necesidad\n• Contenido: según volumen\n\n⚠️ Hosting de pago por $20/mes.",
+      answer: "Los costos de dominio, hosting, correo, servicios de terceros y licencias dependen del proveedor, el uso y la arquitectura. Se identifican en la propuesta; no se consideran incluidos salvo que estén enumerados expresamente.\n\nEl mantenimiento mensual publicado comienza en USD 150. Contenido, campañas, integraciones o consumos externos se cotizan según necesidad.",
       link: "/planes" // 👈 Redirige a la página de planes
     },
     {
@@ -280,7 +280,7 @@ export default function FaqPage() {
       category: 'postlaunch',
       question: "¿Proveen servicios de soporte y acuerdos de nivel de servicio (SLA)?",
       icon: <FaUsers />,
-      answer: "Soporte con SLA:\n\n✅ Mantenimiento preventivo\n✅ Monitoreo continuo de infraestructura\n✅ Auditorías periódicas de seguridad\n✅ Optimizaciones de rendimiento en tiempo real\n✅ Continuidad operativa 24/7",
+      answer: "Los planes detallan tareas, horas incluidas, canales y tiempos de respuesta. El monitoreo puede ser automatizado; la atención humana, cobertura, escalamiento y objetivos de disponibilidad solo se ofrecen con las condiciones escritas en el plan o SLA contratado.",
       link: "/planes"
     }
   ], []);
@@ -519,7 +519,7 @@ export default function FaqPage() {
 
           {/* ===== FOOTER ===== */}
           <footer className={styles.faqFooter}>
-            <p className={styles.footerLabel}>ESTÁNDARES DE INFRAESTRUCTURA EMPRESARIAL</p>
+            <p className={styles.footerLabel}>CÓMO CUIDAMOS TU PRODUCTO</p>
             <div className={styles.techIconsGrid}>
               {TECH_ICONS.map((tech, index) => (
                 <div

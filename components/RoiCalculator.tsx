@@ -9,9 +9,9 @@ import styles from './RoiCalculator.module.css';
 // ============================================
 interface RoiData {
   businessType: string;
-  dailySales: number;
   averageValue: number;
   lostSales: number;
+  investmentAmount: number;
 }
 
 type BusinessType =
@@ -55,7 +55,7 @@ interface BusinessTypeOption {
 // TEXTOS DINÁMICOS SEGÚN TIPO DE NEGOCIO
 // ============================================
 const getBusinessTexts = (type: string) => {
-  const texts: Record<string, any> = {
+  const texts: Record<string, Record<string, string>> = {
     // ===== SERVICIOS PERSONALES =====
     barberia: {
       salesLabel: 'turnos',
@@ -448,9 +448,9 @@ export default function RoiCalculator() {
   // ===== STATE CON TIPOS =====
   const [roiData, setRoiData] = useState<RoiData>({
     businessType: '',
-    dailySales: 0,
     averageValue: 0,
-    lostSales: 0
+    lostSales: 0,
+    investmentAmount: 0
   });
 
   const [calculated, setCalculated] = useState<boolean>(false);
@@ -458,7 +458,7 @@ export default function RoiCalculator() {
 
   // ===== HANDLERS CON TIPOS =====
   const handleCalculate = (): void => {
-    if (roiData.dailySales > 0 && roiData.averageValue > 0) {
+    if (roiData.lostSales > 0 && roiData.averageValue > 0 && roiData.investmentAmount > 0) {
       setCalculated(true);
     }
   };
@@ -466,9 +466,9 @@ export default function RoiCalculator() {
   const resetCalculator = (): void => {
     setRoiData({
       businessType: '',
-      dailySales: 0,
       averageValue: 0,
-      lostSales: 0
+      lostSales: 0,
+      investmentAmount: 0
     });
     setCalculated(false);
   };
@@ -493,7 +493,9 @@ export default function RoiCalculator() {
   // ===== CÁLCULOS =====
   const monthlyLoss: number = roiData.lostSales * roiData.averageValue;
   const monthlySaving: number = Math.round(monthlyLoss * 0.3);
-  const roiMonths: number = monthlySaving > 0 ? Math.ceil(500000 / monthlySaving) : 0;
+  const roiMonths: number = monthlySaving > 0
+    ? Math.ceil(roiData.investmentAmount / monthlySaving)
+    : 0;
   const yearlySaving: number = monthlySaving * 12;
 
   return (
@@ -504,9 +506,9 @@ export default function RoiCalculator() {
           <div className={styles.roiForm}>
             <div className={styles.roiFormHeader}>
               <FaCalculator className={styles.roiFormIcon} />
-              <h4>Calculá tu ROI exacto</h4>
+              <h4>Calculá un escenario estimado</h4>
               <p className={styles.roiFormSubtitle}>
-                Respondé estas preguntas y te mostramos cuánto podrías ahorrar.
+                Ingresá tus valores reales. La simulación supone recuperar el 30% de las oportunidades que hoy se pierden.
               </p>
             </div>
 
@@ -564,32 +566,13 @@ export default function RoiCalculator() {
                 )}
               </div>
 
-              {/* Turnos/ventas por día - DINÁMICO */}
-              <div className={styles.roiQuestion}>
-                <label className={styles.roiLabel}>
-                  ¿Cuántos {texts.salesLabel} tenés por día?
-                </label>
-                <div className={styles.roiInputGroup}>
-                  <input
-                    type="number"
-                    name="dailySales"
-                    className={styles.roiInput}
-                    value={roiData.dailySales || ''}
-                    onChange={handleInputChange}
-                    placeholder={texts.salesPlaceholder}
-                    min="0"
-                  />
-                  <span className={styles.roiInputSuffix}>por día</span>
-                </div>
-              </div>
-
               {/* Valor promedio - DINÁMICO */}
               <div className={styles.roiQuestion}>
                 <label className={styles.roiLabel}>
                   Valor promedio de cada {texts.valueLabel}
                 </label>
                 <div className={styles.roiInputGroup}>
-                  <span className={styles.roiInputPrefix}>$</span>
+                  <span className={styles.roiInputPrefix}>ARS $</span>
                   <input
                     type="number"
                     name="averageValue"
@@ -598,6 +581,22 @@ export default function RoiCalculator() {
                     onChange={handleInputChange}
                     placeholder={texts.valuePlaceholder}
                     min="0"
+                  />
+                </div>
+              </div>
+
+              <div className={styles.roiQuestion}>
+                <label className={styles.roiLabel}>Inversión estimada del proyecto (ARS)</label>
+                <div className={styles.roiInputGroup}>
+                  <span className={styles.roiInputPrefix}>ARS $</span>
+                  <input
+                    type="number"
+                    name="investmentAmount"
+                    className={styles.roiInput}
+                    value={roiData.investmentAmount || ''}
+                    onChange={handleInputChange}
+                    placeholder="Ej: 500000"
+                    min="1"
                   />
                 </div>
               </div>
@@ -627,7 +626,7 @@ export default function RoiCalculator() {
               <button
                 className={styles.roiCalculateButton}
                 onClick={handleCalculate}
-                disabled={!roiData.dailySales || !roiData.averageValue}
+                disabled={!roiData.lostSales || !roiData.averageValue || !roiData.investmentAmount}
               >
                 Calcular mi ROI
                 <FaArrowRight className={styles.roiCalculateIcon} />
@@ -639,7 +638,7 @@ export default function RoiCalculator() {
           <div className={styles.roiResult}>
             <div className={styles.roiResultHeader}>
               <FaCheckCircle className={styles.roiResultIcon} />
-              <h4>📊 Tu ROI estimado</h4>
+              <h4>📊 Escenario estimado</h4>
               <button className={styles.roiResetButton} onClick={resetCalculator}>
                 Volver a calcular
               </button>
@@ -651,36 +650,36 @@ export default function RoiCalculator() {
                   Pérdida mensual actual ({texts.resultLabel})
                 </span>
                 <span className={styles.roiResultValue} style={{ color: '#ef4444' }}>
-                  ${monthlyLoss.toLocaleString('es-AR')}
+                  ARS ${monthlyLoss.toLocaleString('es-AR')}
                 </span>
               </div>
               <div className={styles.roiResultItem}>
                 <span className={styles.roiResultLabel}>Ahorro mensual estimado</span>
                 <span className={styles.roiResultValue} style={{ color: '#10b981' }}>
-                  ${monthlySaving.toLocaleString('es-AR')}
+                  ARS ${monthlySaving.toLocaleString('es-AR')}
                 </span>
               </div>
               <div className={styles.roiResultItem}>
                 <span className={styles.roiResultLabel}>Recuperás la inversión en</span>
                 <span className={styles.roiResultValue} style={{ color: '#f59e0b' }}>
-                  {roiMonths > 0 ? `${roiMonths} meses` : 'Menos de 1 mes'}
+                  {roiMonths > 0 ? `${roiMonths} meses` : 'No estimable'}
                 </span>
               </div>
               <div className={styles.roiResultItem}>
                 <span className={styles.roiResultLabel}>Ahorro anual</span>
                 <span className={styles.roiResultValue} style={{ color: '#22d3ee' }}>
-                  ${yearlySaving.toLocaleString('es-AR')}
+                  ARS ${yearlySaving.toLocaleString('es-AR')}
                 </span>
               </div>
             </div>
 
             <div className={styles.roiResultMessage}>
               <p>
-                Con una inversión de <strong>$520.895/mes</strong>,
-                estás ahorrando <strong>${monthlySaving.toLocaleString('es-AR')}/mes</strong>.
+                Con una inversión estimada de <strong>ARS ${roiData.investmentAmount.toLocaleString('es-AR')}</strong>,
+                el escenario estima un ahorro de <strong>ARS ${monthlySaving.toLocaleString('es-AR')}/mes</strong>.
               </p>
               <p className={styles.roiResultHighlight}>
-                🚀 ¡Se paga sola en {roiMonths > 0 ? `${roiMonths} meses` : 'menos de 1 mes'}!
+                Recuperación teórica estimada: {roiMonths > 0 ? `${roiMonths} meses` : 'no estimable'}.
               </p>
             </div>
 
@@ -690,7 +689,7 @@ export default function RoiCalculator() {
                 <FaArrowRight className={styles.roiResultButtonIcon} />
               </a>
               <span className={styles.roiResultNote}>
-                * Cálculo estimado. Los resultados pueden variar según tu negocio.
+                * Simulación orientativa basada en una recuperación supuesta del 30%; no garantiza ahorros ni resultados comerciales.
               </span>
             </div>
           </div>

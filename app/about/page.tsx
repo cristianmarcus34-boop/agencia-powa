@@ -1,17 +1,16 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Image from 'next/image';
 import {
-  FaCode, FaPaintBrush, FaRocket, FaUsers,
-  FaAward, FaClock, FaLightbulb, FaCheckCircle,
+  FaCode, FaPaintBrush, FaRocket,
+  FaClock, FaLightbulb, FaCheckCircle,
   FaHeart, FaHandshake, FaStar, FaLaptopCode,
-  FaPalette, FaArrowRight, FaQuoteRight,
+  FaArrowRight,
   FaMedal, FaReact, FaNodeJs, FaPython, FaDocker,
   FaDatabase, FaCloud, FaBrain,
-  FaBug, FaTasks, FaVial, FaServer, FaMobileAlt,
-  FaChartLine, FaSearch, FaShieldAlt, FaPlug, FaMapMarkerAlt
+  FaChartLine
 } from 'react-icons/fa';
 import Script from 'next/script';
 import styles from './about.module.css';
@@ -29,11 +28,11 @@ const TEAM_CORE = [
     imgClass: '',
     reverse: false,
     bio: [
-      '<strong>15 años</strong> haciendo esto. No me considero un genio, pero sí alguien que <strong>aprendió a resolver problemas reales</strong> con el tiempo. Arranqué con proyectos chicos y hoy lidero arquitecturas para negocios que ya juegan en primera.',
+      '<strong>15 años</strong> trabajando en desarrollo de software. Arranqué con proyectos chicos y fui profundizando en arquitectura, producto y resolución de problemas concretos.',
 
       'Me manejo con el <strong>stack moderno</strong> (Next.js, React, TypeScript, Supabase, Node.js, Django), pero lo que más me importa no es la tecnología: es <strong>entender qué necesitás y armarte algo que te sirva de verdad</strong>.',
 
-      'Laburé en sistemas de reservas con pagos, e-commerce que crecieron mucho y apps mobile nativas. Cada proyecto me enseñó lo mismo: <strong>el código es solo una herramienta, vos y tu negocio son lo importante</strong>.',
+      'Desarrollo sistemas de reservas, e-commerce y aplicaciones mobile. Para mí, <strong>el código es una herramienta: entender el problema y el contexto del negocio va primero</strong>.',
 
       'Me gusta trabajar con <strong>transparencia y buena onda</strong>. Si algo no lo sé, te lo digo. Si algo se puede hacer mejor, te lo propongo. Mi objetivo no es solo entregarte un proyecto, es que <strong>tengas ganas de volver a trabajar conmigo</strong>.'
     ],
@@ -46,177 +45,10 @@ const TEAM_CORE = [
       'UX/UI desde el código'
     ]
   },
-  {
-    id: 'mariana',
-    name: 'Mariana Juarez',
-    role: 'Head of Design & UX Strategy',
-    icon: <FaPalette size={22} />,
-    img: '/marianaabout.png',
-    imgClass: 'imgMariana',
-    reverse: true,
-    // Mariana en 1ª persona:
-    bio: [
-      'Soy Mariana y me ocupo del diseño y la estrategia en Powa. Hace <strong>6 años</strong> que diseño productos digitales para <strong>startups, fintechs y retail</strong>, y aprendí que lo más importante no es que la web sea "linda", sino que <strong>la gente la entienda y la use</strong>.',
-
-      'Mi forma de trabajar es simple: <strong>primero escucho al usuario, después diseño</strong>. Testeo, mido y ajusto hasta que queda redondo. Soy especialista en <strong>sistemas de diseño</strong> y me aseguro de que tu marca se vea bien en todos lados.',
-
-      'Lo que me hace distinta es que <strong>no diseño solo para la vista</strong>: pienso en cómo se siente navegar tu producto. Que sea claro, rápido y que no te haga renegar. Si algo no funciona, lo cambio sin drama.'
-    ],
-    tags: [
-      'UX Research • Testing',
-      'Figma • Design Systems',
-      'Estrategia de producto',
-      'Branding • Identidad visual',
-      'Design Thinking',
-      'Adobe Creative Suite'
-    ]
-  }
-];
-
-// ============================================================
-// COLABORADORES ON-DEMAND (sin nombres, solo roles)
-// ============================================================
-const COLABORADORES = [
-  {
-    id: 'frontend',
-    icon: <FaCode />,
-    role: 'Desarrolladores Frontend',
-    desc: 'Especialistas en React, Next.js y Vue que dan vida a las interfaces.'
-  },
-  {
-    id: 'backend',
-    icon: <FaServer />,
-    role: 'Desarrolladores Backend',
-    desc: 'Expertos en Node.js, Python y bases de datos que construyen la lógica.'
-  },
-  {
-    id: 'mobile',
-    icon: <FaMobileAlt />,
-    role: 'Desarrolladores Mobile',
-    desc: 'Creamos apps nativas y cross-platform para iOS y Android.'
-  },
-  {
-    id: 'qa',
-    icon: <FaBug />,
-    role: 'QA & Testers',
-    desc: 'Validan cada funcionalidad antes de que llegue al cliente final.'
-  },
-  {
-    id: 'devops',
-    icon: <FaDocker />,
-    role: 'DevOps Engineers',
-    desc: 'Automatizan deploys, monitorean infraestructura y optimizan costos cloud.'
-  },
-  {
-    id: 'ux',
-    icon: <FaPalette />,
-    role: 'Diseñadores UX/UI',
-    desc: 'Prototipan, testean y refinan cada pantalla para maximizar conversión.'
-  },
-  {
-    id: 'seo',
-    icon: <FaSearch />,
-    role: 'Especialistas SEO',
-    desc: 'Posicionan tu negocio en Google con estrategias técnicas y de contenido.'
-  },
-  {
-    id: 'security',
-    icon: <FaShieldAlt />,
-    role: 'Consultores de Seguridad',
-    desc: 'Auditan y blindan aplicaciones críticas contra vulnerabilidades.'
-  }
 ];
 
 export default function AboutPage() {
-  const [counters, setCounters] = useState({ projects: 0, clients: 0, experience: 0 });
-  const [statsAnimated, setStatsAnimated] = useState(false);
   const revealRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const statsRef = useRef<HTMLDivElement | null>(null);
-
-  // ===== ANIMACIÓN DE CONTADORES + OBSERVER (TODO EN UNO) =====
-  useEffect(() => {
-    if (statsAnimated) return;
-
-    const targetProjects = 13;
-    const targetClients = 10;
-    const targetExperience = 5;
-
-    const startCounter = () => {
-      setStatsAnimated(true);
-
-      const duration = 2000;
-      const steps = 60;
-      const interval = duration / steps;
-
-      let step = 0;
-
-      const timer = setInterval(() => {
-        step++;
-        const progress = step / steps;
-        const eased = 1 - Math.pow(1 - progress, 3);
-
-        setCounters({
-          projects: Math.round(eased * targetProjects),
-          clients: Math.round(eased * targetClients),
-          experience: Math.round(eased * targetExperience),
-        });
-
-        if (step >= steps) {
-          setCounters({
-            projects: targetProjects,
-            clients: targetClients,
-            experience: targetExperience,
-          });
-          clearInterval(timer);
-        }
-      }, interval);
-
-      return () => clearInterval(timer);
-    };
-
-    // Si no hay IntersectionObserver, arrancamos directo
-    if (typeof IntersectionObserver === 'undefined') {
-      startCounter();
-      return;
-    }
-
-    const element = statsRef.current;
-
-    // Si no hay ref todavía, arrancamos directo
-    if (!element) {
-      startCounter();
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            startCounter();
-            observer.disconnect();
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '0px 0px -20px 0px',
-      }
-    );
-
-    observer.observe(element);
-
-    // Failsafe: si en 3 segundos no se disparó, arranca igual
-    const failsafe = setTimeout(() => {
-      if (!statsAnimated) {
-        startCounter();
-      }
-    }, 3000);
-
-    return () => {
-      observer.disconnect();
-      clearTimeout(failsafe);
-    };
-  }, [statsAnimated]);
 
   // ===== INTERSECTION OBSERVER PARA REVEAL =====
   useEffect(() => {
@@ -247,13 +79,6 @@ export default function AboutPage() {
   };
 
   // ===== DATA =====
-  const stats = [
-    { icon: <FaRocket />, value: `${counters.projects}`, label: 'Proyectos en producción' },
-    { icon: <FaUsers />, value: `${counters.clients}+`, label: 'Clientes activos' },
-    { icon: <FaClock />, value: `${counters.experience}+`, label: 'Años en el rubro' },
-    { icon: <FaHeart />, value: '100%', label: 'Código propio' },
-  ];
-
   const values = [
     {
       icon: <FaCode />,
@@ -277,54 +102,83 @@ export default function AboutPage() {
     },
   ];
 
-  const technologies = [
-    // ===== NUESTRO CORE (lo que usamos siempre) =====
-    { name: 'React • Next.js', icon: <FaReact />, color: '#61dafb', nivel: 'core' },
-    { name: 'TypeScript • JavaScript', icon: <FaCode />, color: '#3178c6', nivel: 'core' },
-    { name: 'Node.js • Django', icon: <FaNodeJs />, color: '#68a063', nivel: 'core' },
-    { name: 'PostgreSQL • Supabase', icon: <FaDatabase />, color: '#336791', nivel: 'core' },
-    { name: 'Tailwind • Bootstrap', icon: <FaCode />, color: '#38bdf8', nivel: 'core' },
-    { name: 'Vercel • Docker', icon: <FaDocker />, color: '#2496ed', nivel: 'core' },
+  const technologyGroups = [
+    {
+      id: 'core',
+      label: 'Stack principal',
+      description: 'Tecnologías que usamos como base para diseñar, desarrollar y desplegar productos digitales.',
+      technologies: [
+        { name: 'React • Next.js', icon: <FaReact />, color: '#61dafb' },
+        { name: 'TypeScript • JavaScript', icon: <FaCode />, color: '#3178c6' },
+        { name: 'Node.js • Django', icon: <FaNodeJs />, color: '#68a063' },
+        { name: 'PostgreSQL • Supabase', icon: <FaDatabase />, color: '#336791' },
+        { name: 'Tailwind • Bootstrap', icon: <FaCode />, color: '#38bdf8' },
+        { name: 'Vercel • Docker', icon: <FaDocker />, color: '#2496ed' },
+      ]
+    },
+    {
+      id: 'extended',
+      label: 'Herramientas complementarias',
+      description: 'Alternativas que evaluamos cuando el producto, las integraciones o la infraestructura lo requieren.',
+      technologies: [
+        { name: 'Vue • Angular • Svelte', icon: <FaCode />, color: '#4fc08d' },
+        { name: 'Python • FastAPI • Flask', icon: <FaPython />, color: '#3776ab' },
+        { name: 'MongoDB • Redis • MySQL', icon: <FaDatabase />, color: '#47a248' },
+        { name: 'AWS • Azure • GCP', icon: <FaCloud />, color: '#ff9900' },
+        { name: 'CI/CD • GitHub Actions', icon: <FaCode />, color: '#2088ff' },
+        { name: 'IA • OpenAI • TensorFlow', icon: <FaBrain />, color: '#10a37f' },
+      ]
+    }
+  ];
 
-    // ===== TAMBIÉN MANEJAMOS =====
-    { name: 'Vue • Angular • Svelte', icon: <FaCode />, color: '#4fc08d', nivel: 'secundario' },
-    { name: 'Python • FastAPI • Flask', icon: <FaPython />, color: '#3776ab', nivel: 'secundario' },
-    { name: 'MongoDB • Redis • MySQL', icon: <FaDatabase />, color: '#47a248', nivel: 'secundario' },
-    { name: 'AWS • Azure • GCP', icon: <FaCloud />, color: '#ff9900', nivel: 'secundario' },
-    { name: 'CI/CD • GitHub Actions', icon: <FaCode />, color: '#2088ff', nivel: 'secundario' },
-    { name: 'IA • OpenAI • TensorFlow', icon: <FaBrain />, color: '#10a37f', nivel: 'secundario' },
+  const collaborationModel = [
+    {
+      id: 'scope',
+      icon: <FaChartLine />,
+      title: 'El alcance define el equipo',
+      description: 'Evaluamos complejidad, integraciones, riesgos técnicos, plazos y contexto operativo de la empresa.'
+    },
+    {
+      id: 'specialists',
+      icon: <FaCode />,
+      title: 'Especialistas cuando aportan valor',
+      description: 'UX/UI, backend, datos, QA, infraestructura o seguridad se suman según las necesidades concretas del proyecto.'
+    },
+    {
+      id: 'coordination',
+      icon: <FaHandshake />,
+      title: 'Una coordinación central',
+      description: 'El fundador mantiene la visión integral, la comunicación y la coordinación técnica de cada etapa.'
+    }
   ];
 
   // ============================================================
-  // CASOS REALES (reemplaza a "testimonials")
+  // DEMOS DE PRODUCTO
   // ============================================================
   const casos = [
     {
       id: 'barberia',
       emoji: '✂️',
-      rubro: 'Barbería',
-      ubicacion: 'Quilmes, Buenos Aires',
-      problema: 'Perdían turnos por WhatsApp y no tenían control de la agenda.',
-      solucion: 'Sistema de reservas online con pago anticipado y panel de gestión.',
-      resultado: 'Hoy gestionan 3x más turnos sin sumar personal.'
+      rubro: 'Agenda online para barbería',
+      problema: 'Coordinar la disponibilidad y recibir solicitudes de turno.',
+      solucion: 'Demo de agenda con selección de horarios y panel de gestión.',
+      resultado: 'Demostración funcional; no representa resultados comerciales medidos.'
     },
     {
       id: 'distribuidora',
       emoji: '📦',
-      rubro: 'Distribuidora',
-      ubicacion: 'Avellaneda, Buenos Aires',
-      problema: 'Llevaban stock y pedidos en planillas de Excel que se rompían.',
-      solucion: 'Panel de administración con control de stock, pedidos y reportes.',
-      resultado: 'Ahorran 15 horas semanales de trabajo administrativo.'
+      rubro: 'Gestión de stock y pedidos',
+      problema: 'Visualizar productos, pedidos y movimientos desde un mismo lugar.',
+      solucion: 'Concepto de panel administrativo con control de stock y reportes.',
+      resultado: 'Demo conceptual; no representa un caso de cliente.'
     },
     {
       id: 'estudio',
       emoji: '⚖️',
-      rubro: 'Estudio contable',
-      ubicacion: 'La Plata, Buenos Aires',
-      problema: 'La web vieja no los representaba y no aparecían en Google.',
-      solucion: 'Rediseño completo con SEO técnico y formulario de contacto.',
-      resultado: 'Duplicaron las consultas mensuales en 4 meses.'
+      rubro: 'Sitio para estudio profesional',
+      problema: 'Explicar servicios y facilitar un primer contacto claro.',
+      solucion: 'Concepto de sitio institucional con contenido y formulario.',
+      resultado: 'Demo conceptual; no representa un caso de cliente.'
     }
   ];
 
@@ -332,7 +186,7 @@ export default function AboutPage() {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     "name": "Sobre Powa - Agencia Digital",
-    "description": "Conoce al equipo de Powa, la agencia digital que fusiona ingeniería avanzada con diseño premium.",
+    "description": "Conoce al fundador de Powa y su modelo flexible para integrar especialistas según cada proyecto.",
     "url": "https://agencia-powa.vercel.app/about",
     "mainEntity": {
       "@type": "Organization",
@@ -392,9 +246,7 @@ export default function AboutPage() {
 
             <div className={styles.aboutIntroContainer}>
               <p className={styles.aboutIntroParagraph}>
-                Código, diseño y estrategia para que tu negocio funcione mejor.
-                Un equipo senior que te acompaña de principio a fin,
-                sin vueltas y sin intermediarios.
+                El fundador lidera cada solución y suma especialistas según el alcance, la sofisticación del proyecto y el contexto de la empresa contratante.
               </p>
             </div>
 
@@ -412,37 +264,19 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* ===== STATS ===== */}
-          <div ref={statsRef} className={styles.statsSection}>
-            <Row className="g-4">
-              {stats.map((stat, index) => (
-                <Col key={index} md={3} sm={6}>
-                  <div
-                    className={`${styles.statCard} ${statsAnimated ? styles.statVisible : ''}`}
-                    style={{ transitionDelay: `${index * 0.1}s` }}
-                  >
-                    <div className={styles.statIcon}>{stat.icon}</div>
-                    <div className={styles.statValue}>{stat.value}</div>
-                    <div className={styles.statLabel}>{stat.label}</div>
-                  </div>
-                </Col>
-              ))}
-            </Row>
-          </div>
-
           {/* ============================================================ */}
-          {/* SECCIÓN EQUIPO CORE */}
+          {/* PERFIL DEL FUNDADOR */}
           {/* ============================================================ */}
           <div ref={addToRefs} className={`${styles.teamHeader} ${styles.reveal}`}>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionBadge}>
-                <FaUsers className={styles.sectionBadgeIcon} /> EQUIPO CORE
+                <FaLaptopCode className={styles.sectionBadgeIcon} /> FUNDADOR
               </span>
               <h2 className={styles.sectionTitle}>
-                Las personas <span className={styles.textGradient}>detrás del código</span>
+                Desarrollo a cargo <span className={styles.textGradient}>del fundador</span>
               </h2>
               <p className={styles.sectionSubtitle}>
-                Un equipo compacto de especialistas senior que lidera cada proyecto de punta a punta.
+                Hablás directamente con quien define la solución y se ocupa de desarrollarla.
               </p>
             </div>
           </div>
@@ -502,35 +336,27 @@ export default function AboutPage() {
             </div>
           ))}
 
-          {/* ============================================================ */}
-          {/* SECCIÓN COLABORADORES ON-DEMAND */}
-          {/* ============================================================ */}
+          {/* ===== MODELO DE COLABORACIÓN ===== */}
           <div ref={addToRefs} className={`${styles.collabSection} ${styles.reveal}`}>
             <div className={styles.collabHeader}>
               <span className={styles.collabBadge}>
-                <FaHandshake className={styles.sectionBadgeIcon} /> COLABORADORES ON-DEMAND
+                <FaHandshake className="me-2" /> MODELO DE COLABORACIÓN
               </span>
               <h2 className={styles.collabTitle}>
-                Especialistas que se suman <span className={styles.textGradient}>según el proyecto</span>
+                El equipo adecuado <span className={styles.textGradient}>para cada desafío</span>
               </h2>
               <p className={styles.collabSubtitle}>
-                Trabajamos con una red de profesionales senior que se integran al equipo cuando el proyecto lo requiere.
-                Esto nos permite <strong>escalar rápido</strong> sin perder calidad ni comprometer plazos.
+                La estructura se define para cada proyecto: no trabajamos con un equipo fijo sobredimensionado ni asignamos perfiles que no hacen falta.
               </p>
             </div>
 
             <Row className="g-3 g-md-4">
-              {COLABORADORES.map((colab, index) => (
-                <Col key={colab.id} xs={12} sm={6} lg={3}>
-                  <div
-                    className={styles.collabCard}
-                    style={{ transitionDelay: `${index * 0.05}s` }}
-                  >
-                    <div className={styles.collabIconWrapper}>
-                      {colab.icon}
-                    </div>
-                    <h3 className={styles.collabRole}>{colab.role}</h3>
-                    <p className={styles.collabDesc}>{colab.desc}</p>
+              {collaborationModel.map((item) => (
+                <Col key={item.id} xs={12} md={4}>
+                  <div className={styles.collabCard}>
+                    <div className={styles.collabIconWrapper}>{item.icon}</div>
+                    <h3 className={styles.collabRole}>{item.title}</h3>
+                    <p className={styles.collabDesc}>{item.description}</p>
                   </div>
                 </Col>
               ))}
@@ -539,9 +365,7 @@ export default function AboutPage() {
             <div className={styles.collabNote}>
               <FaLightbulb className={styles.collabNoteIcon} />
               <p>
-                <strong>¿Por qué trabajamos así?</strong> Porque cada proyecto es distinto.
-                No todos necesitan un equipo completo de 10 personas, ni todos pueden resolverse con 2.
-                Armamos el equipo <strong>a medida</strong> de tu proyecto, tu presupuesto y tus tiempos.
+                <strong>Transparencia desde el inicio.</strong> Antes de avanzar se acuerdan alcance, responsabilidades, perfiles necesarios, etapas e inversión. Los especialistas se incorporan solo cuando aportan al objetivo del proyecto.
               </p>
             </div>
           </div>
@@ -550,41 +374,49 @@ export default function AboutPage() {
           <div ref={addToRefs} className={`${styles.techSection} ${styles.reveal}`}>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionBadge}>
-                <FaCode className={styles.sectionBadgeIcon} /> STACK TECNOLÓGICO
+                <FaCode className={styles.sectionBadgeIcon} /> INGENIERÍA Y PRODUCTO
               </span>
               <h2 className={styles.sectionTitle}>
-                Tecnologías que <span className={styles.textGradient}>dominamos</span>
+                Tecnología con <span className={styles.textGradient}>criterio</span>
               </h2>
               <p className={styles.sectionSubtitle}>
-                El ecosistema de herramientas que utilizamos para construir soluciones.
+                Elegimos el stack según el problema, la operación y la evolución esperada de cada producto; no al revés.
               </p>
             </div>
 
-            <Row className="g-3">
-              {technologies.map((tech, index) => (
-                <Col key={index} xs={6} md={4} lg={3}>
-                  <div className={styles.techCard}>
-                    <div className={styles.techIcon} style={{ color: tech.color }}>
-                      {tech.icon}
-                    </div>
-                    <span className={styles.techName}>{tech.name}</span>
-                  </div>
-                </Col>
-              ))}
-            </Row>
+            {technologyGroups.map((group) => (
+              <section key={group.id} className={styles.techGroup}>
+                <div className={styles.techGroupHeader}>
+                  <h3 className={styles.techGroupTitle}>{group.label}</h3>
+                  <p className={styles.techGroupDescription}>{group.description}</p>
+                </div>
+                <Row className="g-2 g-lg-3">
+                  {group.technologies.map((tech) => (
+                    <Col key={tech.name} xs={12} sm={6} lg={4}>
+                      <div className={styles.techCard}>
+                        <div className={styles.techIcon} style={{ color: tech.color }} aria-hidden="true">
+                          {tech.icon}
+                        </div>
+                        <span className={styles.techName}>{tech.name}</span>
+                      </div>
+                    </Col>
+                  ))}
+                </Row>
+              </section>
+            ))}
           </div>
 
-          {/* ===== CASOS REALES ===== */}
+          {/* ===== DEMOS FUNCIONALES ===== */}
           <div ref={addToRefs} className={`${styles.casesSection} ${styles.reveal}`}>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionBadge}>
-                <FaChartLine className={styles.sectionBadgeIcon} /> CASOS REALES
+                <FaChartLine className={styles.sectionBadgeIcon} /> DEMOS FUNCIONALES
               </span>
               <h2 className={styles.sectionTitle}>
-                Problemas que <span className={styles.textGradient}>resolvimos</span>
+                Ideas aplicadas a <span className={styles.textGradient}>problemas concretos</span>
               </h2>
               <p className={styles.sectionSubtitle}>
-                Casos concretos de clientes que confiaron en nosotros.
+                Prototipos para explorar flujos, interfaces y posibilidades técnicas.
               </p>
             </div>
 
@@ -596,10 +428,7 @@ export default function AboutPage() {
                       <span className={styles.caseEmoji}>{caso.emoji}</span>
                       <div>
                         <h3 className={styles.caseRubro}>{caso.rubro}</h3>
-                        <span className={styles.caseUbicacion}>
-                          <FaMapMarkerAlt className={styles.caseUbicacionIcon} />
-                          {caso.ubicacion}
-                        </span>
+                        <span className={styles.caseUbicacion}>DEMO</span>
                       </div>
                     </div>
 
@@ -615,7 +444,7 @@ export default function AboutPage() {
                       </div>
 
                       <div className={`${styles.caseRow} ${styles.caseRowResult}`}>
-                        <span className={styles.caseLabelResult}>Resultado</span>
+                        <span className={styles.caseLabelResult}>Alcance</span>
                         <p className={styles.caseTextResult}>{caso.resultado}</p>
                       </div>
                     </div>
@@ -625,8 +454,7 @@ export default function AboutPage() {
             </Row>
 
             <p className={styles.casesNote}>
-              * Por privacidad, algunos clientes prefieren mantener su nombre en reserva.
-              Si querés referencias directas, te las pasamos cuando hablemos.
+              Son ejemplos de producto, no proyectos de clientes ni métricas verificadas.
             </p>
           </div>
 

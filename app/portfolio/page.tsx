@@ -2,8 +2,6 @@
 
 import React, { useState, useMemo } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import BsButton from 'react-bootstrap/Button';
-const Button = BsButton as any;
 import Image from 'next/image';
 
 // ============================================================ //
@@ -20,19 +18,9 @@ import {
   FaImages,
   FaChevronRight,
   FaStar,
-  FaAward,
-  FaClock,
-  FaUsers,
-  FaDatabase,
   FaCloudUploadAlt,
-  FaShieldAlt,
   FaArrowRight,
   FaLeaf,
-  FaWhatsapp,
-  FaPalette,
-  FaCut,
-  FaSwimmer,
-  FaSeedling,
   FaCalendarCheck,
   FaTree,
   FaPaw,
@@ -100,7 +88,7 @@ const PROJECTS_DATA: Project[] = [
       • **Sistema de opiniones** con moderación (formulario público + aprobación admin)
       • **Panel de administración** protegido para gestionar productos, pedidos y testimonios
       • **Diseño responsive** con paleta cálida custom y tipografías premium
-      • **SEO optimizado** con metadata por página
+      • **SEO técnico** con metadatos por página
 
       ## 🏗️ Arquitectura Técnica
       **Framework:** Next.js 16 con App Router
@@ -142,7 +130,6 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "E-commerce",
-    priceRange: "USD 2.500 - 6.000",
     galleryImages: [
       "/proyectos/tienda-emociones-hero.jpg",
       "/proyectos/tienda-emociones-catalogo.jpg",
@@ -217,7 +204,6 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "Institucional",
-    priceRange: "USD 4.000 - 10.000",
     galleryImages: null,
   },
 
@@ -253,7 +239,6 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "SaaS",
-    priceRange: "USD 5.000 - 15.000",
     galleryImages: [
       "/proyectos/kubic-hero.jpg",
       "/proyectos/kubic-servicios.jpg",
@@ -312,7 +297,6 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "SaaS",
-    priceRange: "USD 3.000 - 8.000",
     galleryImages: [
       "/proyectos/barberia-hero.jpg",
       "/proyectos/barberia-calendario.jpg",
@@ -360,7 +344,6 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "Landing Page",
-    priceRange: "USD 1.500 - 3.000",
     galleryImages: [
       "/proyectos/vivero-hero.jpg",
       "/proyectos/vivero-productos.jpg",
@@ -412,7 +395,6 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "Landing Page",
-    priceRange: "USD 1.500 - 3.000",
     galleryImages: [
       "/proyectos/petshop-hero.jpg",
       "/proyectos/petshop-cuestionario.jpg",
@@ -463,7 +445,6 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "Landing Page",
-    priceRange: "USD 1.500 - 3.000",
     galleryImages: [
       "/proyectos/vet-hero.jpg",
       "/proyectos/vet-planes.jpg",
@@ -514,7 +495,6 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "Landing Page",
-    priceRange: "USD 1.500 - 3.000",
     galleryImages: [
       "/proyectos/event-hero.jpg",
       "/proyectos/event-planes.jpg",
@@ -558,7 +538,6 @@ const PROJECTS_DATA: Project[] = [
     featured: true,
     year: "2026",
     category: "Landing Page",
-    priceRange: "USD 2.000 - 4.000",
     galleryImages: [
       "/proyectos/jardineria-hero.jpg",
       "/proyectos/jardineria-servicios.jpg",
@@ -608,7 +587,6 @@ const PROJECTS_DATA: Project[] = [
     featured: false,
     year: "2025",
     category: "Mobile",
-    priceRange: "USD 3.000 - 7.000",
     galleryImages: [
       "/krustyappminiatura.png",
       "/menuprincipalminiatura.png",
@@ -635,7 +613,6 @@ const PROJECTS_DATA: Project[] = [
     featured: false,
     year: "2024",
     category: "E-commerce",
-    priceRange: "USD 2.000 - 5.000",
     galleryImages: null
   },
 
@@ -656,7 +633,6 @@ const PROJECTS_DATA: Project[] = [
     tech: ["Django", "PostgreSQL", "API Rest"],
     year: "2024",
     category: "Backend",
-    priceRange: "USD 2.000 - 5.000",
     galleryImages: null
   },
 
@@ -671,13 +647,12 @@ const PROJECTS_DATA: Project[] = [
     longDescription: `
       La Abu Matie App es un sistema de gestión administrativa automatizado. La interfaz fue diseñada siguiendo principios de accesibilidad WCAG y eficiencia operativa, permitiendo a los administradores gestionar inventario, pedidos y clientes desde un único dashboard.
     `,
-    link: "/contact",
+    link: "https://la-abu-matie-app.web.app/",
     github: "https://github.com/cristianmarcus34-boop/la-abu-matie",
     tag: "",
     tech: ["Material UI", "Realtime DB", "NoSQL"],
     year: "2025",
     category: "Dashboard",
-    priceRange: "USD 2.000 - 4.000",
     galleryImages: null
   },
 
@@ -692,12 +667,11 @@ const PROJECTS_DATA: Project[] = [
     longDescription: `
       Gimnasio & Nutrición es un ecosistema digital para la gestión de centros fitness. Incluye integración nutricional, seguimiento de progreso en tiempo real y paneles de control para entrenadores y clientes.
     `,
-    link: "/contact",
+    link: "https://gimnasio-nutricion.vercel.app/",
     tag: "",
     tech: ["Next.js", "Supabase", "Tailwind"],
     year: "2025",
     category: "Health",
-    priceRange: "USD 3.000 - 6.000",
     galleryImages: null,
     demoComponent: <GimnasioDemo />
   },
@@ -713,12 +687,11 @@ const PROJECTS_DATA: Project[] = [
     longDescription: `
       Powa Schedule es un sistema SaaS para la gestión de turnos y consultorías. Ofrece disponibilidad en tiempo real, notificaciones automáticas vía email y WhatsApp, y un panel de administración completo para gestionar reservas y clientes.
     `,
-    link: "/contact",
+    link: "https://powa-schedule.vercel.app/",
     tag: "",
     tech: ["Next.js", "Supabase", "React"],
     year: "2025",
     category: "SaaS",
-    priceRange: "USD 2.000 - 5.000",
     galleryImages: null,
     demoComponent: <ReservaDemo />
   },
@@ -731,13 +704,6 @@ export default function PortfolioPage() {
   const [showModal, setShowModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [filter, setFilter] = useState<string>('all');
-
-  const stats = useMemo(() => [
-    { value: "14", label: "Proyectos en Producción", icon: <FaRocket /> },
-    { value: "6", label: "Clientes Activos", icon: <FaUsers /> },
-    { value: "100%", label: "Propiedad Intelectual", icon: <FaShieldAlt /> },
-    { value: "99.9%", label: "Uptime Garantizado", icon: <FaClock /> }
-  ], []);
 
   const categories = useMemo(() => {
     const cats = ['all', ...new Set(PROJECTS_DATA.map(p => p.category).filter(Boolean))];
@@ -756,12 +722,6 @@ export default function PortfolioPage() {
 
   const featuredProjects = PROJECTS_DATA.filter(p => p.featured);
 
-  const testimonials = [
-    { name: "Ramiro Leiva", role: "CEO, Kubic.ai", text: "Powa transformó nuestra plataforma en tiempo récord. La arquitectura que implementaron nos permitió escalar de 500 a 15,000 usuarios sin problemas." },
-    { name: "Tamara Soria", role: "Dueña, Barbería El Rulo", text: "El sistema de reservas revolucionó mi negocio. Pasé de perder turnos a tener la agenda llena todas las semanas." },
-    { name: "Eli Juárez", role: "Emprendedora|Dueña, Tienda de Emociones", text: "Powa capturó exactamente la esencia de mi marca. El e-commerce no solo funciona perfecto, sino que transmite la calidez que quería para mis clientes." }
-  ];
-
   return (
     <div className={styles.portfolioWrapper}>
       <div className={styles.ambientGlow} />
@@ -770,14 +730,13 @@ export default function PortfolioPage() {
       <Container className={styles.heroSection}>
         <header className="text-center">
           <div className={styles.badgeWrapper}>
-            <span className={styles.badgePowa}>CASOS DE ESTUDIO</span>
+            <span className={styles.badgePowa}>PORTFOLIO Y DEMOS</span>
           </div>
           <h1 className={styles.portfolioTitleMain}>
             Software de <span className={styles.textGradient}>Alto Impacto</span>
           </h1>
           <p className={styles.portfolioLeadText}>
-            Soluciones de ingeniería que transforman la visión de negocio en productos escalables,
-            seguros y centrados en el usuario.
+            Proyectos propios y demostraciones funcionales. Explorá interfaces y flujos de producto; los ejemplos no representan resultados de clientes.
           </p>
 
           <div className={styles.featuredBadge}>
@@ -789,18 +748,6 @@ export default function PortfolioPage() {
       </Container>
 
       <Container className="pb-5">
-        <Row className="mb-5 g-3">
-          {stats.map((stat, i) => (
-            <Col xs={6} md={3} key={i}>
-              <div className={styles.statCard}>
-                <div className={styles.statIcon}>{stat.icon}</div>
-                <span className={styles.statValue}>{stat.value}</span>
-                <span className={styles.statLabel}>{stat.label}</span>
-              </div>
-            </Col>
-          ))}
-        </Row>
-
         <div className={styles.filterSection}>
           <div className={styles.filterWrapper}>
             {categories.map((cat) => (
@@ -871,14 +818,20 @@ export default function PortfolioPage() {
                   )}*/}
 
                   <div className={styles.cardFooter}>
-                    <Button
-                      variant="link"
-                      href={project.link !== '#' ? project.link : '/contact'}
-                      target={project.link !== '#' ? '_blank' : undefined}
-                      className={styles.linkAction}
-                    >
-                      {project.link !== '#' ? 'EXPLORAR' : 'CONSULTAR'} <FaChevronRight size={10} className="ms-1" />
-                    </Button>
+                    {project.link !== '#' ? (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.linkAction}
+                      >
+                        EXPLORAR <FaChevronRight size={10} className="ms-1" />
+                      </a>
+                    ) : (
+                      <Link href="/contact" className={styles.linkAction}>
+                        CONSULTAR <FaChevronRight size={10} className="ms-1" />
+                      </Link>
+                    )}
                     {(project.galleryImages || project.demoComponent) && (
                       <button onClick={() => handleShowModal(project)} className={styles.iconAction} title="Ver Detalles">
                         <FaArrowRight />
@@ -893,25 +846,14 @@ export default function PortfolioPage() {
 
         <section className={styles.testimonialsSection}>
           <div className="text-center mb-4">
-            <span className={styles.badgePowa}>TESTIMONIOS</span>
+            <span className={styles.badgePowa}>SOBRE ESTE PORTFOLIO</span>
             <h2 className={styles.sectionTitle}>
-              Lo que dicen <span className={styles.textGradient}>nuestros clientes</span>
+              Demos para explorar, <span className={styles.textGradient}>sin métricas inventadas</span>
             </h2>
+            <p className={styles.portfolioLeadText}>
+              Cada proyecto muestra una solución técnica o visual. El alcance y los resultados de un trabajo real se definen con cada cliente.
+            </p>
           </div>
-          <Row className="g-3">
-            {testimonials.map((t, i) => (
-              <Col key={i} md={4}>
-                <div className={styles.testimonialCard}>
-                  <div className={styles.testimonialStars}>★★★★★</div>
-                  <p className={styles.testimonialText}>"{t.text}"</p>
-                  <div className={styles.testimonialAuthor}>
-                    <strong>{t.name}</strong>
-                    <span>{t.role}</span>
-                  </div>
-                </div>
-              </Col>
-            ))}
-          </Row>
         </section>
 
         <section className={styles.ctaWrapper}>

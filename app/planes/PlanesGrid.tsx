@@ -31,17 +31,17 @@ const PLAN_LANZAMIENTO: Plan = {
     icon: <FaRocket />,
     priceUsd: 1200,
     period: 'pago único',
-    description: 'Todo lo que necesitás durante los primeros 90 días después de lanzar tu proyecto. Ideal para asegurar un arranque sin sorpresas.',
+    description: 'Acompañamiento durante los primeros 90 días, con tareas, canales y tiempos de respuesta definidos antes de empezar.',
     color: 'from-cyan-400 to-cyan-600',
     badge: '🚀 Servicio puntual',
     features: [
-        'Monitoreo 24/7 durante 90 días',
-        'Correcciones críticas inmediatas',
-        'Optimización de rendimiento',
-        'Capacitación a tu equipo',
-        'Documentación técnica completa',
-        'Plan de continuidad',
-        'Auditoría de seguridad inicial'
+        'Monitoreo y alertas según la infraestructura acordada',
+        'Correcciones del alcance entregado, según condiciones de la propuesta',
+        'Revisión de rendimiento con métricas definidas para el proyecto',
+        'Capacitación en las sesiones y temas acordados',
+        'Documentación técnica del alcance implementado',
+        'Transferencia de código, accesos y operación',
+        'Revisión inicial de seguridad con alcance documentado'
     ]
 };
 
@@ -53,14 +53,14 @@ const PLANS_MENSUALES: Plan[] = [
         icon: <FaCloudUploadAlt />,
         priceUsd: 150,
         period: '/mes',
-        description: 'Mantenimiento preventivo y soporte básico para proyectos pequeños.',
+        description: 'Mantenimiento preventivo para proyectos pequeños, con soporte acotado y tareas definidas.',
         color: 'from-blue-500 to-blue-600',
         features: [
             'Monitoreo básico de disponibilidad',
             'Actualizaciones de seguridad críticas',
-            'Soporte por email (respuesta en 48hs)',
+            'Soporte por email: respuesta dentro de 2 días hábiles',
             'Reporte mensual de rendimiento',
-            'Backups semanales',
+            'Respaldos semanales cuando la plataforma y el proveedor lo permiten',
             '1 hora de soporte mensual incluida'
         ],
         badge: 'Para proyectos pequeños'
@@ -71,15 +71,15 @@ const PLANS_MENSUALES: Plan[] = [
         icon: <FaShieldAlt />,
         priceUsd: 350,
         period: '/mes',
-        description: 'Soporte completo y mantenimiento avanzado para proyectos en crecimiento.',
+        description: 'Seguimiento preventivo y soporte ampliado para proyectos en crecimiento.',
         color: 'from-purple-500 to-accent-purple',
         popular: true,
         features: [
-            'Monitoreo 24/7 con alertas proactivas',
-            'Actualizaciones de seguridad en tiempo real',
-            'Soporte por email y WhatsApp (respuesta en 24hs)',
+            'Monitoreo automatizado 24/7 con alertas; atención humana según horario acordado',
+            'Revisión de actualizaciones de seguridad en ventanas planificadas',
+            'Soporte por email y WhatsApp: respuesta dentro de 1 día hábil',
             'Reporte detallado de rendimiento y métricas',
-            'Backups diarios',
+            'Respaldos diarios cuando la plataforma y el proveedor lo permiten',
             '5 horas de soporte mensual incluidas',
             'Auditoría de seguridad trimestral',
             'Optimización de rendimiento mensual'
@@ -92,19 +92,19 @@ const PLANS_MENSUALES: Plan[] = [
         icon: <FaCrown />,
         priceUsd: 600,
         period: '/mes',
-        description: 'Solución completa para empresas con necesidades críticas y alto volumen.',
+        description: 'Plan para operaciones con requisitos de soporte, disponibilidad y escalamiento definidos por contrato.',
         color: 'from-gold-500 to-orange-500',
         features: [
-            'Monitoreo 24/7 con respuesta en minutos',
-            'Equipo dedicado de ingenieros',
-            'Soporte prioritario 24/7 (email, WhatsApp, llamada)',
-            'Dashboard de métricas en tiempo real',
-            'Backups cada 6 horas con recuperación rápida',
-            'Horas de soporte ilimitadas',
-            'Auditoría de seguridad mensual',
-            'Optimización continua de rendimiento',
-            'Consultoría estratégica mensual',
-            'SLA personalizado con garantías'
+            'Monitoreo automatizado y escalamiento según SLA contratado',
+            'Especialistas asignados según alcance y necesidades del proyecto',
+            'Canales, cobertura y tiempos de respuesta definidos por contrato',
+            'Métricas y reportes acordados para la operación',
+            'Frecuencia de respaldos y recuperación según capacidades de la plataforma',
+            'Horas de soporte mensuales especificadas en la propuesta',
+            'Revisiones de seguridad con frecuencia y alcance definidos',
+            'Mejoras de rendimiento priorizadas con métricas acordadas',
+            'Instancia de consultoría incluida según propuesta',
+            'SLA con objetivos, exclusiones y responsabilidades documentadas'
         ],
         badge: '🏢 Para empresas'
     }
@@ -120,7 +120,8 @@ interface PlanesGridProps {
 export default function PlanesGrid({ usdToArs, dolarUpdatedAt, dolarSource }: PlanesGridProps) {
     const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
-    const WHATSAPP_LINK = `https://wa.me/5491138305837?text=Hola!%20Quiero%20contratar%20un%20plan%20de%20mantenimiento%20para%20mi%20proyecto...`;
+    const whatsappUrl = (message: string) =>
+        `https://wa.me/5491138305837?text=${encodeURIComponent(message)}`;
 
     const formatArs = (usd: number) => {
         return (usd * usdToArs).toLocaleString('es-AR', {
@@ -216,7 +217,7 @@ export default function PlanesGrid({ usdToArs, dolarUpdatedAt, dolarSource }: Pl
                                     </div>
 
                                     <a
-                                        href={`${WHATSAPP_LINK} ${encodeURIComponent('Quiero contratar el Acompañamiento post-lanzamiento (90 días)')}`}
+                                        href={whatsappUrl('Hola, quiero consultar por el Acompañamiento post-lanzamiento de Powa.')}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={`${styles.btnPlan} ${styles.btnLaunch}`}
@@ -292,7 +293,7 @@ export default function PlanesGrid({ usdToArs, dolarUpdatedAt, dolarSource }: Pl
 
                                     <div className={styles.planFooter}>
                                         <a
-                                            href={`${WHATSAPP_LINK} ${encodeURIComponent(`Quiero contratar el plan ${plan.name}`)}`}
+                                            href={whatsappUrl(`Hola, quiero consultar por el plan ${plan.name} de Powa.`)}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className={`${styles.btnPlan} ${plan.id === 'enterprise' ? styles.btnWhatsapp : ''}`}
@@ -326,7 +327,7 @@ export default function PlanesGrid({ usdToArs, dolarUpdatedAt, dolarSource }: Pl
                                 </Col>
                                 <Col md={4} className="text-md-end">
                                     <a
-                                        href={WHATSAPP_LINK}
+                                        href={whatsappUrl('Hola, quiero consultar un plan de mantenimiento a medida para mi proyecto.')}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={styles.ctaButton}
@@ -359,31 +360,31 @@ export default function PlanesGrid({ usdToArs, dolarUpdatedAt, dolarSource }: Pl
                 <section className={styles.compareSection}>
                     <h3 className={styles.compareTitle}>
                         <FaShieldVirus className={styles.compareIcon} />
-                        ¿Qué incluyen todos los planes?
+                        ¿Qué queda definido en todos los planes?
                     </h3>
                     <Row className="g-3">
                         <Col md={3} sm={6}>
                             <div className={styles.compareItem}>
                                 <FaServer className={styles.compareItemIcon} />
-                                <span>Infraestructura monitoreada</span>
+                                <span>Alcance de tareas y plataformas cubiertas</span>
                             </div>
                         </Col>
                         <Col md={3} sm={6}>
                             <div className={styles.compareItem}>
                                 <FaShieldAlt className={styles.compareItemIcon} />
-                                <span>Seguridad continua</span>
+                                <span>Canales y tiempos de respuesta</span>
                             </div>
                         </Col>
                         <Col md={3} sm={6}>
                             <div className={styles.compareItem}>
                                 <FaClock className={styles.compareItemIcon} />
-                                <span>Disponibilidad garantizada</span>
+                                <span>Condiciones de respaldo y disponibilidad</span>
                             </div>
                         </Col>
                         <Col md={3} sm={6}>
                             <div className={styles.compareItem}>
                                 <FaChartLine className={styles.compareItemIcon} />
-                                <span>Optimización constante</span>
+                                <span>Adicionales aprobados antes de ejecutarse</span>
                             </div>
                         </Col>
                     </Row>

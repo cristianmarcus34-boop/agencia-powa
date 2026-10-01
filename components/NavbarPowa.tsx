@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useSession, signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import styles from './NavbarPowa.module.css';
 
@@ -103,8 +103,7 @@ export default function NavbarPowa() {
               className={styles.navLinkLab}
               onClick={closeMenu}
             >
-              Lab
-              <span className={styles.badgeSoon}>Beta</span>
+              Herramientas
             </Nav.Link>
 
             {session ? (
@@ -136,21 +135,19 @@ export default function NavbarPowa() {
                   onClick={closeMenu}
                 >
                   <span className={styles.contactBtn} role="button">
-                    Proyecto
+                    Solicitar propuesta
                   </span>
                 </Nav.Link>
               </>
             ) : (
               <>
                 <Nav.Link
-                  onClick={() => {
-                    signIn();
-                    closeMenu();
-                  }}
+                  as={Link}
+                  href="/login"
                   className={`${styles.navLink} ${styles.loginBtn}`}
-                  style={{ cursor: 'pointer' }}
+                  onClick={closeMenu}
                 >
-                  Iniciar
+                  Acceso clientes
                 </Nav.Link>
                 <Nav.Link
                   as={Link}
@@ -159,7 +156,7 @@ export default function NavbarPowa() {
                   onClick={closeMenu}
                 >
                   <span className={styles.contactBtn} role="button">
-                    Proyecto
+                    Solicitar propuesta
                   </span>
                 </Nav.Link>
               </>

@@ -11,7 +11,7 @@ import {
     FaCode, FaArrowRight, FaDatabase, FaMobileAlt, FaRocket,
     FaMapMarkerAlt, FaSearch, FaCogs, FaCheckCircle, FaShieldAlt,
     FaFileContract, FaLock, FaUsers, FaClock,
-    FaQuoteRight, FaWhatsapp, FaCloudUploadAlt,
+    FaWhatsapp, FaCloudUploadAlt,
     FaBrain,
     FaUser, FaCalculator, FaMoneyBillWave, FaChartBar,
     FaCloud, FaPalette, FaAws, FaSyncAlt
@@ -148,7 +148,6 @@ export default function HomePage() {
     const [refProcess] = useInView(options);
     const [refSecurity] = useInView(options);
     const [refCta] = useInView(options);
-    const [refTestimonials] = useInView(options);
     const [refStats] = useInView(options);
     const [refROI] = useInView(options);
 
@@ -290,6 +289,12 @@ export default function HomePage() {
         { id: "graphql", icon: <SiGraphql color="#E10098" />, name: "GraphQL" },
     ];
 
+    const featuredTechStackIds = new Set([
+        'react', 'nextjs', 'typescript', 'nodejs', 'postgres',
+        'supabase', 'tailwind', 'vercel', 'docker'
+    ]);
+    const featuredTechStack = techStack.filter(tech => featuredTechStackIds.has(tech.id));
+
     const processItems = [
         {
             id: "req",
@@ -326,36 +331,36 @@ export default function HomePage() {
             id: "web",
             icon: <FaCode />,
             title: "Sistemas Web Escalables",
-            desc: "No usamos plantillas genéricas. Desarrollamos plataformas robustas con Next.js preparadas para bancarse tráfico pesado y SEO crítico.",
-            link: "/servicios/desarrollo"
+            desc: "Sitios, plataformas y paneles internos diseñados según tus procesos, tus usuarios y las integraciones que necesitás.",
+            link: "/planes/servicios/desarrollo"
         },
         {
             id: "mobile",
             icon: <FaMobileAlt />,
             title: "Desarrollo Mobile Nativo",
-            desc: "Apps nativas fluidas para iOS y Android, con arquitecturas modernas que crecen al mismo ritmo que tu negocio.",
-            link: "/servicios/desarrollo"
+            desc: "Aplicaciones para iOS y Android cuando tu operación necesita una experiencia móvil más completa que una web.",
+            link: "/planes/servicios/desarrollo"
         },
         {
             id: "data",
             icon: <FaDatabase />,
             title: "Gestión de Datos & Cloud",
-            desc: "Modelamos bases de datos seguras y paneles administrativos a medida para centralizar y proteger la información de tu empresa.",
-            link: "/servicios/desarrollo"
+            desc: "Conectamos fuentes de datos y construimos paneles para que la información de tu operación sea más fácil de consultar.",
+            link: "/planes/servicios/desarrollo"
         },
         {
             id: "auto",
             icon: <FaCogs />,
             title: "Automatización de Procesos",
-            desc: "Armamos flujos internos que eliminan las tareas manuales repetitivas. Menos horas perdidas, menos costos operativos.",
-            link: "/servicios/desarrollo"
+            desc: "Integramos herramientas y automatizamos tareas repetitivas para reducir trabajo manual y errores operativos.",
+            link: "/planes/servicios/desarrollo"
         },
         {
             id: "ai",
             icon: <FaBrain />,
             title: "Integración de IA",
-            desc: "Metemos agentes inteligentes y modelos avanzados para optimizar análisis de datos internos o flujos automatizados de atención.",
-            link: "/servicios/desarrollo"
+            desc: "Evaluamos asistentes y flujos con IA para casos concretos, definiendo fuentes de datos, límites y revisión humana.",
+            link: "/planes/servicios/desarrollo"
         },
         {
             id: "maint",
@@ -387,35 +392,11 @@ export default function HomePage() {
         }
     ];
 
-    const testimonials = [
-        {
-            id: "test1",
-            name: "Carlos Rodríguez",
-            role: "CEO, FintechPro",
-            quote: "Powa nos transformó la plataforma en tiempo récord. La arquitectura que metieron nos dejó escalar de 500 a 15.000 usuarios sin un solo problema.",
-            avatar: "👨‍💼"
-        },
-        {
-            id: "test2",
-            name: "Laura Méndez",
-            role: "CMO, EcomStore",
-            quote: "El rediseño nos subió las conversiones un 180%. El equipo entendió perfecto a nuestra audiencia y armó una experiencia que realmente conecta.",
-            avatar: "👩‍💼"
-        },
-        {
-            id: "test3",
-            name: "Andrés Silva",
-            role: "CTO, HealthTech",
-            quote: "La seguridad y el cumplimiento normativo eran críticos para nosotros. Powa no solo cumplió, nos pasó el trapo.",
-            avatar: "👨‍🔬"
-        }
-    ];
-
     const stats = [
-        { value: "24+", label: "Proyectos Entregados", icon: <FaRocket /> },
-        { value: "24+", label: "Clientes Satisfechos", icon: <FaUsers /> },
-        { value: "15+", label: "Años de Experiencia", icon: <FaClock /> },
-        { value: "100%", label: "Propiedad Intelectual", icon: <FaLock /> }
+        { value: "01", label: "Alcance definido antes de empezar", icon: <FaFileContract /> },
+        { value: "02", label: "Avances revisables por etapas", icon: <FaSyncAlt /> },
+        { value: "03", label: "Pruebas antes del lanzamiento", icon: <FaCheckCircle /> },
+        { value: "04", label: "Código y accesos entregados", icon: <FaLock /> }
     ];
 
     return (
@@ -427,21 +408,20 @@ export default function HomePage() {
                         <Row className="align-items-center">
                             <Col lg={7}>
                                 <div className={styles.badgePowa}>
-                                    <FaMapMarkerAlt className="me-2" /> Hub Tecnológico en Quilmes & Zona Sur
+                                    <FaMapMarkerAlt className="me-2" /> PYMES y empresas · Quilmes, Argentina · Remoto
                                 </div>
                                 <h1 className={styles.heroTitleMain}>
-                                    Transformamos Ideas en <span className={styles.textGradient}>Software de Alto Impacto.</span>
+                                    Tecnología a medida para <span className={styles.textGradient}>PYMES y empresas.</span>
                                 </h1>
                                 <p className={styles.heroSubtitleModern}>
-                                    No hacemos webs de adorno; construimos la <strong>infraestructura digital</strong> que tu empresa necesita para escalar.
-                                    Ingeniería Senior aplicada a negocios de <strong>todo el mundo.</strong>
+                                    Desde mejorar un proceso puntual hasta desarrollar una plataforma digital: definimos el alcance con vos y sumamos los perfiles adecuados según la complejidad y el contexto de tu empresa.
                                 </p>
                                 <div className="d-flex flex-wrap gap-3 mt-4">
                                     <Link href="/contact" className={`${styles.btnPowaPrimary} text-decoration-none`}>
-                                        Consultoría Gratuita <FaRocket className="ms-2" />
+                                        Contanos qué necesitás <FaArrowRight className="ms-2" />
                                     </Link>
-                                    <Link href="/servicios" className={`${styles.btnPowaOutline} text-decoration-none`}>
-                                        Nuestras Soluciones <HiOutlineArrowNarrowRight className="ms-2" />
+                                    <Link href="/portfolio" className={`${styles.btnPowaOutline} text-decoration-none`}>
+                                        Explorar demos <HiOutlineArrowNarrowRight className="ms-2" />
                                     </Link>
                                 </div>
 
@@ -452,11 +432,11 @@ export default function HomePage() {
                                     </span>
                                     <span className={styles.trustBadge}>
                                         <FaClock className={styles.trustBadgeIcon} />
-                                        Entregas Parciales
+                                        Trabajo por etapas
                                     </span>
                                     <span className={styles.trustBadge}>
-                                        <FaWhatsapp className={styles.trustBadgeIcon} />
-                                        Soporte 24/7
+                                        <FaLock className={styles.trustBadgeIcon} />
+                                        Código y accesos para vos
                                     </span>
                                     <Link href="/planes/servicios/desarrollo" className={styles.trustBadgeLink}>
                                         <FaCode className={styles.trustBadgeIcon} />
@@ -488,10 +468,13 @@ export default function HomePage() {
             {/* --- TECH STACK (INFINITE SCROLL) --- */}
             <section className={styles.techStackSection} ref={refStack}>
                 <Container>
-                    <h2 className={styles.techLabel}>Tecnologías Enterprise que dominamos</h2>
+                    <h2 className={styles.techLabel}>Stack principal de Powa</h2>
+                    <p className={styles.sectionSubtitle}>
+                        Tecnologías que usamos con mayor frecuencia; las herramientas adicionales se eligen según el alcance de cada proyecto.
+                    </p>
                     <div className={styles.stackSlider}>
                         <div className={styles.stackTrack}>
-                            {[...techStack, ...techStack].map((tech, idx) => (
+                            {[...featuredTechStack, ...featuredTechStack].map((tech, idx) => (
                                 <div key={`tech-${tech.id}-${idx}`} className={styles.stackItem}>
                                     <div className={styles.techIconWrapper}>{tech.icon}</div>
                                     <span className={styles.techName}>{tech.name}</span>
@@ -547,8 +530,8 @@ export default function HomePage() {
                 <Container>
                     <div className={styles.sectionHeader}>
                         <span className={styles.sectionBadge}>SERVICIOS</span>
-                        <h2 className={styles.sectionTitle}>Soluciones <span className={styles.textGradient}>Estratégicas</span></h2>
-                        <p className={styles.sectionSubtitle}>Tecnología a medida para cada desafío de tu negocio.</p>
+                        <h2 className={styles.sectionTitle}>Un socio tecnológico, <span className={styles.textGradient}>distintas capacidades</span></h2>
+                        <p className={styles.sectionSubtitle}>Elegimos una solución proporcional a tu desafío: desde una mejora puntual hasta un producto digital a medida.</p>
                     </div>
                     <Row className="g-4">
                         {serviceItems.map((item) => (
@@ -574,13 +557,12 @@ export default function HomePage() {
                         <Row className="align-items-center g-5">
                             <Col lg={6}>
                                 <div className={styles.budgetContent}>
-                                    <span className={styles.sectionBadge}>💰 PRESUPUESTO</span>
+                                    <span className={styles.sectionBadge}>INVERSIÓN Y ALCANCE</span>
                                     <h2 className={styles.budgetTitle}>
-                                        Mejoramos <span className={styles.textGradient}>Cualquier Presupuesto</span>
+                                        Una propuesta clara, <span className={styles.textGradient}>sin sorpresas.</span>
                                     </h2>
                                     <p className={styles.budgetSubtitle}>
-                                        No importa el tamaño de tu proyecto ni la plata que tengas hoy.
-                                        En Powa armamos soluciones a medida que se ajustan a tus posibilidades reales.
+                                        Primero entendemos el objetivo y definimos entregables, etapas y tiempos. Después cotizamos el alcance acordado; no prometemos resultados que todavía no medimos.
                                     </p>
                                     <div className={styles.budgetFeatures}>
                                         <div className={styles.budgetFeature}>
@@ -600,8 +582,8 @@ export default function HomePage() {
                                         <div className={styles.budgetFeature}>
                                             <FaCheckCircle className={styles.budgetFeatureIcon} />
                                             <div>
-                                                <h4>ROI garantizado</h4>
-                                                <p>Cada peso invertido está pensado para volver. Si no ves resultados, ajustamos la estrategia.</p>
+                                                <h4>Expectativas transparentes</h4>
+                                                <p>Separamos lo que incluye el desarrollo de los resultados que dependen de tu mercado, tus datos y la implementación.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -614,7 +596,7 @@ export default function HomePage() {
                                         {/* ===== HEADER CON COTIZACIÓN Y TOGGLE ===== */}
                                         <div className={styles.budgetCardHeader}>
                                             <div className={styles.budgetCardHeaderTop}>
-                                                <span className={styles.budgetCardBadge}>📊 COMPARATIVA</span>
+                                                <span className={styles.budgetCardBadge}>REFERENCIA ORIENTATIVA</span>
 
                                                 {/* Toggle ARS / USD */}
                                                 <div className={styles.budgetToggle}>
@@ -637,9 +619,9 @@ export default function HomePage() {
                                                 </div>
                                             </div>
 
-                                            <h3 className={styles.budgetCardTitle}>¿Cuánto sale invertir en tecnología?</h3>
+                                            <h3 className={styles.budgetCardTitle}>Rangos estimados de desarrollo</h3>
                                             <p className={styles.budgetCardSubtitle}>
-                                                Precios referenciales según el perfil del desarrollador y el tipo de proyecto.
+                                                Rangos generales por perfil y tipo de proyecto; no son tarifas de Powa ni una cotización.
                                             </p>
 
                                             {/* Cotización destacada */}
@@ -773,13 +755,13 @@ export default function HomePage() {
                                                     <FaWhatsapp className={styles.budgetCtaIcon} />
                                                     <div>
                                                         <p className={styles.budgetCtaText}>
-                                                            ¿No te cierra ningún número?
-                                                            <strong> Hablemos y armamos algo juntos.</strong>
+                                                            ¿Buscás los precios de Powa?
+                                                            <strong> Consultá los valores base por tipo de desarrollo.</strong>
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <Link href="/contact" className={styles.budgetCtaButton}>
-                                                    Consultar presupuesto
+                                                <Link href="/planes/servicios/desarrollo" className={styles.budgetCtaButton}>
+                                                    Ver precios de desarrollo
                                                     <FaRocket className={styles.budgetCtaArrow} />
                                                 </Link>
                                             </div>
@@ -798,13 +780,12 @@ export default function HomePage() {
             <section className={styles.roiSection} ref={refROI}>
                 <Container>
                     <div className={styles.sectionHeader}>
-                        <span className={styles.sectionBadge}>💰 ROI GARANTIZADO</span>
+                        <span className={styles.sectionBadge}>SIMULADOR ORIENTATIVO</span>
                         <h2 className={styles.sectionTitle}>
-                            No es un gasto, es una <span className={styles.textGradient}>inversión</span>
+                            Estimá el impacto de <span className={styles.textGradient}>mejorar tus procesos</span>
                         </h2>
                         <p className={styles.sectionSubtitle}>
-                            Cada negocio es distinto. Te ayudamos a calcular cuánta plata estás perdiendo hoy
-                            y cuánto podrías ganar con una solución a medida.
+                            Usá tus propios datos para explorar un escenario posible. El cálculo depende de los supuestos que ingreses y no garantiza ahorros ni ventas.
                         </p>
                     </div>
 
@@ -883,15 +864,10 @@ export default function HomePage() {
 
                                 <div className={styles.roiExampleBox}>
                                     <div className={styles.roiExampleItem}>
-                                        <span className={styles.roiExampleLabel}>📌 Ejemplo: Barbería</span>
-                                        <div className={styles.roiExampleResult}>
-                                            <span className={styles.roiExampleBefore}>Pérdida: $515.000/mes</span>
-                                            <span className={styles.roiExampleArrow}>→</span>
-                                            <span className={styles.roiExampleAfter}>Ahorro: $276.760/mes</span>
-                                        </div>
-                                        <div className={styles.roiExampleDetail}>
-                                            10 turnos/día • Valor promedio: $12.000
-                                        </div>
+                                        <span className={styles.roiExampleLabel}>Escenario, no promesa</span>
+                                        <p className={styles.roiExampleDetail}>
+                                            El simulador usa los valores que ingreses y explicita el supuesto de recuperación para estimar un posible ahorro.
+                                        </p>
                                     </div>
                                 </div>
 
@@ -904,7 +880,7 @@ export default function HomePage() {
                                         className={styles.roiButtonNeon}
                                     >
                                         <FaCalculator className={styles.roiButtonIcon} />
-                                        <span>Calculá tu ROI exacto</span>
+                                        <span>Abrir simulador</span>
                                         <FaArrowRight className={styles.roiButtonIcon} />
                                     </button>
                                 </div>
@@ -912,36 +888,9 @@ export default function HomePage() {
                         </Col>
                     </Row>
 
-                    <div className={styles.roiIndustries}>
-                        <p className={styles.roiIndustriesLabel}>
-                            Ejemplos de pérdidas en diferentes industrias:
-                        </p>
-                        <div className={styles.roiIndustriesGrid}>
-                            <div className={styles.roiIndustryItem}>
-                                <span className={styles.roiIndustryIcon}>✂️</span>
-                                <span className={styles.roiIndustryName}>Barbería</span>
-                                <span className={styles.roiIndustryValue}>$515.000/mes</span>
-                            </div>
-                            <div className={styles.roiIndustryItem}>
-                                <span className={styles.roiIndustryIcon}>🍕</span>
-                                <span className={styles.roiIndustryName}>Restaurante</span>
-                                <span className={styles.roiIndustryValue}>$1.200.000/mes</span>
-                            </div>
-                            <div className={styles.roiIndustryItem}>
-                                <span className={styles.roiIndustryIcon}>🛒</span>
-                                <span className={styles.roiIndustryName}>Tienda Online</span>
-                                <span className={styles.roiIndustryValue}>$900.000/mes</span>
-                            </div>
-                            <div className={styles.roiIndustryItem}>
-                                <span className={styles.roiIndustryIcon}>💼</span>
-                                <span className={styles.roiIndustryName}>Servicios</span>
-                                <span className={styles.roiIndustryValue}>$600.000/mes</span>
-                            </div>
-                        </div>
-                        <p className={styles.roiIndustriesNote}>
-                            *Valores estimados. Calculá el ROI exacto para tu negocio.
-                        </p>
-                    </div>
+                    <p className={styles.roiIndustriesNote}>
+                        La simulación no reemplaza una medición real ni una cotización del proyecto.
+                    </p>
                 </Container>
             </section>
 
@@ -1038,30 +987,21 @@ export default function HomePage() {
                 </Container>
             </section>
 
-            {/* --- TESTIMONIALS --- */}
-            <section className={styles.testimonialsSection} ref={refTestimonials}>
+            {/* --- DEMOS --- */}
+            <section className={styles.testimonialsSection}>
                 <Container>
                     <div className={styles.sectionHeader}>
-                        <span className={styles.sectionBadge}>TESTIMONIOS</span>
-                        <h2 className={styles.sectionTitle}>Lo que dicen <span className={styles.textGradient}>nuestros clientes</span></h2>
+                        <span className={styles.sectionBadge}>DEMOS DE PRODUCTO</span>
+                        <h2 className={styles.sectionTitle}>Explorá soluciones <span className={styles.textGradient}>en funcionamiento</span></h2>
+                        <p className={styles.sectionSubtitle}>
+                            Estos proyectos muestran capacidades y conceptos funcionales; no son casos de resultados de clientes.
+                        </p>
                     </div>
-                    <Row className="g-4">
-                        {testimonials.map((testimonial) => (
-                            <Col key={testimonial.id} lg={4} md={6}>
-                                <div className={styles.testimonialCard}>
-                                    <FaQuoteRight className={styles.quoteIcon} />
-                                    <p className={styles.testimonialText}>{testimonial.quote}</p>
-                                    <div className={styles.testimonialAuthor}>
-                                        <div className={styles.testimonialAvatar}>{testimonial.avatar}</div>
-                                        <div>
-                                            <div className={styles.testimonialName}>{testimonial.name}</div>
-                                            <div className={styles.testimonialRole}>{testimonial.role}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Col>
-                        ))}
-                    </Row>
+                    <div className="text-center">
+                        <Link href="/portfolio" className={`${styles.btnPowaPrimary} text-decoration-none`}>
+                            Ver demos y proyectos <FaArrowRight className="ms-2" />
+                        </Link>
+                    </div>
                 </Container>
             </section>
 
@@ -1120,8 +1060,8 @@ export default function HomePage() {
                                 <Link href="/faq" className={styles.btnCtaSecondary}>
                                     Ver Preguntas Frecuentes
                                 </Link>
-                                <Link href="/servicios/desarrollo" className={styles.btnCtaSecondary}>
-                                    Ver Desarrollo Web
+                                <Link href="/planes/servicios/desarrollo" className={styles.btnCtaSecondary}>
+                                    Ver opciones de desarrollo
                                 </Link>
                                 <Link href="/planes" className={styles.btnCtaSecondary}>
                                     Ver Planes de Mantenimiento
@@ -1130,7 +1070,7 @@ export default function HomePage() {
                             <div className={styles.ctaTrustBadges}>
                                 <span>✅ Sin compromiso</span>
                                 <span>🔒 100% confidencial</span>
-                                <span>⚡ Respuesta en 24hs</span>
+                                <span>⚡ Respuesta en 1 día hábil</span>
                             </div>
                         </div>
                     </div>

@@ -19,6 +19,7 @@ interface DevelopmentType {
     name: string;
     icon: React.ReactNode;
     description: string;
+    plainSummary: string;
     color: string;
     badge: string;
     features: string[];
@@ -40,16 +41,17 @@ const DEVELOPMENT_TYPES: DevelopmentType[] = [
         id: 'landing',
         name: 'Landing Page',
         icon: <FaMobileAlt />,
-        description: 'Una página enfocada 100% en conversión y ventas',
+        description: 'Una página para presentar una propuesta y facilitar una acción principal.',
+        plainSummary: 'Una página clara para explicar qué ofrecés y facilitar que te contacten por formulario o WhatsApp.',
         color: 'from-emerald-500 to-cyan-500',
         badge: '🚀 Conversión rápida',
         features: [
-            'Diseño one-page optimizado para conversión',
+            'Diseño de una página alineado a la identidad y referencias acordadas',
             'Formulario de contacto o botón a WhatsApp',
-            'Diseño 100% mobile first',
-            'Carga ultrarrápida (90+ en Pagespeed)',
-            'Optimización SEO básica',
-            'Integración con Google Analytics',
+            'Se verá correctamente en celulares, tablets y computadoras',
+            'Revisamos la rapidez de las páginas acordadas; la meta depende del alojamiento, el contenido y las integraciones',
+            'Configuramos el título y la descripción que pueden aparecer en Google; esto no garantiza una posición',
+            'Medición básica de visitas, si se acuerda y se proveen los accesos',
             'Certificado SSL incluido'
         ]
     },
@@ -58,17 +60,18 @@ const DEVELOPMENT_TYPES: DevelopmentType[] = [
         name: 'Sitio Institucional',
         icon: <FaUsers />,
         description: 'Presencia digital completa para tu marca',
+        plainSummary: 'Un sitio para presentar tu empresa, explicar tus servicios, mostrar trabajos y recibir consultas.',
         color: 'from-blue-500 to-purple-500',
         badge: '🏢 Más solicitado',
         features: [
-            'Hasta 8 páginas/secciones principales',
-            'Diseño premium con identidad de marca',
-            'Optimización SEO avanzada',
-            'Sección de servicios y portfolio',
-            'Integración con redes sociales',
-            'Mapa interactivo y contacto',
-            'Blog o noticias (opcional)',
-            'Formulario de contacto con CRM'
+            'Hasta 8 páginas o secciones principales',
+            'Diseño alineado con la identidad visual y los materiales de tu marca',
+            'Preparamos títulos, descripciones y un listado de páginas para ayudar a Google a entender el sitio; redactar contenido y trabajar el posicionamiento se cotizan aparte',
+            'Páginas para mostrar servicios y trabajos',
+            'Enlaces a tus redes sociales',
+            'Mapa y datos para que puedan encontrarte y contactarte',
+            'Una página simple de noticias, con textos e imágenes provistos por vos, puede ocupar una de las 8 incluidas; publicar y organizar artículos desde un panel se cotiza aparte',
+            'Formulario para recibir consultas; conexión con tu sistema de clientes si se acuerda'
         ]
     },
     {
@@ -76,17 +79,18 @@ const DEVELOPMENT_TYPES: DevelopmentType[] = [
         name: 'Tienda Online',
         icon: <FaChartLine />,
         description: 'Vendé tus productos 24/7 con la mejor experiencia',
+        plainSummary: 'Una tienda para mostrar productos, recibir pedidos y cobrar en línea; las opciones de envío y administración se acuerdan para tu negocio.',
         color: 'from-orange-500 to-red-500',
         badge: '🛒 E-commerce',
         features: [
-            'Catálogo de productos ilimitado',
-            'Carrito de compras inteligente',
-            'Pasarela de pagos (MercadoPago, PayPal)',
-            'Panel de gestión de stock',
-            'Cálculo de envíos e impuestos',
-            'Historial de pedidos para clientes',
-            'Dashboard de ventas para administrador',
-            'Optimización SEO para productos'
+            'Catálogo con volumen y estructura definidos en el alcance',
+            'Carrito para reunir productos antes de pagar',
+            'Cobro en línea con el medio de pago acordado (por ejemplo, Mercado Pago o PayPal)',
+            'Panel para actualizar productos y existencias',
+            'Opciones de envío e impuestos definidas para tu operación',
+            'Historial de compras para tus clientes',
+            'Panel privado para consultar pedidos y ventas',
+            'Configuramos títulos y descripciones de los productos acordados; ayuda a Google a entender el catálogo, pero no garantiza posiciones ni ventas'
         ]
     },
     {
@@ -94,17 +98,18 @@ const DEVELOPMENT_TYPES: DevelopmentType[] = [
         name: 'Web App / Sistema',
         icon: <FaCode />,
         description: 'Soluciones personalizadas para procesos complejos',
+        plainSummary: 'Un sistema hecho para un proceso específico de tu empresa, con usuarios, permisos e integraciones definidos según lo que necesites.',
         color: 'from-purple-500 to-pink-500',
         badge: '⚡ A medida',
         features: [
-            'Arquitectura a medida según tu negocio',
-            'Autenticación y roles de usuario',
-            'Base de datos y APIs personalizadas',
-            'Panel de administración completo',
-            'Integraciones con sistemas externos',
-            'Lógica de negocio personalizada',
-            'Reportes y dashboards avanzados',
-            'Escalabilidad y rendimiento optimizado'
+            'Estructura del sistema definida para el proceso que necesitás resolver',
+            'Inicio de sesión y permisos distintos según cada usuario',
+            'Organización de la información y conexiones con otros sistemas, según lo acordado',
+            'Panel privado para administrar las tareas principales',
+            'Conexiones con herramientas externas, definidas en la propuesta',
+            'Reglas de funcionamiento propias de tu negocio',
+            'Informes y paneles con los datos que necesitás consultar',
+            'Pruebas con situaciones y objetivos definidos para el proyecto'
         ]
     }
 ];
@@ -143,10 +148,10 @@ const PAYMENT_OPTIONS: PaymentOption[] = [
 // ===== PRECIOS POR TIPO Y OPCIÓN DE PAGO =====
 const getPriceForOption = (typeId: string, optionId: string): { price: string, display: string } => {
     const basePrices = {
-        landing: { unique: 150, two: 170, three: 190, custom: 0 },
-        institutional: { unique: 350, two: 390, three: 420, custom: 0 },
-        ecommerce: { unique: 700, two: 770, three: 840, custom: 0 },
-        custom: { unique: 1200, two: 1320, three: 1450, custom: 0 }
+        landing: { unique: 150, two_payments: 170, three_payments: 190, custom: 0 },
+        institutional: { unique: 350, two_payments: 390, three_payments: 420, custom: 0 },
+        ecommerce: { unique: 700, two_payments: 770, three_payments: 840, custom: 0 },
+        custom: { unique: 1200, two_payments: 1320, three_payments: 1450, custom: 0 }
     };
 
     const prices = basePrices[typeId as keyof typeof basePrices] || basePrices.landing;
@@ -157,6 +162,27 @@ const getPriceForOption = (typeId: string, optionId: string): { price: string, d
     }
 
     return { price: `${price}`, display: 'Consultar' };
+};
+
+const getPaymentBreakdown = (typeId: string, optionId: string): string => {
+    const priceInfo = getPriceForOption(typeId, optionId);
+    if (priceInfo.display === 'A cotizar' || optionId === 'unique') return '';
+
+    const total = Number(priceInfo.price);
+    const milestones = optionId === 'two_payments'
+        ? [
+            { share: 50, label: 'al inicio' },
+            { share: 50, label: 'a la entrega' }
+        ]
+        : [
+            { share: 30, label: 'al inicio' },
+            { share: 30, label: 'a mitad del proyecto' },
+            { share: 40, label: 'a la entrega' }
+        ];
+
+    return milestones
+        .map(({ share, label }) => `USD ${Math.round(total * share / 100).toLocaleString('en-US')} ${label}`)
+        .join(' + ');
 };
 
 export default function DesarrolloPage() {
@@ -178,7 +204,9 @@ export default function DesarrolloPage() {
         message += `📦 Modalidad de pago: *${currentPayment.name}*\n`;
 
         if (priceInfo.display !== 'A cotizar') {
-            message += `💰 Presupuesto estimado: *${priceInfo.price} USD*\n`;
+            message += `💰 Total estimado del proyecto: *${priceInfo.price} USD*\n`;
+            const breakdown = getPaymentBreakdown(selectedType, selectedPayment);
+            if (breakdown) message += `📍 Cuotas: ${breakdown}\n`;
         } else {
             message += `💰 Necesito un presupuesto personalizado\n`;
         }
@@ -246,6 +274,10 @@ export default function DesarrolloPage() {
                                         <span className={styles.featuresIcon}>{currentType.icon}</span>
                                         ¿Qué incluye {currentType.name}?
                                     </h4>
+                                    <div className={styles.plainSummary}>
+                                        <span className={styles.plainSummaryLabel}>En pocas palabras</span>
+                                        <p>{currentType.plainSummary}</p>
+                                    </div>
                                     <div className={styles.featuresGrid}>
                                         {currentType.features.map((feature, idx) => (
                                             <span key={idx} className={styles.featureTag}>
@@ -274,12 +306,22 @@ export default function DesarrolloPage() {
                         {PAYMENT_OPTIONS.map((option) => {
                             const isSelected = selectedPayment === option.id;
                             const priceInfo = getPriceForOption(selectedType, option.id);
+                            const breakdown = getPaymentBreakdown(selectedType, option.id);
 
                             return (
                                 <Col key={option.id} md={3} sm={6}>
                                     <div
                                         className={`${styles.paymentCard} ${isSelected ? styles.paymentCardActive : ''} ${option.popular ? styles.paymentPopular : ''}`}
+                                        role="button"
+                                        tabIndex={0}
+                                        aria-pressed={isSelected}
                                         onClick={() => setSelectedPayment(option.id)}
+                                        onKeyDown={(event) => {
+                                            if (event.key === 'Enter' || event.key === ' ') {
+                                                event.preventDefault();
+                                                setSelectedPayment(option.id);
+                                            }
+                                        }}
                                     >
                                         {option.popular && (
                                             <div className={styles.popularBadge}>
@@ -304,8 +346,11 @@ export default function DesarrolloPage() {
                                                 <span className={styles.priceCustom}>A cotizar</span>
                                             ) : (
                                                 <span className={styles.priceAmount}>
-                                                    {priceInfo.price} USD
+                                                    Total: {priceInfo.price} USD
                                                 </span>
+                                            )}
+                                            {breakdown && (
+                                                <span className={styles.paymentBreakdown}>{breakdown}</span>
                                             )}
                                         </div>
 
@@ -364,8 +409,13 @@ export default function DesarrolloPage() {
                                                     {getPriceForOption(selectedType, selectedPayment).price} USD
                                                 </span>
                                                 <span className={styles.summaryPricePeriod}>
-                                                    {currentPayment.name}
+                                                    Total del proyecto · {currentPayment.name}
                                                 </span>
+                                                {getPaymentBreakdown(selectedType, selectedPayment) && (
+                                                    <span className={styles.summaryPriceBreakdown}>
+                                                        {getPaymentBreakdown(selectedType, selectedPayment)}
+                                                    </span>
+                                                )}
                                             </>
                                         )}
                                     </div>
@@ -377,7 +427,7 @@ export default function DesarrolloPage() {
                                         Solicitar propuesta
                                     </button>
                                     <span className={styles.summaryNote}>
-                                        * Recibirás un presupuesto detallado por WhatsApp
+                                        El total mostrado corresponde al alcance base descrito. La propuesta confirma páginas, contenido, integraciones y revisiones. Hosting, dominio, licencias y servicios externos solo se incluyen si se detallan.
                                     </span>
                                 </div>
                             </Col>
@@ -385,38 +435,48 @@ export default function DesarrolloPage() {
                     </div>
                 )}
 
-                {/* ===== BENEFICIOS ADICIONALES ===== */}
+                {/* ===== CRITERIOS DE ALCANCE ===== */}
                 <section className={styles.benefitsSection}>
                     <h3 className={styles.benefitsTitle}>
                         <FaShieldAlt className={styles.benefitsIcon} />
-                        Todos nuestros desarrollos incluyen
+                        Qué se define en cada propuesta
                     </h3>
+                    <p className={styles.scopeIntro}>
+                        Los entregables se acuerdan según el tipo de producto. La propuesta deja por escrito qué incluye, qué queda fuera y cómo se valida.
+                    </p>
                     <Row className="g-3">
-                        <Col md={3} sm={6}>
+                        <Col lg={3} sm={6}>
                             <div className={styles.benefitItem}>
                                 <FaBolt className={styles.benefitItemIcon} />
-                                <span>Rendimiento optimizado</span>
+                                <h4>Rendimiento</h4>
+                                <p>Medimos la velocidad en las páginas acordadas. La meta se define por escrito y depende también del hosting, el contenido y las integraciones.</p>
                             </div>
                         </Col>
-                        <Col md={3} sm={6}>
+                        <Col lg={3} sm={6}>
                             <div className={styles.benefitItem}>
                                 <FaPalette className={styles.benefitItemIcon} />
-                                <span>Diseño personalizado</span>
+                                <h4>Diseño</h4>
+                                <p>Se especifican pantallas, identidad visual y revisiones. Branding, redacción, fotografía o pantallas extra se detallan aparte.</p>
                             </div>
                         </Col>
-                        <Col md={3} sm={6}>
+                        <Col lg={3} sm={6}>
                             <div className={styles.benefitItem}>
                                 <FaSearch className={styles.benefitItemIcon} />
-                                <span>SEO optimizado</span>
+                                <h4>SEO técnico</h4>
+                                <p>Definimos qué páginas y productos se preparan para buscadores. Esto ayuda a entender el sitio, pero no garantiza una posición determinada.</p>
                             </div>
                         </Col>
-                        <Col md={3} sm={6}>
+                        <Col lg={3} sm={6}>
                             <div className={styles.benefitItem}>
                                 <FaDatabase className={styles.benefitItemIcon} />
-                                <span>Base de datos incluida</span>
+                                <h4>Datos</h4>
+                                <p>La base de datos se incluye cuando el producto la necesita. Motor, alojamiento, costos, migraciones y copias de seguridad quedan definidos.</p>
                             </div>
                         </Col>
                     </Row>
+                    <p className={styles.scopeNote}>
+                        Ninguna puntuación de velocidad, posición en buscadores o resultado comercial se garantiza sin condiciones y métricas pactadas.
+                    </p>
                 </section>
 
                 {/* ===== NAVEGACIÓN A PLANES DE MANTENIMIENTO ===== */}

@@ -206,6 +206,29 @@
     font-size: 1.3rem;
 }
 
+.plainSummary {
+    margin: 0.15rem 0 0.5rem;
+    padding: 0.85rem 1rem;
+    border-left: 3px solid #22d3ee;
+    border-radius: 0 8px 8px 0;
+    background: rgba(34, 211, 238, 0.05);
+}
+
+.plainSummaryLabel {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: #67e8f9;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.plainSummary p {
+    margin: 0;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
 .featuresGrid {
     display: flex;
     flex-wrap: wrap;
@@ -271,6 +294,11 @@
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(99, 102, 241, 0.2);
     transform: translateY(-2px);
+}
+
+.paymentCard:focus-visible {
+    outline: 3px solid #60a5fa;
+    outline-offset: 3px;
 }
 
 .paymentCardActive {
@@ -341,6 +369,14 @@
     font-size: 1.2rem;
     font-weight: 700;
     color: #ffffff;
+}
+
+.paymentBreakdown {
+    display: block;
+    margin-top: 0.55rem;
+    color: #aab6c8;
+    font-size: 0.72rem;
+    line-height: 1.5;
 }
 
 .priceCustom {
@@ -447,6 +483,15 @@
     color: #94a3b8;
 }
 
+.summaryPriceBreakdown {
+    display: block;
+    max-width: 320px;
+    margin-top: 0.45rem;
+    color: #cbd5e1;
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
 .btnWhatsappBig {
     background: linear-gradient(135deg, #25D366, #128C7E);
     color: #fff;
@@ -467,8 +512,12 @@
 }
 
 .summaryNote {
-    font-size: 0.7rem;
-    color: #64748b;
+    display: block;
+    max-width: 390px;
+    margin: 0.75rem 0 0 auto;
+    color: #aab6c8;
+    font-size: 0.78rem;
+    line-height: 1.55;
 }
 
 /* Benefits */
@@ -487,6 +536,15 @@
     gap: 0.6rem;
 }
 
+.scopeIntro {
+    max-width: 760px;
+    margin: 0 auto 1.75rem;
+    color: #94a3b8;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    text-align: center;
+}
+
 .benefitsIcon {
     color: #818cf8;
 }
@@ -494,27 +552,45 @@
 .benefitItem {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 1rem;
-    padding: 1.2rem;
-    text-align: center;
-    transition: all 0.3s;
+    border-radius: 8px;
+    padding: 1.25rem;
+    text-align: left;
+    height: 100%;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .benefitItem:hover {
     background: rgba(255, 255, 255, 0.06);
-    transform: translateY(-2px);
+    border-color: rgba(129, 140, 248, 0.3);
 }
 
 .benefitItemIcon {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: #818cf8;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
 }
 
-.benefitItem span {
-    display: block;
-    font-size: 0.85rem;
+.benefitItem h4 {
+    color: #f8fafc;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.55rem;
+}
+
+.benefitItem p {
+    color: #aab6c8;
+    font-size: 0.8rem;
+    line-height: 1.65;
+    margin: 0;
+}
+
+.scopeNote {
+    max-width: 760px;
+    margin: 1.25rem auto 0;
     color: #cbd5e1;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    text-align: center;
 }
 
 /* Service Navigation */
