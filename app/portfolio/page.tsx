@@ -64,6 +64,48 @@ interface Project {
 // ============================================================ //
 const PROJECTS_DATA: Project[] = [
   // ============================================================ //
+  // 🍲 PROYECTO: VIANDAS FLORIDA (DESTACADO)
+  // ============================================================ //
+  {
+    title: "Viandas Florida — Landing Page Gastronómica",
+    icon: <FaLeaf className="text-primary-400" />,
+    image: "/proyectos/logoredondoviandas.jpeg",
+    description: "Landing page para un servicio de viandas caseras en Florida. Presenta el menú semanal, permite armar pedidos para consultar por WhatsApp e incluye un panel para administrar platos y publicaciones.",
+    longDescription: `
+      🍲 Viandas Florida — Comida casera, todos los días
+
+      Landing page para un emprendimiento de viandas caseras en Florida. La experiencia presenta la propuesta del negocio y acompaña al cliente desde la consulta del menú semanal hasta la coordinación del pedido por WhatsApp.
+
+      ## ✨ Características principales
+      • **Presentación del negocio** con diseño responsive, navegación por secciones y llamados a la acción
+      • **Menú semanal público** con platos, categorías, precios y disponibilidad
+      • **Armado de pedidos** con cantidades, total estimado y notas para enviar por WhatsApp
+      • **Panel de administración** para gestionar productos y menús semanales
+      • **Imágenes de productos** administradas mediante Supabase Storage
+      • **Carta de muestra** cuando todavía no está configurado el menú publicado
+
+      ## 🏗️ Arquitectura técnica
+      **Framework:** Next.js 16 con App Router
+      **Frontend:** React 19 y TypeScript
+      **Estilos:** Tailwind CSS 4 y CSS personalizado
+      **Iconografía:** lucide-react
+      **Datos y autenticación:** Supabase (PostgreSQL, Auth y Row Level Security)
+      **Despliegue:** Vercel
+
+      ## 🔎 SEO y presencia local
+      Incluye metadatos y URLs canónicas, Open Graph y Twitter Cards, sitemap, robots.txt y datos estructurados de tipo FoodEstablishment.
+    `,
+    link: "https://viandas-florida.vercel.app/",
+    github: "https://github.com/cristianmarcus34-boop/viandas-florida",
+    tag: "",
+    tech: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "Supabase", "lucide-react", "Vercel"],
+    featured: true,
+    year: "2026",
+    category: "Landing Page",
+    galleryImages: null,
+  },
+
+  // ============================================================ //
   // 🎁 PROYECTO: TIENDA DE EMOCIONES (DESTACADO)
   // ============================================================ //
   {
