@@ -4,25 +4,28 @@ export default function HeroPlaceholder() {
     return (
         <div className={styles.heroBg}>
             <div className={styles.particleField}>
-                {/* Capa base (centro) */}
-                <div className={`${styles.pseudoParticles} ${styles.layer1}`} />
-                <div className={`${styles.pseudoParticles} ${styles.layer2}`} />
-                <div className={`${styles.pseudoParticles} ${styles.layer3}`} />
-                <div className={`${styles.pseudoParticles} ${styles.layer4}`} />
-                <div className={`${styles.pseudoParticles} ${styles.layer5}`} />
+                {/* PLANO DE FONDO - Polvo estelar (chico, tenue, blur alto) */}
+                <div className={`${styles.pseudoParticles} ${styles.layerBg1}`} />
+                <div className={`${styles.pseudoParticles} ${styles.layerBg2}`} />
+                <div className={`${styles.pseudoParticles} ${styles.layerBg3}`} />
 
-                {/* Capas arriba (cubren la zona del badge) */}
-                <div className={`${styles.pseudoParticles} ${styles.layer1Top}`} />
-                <div className={`${styles.pseudoParticles} ${styles.layer2Top}`} />
-                <div className={`${styles.pseudoParticles} ${styles.layer3Top}`} />
-                <div className={`${styles.pseudoParticles} ${styles.layer4Top}`} />
-                <div className={`${styles.pseudoParticles} ${styles.layer5Top}`} />
+                {/* PLANO MEDIO - Partículas principales */}
+                <div className={`${styles.pseudoParticles} ${styles.layerMid1}`} />
+                <div className={`${styles.pseudoParticles} ${styles.layerMid1Top}`} />
+                <div className={`${styles.pseudoParticles} ${styles.layerMid2}`} />
+                <div className={`${styles.pseudoParticles} ${styles.layerMid2Top}`} />
 
-                {/* Capas de esquinas (cobertura total) */}
-                <div className={`${styles.pseudoParticles} ${styles.layer1TopLeft}`} />
-                <div className={`${styles.pseudoParticles} ${styles.layer1TopRight}`} />
-                <div className={`${styles.pseudoParticles} ${styles.layer1BottomLeft}`} />
-                <div className={`${styles.pseudoParticles} ${styles.layer1BottomRight}`} />
+                {/* PLANO FRONTAL - Estrellas brillantes */}
+                <div className={`${styles.pseudoParticles} ${styles.layerFront1}`} />
+                <div className={`${styles.pseudoParticles} ${styles.layerFront1Top}`} />
+                <div className={`${styles.pseudoParticles} ${styles.layerFront2}`} />
+                <div className={`${styles.pseudoParticles} ${styles.layerFront2Top}`} />
+
+                {/* Esquinas */}
+                <div className={`${styles.pseudoParticles} ${styles.layerCorner1}`} />
+                <div className={`${styles.pseudoParticles} ${styles.layerCorner2}`} />
+                <div className={`${styles.pseudoParticles} ${styles.layerCorner3}`} />
+                <div className={`${styles.pseudoParticles} ${styles.layerCorner4}`} />
             </div>
         </div>
     );
