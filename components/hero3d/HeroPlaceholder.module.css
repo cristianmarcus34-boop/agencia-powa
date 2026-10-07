@@ -1,243 +1,234 @@
 .heroBg {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
     background: radial-gradient(ellipse at center, #0d1f1a 0%, #0a0a0a 70%);
     z-index: 0;
     overflow: hidden;
+    max-height: 100%;
 }
 
 .particleField {
     position: absolute;
     inset: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
 }
 
 /* ============================================
-   PUNTOS DE EMISIÓN DE PARTÍCULAS
-   Distribuidos por toda la pantalla para cubrir
-   todo el hero, incluyendo la zona del badge
+   PSEUDO PARTÍCULAS - BASE
    ============================================ */
-
 .pseudoParticles {
-    width: 4px;
-    height: 4px;
+    width: 1px;
+    height: 1px;
     border-radius: 50%;
     background: transparent;
     position: absolute;
     will-change: transform, opacity;
+    filter: blur(0.15px);
 }
 
-/* 🎯 Punto central (como el original) */
+/* ============================================
+   CAPA 1: Partículas principales (2px)
+   ============================================ */
 .layer1 {
+    width: 2px;
+    height: 2px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow:
-        -120px -80px 1px rgba(0, 255, 204, 0.9),
-        150px -60px 1px rgba(0, 255, 204, 0.8),
-        -80px 100px 1px rgba(0, 255, 204, 0.7),
-        100px 90px 1px rgba(0, 255, 204, 0.85),
-        -200px 20px 1px rgba(0, 255, 204, 0.75),
-        200px -30px 1px rgba(0, 255, 204, 0.8),
-        -40px -150px 1px rgba(0, 255, 204, 0.9),
-        60px 150px 1px rgba(0, 255, 204, 0.7),
-        0px -200px 1px rgba(0, 255, 204, 0.65),
-        0px 200px 1px rgba(0, 255, 204, 0.75);
-    animation: orbit1 7s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite;
+        /* Radio cercano */
+        -80px -50px 0 0 rgba(34, 211, 238, 0.70),
+        90px -40px 0 0 rgba(34, 211, 238, 0.55),
+        -50px 70px 0 0 rgba(34, 211, 238, 0.60),
+        70px 60px 0 0 rgba(34, 211, 238, 0.65),
+        -140px 10px 0 0 rgba(34, 211, 238, 0.50),
+        130px -20px 0 0 rgba(34, 211, 238, 0.60),
+        -30px -100px 0 0 rgba(34, 211, 238, 0.65),
+        40px 100px 0 0 rgba(34, 211, 238, 0.55),
+        0 -140px 0 0 rgba(34, 211, 238, 0.50),
+        0 140px 0 0 rgba(34, 211, 238, 0.55),
+        /* Radio medio */
+        -180px -100px 0 0 rgba(34, 211, 238, 0.45),
+        200px -80px 0 0 rgba(34, 211, 238, 0.50),
+        -160px 130px 0 0 rgba(34, 211, 238, 0.40),
+        170px 120px 0 0 rgba(34, 211, 238, 0.45),
+        -220px 40px 0 0 rgba(34, 211, 238, 0.40),
+        230px -50px 0 0 rgba(34, 211, 238, 0.45),
+        -100px -180px 0 0 rgba(34, 211, 238, 0.45),
+        120px 180px 0 0 rgba(34, 211, 238, 0.40),
+        /* Radio lejano */
+        -260px 100px 0 0 rgba(34, 211, 238, 0.35),
+        280px 90px 0 0 rgba(34, 211, 238, 0.35),
+        -300px -40px 0 0 rgba(34, 211, 238, 0.30),
+        310px 30px 0 0 rgba(34, 211, 238, 0.32);
+    animation: orbit1 12s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite;
 }
 
-/* 🎯 Punto ARRIBA (cubre la zona del badge) */
 .layer1Top {
+    width: 2px;
+    height: 2px;
     top: 15%;
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow:
-        -100px -40px 1px rgba(0, 255, 204, 0.85),
-        120px -50px 1px rgba(0, 255, 204, 0.75),
-        -60px 60px 1px rgba(0, 255, 204, 0.7),
-        80px 40px 1px rgba(0, 255, 204, 0.9),
-        -180px 0px 1px rgba(0, 255, 204, 0.6),
-        180px 20px 1px rgba(0, 255, 204, 0.8),
-        0px -100px 1px rgba(0, 255, 204, 0.7),
-        -150px 80px 1px rgba(0, 255, 204, 0.65),
-        150px -80px 1px rgba(0, 255, 204, 0.75);
-    animation: orbit1 8s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite;
-}
-
-/* 🎯 Punto ARRIBA-IZQUIERDA */
-.layer1TopLeft {
-    top: 10%;
-    left: 15%;
-    transform: translate(-50%, -50%);
-    box-shadow:
-        80px 60px 1px rgba(0, 255, 204, 0.8),
-        140px 100px 1px rgba(0, 255, 204, 0.7),
-        40px 120px 1px rgba(0, 255, 204, 0.6),
-        200px 40px 1px rgba(0, 255, 204, 0.75),
-        100px -40px 1px rgba(0, 255, 204, 0.85),
-        220px -20px 1px rgba(0, 255, 204, 0.65);
-    animation: orbit1 7.5s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 0.5s;
-}
-
-/* 🎯 Punto ARRIBA-DERECHA */
-.layer1TopRight {
-    top: 10%;
-    left: 85%;
-    transform: translate(-50%, -50%);
-    box-shadow:
-        -80px 60px 1px rgba(0, 255, 204, 0.8),
-        -140px 100px 1px rgba(0, 255, 204, 0.7),
-        -40px 120px 1px rgba(0, 255, 204, 0.6),
-        -200px 40px 1px rgba(0, 255, 204, 0.75),
-        -100px -40px 1px rgba(0, 255, 204, 0.85),
-        -220px -20px 1px rgba(0, 255, 204, 0.65);
-    animation: orbit1 8.5s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 1s;
-}
-
-/* 🎯 Punto ABAJO-IZQUIERDA */
-.layer1BottomLeft {
-    top: 85%;
-    left: 15%;
-    transform: translate(-50%, -50%);
-    box-shadow:
-        80px -60px 1px rgba(0, 255, 204, 0.8),
-        140px -100px 1px rgba(0, 255, 204, 0.7),
-        40px -120px 1px rgba(0, 255, 204, 0.6),
-        200px -40px 1px rgba(0, 255, 204, 0.75),
-        100px 40px 1px rgba(0, 255, 204, 0.85),
-        220px 20px 1px rgba(0, 255, 204, 0.65);
-    animation: orbit1 7s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 1.5s;
-}
-
-/* 🎯 Punto ABAJO-DERECHA */
-.layer1BottomRight {
-    top: 85%;
-    left: 85%;
-    transform: translate(-50%, -50%);
-    box-shadow:
-        -80px -60px 1px rgba(0, 255, 204, 0.8),
-        -140px -100px 1px rgba(0, 255, 204, 0.7),
-        -40px -120px 1px rgba(0, 255, 204, 0.6),
-        -200px -40px 1px rgba(0, 255, 204, 0.75),
-        -100px 40px 1px rgba(0, 255, 204, 0.85),
-        -220px 20px 1px rgba(0, 255, 204, 0.65);
-    animation: orbit1 8s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 2s;
+        -70px -30px 0 0 rgba(34, 211, 238, 0.60),
+        80px -40px 0 0 rgba(34, 211, 238, 0.50),
+        -40px 50px 0 0 rgba(34, 211, 238, 0.45),
+        60px 30px 0 0 rgba(34, 211, 238, 0.55),
+        -130px 0 0 0 rgba(34, 211, 238, 0.40),
+        130px 15px 0 0 rgba(34, 211, 238, 0.50),
+        0 -70px 0 0 rgba(34, 211, 238, 0.45),
+        -110px 60px 0 0 rgba(34, 211, 238, 0.40),
+        110px -60px 0 0 rgba(34, 211, 238, 0.50),
+        -180px -30px 0 0 rgba(34, 211, 238, 0.35),
+        180px 40px 0 0 rgba(34, 211, 238, 0.40),
+        -200px 70px 0 0 rgba(34, 211, 238, 0.30),
+        220px -50px 0 0 rgba(34, 211, 238, 0.35);
+    animation: orbit1 14s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 0.5s;
 }
 
 /* ============================================
-   CAPA 2: partículas medianas
+   CAPA 2: Partículas medias (1.5px)
    ============================================ */
-
 .layer2 {
+    width: 1.5px;
+    height: 1.5px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow:
-        -60px -40px 0px 1px rgba(0, 255, 204, 0.5),
-        80px -100px 0px 1px rgba(0, 255, 204, 0.55),
-        -150px -20px 0px 1px rgba(0, 255, 204, 0.45),
-        170px 50px 0px 1px rgba(0, 255, 204, 0.5),
-        -90px 80px 0px 1px rgba(0, 255, 204, 0.6),
-        30px 180px 0px 1px rgba(0, 255, 204, 0.4),
-        110px -140px 0px 1px rgba(0, 255, 204, 0.5),
-        -180px -90px 0px 1px rgba(0, 255, 204, 0.55);
-    animation: orbit2 9s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite reverse;
+        -45px -30px 0 0 rgba(103, 232, 249, 0.55),
+        60px -75px 0 0 rgba(103, 232, 249, 0.50),
+        -115px -15px 0 0 rgba(103, 232, 249, 0.45),
+        130px 40px 0 0 rgba(103, 232, 249, 0.50),
+        -70px 60px 0 0 rgba(103, 232, 249, 0.55),
+        20px 140px 0 0 rgba(103, 232, 249, 0.45),
+        85px -105px 0 0 rgba(103, 232, 249, 0.50),
+        -140px -70px 0 0 rgba(103, 232, 249, 0.45),
+        160px -30px 0 0 rgba(103, 232, 249, 0.40),
+        -190px 60px 0 0 rgba(103, 232, 249, 0.40),
+        180px 100px 0 0 rgba(103, 232, 249, 0.38),
+        -160px 130px 0 0 rgba(103, 232, 249, 0.35),
+        200px -120px 0 0 rgba(103, 232, 249, 0.35),
+        -220px -100px 0 0 rgba(103, 232, 249, 0.32);
+    animation: orbit2 15s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite reverse;
 }
 
 .layer2Top {
+    width: 1.5px;
+    height: 1.5px;
     top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow:
-        -100px -30px 0px 1px rgba(0, 255, 204, 0.5),
-        100px -50px 0px 1px rgba(0, 255, 204, 0.55),
-        -50px 50px 0px 1px rgba(0, 255, 204, 0.45),
-        150px 30px 0px 1px rgba(0, 255, 204, 0.5),
-        -180px 40px 0px 1px rgba(0, 255, 204, 0.6),
-        180px 60px 0px 1px rgba(0, 255, 204, 0.4);
-    animation: orbit2 9.5s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite reverse 0.5s;
+        -80px -25px 0 0 rgba(103, 232, 249, 0.50),
+        80px -40px 0 0 rgba(103, 232, 249, 0.45),
+        -40px 40px 0 0 rgba(103, 232, 249, 0.48),
+        120px 25px 0 0 rgba(103, 232, 249, 0.45),
+        -145px 30px 0 0 rgba(103, 232, 249, 0.40),
+        145px 50px 0 0 rgba(103, 232, 249, 0.42),
+        -180px -50px 0 0 rgba(103, 232, 249, 0.35),
+        180px 60px 0 0 rgba(103, 232, 249, 0.38),
+        -210px 80px 0 0 rgba(103, 232, 249, 0.30),
+        210px -20px 0 0 rgba(103, 232, 249, 0.35);
+    animation: orbit2 16s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite reverse 0.8s;
 }
 
 /* ============================================
-   CAPA 3: partículas pequeñas rápidas
+   CAPA 3: Micro partículas brillantes (1.2px)
    ============================================ */
-
 .layer3 {
-    width: 2px;
-    height: 2px;
+    width: 1.2px;
+    height: 1.2px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow:
-        -30px -120px 0px rgba(0, 255, 204, 1),
-        40px -180px 0px rgba(0, 255, 204, 0.9),
-        -180px 60px 0px rgba(0, 255, 204, 0.85),
-        120px -80px 0px rgba(0, 255, 204, 0.95),
-        -110px -60px 0px rgba(0, 255, 204, 0.8),
-        90px 130px 0px rgba(0, 255, 204, 0.9),
-        200px 160px 0px rgba(0, 255, 204, 0.7),
-        -200px -150px 0px rgba(0, 255, 204, 0.85);
-    animation: orbit3 6s cubic-bezier(0.35, 0.1, 0.65, 0.9) infinite 1s;
+        -25px -90px 0 0 rgba(165, 243, 252, 0.60),
+        30px -135px 0 0 rgba(165, 243, 252, 0.50),
+        -135px 45px 0 0 rgba(165, 243, 252, 0.55),
+        90px -60px 0 0 rgba(165, 243, 252, 0.60),
+        -85px -45px 0 0 rgba(165, 243, 252, 0.50),
+        70px 100px 0 0 rgba(165, 243, 252, 0.55),
+        150px 120px 0 0 rgba(165, 243, 252, 0.45),
+        -150px -110px 0 0 rgba(165, 243, 252, 0.50),
+        -180px 30px 0 0 rgba(165, 243, 252, 0.42),
+        170px -80px 0 0 rgba(165, 243, 252, 0.45),
+        -60px 130px 0 0 rgba(165, 243, 252, 0.40),
+        60px -150px 0 0 rgba(165, 243, 252, 0.42),
+        -200px -30px 0 0 rgba(165, 243, 252, 0.38),
+        200px 70px 0 0 rgba(165, 243, 252, 0.40);
+    animation: orbit3 9s cubic-bezier(0.35, 0.1, 0.65, 0.9) infinite 1s;
 }
 
 .layer3Top {
-    width: 2px;
-    height: 2px;
+    width: 1.2px;
+    height: 1.2px;
     top: 8%;
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow:
-        -60px 40px 0px rgba(0, 255, 204, 1),
-        60px -30px 0px rgba(0, 255, 204, 0.9),
-        -150px 20px 0px rgba(0, 255, 204, 0.85),
-        150px -40px 0px rgba(0, 255, 204, 0.95),
-        -100px 60px 0px rgba(0, 255, 204, 0.8),
-        100px 80px 0px rgba(0, 255, 204, 0.9),
-        -220px -20px 0px rgba(0, 255, 204, 0.7),
-        220px 40px 0px rgba(0, 255, 204, 0.85);
-    animation: orbit3 6.5s cubic-bezier(0.35, 0.1, 0.65, 0.9) infinite 1.5s;
+        -50px 30px 0 0 rgba(165, 243, 252, 0.55),
+        50px -25px 0 0 rgba(165, 243, 252, 0.50),
+        -120px 15px 0 0 rgba(165, 243, 252, 0.50),
+        120px -30px 0 0 rgba(165, 243, 252, 0.55),
+        -80px 50px 0 0 rgba(165, 243, 252, 0.45),
+        80px 60px 0 0 rgba(165, 243, 252, 0.48),
+        -175px -15px 0 0 rgba(165, 243, 252, 0.40),
+        175px 30px 0 0 rgba(165, 243, 252, 0.42),
+        -210px 50px 0 0 rgba(165, 243, 252, 0.35),
+        210px -40px 0 0 rgba(165, 243, 252, 0.38);
+    animation: orbit3 10s cubic-bezier(0.35, 0.1, 0.65, 0.9) infinite 1.5s;
 }
 
 /* ============================================
-   CAPA 4: micro-partículas blancas
+   CAPA 4: "Estrellas" blancas brillantes (1.5px)
    ============================================ */
-
 .layer4 {
-    width: 1px;
-    height: 1px;
+    width: 1.5px;
+    height: 1.5px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow:
-        70px -20px 0px rgba(255, 255, 255, 0.9),
-        -100px 140px 0px rgba(255, 255, 255, 0.7),
-        190px 30px 0px rgba(255, 255, 255, 0.8),
-        -70px -110px 0px rgba(255, 255, 255, 0.6),
-        150px 170px 0px rgba(255, 255, 255, 0.75),
-        -20px 200px 0px rgba(255, 255, 255, 0.65);
-    animation: drift 11s linear infinite 3s;
+        55px -15px 0 0 rgba(255, 255, 255, 0.70),
+        -75px 105px 0 0 rgba(255, 255, 255, 0.55),
+        145px 25px 0 0 rgba(255, 255, 255, 0.60),
+        -55px -85px 0 0 rgba(255, 255, 255, 0.50),
+        115px 130px 0 0 rgba(255, 255, 255, 0.55),
+        -15px 150px 0 0 rgba(255, 255, 255, 0.50),
+        170px -20px 0 0 rgba(255, 255, 255, 0.45),
+        -170px 90px 0 0 rgba(255, 255, 255, 0.45),
+        190px 70px 0 0 rgba(255, 255, 255, 0.40),
+        -190px -70px 0 0 rgba(255, 255, 255, 0.40);
+    animation: drift 16s linear infinite 3s;
 }
 
-/* Micro-partículas extra para cubrir la zona superior */
 .layer4Top {
-    width: 1px;
-    height: 1px;
+    width: 1.5px;
+    height: 1.5px;
     top: 10%;
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow:
-        60px 30px 0px rgba(255, 255, 255, 0.8),
-        -80px 20px 0px rgba(255, 255, 255, 0.7),
-        130px 50px 0px rgba(255, 255, 255, 0.6),
-        -140px -10px 0px rgba(255, 255, 255, 0.75),
-        190px 30px 0px rgba(255, 255, 255, 0.65),
-        -200px 60px 0px rgba(255, 255, 255, 0.55);
-    animation: drift 12s linear infinite 4s;
+        45px 25px 0 0 rgba(255, 255, 255, 0.55),
+        -60px 15px 0 0 rgba(255, 255, 255, 0.50),
+        100px 40px 0 0 rgba(255, 255, 255, 0.45),
+        -110px -10px 0 0 rgba(255, 255, 255, 0.55),
+        145px 25px 0 0 rgba(255, 255, 255, 0.45),
+        -155px 45px 0 0 rgba(255, 255, 255, 0.40),
+        180px -30px 0 0 rgba(255, 255, 255, 0.38),
+        -180px 60px 0 0 rgba(255, 255, 255, 0.40);
+    animation: drift 18s linear infinite 4s;
 }
 
 /* ============================================
-   CAPA 5: partículas ultra-lejanas
+   CAPA 5: Partículas lejanas de fondo (1px)
    ============================================ */
-
 .layer5 {
     width: 1px;
     height: 1px;
@@ -245,11 +236,15 @@
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow:
-        40px 30px 0px rgba(0, 255, 204, 0.4),
-        -130px -70px 0px rgba(0, 255, 204, 0.35),
-        160px -120px 0px rgba(0, 255, 204, 0.3),
-        -50px 160px 0px rgba(0, 255, 204, 0.25);
-    animation: drift 14s linear infinite 5s;
+        30px 25px 0 0 rgba(34, 211, 238, 0.35),
+        -100px -55px 0 0 rgba(34, 211, 238, 0.32),
+        125px -95px 0 0 rgba(34, 211, 238, 0.30),
+        -40px 125px 0 0 rgba(34, 211, 238, 0.28),
+        -165px -120px 0 0 rgba(34, 211, 238, 0.25),
+        175px 140px 0 0 rgba(34, 211, 238, 0.28),
+        -200px 80px 0 0 rgba(34, 211, 238, 0.22),
+        210px -80px 0 0 rgba(34, 211, 238, 0.25);
+    animation: drift 20s linear infinite 5s;
 }
 
 .layer5Top {
@@ -259,38 +254,111 @@
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow:
-        80px 20px 0px rgba(0, 255, 204, 0.4),
-        -100px 30px 0px rgba(0, 255, 204, 0.35),
-        150px -10px 0px rgba(0, 255, 204, 0.3),
-        -180px 40px 0px rgba(0, 255, 204, 0.25);
-    animation: drift 15s linear infinite 6s;
+        65px 15px 0 0 rgba(34, 211, 238, 0.35),
+        -80px 25px 0 0 rgba(34, 211, 238, 0.32),
+        120px -10px 0 0 rgba(34, 211, 238, 0.30),
+        -145px 30px 0 0 rgba(34, 211, 238, 0.28),
+        160px 40px 0 0 rgba(34, 211, 238, 0.25),
+        -170px -20px 0 0 rgba(34, 211, 238, 0.28);
+    animation: drift 22s linear infinite 6s;
 }
 
 /* ============================================
-   KEYFRAMES
+   CAPAS DE ESQUINAS (cobertura total)
+   ============================================ */
+.layer1TopLeft {
+    width: 2px;
+    height: 2px;
+    top: 10%;
+    left: 15%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        60px 45px 0 0 rgba(34, 211, 238, 0.55),
+        105px 75px 0 0 rgba(34, 211, 238, 0.48),
+        30px 90px 0 0 rgba(34, 211, 238, 0.42),
+        150px 30px 0 0 rgba(34, 211, 238, 0.50),
+        75px -30px 0 0 rgba(34, 211, 238, 0.58),
+        165px -15px 0 0 rgba(34, 211, 238, 0.45),
+        195px 60px 0 0 rgba(34, 211, 238, 0.40);
+    animation: orbit1 13s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 0.5s;
+}
+
+.layer1TopRight {
+    width: 2px;
+    height: 2px;
+    top: 10%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        -60px 45px 0 0 rgba(34, 211, 238, 0.55),
+        -105px 75px 0 0 rgba(34, 211, 238, 0.48),
+        -30px 90px 0 0 rgba(34, 211, 238, 0.42),
+        -150px 30px 0 0 rgba(34, 211, 238, 0.50),
+        -75px -30px 0 0 rgba(34, 211, 238, 0.58),
+        -165px -15px 0 0 rgba(34, 211, 238, 0.45),
+        -195px 60px 0 0 rgba(34, 211, 238, 0.40);
+    animation: orbit1 14s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 1s;
+}
+
+.layer1BottomLeft {
+    width: 2px;
+    height: 2px;
+    top: 85%;
+    left: 15%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        60px -45px 0 0 rgba(34, 211, 238, 0.55),
+        105px -75px 0 0 rgba(34, 211, 238, 0.48),
+        30px -90px 0 0 rgba(34, 211, 238, 0.42),
+        150px -30px 0 0 rgba(34, 211, 238, 0.50),
+        75px 30px 0 0 rgba(34, 211, 238, 0.58),
+        165px 15px 0 0 rgba(34, 211, 238, 0.45),
+        195px -60px 0 0 rgba(34, 211, 238, 0.40);
+    animation: orbit1 12.5s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 1.5s;
+}
+
+.layer1BottomRight {
+    width: 2px;
+    height: 2px;
+    top: 85%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        -60px -45px 0 0 rgba(34, 211, 238, 0.55),
+        -105px -75px 0 0 rgba(34, 211, 238, 0.48),
+        -30px -90px 0 0 rgba(34, 211, 238, 0.42),
+        -150px -30px 0 0 rgba(34, 211, 238, 0.50),
+        -75px 30px 0 0 rgba(34, 211, 238, 0.58),
+        -165px 15px 0 0 rgba(34, 211, 238, 0.45),
+        -195px -60px 0 0 rgba(34, 211, 238, 0.40);
+    animation: orbit1 13.5s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 2s;
+}
+
+/* ============================================
+   KEYFRAMES - Movimientos rápidos y copados
    ============================================ */
 
 @keyframes orbit1 {
 
     0%,
     100% {
-        transform: translate(-50%, -50%) scale(1) translateX(0px) translateY(0px);
+        transform: translate(-50%, -50%) scale(1) rotate(0deg) translateX(0) translateY(0);
     }
 
     20% {
-        transform: translate(-48%, -53%) scale(1.06) translateX(30px) translateY(-20px);
+        transform: translate(-48%, -52%) scale(1.15) rotate(8deg) translateX(45px) translateY(-35px);
     }
 
     40% {
-        transform: translate(-53%, -47%) scale(0.94) translateX(-15px) translateY(25px);
+        transform: translate(-52%, -48%) scale(0.85) rotate(-6deg) translateX(-30px) translateY(40px);
     }
 
     60% {
-        transform: translate(-47%, -52%) scale(1.05) translateX(-30px) translateY(-15px);
+        transform: translate(-47%, -53%) scale(1.12) rotate(10deg) translateX(-50px) translateY(-30px);
     }
 
     80% {
-        transform: translate(-52%, -48%) scale(0.96) translateX(20px) translateY(15px);
+        transform: translate(-53%, -47%) scale(0.88) rotate(-8deg) translateX(35px) translateY(30px);
     }
 }
 
@@ -298,19 +366,19 @@
 
     0%,
     100% {
-        transform: translate(-50%, -50%) scale(1) translateX(0px) translateY(0px);
+        transform: translate(-50%, -50%) scale(1) rotate(0deg) translateX(0) translateY(0);
     }
 
     25% {
-        transform: translate(-54%, -46%) scale(0.92) translateX(-40px) translateY(30px);
+        transform: translate(-53%, -47%) scale(0.85) rotate(-10deg) translateX(-55px) translateY(45px);
     }
 
     50% {
-        transform: translate(-46%, -54%) scale(1.08) translateX(25px) translateY(-35px);
+        transform: translate(-47%, -53%) scale(1.18) rotate(12deg) translateX(40px) translateY(-50px);
     }
 
     75% {
-        transform: translate(-52%, -48%) scale(0.95) translateX(-30px) translateY(-20px);
+        transform: translate(-51%, -49%) scale(0.92) rotate(-5deg) translateX(-40px) translateY(-30px);
     }
 }
 
@@ -318,31 +386,41 @@
 
     0%,
     100% {
-        transform: translate(-50%, -50%) scale(1) rotate(0deg) translateX(0px);
+        transform: translate(-50%, -50%) scale(1) rotate(0deg) translateX(0) translateY(0);
     }
 
     33% {
-        transform: translate(-49%, -51%) scale(1.04) rotate(8deg) translateX(30px);
+        transform: translate(-48%, -52%) scale(1.20) rotate(15deg) translateX(40px) translateY(-25px);
     }
 
     66% {
-        transform: translate(-51%, -49%) scale(0.97) rotate(-4deg) translateX(-25px);
+        transform: translate(-52%, -48%) scale(0.82) rotate(-12deg) translateX(-35px) translateY(30px);
     }
 }
 
 @keyframes drift {
     0% {
-        transform: translate(-50%, -50%) translateX(0px);
-        opacity: 0.5;
+        transform: translate(-50%, -50%) translateX(0) translateY(0) scale(1);
+        opacity: 0.4;
+    }
+
+    25% {
+        transform: translate(-50%, -50%) translateX(50px) translateY(-25px) scale(1.3);
+        opacity: 0.9;
     }
 
     50% {
-        transform: translate(-50%, -50%) translateX(50px);
+        transform: translate(-50%, -50%) translateX(80px) translateY(15px) scale(1);
         opacity: 1;
     }
 
+    75% {
+        transform: translate(-50%, -50%) translateX(40px) translateY(30px) scale(1.2);
+        opacity: 0.85;
+    }
+
     100% {
-        transform: translate(-50%, -50%) translateX(0px);
-        opacity: 0.5;
+        transform: translate(-50%, -50%) translateX(0) translateY(0) scale(1);
+        opacity: 0.4;
     }
 }
