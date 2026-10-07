@@ -1,47 +1,51 @@
-'use client';
+// app/blog/page.tsx
+import type { Metadata } from 'next';
+import { createClient } from '@supabase/supabase-js';
+import BlogClient from './BlogClient';
 
-import React, { useMemo, useState, useEffect } from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import {
-    FaCalendarAlt, FaArrowRight, FaSearch,
-    FaTag, FaClock, FaRocket, FaCode, FaShieldAlt,
-    FaMobileAlt, FaCloudUploadAlt, FaChartLine, FaTimes,
-    FaArrowUp
-} from 'react-icons/fa';
-import Link from 'next/link';
-import Image from 'next/image';
-import Script from 'next/script';
-import { supabase } from '../lib/supabase';
-
-import styles from './blog.module.css';
-
-// ===== CONSTANTES =====
-const CATEGORIES = [
-    'Todos',
-    'Arquitectura',
-    'Performance',
-    'Seguridad',
-    'UX/UI',
-    'DevOps',
-    'Estrategia'
-] as const;
-
-const CATEGORY_ICONS: Record<string, React.ReactNode> = {
-    'Arquitectura': <FaCode />,
-    'Performance': <FaRocket />,
-    'Seguridad': <FaShieldAlt />,
-    'UX/UI': <FaMobileAlt />,
-    'DevOps': <FaCloudUploadAlt />,
-    'Estrategia': <FaChartLine />
+// ============================================
+// METADATA
+// ============================================
+export const metadata: Metadata = {
+    title: 'Powa Blog | Ingeniería Web y Estrategia Digital',
+    description: 'Artículos sobre ingeniería de software, optimización de rendimiento y arquitectura escalable para PYMES y empresas.',
+    keywords: [
+        'blog desarrollo web',
+        'ingeniería de software',
+        'next.js',
+        'performance web',
+        'SEO técnico',
+        'arquitectura escalable',
+        'agencia digital quilmes',
+    ],
+    alternates: {
+        canonical: '/blog',
+    },
+    openGraph: {
+        title: 'Powa Blog | Ingeniería Web y Estrategia Digital',
+        description: 'Artículos sobre ingeniería de software, optimización de rendimiento y arquitectura escalable.',
+        url: 'https://www.agenciadigitalpowa.com.ar/blog',
+        type: 'website',
+        images: [
+            {
+                url: '/logo-agenciadigitalpowa-redondo.png',
+                width: 1200,
+                height: 630,
+                alt: 'Powa Blog',
+            },
+        ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Powa Blog | Ingeniería Web y Estrategia Digital',
+        description: 'Artículos sobre ingeniería de software, optimización de rendimiento y arquitectura escalable.',
+    },
 };
 
-const POPULAR_TAGS = [
-    'Next.js', 'TypeScript', 'Performance', 'SEO',
-    'Arquitectura', 'DevOps', 'UX/UI', 'Cloud'
-];
-
-// ===== TIPO DE POST DESDE SUPABASE =====
-interface PostFromDB {
+// ============================================
+// TIPOS
+// ============================================
+export interface PostFromDB {
     id: string;
     titulo: string;
     slug: string;
@@ -53,314 +57,78 @@ interface PostFromDB {
     meta_descripcion: string | null;
 }
 
-export default function BlogPage() {
-    const [posts, setPosts] = useState<PostFromDB[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [activeCategory, setActiveCategory] = useState<string>('Todos');
-    const [showScrollTop, setShowScrollTop] = useState(false);
+// ============================================
+// FETCH DE POSTS EN EL SERVIDOR
+// ============================================
+async function getPosts(): Promise<PostFromDB[]> {
+    try {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    // ===== CARGAR POSTS DESDE SUPABASE =====
-    useEffect(() => {
-        async function fetchPosts() {
-            try {
-                const { data, error } = await supabase
-                    .from('posts')
-                    .select('id, titulo, slug, extracto, imagen_url, imagen_alt, created_at, meta_keywords, meta_descripcion')
-                    .eq('publicado', true)
-                    .order('created_at', { ascending: false });
-
-                if (error) {
-                    console.error('Error cargando posts:', error);
-                    setPosts([]);
-                } else {
-                    setPosts((data || []) as PostFromDB[]);
-                }
-            } catch (err) {
-                console.error('Error inesperado:', err);
-                setPosts([]);
-            } finally {
-                setLoading(false);
-            }
+        if (!supabaseUrl || !supabaseKey) {
+            console.error('Faltan variables de Supabase');
+            return [];
         }
 
-        fetchPosts();
-    }, []);
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // ===== SCROLL TOP =====
-    useEffect(() => {
-        const handleScroll = () => setShowScrollTop(window.scrollY > 500);
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+        const { data, error } = await supabase
+            .from('posts')
+            .select('id, titulo, slug, extracto, imagen_url, imagen_alt, created_at, meta_keywords, meta_descripcion')
+            .eq('publicado', true)
+            .order('created_at', { ascending: false });
 
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+        if (error) {
+            console.error('Error fetching posts:', error);
+            return [];
+        }
 
-    // ===== FILTRADO =====
-    const filteredPosts = useMemo(() => {
-        const searchLower = searchTerm.toLowerCase().trim();
-        const catLower = activeCategory.toLowerCase();
+        return (data || []) as PostFromDB[];
+    } catch (err) {
+        console.error('Error inesperado:', err);
+        return [];
+    }
+}
 
-        return posts.filter(post => {
-            const matchesSearch =
-                !searchLower ||
-                post.titulo.toLowerCase().includes(searchLower) ||
-                post.extracto?.toLowerCase().includes(searchLower) ||
-                post.meta_keywords?.toLowerCase().includes(searchLower);
-
-            const matchesCategory =
-                activeCategory === 'Todos' ||
-                (post.meta_keywords?.toLowerCase().includes(catLower) ?? false);
-
-            return matchesSearch && matchesCategory;
-        });
-    }, [searchTerm, activeCategory, posts]);
-
-    // ===== LIMPIAR BÚSQUEDA =====
-    const clearSearch = () => {
-        setSearchTerm('');
-        setActiveCategory('Todos');
-    };
-
-    // ===== SCHEMA JSON-LD PARA SEO =====
-    const blogSchema = {
+// ============================================
+// SCHEMA JSON-LD
+// ============================================
+function buildBlogSchema(posts: PostFromDB[]) {
+    return {
         '@context': 'https://schema.org',
         '@type': 'Blog',
-        'name': 'Powa Insights - Blog de Ingeniería Web',
-        'description': 'Perspectivas globales sobre ingeniería de software, optimización de performance y arquitectura escalable.',
-        'url': 'https://www.agenciadigitalpowa.com.ar/blog',
-        'blogPosts': posts.map(post => ({
+        name: 'Powa Blog',
+        description:
+            'Artículos sobre ingeniería de software, optimización de rendimiento y arquitectura escalable.',
+        url: 'https://www.agenciadigitalpowa.com.ar/blog',
+        blogPosts: posts.map((post) => ({
             '@type': 'BlogPosting',
-            'headline': post.titulo,
-            'description': post.extracto,
-            'datePublished': post.created_at,
-            'author': {
+            headline: post.titulo,
+            description: post.extracto,
+            datePublished: post.created_at,
+            url: `https://www.agenciadigitalpowa.com.ar/blog/${post.slug}`,
+            author: {
                 '@type': 'Organization',
-                'name': 'Agencia Powa'
-            }
-        }))
+                name: 'Agencia Digital Powa',
+            },
+        })),
     };
+}
 
-    // ===== LOADING =====
-    if (loading) {
-        return (
-            <div className={styles.blogPageWrapper}>
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    minHeight: '60vh'
-                }}>
-                    <div className="text-white">Cargando artículos...</div>
-                </div>
-            </div>
-        );
-    }
+// ============================================
+// PAGE (Server Component)
+// ============================================
+export default async function BlogPage() {
+    const posts = await getPosts();
+    const blogSchema = buildBlogSchema(posts);
 
-    // ===== RENDER =====
     return (
         <>
-            <Script
-                id="blog-schema"
+            <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
             />
-
-            <div className={styles.blogPageWrapper}>
-                <div className={styles.ambientGlow} />
-                <div className={styles.ambientGlowSecondary} />
-
-                <Container className="py-5 mt-5" style={{ position: 'relative', zIndex: 10 }}>
-                    <header className="text-center mb-5">
-                        <span className={styles.badgePowaAccent}>Conocimiento Técnico</span>
-                        <h1 className={styles.blogMainTitle}>
-                            Powa <span className={styles.textGradient}>Insights</span>
-                        </h1>
-                        <p className={styles.heroSubtitleModern}>
-                            Perspectivas globales sobre ingeniería de software, optimización de performance y arquitectura escalable.
-                        </p>
-
-                        <div className={styles.postCounter}>
-                            <FaClock className={styles.counterIcon} />
-                            <span>{posts.length} artículos publicados</span>
-                        </div>
-                    </header>
-
-                    {/* ===== FILTROS Y BÚSQUEDA ===== */}
-                    <Row className="justify-content-center mb-4">
-                        <Col lg={10}>
-                            <div className={styles.filtersWrapper}>
-                                <div className={styles.searchWrapper}>
-                                    <FaSearch className={styles.searchIcon} />
-                                    <input
-                                        type="text"
-                                        className={styles.searchInput}
-                                        placeholder="Buscar artículos por título, categoría o contenido..."
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                        aria-label="Buscar artículos del blog"
-                                    />
-                                    {searchTerm && (
-                                        <button
-                                            className={styles.clearSearch}
-                                            onClick={clearSearch}
-                                            aria-label="Limpiar búsqueda"
-                                        >
-                                            <FaTimes />
-                                        </button>
-                                    )}
-                                </div>
-
-                                <div className={styles.categoryFilters}>
-                                    {CATEGORIES.map((cat) => (
-                                        <button
-                                            key={cat}
-                                            className={`${styles.filterButton} ${activeCategory === cat ? styles.activeFilter : ''}`}
-                                            onClick={() => setActiveCategory(cat)}
-                                        >
-                                            {cat !== 'Todos' && CATEGORY_ICONS[cat]}
-                                            {cat}
-                                        </button>
-                                    ))}
-                                </div>
-
-                                <div className={styles.tagsWrapper}>
-                                    <span className={styles.tagsLabel}>
-                                        <FaTag className={styles.tagsIcon} />
-                                        Tags populares:
-                                    </span>
-                                    <div className={styles.tagsCloud}>
-                                        {POPULAR_TAGS.map((tag) => (
-                                            <button
-                                                key={tag}
-                                                className={styles.tagButton}
-                                                onClick={() => {
-                                                    setSearchTerm(tag);
-                                                    setActiveCategory('Todos');
-                                                }}
-                                            >
-                                                #{tag}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
-
-                    {/* ===== RESULTADOS ===== */}
-                    {filteredPosts.length === 0 ? (
-                        <div className={styles.emptyState}>
-                            <FaSearch className={styles.emptyIcon} />
-                            <h3 className={styles.emptyTitle}>No encontramos resultados</h3>
-                            <p className={styles.emptyText}>
-                                {searchTerm || activeCategory !== 'Todos' ? (
-                                    <>
-                                        No hay artículos que coincidan con <strong>&quot;{searchTerm}&quot;</strong>
-                                        {activeCategory !== 'Todos' && ` en la categoría ${activeCategory}`}
-                                    </>
-                                ) : (
-                                    'No hay artículos publicados aún.'
-                                )}
-                            </p>
-                            {(searchTerm || activeCategory !== 'Todos') && (
-                                <button className={styles.emptyButton} onClick={clearSearch}>
-                                    Ver todos los artículos
-                                </button>
-                            )}
-                        </div>
-                    ) : (
-                        <>
-                            <div className={styles.resultsCount}>
-                                {searchTerm || activeCategory !== 'Todos' ? (
-                                    <>
-                                        Mostrando <strong>{filteredPosts.length}</strong> de <strong>{posts.length}</strong> artículos
-                                        {searchTerm && ` que coinciden con "${searchTerm}"`}
-                                        {activeCategory !== 'Todos' && ` en ${activeCategory}`}
-                                    </>
-                                ) : (
-                                    `Mostrando ${filteredPosts.length} artículos`
-                                )}
-                            </div>
-
-                            <Row className="g-4">
-                                {filteredPosts.map((post, index) => (
-                                    <Col lg={6} key={post.id}>
-                                        <Link href={`/blog/${post.slug}`} className="text-decoration-none d-block h-100">
-                                            <Card
-                                                className={`${styles.blogCardPowa} border-0 h-100 fadeInUp`}
-                                                style={{ animationDelay: `${(index + 1) * 0.05}s` }}
-                                            >
-                                                {/* Imagen de portada o fallback */}
-                                                {post.imagen_url ? (
-                                                    <div className={styles.cardCoverWrapper}>
-                                                        <Image
-                                                            src={post.imagen_url}
-                                                            alt={post.imagen_alt || post.titulo}
-                                                            fill
-                                                            sizes="(max-width: 992px) 100vw, 50vw"
-                                                            className={styles.cardCoverImage}
-                                                        />
-                                                    </div>
-                                                ) : (
-                                                    <div className={styles.cardCoverWrapper}>
-                                                        <div className={styles.cardCoverFallback}>
-                                                            <span className={styles.cardFallbackIcon}>📝</span>
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                <Card.Body className="d-flex flex-column p-4">
-                                                    <div className="d-flex justify-content-between align-items-center mb-3">
-                                                        <span className={styles.postCategory}>
-                                                            {post.meta_keywords?.split(',')[0]?.trim() || 'Artículo'}
-                                                        </span>
-                                                        <span className={styles.postDate}>
-                                                            <FaCalendarAlt className="me-2" size={12} />
-                                                            {new Date(post.created_at).toLocaleDateString('es-AR', {
-                                                                year: 'numeric',
-                                                                month: 'short',
-                                                                day: 'numeric'
-                                                            })}
-                                                        </span>
-                                                    </div>
-
-                                                    <h3 className={styles.postTitle}>
-                                                        {post.titulo}
-                                                    </h3>
-
-                                                    <p className={styles.postExcerpt}>
-                                                        {post.extracto || 'Sin extracto disponible.'}
-                                                    </p>
-
-                                                    <div className="mt-auto pt-3">
-                                                        <span className={styles.btnReadMore}>
-                                                            Leer Artículo
-                                                            <FaArrowRight className={`${styles.iconArrow} ms-2`} size={12} />
-                                                        </span>
-                                                    </div>
-                                                </Card.Body>
-                                            </Card>
-                                        </Link>
-                                    </Col>
-                                ))}
-                            </Row>
-                        </>
-                    )}
-                </Container>
-
-                {showScrollTop && (
-                    <button
-                        onClick={scrollToTop}
-                        className={styles.scrollTopButton}
-                        aria-label="Volver arriba"
-                    >
-                        <FaArrowUp />
-                    </button>
-                )}
-            </div>
+            <BlogClient posts={posts} />
         </>
     );
 }
