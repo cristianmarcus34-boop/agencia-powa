@@ -4,6 +4,8 @@
     height: 100dvh;
     width: 100%;
     overflow: hidden;
+    z-index: 0;
+    isolation: isolate;
 }
 
 .contentOverlay {
@@ -12,10 +14,11 @@
     z-index: 10;
     display: flex;
     align-items: center;
-    /* Quitamos el padding-top de acá para que no empuje de más */
+    justify-content: center;
     pointer-events: none;
 }
 
 .contentOverlay>* {
     pointer-events: auto;
+    width: 100%;
 }

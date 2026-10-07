@@ -11,20 +11,26 @@
     inset: 0;
 }
 
+/* ============================================
+   PUNTOS DE EMISIÓN DE PARTÍCULAS
+   Distribuidos por toda la pantalla para cubrir
+   todo el hero, incluyendo la zona del badge
+   ============================================ */
+
 .pseudoParticles {
     width: 4px;
     height: 4px;
     border-radius: 50%;
     background: transparent;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     will-change: transform, opacity;
 }
 
-/* Capa 1: partículas grandes, primer plano, movimiento amplio y rápido con easing orgánico */
+/* 🎯 Punto central (como el original) */
 .layer1 {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     box-shadow:
         -120px -80px 1px rgba(0, 255, 204, 0.9),
         150px -60px 1px rgba(0, 255, 204, 0.8),
@@ -35,16 +41,96 @@
         -40px -150px 1px rgba(0, 255, 204, 0.9),
         60px 150px 1px rgba(0, 255, 204, 0.7),
         0px -200px 1px rgba(0, 255, 204, 0.65),
-        0px 200px 1px rgba(0, 255, 204, 0.75),
-        -160px 40px 1px rgba(0, 255, 204, 0.6),
-        180px 110px 1px rgba(0, 255, 204, 0.7),
-        -90px -190px 1px rgba(0, 255, 204, 0.8),
-        130px -170px 1px rgba(0, 255, 204, 0.75);
+        0px 200px 1px rgba(0, 255, 204, 0.75);
     animation: orbit1 7s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite;
 }
 
-/* Capa 2: partículas medianas, movimiento curvilíneo con rebote suave */
+/* 🎯 Punto ARRIBA (cubre la zona del badge) */
+.layer1Top {
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        -100px -40px 1px rgba(0, 255, 204, 0.85),
+        120px -50px 1px rgba(0, 255, 204, 0.75),
+        -60px 60px 1px rgba(0, 255, 204, 0.7),
+        80px 40px 1px rgba(0, 255, 204, 0.9),
+        -180px 0px 1px rgba(0, 255, 204, 0.6),
+        180px 20px 1px rgba(0, 255, 204, 0.8),
+        0px -100px 1px rgba(0, 255, 204, 0.7),
+        -150px 80px 1px rgba(0, 255, 204, 0.65),
+        150px -80px 1px rgba(0, 255, 204, 0.75);
+    animation: orbit1 8s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite;
+}
+
+/* 🎯 Punto ARRIBA-IZQUIERDA */
+.layer1TopLeft {
+    top: 10%;
+    left: 15%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        80px 60px 1px rgba(0, 255, 204, 0.8),
+        140px 100px 1px rgba(0, 255, 204, 0.7),
+        40px 120px 1px rgba(0, 255, 204, 0.6),
+        200px 40px 1px rgba(0, 255, 204, 0.75),
+        100px -40px 1px rgba(0, 255, 204, 0.85),
+        220px -20px 1px rgba(0, 255, 204, 0.65);
+    animation: orbit1 7.5s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 0.5s;
+}
+
+/* 🎯 Punto ARRIBA-DERECHA */
+.layer1TopRight {
+    top: 10%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        -80px 60px 1px rgba(0, 255, 204, 0.8),
+        -140px 100px 1px rgba(0, 255, 204, 0.7),
+        -40px 120px 1px rgba(0, 255, 204, 0.6),
+        -200px 40px 1px rgba(0, 255, 204, 0.75),
+        -100px -40px 1px rgba(0, 255, 204, 0.85),
+        -220px -20px 1px rgba(0, 255, 204, 0.65);
+    animation: orbit1 8.5s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 1s;
+}
+
+/* 🎯 Punto ABAJO-IZQUIERDA */
+.layer1BottomLeft {
+    top: 85%;
+    left: 15%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        80px -60px 1px rgba(0, 255, 204, 0.8),
+        140px -100px 1px rgba(0, 255, 204, 0.7),
+        40px -120px 1px rgba(0, 255, 204, 0.6),
+        200px -40px 1px rgba(0, 255, 204, 0.75),
+        100px 40px 1px rgba(0, 255, 204, 0.85),
+        220px 20px 1px rgba(0, 255, 204, 0.65);
+    animation: orbit1 7s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 1.5s;
+}
+
+/* 🎯 Punto ABAJO-DERECHA */
+.layer1BottomRight {
+    top: 85%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        -80px -60px 1px rgba(0, 255, 204, 0.8),
+        -140px -100px 1px rgba(0, 255, 204, 0.7),
+        -40px -120px 1px rgba(0, 255, 204, 0.6),
+        -200px -40px 1px rgba(0, 255, 204, 0.75),
+        -100px 40px 1px rgba(0, 255, 204, 0.85),
+        -220px 20px 1px rgba(0, 255, 204, 0.65);
+    animation: orbit1 8s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 2s;
+}
+
+/* ============================================
+   CAPA 2: partículas medianas
+   ============================================ */
+
 .layer2 {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     box-shadow:
         -60px -40px 0px 1px rgba(0, 255, 204, 0.5),
         80px -100px 0px 1px rgba(0, 255, 204, 0.55),
@@ -53,16 +139,34 @@
         -90px 80px 0px 1px rgba(0, 255, 204, 0.6),
         30px 180px 0px 1px rgba(0, 255, 204, 0.4),
         110px -140px 0px 1px rgba(0, 255, 204, 0.5),
-        -180px -90px 0px 1px rgba(0, 255, 204, 0.55),
-        50px 60px 0px 1px rgba(0, 255, 204, 0.45),
-        -30px -30px 0px 1px rgba(0, 255, 204, 0.5);
+        -180px -90px 0px 1px rgba(0, 255, 204, 0.55);
     animation: orbit2 9s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite reverse;
 }
 
-/* Capa 3: partículas pequeñas, alta velocidad, rotación amplia con escala pulsante */
+.layer2Top {
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        -100px -30px 0px 1px rgba(0, 255, 204, 0.5),
+        100px -50px 0px 1px rgba(0, 255, 204, 0.55),
+        -50px 50px 0px 1px rgba(0, 255, 204, 0.45),
+        150px 30px 0px 1px rgba(0, 255, 204, 0.5),
+        -180px 40px 0px 1px rgba(0, 255, 204, 0.6),
+        180px 60px 0px 1px rgba(0, 255, 204, 0.4);
+    animation: orbit2 9.5s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite reverse 0.5s;
+}
+
+/* ============================================
+   CAPA 3: partículas pequeñas rápidas
+   ============================================ */
+
 .layer3 {
     width: 2px;
     height: 2px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     box-shadow:
         -30px -120px 0px rgba(0, 255, 204, 1),
         40px -180px 0px rgba(0, 255, 204, 0.9),
@@ -71,43 +175,101 @@
         -110px -60px 0px rgba(0, 255, 204, 0.8),
         90px 130px 0px rgba(0, 255, 204, 0.9),
         200px 160px 0px rgba(0, 255, 204, 0.7),
-        -200px -150px 0px rgba(0, 255, 204, 0.85),
-        10px -60px 0px rgba(0, 255, 204, 0.9),
-        -140px 20px 0px rgba(0, 255, 204, 0.75);
+        -200px -150px 0px rgba(0, 255, 204, 0.85);
     animation: orbit3 6s cubic-bezier(0.35, 0.1, 0.65, 0.9) infinite 1s;
 }
 
-/* Capa 4: micro-partículas blancas, deriva lenta de fondo */
+.layer3Top {
+    width: 2px;
+    height: 2px;
+    top: 8%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        -60px 40px 0px rgba(0, 255, 204, 1),
+        60px -30px 0px rgba(0, 255, 204, 0.9),
+        -150px 20px 0px rgba(0, 255, 204, 0.85),
+        150px -40px 0px rgba(0, 255, 204, 0.95),
+        -100px 60px 0px rgba(0, 255, 204, 0.8),
+        100px 80px 0px rgba(0, 255, 204, 0.9),
+        -220px -20px 0px rgba(0, 255, 204, 0.7),
+        220px 40px 0px rgba(0, 255, 204, 0.85);
+    animation: orbit3 6.5s cubic-bezier(0.35, 0.1, 0.65, 0.9) infinite 1.5s;
+}
+
+/* ============================================
+   CAPA 4: micro-partículas blancas
+   ============================================ */
+
 .layer4 {
     width: 1px;
     height: 1px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     box-shadow:
         70px -20px 0px rgba(255, 255, 255, 0.9),
         -100px 140px 0px rgba(255, 255, 255, 0.7),
         190px 30px 0px rgba(255, 255, 255, 0.8),
         -70px -110px 0px rgba(255, 255, 255, 0.6),
         150px 170px 0px rgba(255, 255, 255, 0.75),
-        -20px 200px 0px rgba(255, 255, 255, 0.65),
-        220px -100px 0px rgba(255, 255, 255, 0.7),
-        -190px -60px 0px rgba(255, 255, 255, 0.55);
+        -20px 200px 0px rgba(255, 255, 255, 0.65);
     animation: drift 11s linear infinite 3s;
 }
 
-/* Capa 5 (nueva): partículas ultra-lejanas, movimiento de fondo muy lento */
+/* Micro-partículas extra para cubrir la zona superior */
+.layer4Top {
+    width: 1px;
+    height: 1px;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        60px 30px 0px rgba(255, 255, 255, 0.8),
+        -80px 20px 0px rgba(255, 255, 255, 0.7),
+        130px 50px 0px rgba(255, 255, 255, 0.6),
+        -140px -10px 0px rgba(255, 255, 255, 0.75),
+        190px 30px 0px rgba(255, 255, 255, 0.65),
+        -200px 60px 0px rgba(255, 255, 255, 0.55);
+    animation: drift 12s linear infinite 4s;
+}
+
+/* ============================================
+   CAPA 5: partículas ultra-lejanas
+   ============================================ */
+
 .layer5 {
     width: 1px;
     height: 1px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     box-shadow:
         40px 30px 0px rgba(0, 255, 204, 0.4),
         -130px -70px 0px rgba(0, 255, 204, 0.35),
         160px -120px 0px rgba(0, 255, 204, 0.3),
-        -50px 160px 0px rgba(0, 255, 204, 0.25),
-        200px 80px 0px rgba(0, 255, 204, 0.2),
-        -170px 20px 0px rgba(0, 255, 204, 0.3);
+        -50px 160px 0px rgba(0, 255, 204, 0.25);
     animation: drift 14s linear infinite 5s;
 }
 
-/* Keyframes con trayectorias elípticas compuestas */
+.layer5Top {
+    width: 1px;
+    height: 1px;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+        80px 20px 0px rgba(0, 255, 204, 0.4),
+        -100px 30px 0px rgba(0, 255, 204, 0.35),
+        150px -10px 0px rgba(0, 255, 204, 0.3),
+        -180px 40px 0px rgba(0, 255, 204, 0.25);
+    animation: drift 15s linear infinite 6s;
+}
+
+/* ============================================
+   KEYFRAMES
+   ============================================ */
+
 @keyframes orbit1 {
 
     0%,
