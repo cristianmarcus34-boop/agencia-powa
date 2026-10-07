@@ -15,8 +15,8 @@
     "@google/genai": "^2.24.0",
     "@google/generative-ai": "^0.24.1",
     "@react-pdf/renderer": "^4.5.1",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.1",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.1",
     "@react-three/postprocessing": "^3.0.4",
     "@supabase/ssr": "^0.12.3",
     "@supabase/supabase-js": "^2.110.8",
@@ -50,7 +50,7 @@
     "react-toastify": "^11.0.5",
     "sweetalert2": "^11.26.25",
     "swiper": "^12.1.2",
-    "three": "^0.184.0",
+    "three": "^0.186.1",
     "twemoji-emojis": "^14.1.0"
   },
   "devDependencies": {

@@ -7,6 +7,7 @@
     z-index: 0;
     overflow: hidden;
     max-height: 100%;
+    perspective: 1000px;
 }
 
 .particleField {
@@ -17,9 +18,157 @@
     height: 100%;
 }
 
-/* ============================================
+/* ============================================================
+   CAPA DE PARALLAX (cada plano se mueve independiente)
+   ============================================================ */
+.parallaxLayer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+/* ============================================================
+   🌫️ NEBLINA ANIMADA (atmósfera)
+   ============================================================ */
+.fogLayer {
+    position: absolute;
+    inset: -20%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            ellipse 60% 40% at 30% 30%,
+            rgba(34, 211, 238, 0.06) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            ellipse 50% 35% at 70% 60%,
+            rgba(139, 92, 246, 0.05) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            ellipse 40% 30% at 50% 80%,
+            rgba(59, 130, 246, 0.04) 0%,
+            transparent 60%
+        );
+    animation: fogDrift 40s ease-in-out infinite;
+    filter: blur(40px);
+}
+
+.fogLayer2 {
+    position: absolute;
+    inset: -20%;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            ellipse 50% 40% at 70% 40%,
+            rgba(34, 211, 238, 0.04) 0%,
+            transparent 55%
+        ),
+        radial-gradient(
+            ellipse 45% 30% at 25% 65%,
+            rgba(139, 92, 246, 0.04) 0%,
+            transparent 55%
+        );
+    animation: fogDrift2 50s ease-in-out infinite reverse;
+    filter: blur(60px);
+}
+
+@keyframes fogDrift {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.8;
+    }
+    25% {
+        transform: translate(3%, -2%) scale(1.08);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-2%, 3%) scale(0.96);
+        opacity: 0.7;
+    }
+    75% {
+        transform: translate(2%, 2%) scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+@keyframes fogDrift2 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.6;
+    }
+    33% {
+        transform: translate(-3%, 2%) scale(1.06);
+        opacity: 0.85;
+    }
+    66% {
+        transform: translate(2%, -3%) scale(0.94);
+        opacity: 0.7;
+    }
+}
+
+/* ============================================================
+   🌑 VIGNETTE (viñeta cinematográfica)
+   ============================================================ */
+.vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            ellipse 80% 70% at 50% 50%,
+            transparent 30%,
+            rgba(0, 0, 0, 0.4) 80%,
+            rgba(0, 0, 0, 0.7) 100%
+        );
+}
+
+/* ============================================================
+   ✨ CONSTELACIONES
+   ============================================================ */
+.constellationLines {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+.constellationLine {
+    stroke: rgba(34, 211, 238, 0.5);
+    stroke-width: 0.5;
+    fill: none;
+    animation: linePulse 5s ease-in-out infinite;
+    filter: drop-shadow(0 0 3px rgba(34, 211, 238, 0.4));
+}
+
+.constellationLine:nth-child(1) { animation-delay: 0s; }
+.constellationLine:nth-child(2) { animation-delay: 0.5s; }
+.constellationLine:nth-child(3) { animation-delay: 1s; }
+.constellationLine:nth-child(4) { animation-delay: 1.5s; }
+.constellationLine:nth-child(5) { animation-delay: 2s; }
+.constellationLine:nth-child(6) { animation-delay: 2.5s; }
+.constellationLine:nth-child(7) { animation-delay: 3s; }
+
+@keyframes linePulse {
+    0%, 100% {
+        stroke-opacity: 0.15;
+    }
+    50% {
+        stroke-opacity: 0.55;
+    }
+}
+
+/* ============================================================
    PSEUDO PARTÍCULAS - BASE
-   ============================================ */
+   ============================================================ */
 .pseudoParticles {
     width: 1px;
     height: 1px;
@@ -31,10 +180,8 @@
 }
 
 /* ============================================================
-   PLANO DE FONDO (Background) - "POLVO ESTELAR"
-   Chicas (0.4-0.5px) · Muchas · Muy tenues · Blur ALTO
+   PLANO DE FONDO
    ============================================================ */
-
 .layerBg1 {
     width: 0.5px;
     height: 0.5px;
@@ -58,11 +205,7 @@
         -320px 60px 0 0 rgba(34, 211, 238, 0.06),
         300px -90px 0 0 rgba(34, 211, 238, 0.07),
         -80px 320px 0 0 rgba(34, 211, 238, 0.05),
-        100px -300px 0 0 rgba(34, 211, 238, 0.07),
-        -340px -180px 0 0 rgba(34, 211, 238, 0.05),
-        330px 190px 0 0 rgba(34, 211, 238, 0.06),
-        -230px -270px 0 0 rgba(34, 211, 238, 0.05),
-        250px 280px 0 0 rgba(34, 211, 238, 0.06);
+        100px -300px 0 0 rgba(34, 211, 238, 0.07);
     animation: bgDrift1 25s linear infinite;
 }
 
@@ -81,11 +224,7 @@
         -270px -30px 0 0 rgba(255, 255, 255, 0.06),
         260px -60px 0 0 rgba(255, 255, 255, 0.07),
         -40px -280px 0 0 rgba(255, 255, 255, 0.05),
-        60px 270px 0 0 rgba(255, 255, 255, 0.07),
-        -330px -120px 0 0 rgba(255, 255, 255, 0.05),
-        310px 130px 0 0 rgba(255, 255, 255, 0.06),
-        -200px 300px 0 0 rgba(255, 255, 255, 0.04),
-        230px -280px 0 0 rgba(255, 255, 255, 0.06);
+        60px 270px 0 0 rgba(255, 255, 255, 0.07);
     animation: bgDrift2 32s linear infinite reverse;
 }
 
@@ -97,26 +236,20 @@
     transform: translate(-50%, -50%);
     filter: blur(0.85px);
     box-shadow:
-        -180px -100px 0 0 rgba(59, 130, 246, 0.08),
-        200px -150px 0 0 rgba(59, 130, 246, 0.07),
-        -140px 170px 0 0 rgba(59, 130, 246, 0.06),
-        170px 180px 0 0 rgba(59, 130, 246, 0.08),
-        -240px 50px 0 0 rgba(59, 130, 246, 0.06),
-        250px -70px 0 0 rgba(59, 130, 246, 0.07),
-        -60px -240px 0 0 rgba(59, 130, 246, 0.05),
-        90px 240px 0 0 rgba(59, 130, 246, 0.07),
-        -300px -180px 0 0 rgba(59, 130, 246, 0.05),
-        290px 190px 0 0 rgba(59, 130, 246, 0.06),
-        -210px 280px 0 0 rgba(59, 130, 246, 0.04),
-        240px -260px 0 0 rgba(59, 130, 246, 0.06);
+        -180px -100px 0 0 rgba(139, 92, 246, 0.08),
+        200px -150px 0 0 rgba(139, 92, 246, 0.07),
+        -140px 170px 0 0 rgba(139, 92, 246, 0.06),
+        170px 180px 0 0 rgba(139, 92, 246, 0.08),
+        -240px 50px 0 0 rgba(139, 92, 246, 0.06),
+        250px -70px 0 0 rgba(139, 92, 246, 0.07),
+        -60px -240px 0 0 rgba(139, 92, 246, 0.05),
+        90px 240px 0 0 rgba(139, 92, 246, 0.07);
     animation: bgDrift3 38s linear infinite;
 }
 
 /* ============================================================
-   PLANO MEDIO (Midground) - "PARTÍCULAS PRINCIPALES"
-   Medianas (0.9-1.1px) · Cian suave · Blur BAJO · Visibles
+   PLANO MEDIO
    ============================================================ */
-
 .layerMid1 {
     width: 1.1px;
     height: 1.1px;
@@ -209,10 +342,8 @@
 }
 
 /* ============================================================
-   PLANO FRONTAL (Foreground) - "ESTRELLAS BRILLANTES"
-   Grandes (1.3-1.5px) · Brillo máximo · Blur 0 · Doble glow
+   PLANO FRONTAL
    ============================================================ */
-
 .layerFront1 {
     width: 1.4px;
     height: 1.4px;
@@ -228,9 +359,7 @@
         115px 130px 0 0.3px rgba(255, 255, 255, 0.90),
         -15px 150px 0 0.3px rgba(255, 255, 255, 0.88),
         170px -20px 0 0.3px rgba(255, 255, 255, 0.80),
-        -170px 90px 0 0.3px rgba(255, 255, 255, 0.82),
-        190px 70px 0 0.3px rgba(255, 255, 255, 0.75),
-        -190px -70px 0 0.3px rgba(255, 255, 255, 0.78);
+        -170px 90px 0 0.3px rgba(255, 255, 255, 0.82);
     animation: frontTwinkle 8s ease-in-out infinite;
 }
 
@@ -247,9 +376,7 @@
         100px 40px 0 0.3px rgba(255, 255, 255, 0.85),
         -110px -10px 0 0.3px rgba(255, 255, 255, 0.92),
         145px 25px 0 0.3px rgba(255, 255, 255, 0.80),
-        -155px 45px 0 0.3px rgba(255, 255, 255, 0.78),
-        180px -30px 0 0.3px rgba(255, 255, 255, 0.75),
-        -180px 60px 0 0.3px rgba(255, 255, 255, 0.80);
+        -155px 45px 0 0.3px rgba(255, 255, 255, 0.78);
     animation: frontTwinkle 9s ease-in-out infinite 1s;
 }
 
@@ -272,11 +399,7 @@
         -200px 20px 0 0.3px rgba(34, 211, 238, 0.90),
         -200px 20px 1.5px 0.5px rgba(34, 211, 238, 0.3),
         200px -30px 0 0.3px rgba(34, 211, 238, 0.95),
-        200px -30px 1.5px 0.5px rgba(34, 211, 238, 0.35),
-        -40px -150px 0 0.3px rgba(34, 211, 238, 0.98),
-        -40px -150px 1.5px 0.5px rgba(34, 211, 238, 0.38),
-        60px 150px 0 0.3px rgba(34, 211, 238, 0.92),
-        60px 150px 1.5px 0.5px rgba(34, 211, 238, 0.35);
+        200px -30px 1.5px 0.5px rgba(34, 211, 238, 0.35);
     animation: frontGlow 10s ease-in-out infinite 0.5s;
 }
 
@@ -295,16 +418,46 @@
         -60px 60px 0 0.3px rgba(34, 211, 238, 0.95),
         -60px 60px 1.5px 0.5px rgba(34, 211, 238, 0.35),
         80px 40px 0 0.3px rgba(34, 211, 238, 0.98),
-        80px 40px 1.5px 0.5px rgba(34, 211, 238, 0.38),
-        -180px 0 0 0.3px rgba(34, 211, 238, 0.85),
-        -180px 0 1.5px 0.5px rgba(34, 211, 238, 0.30),
-        180px 20px 0 0.3px rgba(34, 211, 238, 0.90),
-        180px 20px 1.5px 0.5px rgba(34, 211, 238, 0.32);
+        80px 40px 1.5px 0.5px rgba(34, 211, 238, 0.38);
     animation: frontGlow 11s ease-in-out infinite 1.5s;
 }
 
+.layerFront3 {
+    width: 1.3px;
+    height: 1.3px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(0);
+    box-shadow:
+        -60px -120px 0 0.3px rgba(139, 92, 246, 0.85),
+        80px 140px 0 0.3px rgba(34, 211, 238, 0.85),
+        -150px 50px 0 0.3px rgba(139, 92, 246, 0.75),
+        180px -100px 0 0.3px rgba(34, 211, 238, 0.80),
+        -220px -40px 0 0.3px rgba(139, 92, 246, 0.70),
+        240px 60px 0 0.3px rgba(34, 211, 238, 0.75);
+    animation: colorShift 12s ease-in-out infinite;
+}
+
+.layerSparkle {
+    width: 1.5px;
+    height: 1.5px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(0);
+    box-shadow:
+        -180px -120px 0 0 rgba(255, 255, 255, 1),
+        200px -150px 0 0 rgba(34, 211, 238, 1),
+        -130px 160px 0 0 rgba(255, 255, 255, 1),
+        160px 180px 0 0 rgba(34, 211, 238, 1),
+        -240px -60px 0 0 rgba(255, 255, 255, 1),
+        260px 40px 0 0 rgba(34, 211, 238, 1);
+    animation: sparkleFlash 3s ease-in-out infinite;
+}
+
 /* ============================================================
-   CAPAS DE ESQUINAS
+   ESQUINAS
    ============================================================ */
 .layerCorner1 {
     width: 1.4px;
@@ -317,9 +470,7 @@
         60px 45px 0 0.3px rgba(34, 211, 238, 0.75),
         105px 75px 0 0.3px rgba(34, 211, 238, 0.68),
         30px 90px 0 0.3px rgba(34, 211, 238, 0.65),
-        150px 30px 0 0.3px rgba(34, 211, 238, 0.70),
-        75px -30px 0 0.3px rgba(34, 211, 238, 0.78),
-        165px -15px 0 0.3px rgba(34, 211, 238, 0.68);
+        150px 30px 0 0.3px rgba(34, 211, 238, 0.70);
     animation: midOrbit1 13s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 0.5s;
 }
 
@@ -334,9 +485,7 @@
         -60px 45px 0 0.3px rgba(34, 211, 238, 0.75),
         -105px 75px 0 0.3px rgba(34, 211, 238, 0.68),
         -30px 90px 0 0.3px rgba(34, 211, 238, 0.65),
-        -150px 30px 0 0.3px rgba(34, 211, 238, 0.70),
-        -75px -30px 0 0.3px rgba(34, 211, 238, 0.78),
-        -165px -15px 0 0.3px rgba(34, 211, 238, 0.68);
+        -150px 30px 0 0.3px rgba(34, 211, 238, 0.70);
     animation: midOrbit1 14s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 1s;
 }
 
@@ -351,9 +500,7 @@
         60px -45px 0 0.3px rgba(34, 211, 238, 0.75),
         105px -75px 0 0.3px rgba(34, 211, 238, 0.68),
         30px -90px 0 0.3px rgba(34, 211, 238, 0.65),
-        150px -30px 0 0.3px rgba(34, 211, 238, 0.70),
-        75px 30px 0 0.3px rgba(34, 211, 238, 0.78),
-        165px 15px 0 0.3px rgba(34, 211, 238, 0.68);
+        150px -30px 0 0.3px rgba(34, 211, 238, 0.70);
     animation: midOrbit1 12.5s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 1.5s;
 }
 
@@ -368,9 +515,7 @@
         -60px -45px 0 0.3px rgba(34, 211, 238, 0.75),
         -105px -75px 0 0.3px rgba(34, 211, 238, 0.68),
         -30px -90px 0 0.3px rgba(34, 211, 238, 0.65),
-        -150px -30px 0 0.3px rgba(34, 211, 238, 0.70),
-        -75px 30px 0 0.3px rgba(34, 211, 238, 0.78),
-        -165px 15px 0 0.3px rgba(34, 211, 238, 0.68);
+        -150px -30px 0 0.3px rgba(34, 211, 238, 0.70);
     animation: midOrbit1 13.5s cubic-bezier(0.45, 0.05, 0.35, 0.95) infinite 2s;
 }
 
@@ -500,5 +645,60 @@
     66% {
         transform: translate(-52%, -48%) scale(0.90) rotate(-3deg) translateX(-12px) translateY(12px);
         opacity: 0.85;
+    }
+}
+
+@keyframes colorShift {
+
+    0%,
+    100% {
+        filter: hue-rotate(0deg);
+        opacity: 0.75;
+    }
+
+    50% {
+        filter: hue-rotate(40deg);
+        opacity: 1;
+    }
+}
+
+@keyframes sparkleFlash {
+
+    0%,
+    70%,
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+
+    35% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.5);
+    }
+}
+
+/* ============================================================
+   📱 MOBILE - Deshabilitar parallax y efectos pesados
+   ============================================================ */
+@media (max-width: 768px) {
+    .parallaxLayer {
+        transition: none;
+        transform: none !important;
+    }
+
+    .fogLayer,
+    .fogLayer2 {
+        filter: blur(30px);
+        opacity: 0.7;
+    }
+
+    .vignette {
+        background:
+            radial-gradient(
+                ellipse 90% 80% at 50% 50%,
+                transparent 40%,
+                rgba(0, 0, 0, 0.3) 85%,
+                rgba(0, 0, 0, 0.5) 100%
+            );
     }
 }
