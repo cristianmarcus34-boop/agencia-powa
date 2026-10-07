@@ -9,6 +9,9 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
+    // Cargar el logo desde tu dominio (URL absoluta)
+    const logoUrl = 'https://www.agenciadigitalpowa.com.ar/logo-agenciadigitalpowa-redondo.png';
+
     return new ImageResponse(
         (
             <div
@@ -34,30 +37,51 @@ export default async function Image() {
                         gap: 24,
                     }}
                 >
+                    {/* 👇 LOGO ARRIBA */}
+                    <img
+                        src={logoUrl}
+                        alt="Powa"
+                        width={140}
+                        height={140}
+                        style={{
+                            borderRadius: '50%',
+                            marginBottom: 8,
+                            border: '3px solid rgba(34, 211, 238, 0.4)',
+                        }}
+                    />
+
+                    {/* Título Powa Digital */}
                     <div
                         style={{
+                            display: 'flex',
                             fontSize: 32,
                             fontWeight: 800,
                             letterSpacing: 8,
                             color: '#22d3ee',
                             textTransform: 'uppercase',
-                            textShadow: '0 0 30px rgba(34, 211, 238, 0.5)',
                         }}
                     >
                         Powa Digital
                     </div>
+
+                    {/* Título principal */}
                     <div
                         style={{
-                            fontSize: 72,
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: 64,
                             fontWeight: 900,
                             color: '#ffffff',
                             textAlign: 'center',
                             lineHeight: 1.1,
                             letterSpacing: -2,
                             maxWidth: 1000,
+                            gap: 16,
                         }}
                     >
-                        Software Factory &{' '}
+                        <span>Software Factory &</span>
                         <span
                             style={{
                                 backgroundImage: 'linear-gradient(135deg, #3b82f6, #22d3ee)',
@@ -68,9 +92,12 @@ export default async function Image() {
                             Consultoría IT
                         </span>
                     </div>
+
+                    {/* Descripción */}
                     <div
                         style={{
-                            fontSize: 28,
+                            display: 'flex',
+                            fontSize: 26,
                             color: '#94a3b8',
                             textAlign: 'center',
                             maxWidth: 900,
@@ -79,18 +106,20 @@ export default async function Image() {
                     >
                         Desarrollo web, apps y automatización con IA para PYMES y empresas
                     </div>
+
+                    {/* Badge URL */}
                     <div
                         style={{
                             display: 'flex',
                             alignItems: 'center',
                             gap: 16,
-                            marginTop: 24,
-                            padding: '16px 32px',
+                            marginTop: 16,
+                            padding: '14px 28px',
                             backgroundColor: 'rgba(34, 211, 238, 0.1)',
                             border: '1px solid rgba(34, 211, 238, 0.3)',
                             borderRadius: 100,
                             color: '#22d3ee',
-                            fontSize: 22,
+                            fontSize: 20,
                             fontWeight: 700,
                         }}
                     >
