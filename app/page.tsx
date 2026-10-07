@@ -5,6 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
+import posthog from 'posthog-js'; // 👈 NUEVO
 
 // Iconos
 import {
@@ -47,11 +48,11 @@ export default function HomePage() {
     const [diagnosticoEnviado, setDiagnosticoEnviado] = useState(false);
 
     // ===== STATE PARA COTIZACIÓN DEL DÓLAR =====
-    const [dolarVenta, setDolarVenta] = useState<number>(1488.27); // Valor por defecto de respaldo
+    const [dolarVenta, setDolarVenta] = useState<number>(1488.27);
     const [dolarFecha, setDolarFecha] = useState<string>('');
     const [loadingDolar, setLoadingDolar] = useState<boolean>(true);
     const [errorDolar, setErrorDolar] = useState<boolean>(false);
-    const [moneda, setMoneda] = useState<'ARS' | 'USD'>('ARS'); // Toggle ARS/USD
+    const [moneda, setMoneda] = useState<'ARS' | 'USD'>('ARS');
 
     useEffect(() => {
         async function fetchDolar() {
@@ -71,8 +72,6 @@ export default function HomePage() {
             }
         }
         fetchDolar();
-
-        // Refrescar cada 30 minutos
         const interval = setInterval(fetchDolar, 30 * 60 * 1000);
         return () => clearInterval(interval);
     }, []);
@@ -96,17 +95,14 @@ export default function HomePage() {
         }).format(valorARS);
     };
 
-    // Formato corto para tablas: sin "K", solo "M" para millones
     const formatearPrecioCorto = (valorUSD: number): string => {
         const valor = moneda === 'USD' ? valorUSD : valorUSD * dolarVenta;
         const simbolo = moneda === 'USD' ? 'US$' : '$';
 
-        // Solo usamos "M" para millones (ej: $ 1,7M)
         if (valor >= 1_000_000) {
             return `${simbolo} ${(valor / 1_000_000).toFixed(1).replace('.', ',')}M`;
         }
 
-        // Para miles, mostramos el número completo con separador de miles
         return `${simbolo} ${new Intl.NumberFormat('es-AR', {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
@@ -128,16 +124,22 @@ export default function HomePage() {
         }
     };
 
-    const handleDiagnosticoSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (diagnosticoEmail) {
-            setDiagnosticoEnviado(true);
-            console.log('Email para diagnóstico:', diagnosticoEmail);
-            setTimeout(() => {
-                setDiagnosticoEnviado(false);
-                setDiagnosticoEmail('');
-            }, 5000);
-        }
+    // ===== 📊 HANDLER CON POSTHOG =====
+    const handleDiagnosticoSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        // Capturamos ANTES de que el form se envíe a Web3Forms
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get('email') as string;
+        const url = formData.get('url') as string;
+
+        posthog.capture('diagnostico_gratuito_enviado', {
+            origen: 'home_diagnostico_expres',
+            email_dominio: email?.split('@')[1] || 'desconocido',
+            tiene_url: !!url,
+        });
+
+        // NO hacemos preventDefault → el form sigue su curso a Web3Forms
+        setDiagnosticoEnviado(true);
+        setTimeout(() => setDiagnosticoEnviado(false), 5000);
     };
 
     // ===== HOOKS DE IN VIEW =====
@@ -151,8 +153,7 @@ export default function HomePage() {
     const [refStats] = useInView(options);
     const [refROI] = useInView(options);
 
-    // ===== PRECIOS BASE EN USD (fuente de verdad) =====
-    // ===== PRECIOS BASE EN USD (fuente de verdad) =====
+    // ===== PRECIOS BASE EN USD =====
     const preciosBase = useMemo(() => ({
         perfiles: [
             { id: 'junior', label: 'Junior', badge: '🌱', rangoUSD: [8, 15], exp: '0-2 años', destacado: false },
@@ -502,7 +503,7 @@ export default function HomePage() {
                 </Container>
             </section>
 
-            {/* --- METODOLOGÍA (FLUJO SENIOR EN 4 FASES) --- */}
+            {/* --- METODOLOGÍA --- */}
             <section className={styles.processSection} ref={refProcess}>
                 <Container>
                     <div className={styles.sectionHeader}>
@@ -593,12 +594,10 @@ export default function HomePage() {
                             <Col lg={6}>
                                 <div className={styles.budgetVisual}>
                                     <div className={styles.budgetCard}>
-                                        {/* ===== HEADER CON COTIZACIÓN Y TOGGLE ===== */}
                                         <div className={styles.budgetCardHeader}>
                                             <div className={styles.budgetCardHeaderTop}>
                                                 <span className={styles.budgetCardBadge}>REFERENCIA ORIENTATIVA</span>
 
-                                                {/* Toggle ARS / USD */}
                                                 <div className={styles.budgetToggle}>
                                                     <button
                                                         type="button"
@@ -624,7 +623,6 @@ export default function HomePage() {
                                                 Rangos generales por perfil y tipo de proyecto; no son tarifas de Powa ni una cotización.
                                             </p>
 
-                                            {/* Cotización destacada */}
                                             <div className={styles.budgetRateBox}>
                                                 <div className={styles.budgetRateLeft}>
                                                     <FaSyncAlt className={styles.budgetRateIcon} />
@@ -656,7 +654,6 @@ export default function HomePage() {
                                         </div>
 
                                         <div className={styles.budgetCardBody}>
-                                            {/* ===== PERFILES ===== */}
                                             <div className={styles.budgetProfiles}>
                                                 {preciosBase.perfiles.map((perfil) => (
                                                     <div
@@ -682,7 +679,6 @@ export default function HomePage() {
                                                 ))}
                                             </div>
 
-                                            {/* ===== TABLA DE PROYECTOS ===== */}
                                             <div className={styles.budgetProjectTable}>
                                                 <h4 className={styles.budgetTableTitle}>
                                                     <FaCode className={styles.budgetTableIcon} />
@@ -690,7 +686,6 @@ export default function HomePage() {
                                                 </h4>
 
                                                 <div className={styles.budgetTable}>
-                                                    {/* Header de la tabla */}
                                                     <div className={styles.budgetTableHeader}>
                                                         <div className={styles.budgetTableHeaderCell}>Proyecto</div>
                                                         <div className={styles.budgetTableHeaderCell}>🌱 Junior</div>
@@ -749,7 +744,6 @@ export default function HomePage() {
                                                 </p>
                                             </div>
 
-                                            {/* ===== CTA ===== */}
                                             <div className={styles.budgetCtaBox}>
                                                 <div className={styles.budgetCtaContent}>
                                                     <FaWhatsapp className={styles.budgetCtaIcon} />
@@ -774,9 +768,7 @@ export default function HomePage() {
                 </Container>
             </section>
 
-            {/* ============================================
-               🚀 SECCIÓN ROI - DINÁMICA
-            ============================================ */}
+            {/* --- SECCIÓN ROI --- */}
             <section className={styles.roiSection} ref={refROI}>
                 <Container>
                     <div className={styles.sectionHeader}>
@@ -874,6 +866,9 @@ export default function HomePage() {
                                 <div className={styles.roiCta}>
                                     <button
                                         onClick={() => {
+                                            posthog.capture('roi_simulador_abierto', {
+                                                origen: 'home_seccion_roi',
+                                            });
                                             const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
                                             window.open(`${baseUrl}/lab?tool=roi`, '_blank');
                                         }}
@@ -943,11 +938,12 @@ export default function HomePage() {
                                         action="https://api.web3forms.com/submit"
                                         method="POST"
                                         className={styles.diagnosticoForm}
+                                        onSubmit={handleDiagnosticoSubmit}
                                     >
                                         <input type="hidden" name="access_key" value="6a22a375-6730-499d-ab20-b86e359f069d" />
                                         <input type="hidden" name="subject" value="📋 Nuevo diagnóstico técnico - Agencia Digital Powa" />
                                         <input type="hidden" name="from_name" value="Agencia Digital Powa" />
-                                        <input type="hidden" name="redirect" value="https://agencia-powa.vercel.app/gracias" />
+                                        <input type="hidden" name="redirect" value="https://www.agenciadigitalpowa.com.ar/gracias" />
                                         <input type="hidden" name="origen" value="Diagnóstico - Página Principal" />
 
                                         <div className={styles.diagnosticoInputGroup}>
@@ -1057,7 +1053,7 @@ export default function HomePage() {
                                 <Link href="/contact" className={styles.btnPowaWhite}>
                                     Agendar Consultoría Técnica
                                 </Link>
-                                <Link href="/faq" className={styles.btnCtaSecondary}>
+                                <Link href="/faq" className={styles.ctaSecondary}>
                                     Ver Preguntas Frecuentes
                                 </Link>
                                 <Link href="/planes/servicios/desarrollo" className={styles.btnCtaSecondary}>
