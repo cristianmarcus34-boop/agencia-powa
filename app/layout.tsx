@@ -1,14 +1,15 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Orbitron } from 'next/font/google';
-import { Suspense } from 'react'; // 🔥 NUEVO: para PostHogPageView
+import { Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './globals.css';
 
 import Providers from './providers';
 import LayoutWrapper from '@/components/LayoutWrapper';
-import PostHogPageView from '@/components/PostHogPageView'; // 🔥 NUEVO
+import PostHogPageView from '@/components/PostHogPageView';
+import WhatsAppFloat from '@/components/WhatsAppFloat'; // 👈 NUEVO
 
 const orbitron = Orbitron({
   subsets: ['latin'],
@@ -42,12 +43,10 @@ export default function RootLayout({
   return (
     <html lang="es" className={orbitron.variable}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* 📊 PostHog: captura pageviews en cada cambio de ruta */}
         <Suspense fallback={null}>
           <PostHogPageView />
         </Suspense>
 
-        {/* 🔥 Componente Toaster global */}
         <Toaster
           position="top-right"
           containerStyle={{ zIndex: 99999 }}
@@ -63,6 +62,9 @@ export default function RootLayout({
         <Providers>
           <LayoutWrapper>{children}</LayoutWrapper>
         </Providers>
+
+        {/* 📱 WhatsApp flotante en todas las páginas */}
+        <WhatsAppFloat />
       </body>
     </html>
   );

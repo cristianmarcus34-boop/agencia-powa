@@ -274,7 +274,7 @@ export default function ChatPowa() {
 
   return (
     <div className={styles.chatContainer}>
-      {!isOpen && <div className={styles.notificationBadge}>1</div>}
+
 
       {!isOpen && (
         <button onClick={() => { playRobotSound(); setMessages([]); setConversacionId(null); setIsOpen(true); }} className={styles.chatToggleButton} aria-label="Abrir Chat de Ayuda">

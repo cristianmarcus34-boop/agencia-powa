@@ -103,7 +103,9 @@
     color: #ffffff;
 }
 
-/* Botones */
+/* ============================================
+   BOTONES - CON GLOW PREMIUM
+   ============================================ */
 .btnPowaPrimary,
 .btnPowaOutline {
     display: inline-flex;
@@ -128,17 +130,40 @@
     }
 }
 
+/* ✨ Botón principal con glow pulsante */
 .btnPowaPrimary {
+    position: relative;
     background: linear-gradient(135deg, var(--cyan-powa), #0891b2);
     color: #0a0f1a !important;
     border: none;
     box-shadow: 0 4px 20px rgba(34, 211, 238, 0.25);
+    animation: ctaGlowPrimary 3s ease-in-out infinite;
+    will-change: box-shadow;
+}
+
+@keyframes ctaGlowPrimary {
+
+    0%,
+    100% {
+        box-shadow:
+            0 4px 20px rgba(34, 211, 238, 0.25),
+            0 0 0 0 rgba(34, 211, 238, 0.5);
+    }
+
+    50% {
+        box-shadow:
+            0 4px 24px rgba(34, 211, 238, 0.45),
+            0 0 0 10px rgba(34, 211, 238, 0);
+    }
 }
 
 .btnPowaPrimary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(34, 211, 238, 0.35);
+    box-shadow:
+        0 8px 30px rgba(34, 211, 238, 0.55),
+        0 0 0 14px rgba(34, 211, 238, 0);
     color: #0a0f1a !important;
+    animation-play-state: paused;
 }
 
 .btnPowaOutline {
@@ -152,6 +177,7 @@
     border-color: rgba(34, 211, 238, 0.3);
     color: var(--cyan-powa) !important;
     transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(34, 211, 238, 0.15);
 }
 
 .heroTrustBadges {
@@ -199,6 +225,7 @@
     background: rgba(34, 211, 238, 0.1);
     border-color: rgba(34, 211, 238, 0.2);
     transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(34, 211, 238, 0.15);
 }
 
 .trustBadgeIcon {
@@ -317,7 +344,7 @@
 }
 
 .stackItem:hover .techIconWrapper {
-    filter: grayscale(0);
+    filter: grayscale(0) drop-shadow(0 0 12px rgba(34, 211, 238, 0.5));
     transform: scale(1.1);
 }
 
@@ -335,7 +362,7 @@
 }
 
 /* ============================================
-   STATS SECTION
+   STATS SECTION - CON NÚMEROS GLOW
    ============================================ */
 .statsSection {
     padding: 40px 0;
@@ -368,12 +395,14 @@
 .statCard:hover {
     border-color: rgba(34, 211, 238, 0.15);
     transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
 }
 
 .statCardIcon {
     font-size: 1.5rem;
     color: var(--cyan-powa);
     margin-bottom: 6px;
+    transition: all 0.3s ease;
 }
 
 @media (min-width: 768px) {
@@ -383,17 +412,30 @@
     }
 }
 
+.statCard:hover .statCardIcon {
+    filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.6));
+    transform: scale(1.1);
+}
+
 .statCardValue {
     font-size: 1.8rem;
     font-weight: 900;
     color: #ffffff;
     letter-spacing: -0.5px;
+    text-shadow: 0 0 20px rgba(34, 211, 238, 0.15);
+    transition: text-shadow 0.4s ease;
 }
 
 @media (min-width: 768px) {
     .statCardValue {
         font-size: 2.2rem;
     }
+}
+
+.statCard:hover .statCardValue {
+    text-shadow:
+        0 0 20px rgba(34, 211, 238, 0.5),
+        0 0 40px rgba(34, 211, 238, 0.2);
 }
 
 .statCardLabel {
@@ -515,6 +557,11 @@
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
+.processCard:hover .processIcon {
+    filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.6));
+    transform: scale(1.1);
+}
+
 .stepNumber {
     position: absolute;
     top: 12px;
@@ -537,6 +584,7 @@
     font-size: 1.6rem;
     color: var(--cyan-powa);
     margin-bottom: 16px;
+    transition: all 0.3s ease;
 }
 
 @media (min-width: 768px) {
@@ -574,7 +622,7 @@
 }
 
 /* ============================================
-   SERVICES
+   SERVICES - CON HOVER PREMIUM
    ============================================ */
 .homeServices {
     padding: 60px 0;
@@ -598,6 +646,8 @@
     transition: all 0.4s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow: hidden;
 }
 
 @media (min-width: 768px) {
@@ -608,16 +658,20 @@
 }
 
 .powaServiceCard:hover {
-    border-color: rgba(34, 211, 238, 0.2);
-    background: rgba(30, 41, 59, 0.45);
+    border-color: rgba(34, 211, 238, 0.3);
+    background: rgba(30, 41, 59, 0.5);
     transform: translateY(-8px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.25),
+        0 0 40px rgba(34, 211, 238, 0.08);
 }
 
 .iconBox {
     font-size: 1.8rem;
     color: var(--cyan-powa);
     margin-bottom: 12px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-block;
 }
 
 @media (min-width: 768px) {
@@ -625,6 +679,12 @@
         font-size: 2.2rem;
         margin-bottom: 16px;
     }
+}
+
+.powaServiceCard:hover .iconBox {
+    filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.7));
+    transform: scale(1.15) translateY(-2px);
+    color: #67e8f9;
 }
 
 .powaServiceCard h3 {
@@ -804,7 +864,7 @@
 }
 
 /* ============================================
-   SECURITY
+   SECURITY - SHIELD CON PULSO MEJORADO
    ============================================ */
 .securitySection {
     padding: 60px 0;
@@ -904,14 +964,29 @@
 
 .shieldBigIcon {
     font-size: 3.5rem;
-    color: rgba(239, 68, 68, 0.6);
+    color: rgba(239, 68, 68, 0.8);
     z-index: 2;
-    filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.15));
+    filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.4));
+    animation: shieldIconPulse 3s ease-in-out infinite;
 }
 
 @media (min-width: 768px) {
     .shieldBigIcon {
         font-size: 5rem;
+    }
+}
+
+@keyframes shieldIconPulse {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.4));
+        transform: scale(1);
+    }
+
+    50% {
+        filter: drop-shadow(0 0 40px rgba(239, 68, 68, 0.7));
+        transform: scale(1.05);
     }
 }
 
@@ -921,7 +996,7 @@
     height: 100%;
     border-radius: 50%;
     background: rgba(239, 68, 68, 0.03);
-    border: 1px solid rgba(239, 68, 68, 0.06);
+    border: 1px solid rgba(239, 68, 68, 0.1);
     animation: shieldGlow 3s ease-in-out infinite;
     z-index: 1;
 }
@@ -932,7 +1007,7 @@
     height: 130%;
     border-radius: 50%;
     background: rgba(239, 68, 68, 0.02);
-    border: 1px solid rgba(239, 68, 68, 0.03);
+    border: 1px solid rgba(239, 68, 68, 0.05);
     animation: shieldGlow 3s ease-in-out infinite 1.5s;
     z-index: 0;
 }
@@ -944,9 +1019,10 @@
     }
 
     50% {
-        transform: scale(1.1);
+        transform: scale(1.15);
         opacity: 1;
-        border-color: rgba(239, 68, 68, 0.15);
+        border-color: rgba(239, 68, 68, 0.3);
+        box-shadow: 0 0 40px rgba(239, 68, 68, 0.15);
     }
 
     100% {
@@ -1240,7 +1316,9 @@
     box-shadow: 0 0 20px rgba(34, 211, 238, 0.05);
 }
 
+/* 🎯 BOTÓN PRINCIPAL DE CONVERSIÓN - CON GLOW FUERTE */
 .diagnosticoButton {
+    position: relative;
     padding: 12px 20px;
     border-radius: 12px;
     border: none;
@@ -1252,6 +1330,8 @@
     transition: all 0.3s ease;
     white-space: nowrap;
     flex-shrink: 0;
+    animation: ctaGlowStrong 2.5s ease-in-out infinite;
+    will-change: box-shadow, transform;
 }
 
 @media (min-width: 768px) {
@@ -1261,9 +1341,32 @@
     }
 }
 
+@keyframes ctaGlowStrong {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 0 0 rgba(34, 211, 238, 0.6),
+            0 8px 24px rgba(34, 211, 238, 0.3);
+    }
+
+    50% {
+        box-shadow:
+            0 0 0 12px rgba(34, 211, 238, 0),
+            0 8px 32px rgba(34, 211, 238, 0.55);
+    }
+}
+
 .diagnosticoButton:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 30px rgba(34, 211, 238, 0.3);
+    box-shadow:
+        0 8px 40px rgba(34, 211, 238, 0.6),
+        0 0 0 16px rgba(34, 211, 238, 0);
+    animation-play-state: paused;
+}
+
+.diagnosticoButton:active {
+    transform: scale(0.98);
 }
 
 .diagnosticoFooter {
@@ -1282,7 +1385,7 @@
 }
 
 /* ============================================
-   CTA FINAL
+   CTA FINAL - CON GLOW PREMIUM
    ============================================ */
 .ctaHomeMinimal {
     padding: 60px 0 40px;
@@ -1343,6 +1446,7 @@
     margin-bottom: 1rem;
     display: inline-block;
     animation: floatRocket 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.4));
 }
 
 @media (min-width: 768px) {
@@ -1405,6 +1509,7 @@
     }
 }
 
+/* ✨ Botón blanco con glow pulsante */
 .btnPowaWhite {
     display: inline-flex;
     align-items: center;
@@ -1418,6 +1523,9 @@
     text-decoration: none;
     transition: all 0.3s ease;
     width: 100%;
+    position: relative;
+    animation: ctaGlowWhite 3s ease-in-out infinite;
+    will-change: box-shadow;
 }
 
 @media (min-width: 576px) {
@@ -1428,10 +1536,29 @@
     }
 }
 
+@keyframes ctaGlowWhite {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 0 0 rgba(255, 255, 255, 0.5),
+            0 8px 24px rgba(255, 255, 255, 0.15);
+    }
+
+    50% {
+        box-shadow:
+            0 0 0 12px rgba(255, 255, 255, 0),
+            0 8px 32px rgba(255, 255, 255, 0.3);
+    }
+}
+
 .btnPowaWhite:hover {
     transform: scale(1.04);
-    box-shadow: 0 12px 30px rgba(255, 255, 255, 0.15);
+    box-shadow:
+        0 12px 40px rgba(255, 255, 255, 0.35),
+        0 0 0 16px rgba(255, 255, 255, 0);
     color: #1e3a8a !important;
+    animation-play-state: paused;
 }
 
 .btnCtaSecondary {
@@ -1462,6 +1589,8 @@
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(34, 211, 238, 0.3);
     color: var(--cyan-powa) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(34, 211, 238, 0.15);
 }
 
 .ctaTrustBadges {
@@ -1522,7 +1651,7 @@
 .roiCard:hover {
     transform: translateY(-6px);
     border-color: rgba(34, 211, 238, 0.3);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2), 0 0 30px rgba(34, 211, 238, 0.08);
 }
 
 .roiCardHighlight {
@@ -1532,6 +1661,7 @@
 
 .roiCardHighlight:hover {
     border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2), 0 0 30px rgba(16, 185, 129, 0.15);
 }
 
 .roiIconWrapper {
@@ -1543,6 +1673,12 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.roiCard:hover .roiIconWrapper {
+    box-shadow: 0 0 24px rgba(34, 211, 238, 0.3);
+    transform: scale(1.05);
 }
 
 .roiIcon {
@@ -1805,6 +1941,7 @@
 .roiIndustryItem:hover {
     transform: translateY(-3px);
     border-color: rgba(34, 211, 238, 0.25);
+    box-shadow: 0 8px 24px rgba(34, 211, 238, 0.12);
 }
 
 .roiIndustryIcon {
@@ -2056,7 +2193,9 @@
     }
 }
 
+/* ✨ Budget card con borde animado */
 .budgetCard {
+    position: relative;
     background: var(--glass-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -2078,11 +2217,42 @@
     }
 }
 
+/* Borde superior con brillo animado */
+.budgetCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(34, 211, 238, 0.6),
+            rgba(139, 92, 246, 0.6),
+            rgba(34, 211, 238, 0.6),
+            transparent);
+    background-size: 200% 100%;
+    animation: borderShine 4s linear infinite;
+    z-index: 3;
+    pointer-events: none;
+}
+
+@keyframes borderShine {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
 .budgetCard:hover {
     transform: translateY(-4px);
     box-shadow:
         0 30px 80px rgba(0, 0, 0, 0.5),
-        0 0 100px rgba(37, 99, 235, 0.08);
+        0 0 100px rgba(37, 99, 235, 0.15),
+        0 0 60px rgba(34, 211, 238, 0.08);
 }
 
 /* ============================================
@@ -2301,6 +2471,7 @@
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
     line-height: 1.1;
+    text-shadow: 0 0 12px rgba(34, 211, 238, 0.3);
 }
 
 @media (min-width: 768px) {
@@ -2442,6 +2613,7 @@
     transform: translateY(-2px);
     background: rgba(37, 99, 235, 0.08);
     border-color: rgba(59, 130, 246, 0.2);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
 }
 
 .budgetProfileActive {
@@ -2906,7 +3078,7 @@
     transform: scale(1.02);
     color: #ffffff !important;
     text-decoration: none !important;
-    box-shadow: 0 8px 30px rgba(37, 211, 102, 0.3);
+    box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
 }
 
 .budgetCtaArrow {

@@ -8,7 +8,7 @@
 .chatContainer {
   position: fixed;
   bottom: 16px;
-  right: 16px;
+  right: 12px;
   z-index: 999999 !important;
   display: flex;
   flex-direction: column;
@@ -19,50 +19,118 @@
 @media (min-width: 480px) {
   .chatContainer {
     bottom: 24px;
-    right: 24px;
+    right: 18px;
   }
 }
 
 /* ============================================
-   BOTÓN FLOTANTE
+   BOTÓN FLOTANTE - VERSIÓN PREMIUM
    ============================================ */
 .chatToggleButton {
+  position: relative;
   background: transparent;
   padding: 0;
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000000;
-  filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.4));
   aspect-ratio: 1 / 1;
+  isolation: isolate;
+  will-change: transform;
 }
 
-@media (min-width: 480px) {
-  .chatToggleButton {
-    width: 70px;
-    height: 70px;
-  }
+/* ✨ Halo pulsante (resplandor suave detrás) */
+.chatToggleButton::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+      rgba(0, 242, 254, 0.55) 0%,
+      rgba(139, 92, 246, 0.25) 40%,
+      transparent 70%);
+  animation: haloPulse 2.8s ease-in-out infinite;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(4px);
+}
+
+/* 💫 Anillo giratorio (energía rotando alrededor) */
+.chatToggleButton::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg,
+      transparent 0deg,
+      #00f2fe 60deg,
+      #8b5cf6 140deg,
+      transparent 200deg,
+      transparent 360deg);
+  animation: ringSpin 4s linear infinite;
+  z-index: -2;
+  pointer-events: none;
+  -webkit-mask: radial-gradient(farthest-side,
+      transparent calc(100% - 2px),
+      #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side,
+      transparent calc(100% - 2px),
+      #000 calc(100% - 2px));
 }
 
 .chatToggleButton:hover {
-  transform: scale(1.1) rotate(5deg);
-  filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.7));
+  transform: scale(1.08);
 }
 
+.chatToggleButton:hover::before {
+  animation-duration: 1.4s;
+  filter: blur(2px);
+}
+
+.chatToggleButton:hover::after {
+  animation-duration: 2s;
+}
+
+.chatToggleButton:active {
+  transform: scale(0.96);
+  transition-duration: 0.1s;
+}
+
+/* ============================================
+   ICONO DEL ROBOT
+   ============================================ */
 .robotIconImg {
   border-radius: 50%;
   object-fit: cover;
   width: 100%;
   height: 100%;
   animation: robotFloat 3s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+  box-shadow:
+    0 0 0 2px rgba(0, 242, 254, 0.35),
+    0 0 20px rgba(0, 242, 254, 0.3),
+    inset 0 0 12px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.4s ease;
 }
 
+.chatToggleButton:hover .robotIconImg {
+  box-shadow:
+    0 0 0 2px rgba(0, 242, 254, 0.7),
+    0 0 32px rgba(0, 242, 254, 0.6),
+    0 0 60px rgba(139, 92, 246, 0.4),
+    inset 0 0 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
 @keyframes robotFloat {
 
   0%,
@@ -72,6 +140,30 @@
 
   50% {
     transform: translateY(-6px);
+  }
+}
+
+@keyframes haloPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+
+  50% {
+    transform: scale(1.18);
+    opacity: 0.4;
+  }
+}
+
+@keyframes ringSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -130,13 +222,13 @@
 }
 
 /* ============================================
-   CHAT EN MÓVIL - MODAL FLOTANTE (NO PANTALLA COMPLETA)
+   CHAT EN MÓVIL - MODAL FLOTANTE
    ============================================ */
 @media (max-width: 479px) {
   .chatWindow {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    right: 12px;
     width: calc(100vw - 40px);
     max-width: 360px;
     height: 60vh;
@@ -155,7 +247,7 @@
 
   .chatContainer {
     bottom: 0;
-    right: 0;
+    right: 4px;
   }
 
   .chatToggleButton {
@@ -166,7 +258,7 @@
 }
 
 /* ============================================
-   HEADER - CORREGIDO CON Z-INDEX
+   HEADER
    ============================================ */
 .header {
   background: linear-gradient(90deg, #1e293b, #0f172a);
@@ -324,7 +416,6 @@
   }
 }
 
-/* Texto del subtítulo: versión larga y corta */
 .headerSubtitleFull {
   display: inline;
 }
@@ -381,7 +472,7 @@
 }
 
 /* ============================================
-   ÁREA DE MENSAJES - AJUSTADO PARA PANTALLAS PEQUEÑAS
+   ÁREA DE MENSAJES
    ============================================ */
 .messagesArea {
   flex: 1;
@@ -441,7 +532,7 @@
 }
 
 /* ============================================
-   BURBUJAS - AJUSTADAS PARA PANTALLAS PEQUEÑAS
+   BURBUJAS
    ============================================ */
 .userBubble {
   align-self: flex-end;
@@ -603,7 +694,7 @@
 }
 
 /* ============================================
-   BOTONES DE PERFIL - AJUSTADOS
+   BOTONES DE PERFIL
    ============================================ */
 .profileOptionsContainer {
   display: flex;
@@ -653,7 +744,7 @@
 }
 
 /* ============================================
-   PREGUNTAS SUGERIDAS - AJUSTADAS
+   PREGUNTAS SUGERIDAS
    ============================================ */
 .suggestedQuestionsContainer {
   margin: 4px 0 2px 0;
@@ -733,7 +824,7 @@
 }
 
 /* ============================================
-   CALIFICACIÓN (RATING) - AJUSTADO
+   CALIFICACIÓN (RATING)
    ============================================ */
 .ratingContainer {
   display: flex;
@@ -800,7 +891,7 @@
 }
 
 /* ============================================
-   BOTÓN WHATSAPP - AJUSTADO
+   BOTÓN WHATSAPP
    ============================================ */
 .whatsappButton {
   align-self: flex-start;
@@ -845,7 +936,7 @@
 }
 
 /* ============================================
-   INPUT - SIMPLIFICADO (SIN X DE STREAMING)
+   INPUT
    ============================================ */
 .inputArea {
   padding: 10px 12px;
@@ -905,7 +996,6 @@
   box-shadow: 0 0 16px rgba(34, 211, 238, 0.05);
 }
 
-/* Botón enviar */
 .sendButton {
   background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   border: none;
@@ -944,7 +1034,7 @@
 }
 
 /* ============================================
-   RESPONSIVE PARA PANTALLAS MUY PEQUEÑAS (iPhone 4/SE)
+   RESPONSIVE PARA PANTALLAS MUY PEQUEÑAS
    ============================================ */
 @media (max-width: 380px) {
   .inputArea {
@@ -969,9 +1059,6 @@
   }
 }
 
-/* ============================================
-   PARA PANTALLAS EXTREMADAMENTE PEQUEÑAS (< 320px)
-   ============================================ */
 @media (max-width: 320px) {
   .inputArea {
     padding: 3px 4px;
@@ -992,37 +1079,6 @@
     font-size: 8px;
     padding: 2px 3px;
     border-radius: 4px;
-  }
-}
-
-/* ============================================
-   BADGE DE NOTIFICACIÓN
-   ============================================ */
-.notificationBadge {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 16px;
-  height: 16px;
-  background: #ef4444;
-  border-radius: 50%;
-  border: 2px solid #0f172a;
-  color: white;
-  font-size: 8px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100001;
-}
-
-@media (min-width: 480px) {
-  .notificationBadge {
-    top: 4px;
-    right: 4px;
-    width: 18px;
-    height: 18px;
-    font-size: 10px;
   }
 }
 
@@ -1079,7 +1135,7 @@
   }
 
   .chatToggleButton:hover {
-    transform: scale(1.12) rotate(5deg);
+    transform: scale(1.1);
   }
 
   .messagesArea {
