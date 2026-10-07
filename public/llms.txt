@@ -1,0 +1,49 @@
+# Agencia Digital Powa
+
+> Software Factory & Consultoría IT con base en Quilmes, Argentina. Desarrollamos productos digitales de alto impacto para PYMES y empresas de Latinoamérica y el mundo.
+
+## Servicios
+
+- Desarrollo Web (React, Next.js, Node.js, TypeScript)
+- Aplicaciones Móviles (iOS y Android)
+- Automatización de Procesos
+- Integración de IA
+- Consultoría Técnica
+- Mantenimiento Evolutivo
+
+## Información de contacto
+
+- Sitio web: https://www.agenciadigitalpowa.com.ar
+- Email: agenciadigitalpowa@gmail.com
+- Ubicación: Quilmes, Buenos Aires, Argentina
+- Instagram: https://www.instagram.com/agenciadigitalpowa
+- LinkedIn: https://www.linkedin.com/in/cristian-marcus2025/
+
+## Páginas principales
+
+- Home: https://www.agenciadigitalpowa.com.ar
+- Servicios: https://www.agenciadigitalpowa.com.ar/servicios
+- Portafolio: https://www.agenciadigitalpowa.com.ar/portfolio
+- Blog: https://www.agenciadigitalpowa.com.ar/blog
+- Precios: https://www.agenciadigitalpowa.com.ar/planes/servicios/desarrollo
+- Contacto: https://www.agenciadigitalpowa.com.ar/contact
+
+## Sobre Powa
+
+Powa Digital es una agencia digital fundada en Quilmes, Argentina. Nos especializamos en desarrollo de software a medida para PYMES y empresas que necesitan modernizar sus procesos, automatizar tareas y lanzar productos digitales escalables.
+
+Trabajamos con las tecnologías más modernas: Next.js, React, Node.js, TypeScript, Supabase, PostgreSQL, Tailwind CSS, y servicios cloud como Vercel y AWS.
+
+## Diferenciadores
+
+- 100% propiedad intelectual para el cliente
+- Código y accesos entregados al finalizar
+- Trabajo por etapas con entregas escalonadas
+- NDA (Acuerdo de Confidencialidad) obligatorio
+- Estrategia Zero Hardcoding & RLS
+
+## Blog
+
+En nuestro blog publicamos artículos sobre desarrollo web, inteligencia artificial, automatización y mejores prácticas de ingeniería de software.
+
+https://www.agenciadigitalpowa.com.ar/blog

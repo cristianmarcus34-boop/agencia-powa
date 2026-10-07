@@ -1,21 +1,28 @@
 import { MetadataRoute } from 'next';
 import { createClient } from '@supabase/supabase-js';
 
-export const revalidate = 86400;
+export const revalidate = 86400; // 24 horas
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.agenciadigitalpowa.com.ar';
   const currentDate = new Date();
 
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${baseUrl}/`, lastModified: currentDate, changeFrequency: 'always', priority: 1 },
-    { url: `${baseUrl}/servicios`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${baseUrl}/portfolio`, lastModified: currentDate, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${baseUrl}/lab`, lastModified: currentDate, changeFrequency: 'weekly', priority: 0.7 },
+    // Páginas principales (prioridad alta)
+    { url: `${baseUrl}/`, lastModified: currentDate, changeFrequency: 'weekly', priority: 1 },
+    { url: `${baseUrl}/servicios`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${baseUrl}/portfolio`, lastModified: currentDate, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${baseUrl}/contact`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
+
+    // Páginas secundarias
+    { url: `${baseUrl}/planes`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/planes/servicios/desarrollo`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/blog`, lastModified: currentDate, changeFrequency: 'daily', priority: 0.7 },
     { url: `${baseUrl}/about`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${baseUrl}/faq`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${baseUrl}/contact`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${baseUrl}/faq`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.6 },
+
+    // Herramientas (no indexables pero útiles)
+    { url: `${baseUrl}/lab`, lastModified: currentDate, changeFrequency: 'weekly', priority: 0.4 },
   ];
 
   let postRoutes: MetadataRoute.Sitemap = [];

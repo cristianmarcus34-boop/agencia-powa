@@ -31,8 +31,93 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Powa Digital | Agencia Digital',
-  description: 'Agencia digital en Quilmes. Desarrollo web, apps y marketing.',
+  // ============================================
+  // BÁSICO
+  // ============================================
+  title: {
+    default: 'Powa Digital | Agencia de Desarrollo Web en Quilmes',
+    template: '%s | Powa Digital',
+  },
+  description: 'Software Factory & Consultoría IT en Quilmes. Desarrollo web, apps móviles, automatización con IA y mantenimiento evolutivo para PYMES y empresas de Latinoamérica.',
+  keywords: [
+    'agencia digital',
+    'desarrollo web',
+    'software factory',
+    'Quilmes',
+    'Buenos Aires',
+    'Next.js',
+    'React',
+    'aplicaciones móviles',
+    'automatización',
+    'inteligencia artificial',
+    'consultoría IT',
+  ],
+  authors: [{ name: 'Agencia Digital Powa' }],
+  creator: 'Powa Digital',
+  publisher: 'Powa Digital',
+
+  // ============================================
+  // CANONICAL Y ALTERNATES
+  // ============================================
+  metadataBase: new URL('https://www.agenciadigitalpowa.com.ar'),
+  alternates: {
+    canonical: '/',
+  },
+
+  // ============================================
+  // OPEN GRAPH (Facebook, WhatsApp, LinkedIn)
+  // ============================================
+  openGraph: {
+    type: 'website',
+    locale: 'es_AR',
+    url: 'https://www.agenciadigitalpowa.com.ar',
+    siteName: 'Powa Digital',
+    title: 'Powa Digital | Agencia de Desarrollo Web en Quilmes',
+    description: 'Software Factory & Consultoría IT. Desarrollo web, apps y automatización con IA para PYMES y empresas.',
+    images: [
+      {
+        url: '/logo-agenciadigitalpowa-redondo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Agencia Digital Powa',
+      },
+    ],
+  },
+
+  // ============================================
+  // TWITTER / X
+  // ============================================
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Powa Digital | Agencia de Desarrollo Web en Quilmes',
+    description: 'Software Factory & Consultoría IT en Quilmes.',
+    images: ['/logo-agenciadigitalpowa-redondo.png'],
+  },
+
+  // ============================================
+  // ROBOTS
+  // ============================================
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+
+  // ============================================
+  // ICONS
+  // ============================================
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
+
 };
 
 export default function RootLayout({
