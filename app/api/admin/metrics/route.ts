@@ -1,6 +1,6 @@
 // app/api/admin/metrics/route.ts
 import { NextResponse } from "next/server";
-import { supabase } from "../../../lib/supabase";
+import { supabase } from "../../../../lib/supabase";
 
 export async function GET() {
   try {
@@ -47,9 +47,9 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error en métricas:', error);
-    return NextResponse.json({ 
-      success: false, 
-      error: 'Error al cargar métricas' 
+    return NextResponse.json({
+      success: false,
+      error: 'Error al cargar métricas'
     }, { status: 500 });
   }
 }

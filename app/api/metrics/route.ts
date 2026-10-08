@@ -1,11 +1,11 @@
 // app/api/metrics/route.ts
 import { NextResponse } from "next/server";
-import { metrics } from '../../lib/metrics';        // ← RUTA RELATIVA
+import { metrics } from '../../../lib/metrics';        // ← RUTA RELATIVA
 
 export async function GET() {
   try {
     const data = metrics.getMetrics();
-    
+
     return NextResponse.json({
       success: true,
       metrics: {
@@ -41,11 +41,11 @@ export async function POST(req: Request) {
           return NextResponse.json({ success: true });
         }
         break;
-      
+
       case 'reset':
         metrics.reset();
         return NextResponse.json({ success: true });
-      
+
       default:
         return NextResponse.json(
           { success: false, error: 'Acción no válida' },

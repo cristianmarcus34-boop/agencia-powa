@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
-import { ResponseCache } from '../../lib/cache';
-import { metrics } from '../../lib/metrics';
+import { ResponseCache } from '../../../lib/cache';
+import { metrics } from '../../../lib/metrics';
 import {
   crearConversacion,
   guardarMensaje,
   obtenerUltimosMensajes,
   guardarMetrica
-} from '../../lib/supabase/functions';
+} from '../../../lib/supabase/functions';
 
 export const runtime = 'edge';
 

@@ -1,6 +1,6 @@
 // app/api/test-auth/route.ts
 import { NextResponse } from "next/server";
-import { supabase } from "../../lib/supabase"; // ← RUTA RELATIVA
+import { supabase } from "../../../lib/supabase"; // ← RUTA RELATIVA
 import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
@@ -18,10 +18,10 @@ export async function POST(req: Request) {
 
     if (error || !usuario) {
       console.log('❌ TEST: Usuario NO encontrado');
-      return NextResponse.json({ 
-        success: false, 
+      return NextResponse.json({
+        success: false,
         error: 'Usuario no encontrado',
-        details: error 
+        details: error
       });
     }
 
@@ -43,9 +43,9 @@ export async function POST(req: Request) {
 
   } catch (error: any) {
     console.error('❌ TEST Error:', error);
-    return NextResponse.json({ 
-      success: false, 
-      error: error.message 
+    return NextResponse.json({
+      success: false,
+      error: error.message
     }, { status: 500 });
   }
 }

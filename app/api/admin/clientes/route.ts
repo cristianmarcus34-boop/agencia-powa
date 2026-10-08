@@ -1,6 +1,6 @@
 // app/api/admin/clientes/route.ts
 import { NextResponse } from "next/server";
-import { supabase } from "../../../lib/supabase";
+import { supabase } from "../../../../lib/supabase";
 
 // GET - Listar todos los clientes
 export async function GET() {
@@ -26,9 +26,9 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error en GET clientes:', error);
-    return NextResponse.json({ 
-      success: false, 
-      error: 'Error al cargar clientes' 
+    return NextResponse.json({
+      success: false,
+      error: 'Error al cargar clientes'
     }, { status: 500 });
   }
 }
@@ -37,11 +37,11 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { 
-      nombre_empresa, 
-      nombre_contacto, 
-      email, 
-      telefono, 
+    const {
+      nombre_empresa,
+      nombre_contacto,
+      email,
+      telefono,
       sitio_web,  // ← CAMBIAR: usar sitio_web directamente
       industria,
       tamaño_empresa,

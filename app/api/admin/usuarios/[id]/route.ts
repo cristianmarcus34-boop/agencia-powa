@@ -1,6 +1,6 @@
 // app/api/admin/usuarios/[id]/route.ts
 import { NextResponse } from "next/server";
-import { supabase, supabaseAdmin } from "../../../../lib/supabase";
+import { supabase, supabaseAdmin } from "../../../../../lib/supabase";
 
 // PUT - Actualizar un usuario
 export async function PUT(

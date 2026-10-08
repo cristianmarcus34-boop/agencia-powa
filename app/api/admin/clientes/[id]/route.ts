@@ -1,6 +1,6 @@
 // app/api/admin/clientes/[id]/route.ts
 import { NextResponse } from "next/server";
-import { supabase } from "../../../../lib/supabase";
+import { supabase } from "../../../../../lib/supabase";
 
 // PUT - Actualizar un cliente
 export async function PUT(
@@ -10,11 +10,11 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await req.json();
-    const { 
-      nombre_empresa, 
-      nombre_contacto, 
-      email, 
-      telefono, 
+    const {
+      nombre_empresa,
+      nombre_contacto,
+      email,
+      telefono,
       sitio_web,  // ← CAMBIAR: usar sitio_web directamente
       industria,
       tamaño_empresa,

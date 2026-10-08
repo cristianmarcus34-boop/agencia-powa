@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
-import { authOptions } from '../../../lib/auth'; // ✅ Importar authOptions
-import { createClient } from '../../../lib/server'; // ✅ CORREGIDO
+import { authOptions } from '../../../../lib/auth'; // ✅ Importar authOptions
+import { createClient } from '../../../../lib/server'; // ✅ CORREGIDO
 
 export async function PUT(request: Request) {
     console.log('🔵 PUT /api/cliente/perfil - INICIANDO');

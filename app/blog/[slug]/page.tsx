@@ -11,7 +11,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Script from 'next/script';
 import DOMPurify from 'isomorphic-dompurify';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../../lib/supabase';
 
 import styles from '../blog.module.css';
 import ShareButtons from '../components/ShareButtons';

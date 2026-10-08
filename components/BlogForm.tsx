@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { supabase } from '../app/lib/supabase';
+import { supabase } from '../lib/supabase';
 import ImageUpload from '../components/ImageUpload';
 import BlogEditor from '../components/BlogEditor';
 import type { Post } from '../app/types/blog';

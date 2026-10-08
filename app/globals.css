@@ -1,4 +1,5 @@
 /* app/globals.css */
+@import "tailwindcss";
 
 /* --- RESET Y COMPORTAMIENTO GLOBAL --- */
 html {

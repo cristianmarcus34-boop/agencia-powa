@@ -1,9 +1,9 @@
 // app/api/cliente/info/route.ts
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../lib/auth';
+import { authOptions } from '../../../../lib/auth';
 // app/api/cliente/info/route.ts
-import { createClient } from '../../../lib/server'; // ✅ Ruta correcta
+import { createClient } from '../../../../lib/server'; // ✅ Ruta correcta
 
 export async function GET() {
     try {

@@ -1,6 +1,6 @@
 // app/api/admin/tareas/route.ts
 import { NextResponse } from 'next/server';
-import { supabaseAdmin, supabase } from '../../../lib/supabase';
+import { supabaseAdmin, supabase } from '../../../../lib/supabase';
 
 const db = supabaseAdmin || supabase;
 

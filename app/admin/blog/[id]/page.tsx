@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { supabase } from '../../../lib/supabase';
+import { supabase } from '../../../../lib/supabase';
 import BlogForm from '@/components/BlogForm';
 import type { Post } from '../../../types/blog';  // ✅ IMPORTAR EL TIPO
 import styles from '../blog.module.css';

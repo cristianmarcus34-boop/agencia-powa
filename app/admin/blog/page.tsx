@@ -1,6 +1,6 @@
 'use client';
 
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../../lib/supabase';
 import Link from 'next/link';
 import { Pencil, Trash2, Eye } from 'lucide-react';
 import { useState, useEffect } from 'react';

@@ -1,5 +1,5 @@
 // lib/supabase/functions.ts
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../supabase';
 
 // ============================================
 // 📋 FUNCIONES PARA CONVERSACIONES
