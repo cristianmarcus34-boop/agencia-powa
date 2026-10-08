@@ -120,6 +120,7 @@
     box-shadow: 0 0 12px rgba(167, 139, 250, 0.2);
 }
 
+/* LinkedIn - Azul de marca */
 .linkedin:hover {
     color: #fff;
     background: #0a66c2;
@@ -127,11 +128,28 @@
     box-shadow: 0 0 12px rgba(10, 102, 194, 0.5);
 }
 
+/* Instagram - Gradiente de marca */
 .instagram:hover {
     color: #fff;
     background: linear-gradient(45deg, #feda75, #d62976, #4f5bd5);
     border-color: transparent;
     box-shadow: 0 0 12px rgba(214, 41, 118, 0.5);
+}
+
+/* X (Twitter) - Negro de marca */
+.twitter:hover {
+    color: #ffffff;
+    background: #000000;
+    border-color: #333333;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+/* GitHub - Negro de marca (por si lo reactivás) */
+.github:hover {
+    color: #ffffff;
+    background: #24292e;
+    border-color: #24292e;
+    box-shadow: 0 0 12px rgba(36, 41, 46, 0.5);
 }
 
 /* ============================================

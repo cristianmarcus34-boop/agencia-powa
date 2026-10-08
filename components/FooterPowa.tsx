@@ -8,6 +8,7 @@ import {
   FaInstagram,
   FaMapMarkerAlt,
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import Link from "next/link";
 import styles from "./FooterPowa.module.css";
 
@@ -55,6 +56,16 @@ export default function FooterPowa() {
                   <FaInstagram />
                 </a>
                 <a
+                  href="https://x.com/Cristiandepowa"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${styles.socialLink} ${styles.twitter}`}
+                  aria-label="Seguir en X (Twitter) a Powa Digital"
+                  title="Seguir en X (Twitter) a Powa Digital"
+                >
+                  <FaXTwitter />
+                </a>
+                <a
                   href="mailto:agenciadigitalpowa@gmail.com"
                   className={styles.socialLink}
                   aria-label="Enviar correo electrónico a Powa Digital"
@@ -75,7 +86,7 @@ export default function FooterPowa() {
           <span className={styles.footerDot}>•</span>
           <Link href="/desarrollo-web-quilmes">Desarrollo Web Quilmes</Link>
           <span className={styles.footerDot}>•</span>
-          <Link href="/about">Sobre Nosotros</Link>
+          <Link href="/about">Sobre nosotros</Link>
           <span className={styles.footerDot}>•</span>
           <Link href="/contact">Contacto</Link>
         </div>
