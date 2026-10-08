@@ -5,7 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
-import posthog from 'posthog-js'; // 👈 NUEVO
+import posthog from 'posthog-js';
 
 // Iconos
 import {
@@ -126,7 +126,6 @@ export default function HomePage() {
 
     // ===== 📊 HANDLER CON POSTHOG =====
     const handleDiagnosticoSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        // Capturamos ANTES de que el form se envíe a Web3Forms
         const formData = new FormData(e.currentTarget);
         const email = formData.get('email') as string;
         const url = formData.get('url') as string;
@@ -137,7 +136,6 @@ export default function HomePage() {
             tiene_url: !!url,
         });
 
-        // NO hacemos preventDefault → el form sigue su curso a Web3Forms
         setDiagnosticoEnviado(true);
         setTimeout(() => setDiagnosticoEnviado(false), 5000);
     };
@@ -146,6 +144,7 @@ export default function HomePage() {
     const options = { triggerOnce: true, threshold: 0.1 };
     const [refStack] = useInView(options);
     const [refServices] = useInView(options);
+    const [refQuilmes] = useInView(options);
     const [refBudget] = useInView(options);
     const [refProcess] = useInView(options);
     const [refSecurity] = useInView(options);
@@ -412,10 +411,10 @@ export default function HomePage() {
                                     <FaMapMarkerAlt className="me-2" /> PYMES y empresas · Quilmes, Argentina · Remoto
                                 </div>
                                 <h1 className={styles.heroTitleMain}>
-                                    Tecnología a medida para <span className={styles.textGradient}>PYMES y empresas.</span>
+                                    Agencia de <span className={styles.textGradient}>Desarrollo Web en Quilmes</span> para PYMES y empresas
                                 </h1>
                                 <p className={styles.heroSubtitleModern}>
-                                    Desde mejorar un proceso puntual hasta desarrollar una plataforma digital: definimos el alcance con vos y sumamos los perfiles adecuados según la complejidad y el contexto de tu empresa.
+                                    Somos Powa Digital, agencia de desarrollo web en Quilmes. Desde mejorar un proceso puntual hasta desarrollar una plataforma digital: definimos el alcance con vos y sumamos los perfiles adecuados según la complejidad y el contexto de tu empresa.
                                 </p>
                                 <div className="d-flex flex-wrap gap-3 mt-4">
                                     <Link href="/contact" className={`${styles.btnPowaPrimary} text-decoration-none`}>
@@ -453,7 +452,7 @@ export default function HomePage() {
                                 <div className={styles.heroImageContainer}>
                                     <Image
                                         src="/logo-agenciadigitalpowa-redondo.png"
-                                        alt="Agencia Digital Powa - Logo"
+                                        alt="Agencia Digital Powa - Desarrollo Web en Quilmes"
                                         width={640}
                                         height={427}
                                         className="rounded-4 shadow-lg"
@@ -548,6 +547,43 @@ export default function HomePage() {
                             </Col>
                         ))}
                     </Row>
+                </Container>
+            </section>
+
+            {/* --- 🎯 BANNER SEO: DESARROLLO WEB EN QUILMES --- */}
+            <section className={styles.quilmesBannerSection} ref={refQuilmes}>
+                <Container>
+                    <div className={styles.quilmesBanner}>
+                        <div className={styles.quilmesBannerGlow} />
+                        <Row className="align-items-center g-4">
+                            <Col lg={8}>
+                                <div className={styles.quilmesBannerContent}>
+                                    <span className={styles.quilmesBannerBadge}>
+                                        <FaMapMarkerAlt /> QUILMES · ZONA SUR
+                                    </span>
+                                    <h3 className={styles.quilmesBannerTitle}>
+                                        ¿Buscás una agencia de <span className={styles.textGradient}>desarrollo web en Quilmes</span>?
+                                    </h3>
+                                    <p className={styles.quilmesBannerText}>
+                                        Base en Quilmes, trabajamos con PYMES y empresas de Bernal, Avellaneda, Lanús, Berazategui y toda Zona Sur — y también de forma 100% remota con clientes de Argentina, Latinoamérica y el mundo.
+                                    </p>
+                                    <div className={styles.quilmesBannerTags}>
+                                        <span className={styles.quilmesBannerTag}>📍 Quilmes</span>
+                                        <span className={styles.quilmesBannerTag}>📍 Bernal</span>
+                                        <span className={styles.quilmesBannerTag}>📍 Avellaneda</span>
+                                        <span className={styles.quilmesBannerTag}>📍 Lanús</span>
+                                        <span className={styles.quilmesBannerTag}>🌍 Remoto internacional</span>
+                                    </div>
+                                </div>
+                            </Col>
+                            <Col lg={4} className="text-lg-end text-center">
+                                <Link href="/desarrollo-web-quilmes" className={styles.quilmesBannerButton}>
+                                    Ver más sobre Quilmes
+                                    <FaArrowRight className="ms-2" />
+                                </Link>
+                            </Col>
+                        </Row>
+                    </div>
                 </Container>
             </section>
 

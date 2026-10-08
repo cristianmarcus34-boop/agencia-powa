@@ -141,7 +141,6 @@
     }
 }
 
-/* ✨ Botón principal con glow pulsante */
 .btnPowaPrimary {
     position: relative;
     background: linear-gradient(135deg, var(--cyan-powa), #0891b2);
@@ -272,7 +271,6 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     position: relative;
     z-index: 1;
-    /* 👈 CAMBIADO de 1 a 2 */
     overflow: hidden;
 }
 
@@ -375,14 +373,13 @@
 }
 
 /* ============================================
-   STATS SECTION - CON NÚMEROS GLOW
+   STATS SECTION
    ============================================ */
 .statsSection {
     padding: 40px 0;
     background: rgba(15, 23, 42, 0.15);
     position: relative;
     z-index: 1;
-    /* 👈 CAMBIADO de 1 a 2 */
 }
 
 @media (min-width: 768px) {
@@ -539,7 +536,6 @@
     background: linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.3));
     position: relative;
     z-index: 1;
-    /* 👈 CAMBIADO de 1 a 2 */
 }
 
 @media (min-width: 768px) {
@@ -637,14 +633,13 @@
 }
 
 /* ============================================
-   SERVICES - CON HOVER PREMIUM
+   SERVICES
    ============================================ */
 .homeServices {
     padding: 60px 0;
     background: rgba(15, 23, 42, 0.15);
     position: relative;
     z-index: 1;
-    /* 👈 CAMBIADO de 1 a 2 */
 }
 
 @media (min-width: 768px) {
@@ -760,8 +755,7 @@
     padding: 60px 0;
     background: linear-gradient(to top, transparent, rgba(15, 23, 42, 0.2));
     position: relative;
-    z-index: 2;
-    /* 👈 CAMBIADO de 1 a 2 */
+    z-index: 1;
 }
 
 @media (min-width: 768px) {
@@ -881,7 +875,7 @@
 }
 
 /* ============================================
-   SECURITY - SHIELD CON PULSO MEJORADO
+   SECURITY
    ============================================ */
 .securitySection {
     padding: 60px 0;
@@ -890,7 +884,6 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     position: relative;
     z-index: 1;
-    /* 👈 CAMBIADO de 1 a 2 */
 }
 
 @media (min-width: 768px) {
@@ -1091,7 +1084,6 @@
     padding: 50px 0;
     position: relative;
     z-index: 2;
-    /* 👈 CAMBIADO de 1 a 2 */
 }
 
 @media (min-width: 768px) {
@@ -1335,7 +1327,6 @@
     box-shadow: 0 0 20px rgba(34, 211, 238, 0.05);
 }
 
-/* 🎯 BOTÓN PRINCIPAL DE CONVERSIÓN - CON GLOW FUERTE */
 .diagnosticoButton {
     position: relative;
     padding: 12px 20px;
@@ -1404,13 +1395,12 @@
 }
 
 /* ============================================
-   CTA FINAL - CON GLOW PREMIUM
+   CTA FINAL
    ============================================ */
 .ctaHomeMinimal {
     padding: 60px 0 40px;
     position: relative;
     z-index: 1;
-    /* 👈 CAMBIADO de 1 a 2 */
 }
 
 @media (min-width: 768px) {
@@ -1529,7 +1519,6 @@
     }
 }
 
-/* ✨ Botón blanco con glow pulsante */
 .btnPowaWhite {
     display: inline-flex;
     align-items: center;
@@ -1653,7 +1642,6 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     position: relative;
     z-index: 2;
-    /* 👈 CAMBIADO de 1 a 2 */
 }
 
 .roiCard {
@@ -2021,14 +2009,13 @@
 }
 
 /* ============================================
-   SECCIÓN "MEJORAMOS CUALQUIER PRESUPUESTO"
+   BUDGET MATCH SECTION
    ============================================ */
 .budgetMatchSection {
     padding: 60px 0;
     position: relative;
     background: transparent;
     z-index: 1;
-    /* 👈 CAMBIADO de 1 a 2 */
 }
 
 @media (min-width: 768px) {
@@ -2215,7 +2202,6 @@
     }
 }
 
-/* ✨ Budget card con borde animado */
 .budgetCard {
     position: relative;
     background: var(--glass-bg);
@@ -2239,7 +2225,6 @@
     }
 }
 
-/* Borde superior con brillo animado */
 .budgetCard::before {
     content: '';
     position: absolute;
@@ -2325,7 +2310,6 @@
     }
 }
 
-/* Toggle ARS / USD */
 .budgetToggle {
     display: inline-flex;
     background: rgba(10, 15, 26, 0.8);
@@ -2400,7 +2384,6 @@
     }
 }
 
-/* Caja de cotización */
 .budgetRateBox {
     display: flex;
     align-items: center;
@@ -3379,4 +3362,200 @@ html {
 
 .budgetTableRow:nth-child(even):hover {
     background: rgba(37, 99, 235, 0.08);
+}
+
+/* ============================================
+   🎯 BANNER SEO: DESARROLLO WEB EN QUILMES
+   ============================================ */
+
+.quilmesBannerSection {
+    padding: 40px 0;
+    position: relative;
+    z-index: 2;
+}
+
+@media (min-width: 768px) {
+    .quilmesBannerSection {
+        padding: 60px 0;
+    }
+}
+
+.quilmesBanner {
+    position: relative;
+    padding: 40px 32px;
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.35), rgba(34, 211, 238, 0.08));
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    border-radius: 24px;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+}
+
+@media (min-width: 768px) {
+    .quilmesBanner {
+        padding: 50px 48px;
+        border-radius: 28px;
+    }
+}
+
+.quilmesBanner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(34, 211, 238, 0.8),
+            rgba(139, 92, 246, 0.8),
+            rgba(34, 211, 238, 0.8),
+            transparent);
+    background-size: 200% 100%;
+    animation: quilmesShine 4s linear infinite;
+    z-index: 3;
+    pointer-events: none;
+}
+
+@keyframes quilmesShine {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.quilmesBannerGlow {
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(34, 211, 238, 0.15), transparent 70%);
+    pointer-events: none;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.quilmesBannerContent {
+    position: relative;
+    z-index: 2;
+}
+
+.quilmesBannerBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(34, 211, 238, 0.15);
+    color: #22d3ee;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .quilmesBannerBadge {
+        font-size: 0.75rem;
+        padding: 8px 16px;
+        letter-spacing: 1.5px;
+    }
+}
+
+.quilmesBannerTitle {
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .quilmesBannerTitle {
+        font-size: 1.8rem;
+        letter-spacing: -1px;
+        margin-bottom: 1.2rem;
+    }
+}
+
+.quilmesBannerText {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+    max-width: 90%;
+}
+
+@media (min-width: 768px) {
+    .quilmesBannerText {
+        font-size: 1.05rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+.quilmesBannerTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.quilmesBannerTag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50px;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.quilmesBannerTag:hover {
+    background: rgba(34, 211, 238, 0.08);
+    border-color: rgba(34, 211, 238, 0.25);
+    color: #22d3ee;
+}
+
+.quilmesBannerButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #22d3ee, #0891b2);
+    color: #0a0f1a !important;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 30px rgba(34, 211, 238, 0.3);
+    position: relative;
+    z-index: 2;
+    margin-top: 1rem;
+}
+
+@media (min-width: 992px) {
+    .quilmesBannerButton {
+        margin-top: 0;
+    }
+}
+
+.quilmesBannerButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(34, 211, 238, 0.5);
+    color: #0a0f1a !important;
+}
+
+@media (max-width: 991px) {
+    .quilmesBannerText {
+        max-width: 100%;
+    }
 }

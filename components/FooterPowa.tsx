@@ -73,6 +73,8 @@ export default function FooterPowa() {
           <span className={styles.footerDot}>•</span>
           <Link href="/faq">FAQ</Link>
           <span className={styles.footerDot}>•</span>
+          <Link href="/desarrollo-web-quilmes">Desarrollo Web Quilmes</Link>
+          <span className={styles.footerDot}>•</span>
           <Link href="/about">Sobre Nosotros</Link>
           <span className={styles.footerDot}>•</span>
           <Link href="/contact">Contacto</Link>
