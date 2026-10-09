@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     description: 'Software Factory & Consultoría IT. Desarrollo web, apps y automatización con IA para PYMES y empresas.',
     images: [
       {
-        url: '/logo-agenciadigitalpowa-redondo.png',
+        url: 'https://www.agenciadigitalpowa.com.ar/logo-agenciadigitalpowa-redondo.png',
         width: 1200,
         height: 630,
         alt: 'Agencia Digital Powa',
