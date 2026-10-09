@@ -48,9 +48,9 @@ const promos: Promo[] = [
             'Te enseñamos a ver cuánta gente entra',
         ],
         noIncluye: [
+            'Dominio y hosting (se pagan aparte)',
             'Varias páginas separadas',
             'Base de datos o panel',
-            'Hosting y dominio mensual',
             'Soporte continuo',
         ],
         nota: 'Solo para los primeros 5 clientes',
@@ -74,8 +74,9 @@ const promos: Promo[] = [
             'Cada sección en su propia URL',
             'Te armamos la ficha de Google Maps',
             'Preparada para que te encuentren en tu zona',
-            'Tu dominio propio, incluido',
-            'Servidor, seguridad y backups',
+            'Tu dominio propio, incluido en el cuidado',
+            'Hosting profesional, incluido',
+            'Copias de seguridad todos los días',
             'Hasta 3 cambios de contenido por mes',
             'Estamos a un WhatsApp si algo falla',
         ],
@@ -105,11 +106,11 @@ const promos: Promo[] = [
             'Web completa con hasta 10 páginas',
             'Blog con artículos',
             'Panel de administración (vos editás)',
-            'Base de datos incluida',
+            'Tu dominio propio, incluido en el cuidado',
+            'Hosting profesional y base de datos, incluidos',
+            'Copias de seguridad todos los días',
             'Formularios avanzados (cotizador, reservas)',
             'Integraciones (WhatsApp, pagos, email)',
-            'Tu dominio propio, incluido',
-            'Servidor, seguridad y backups',
             'Hasta 10 cambios de contenido por mes',
             'Soporte prioritario por WhatsApp',
             'Reporte mensual de visitas',
@@ -262,9 +263,11 @@ export default function PromosSection() {
                     Los precios son promocionales de lanzamiento. Válidos solo
                     para los primeros 5 clientes de Quilmes, Bernal, Varela o
                     Lomas de Zamora. Después de esa fecha o al agotar los
-                    cupos, los precios suben a los valores normales. El dominio
-                    se registra a tu nombre (nosotros lo gestionamos y lo
-                    pagamos) y está incluido en la cuota mensual.
+                    cupos, los precios suben a los valores normales. El
+                    dominio, el hosting, las copias de seguridad y (cuando
+                    corresponde) la base de datos, están incluidos en la cuota
+                    mensual de los packs con cuidado. La Landing Express es
+                    pago único y no incluye dominio ni hosting.
                 </p>
             </div>
         </section>
