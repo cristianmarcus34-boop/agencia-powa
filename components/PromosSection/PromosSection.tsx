@@ -41,15 +41,16 @@ const promos: Promo[] = [
         precioDetalle: 'pago único, sin mensualidad',
         aclaracion: 'Precio preferencial para Quilmes y Zona Sur',
         incluye: [
-            'Una página enfocada en que te contacten',
+            'Una sola página con todas las secciones',
             'Diseño único, no una plantilla',
             'Preparada para aparecer en Google',
             'Botón de WhatsApp y formulario',
             'Te enseñamos a ver cuánta gente entra',
         ],
         noIncluye: [
+            'Varias páginas separadas',
+            'Base de datos o panel',
             'Hosting y dominio mensual',
-            'Cambios de contenido',
             'Soporte continuo',
         ],
         nota: 'Solo para los primeros 5 clientes',
@@ -57,19 +58,20 @@ const promos: Promo[] = [
         ctaHref: '/contact',
     },
     {
-        id: 'local',
-        badge: 'Negocio Local',
-        paraQuien: 'Para el comercio de barrio',
-        titulo: 'Que te encuentren los clientes de tu zona',
+        id: 'sitio',
+        badge: 'Sitio Institucional',
+        paraQuien: 'Para el comercio o profesional',
+        titulo: 'Una web seria, con varias páginas, lista para Google',
         subtitulo:
-            'Para peluquerías, restaurantes, consultorios y comercios que viven de clientes del barrio. Que te busquen en Google y te encuentren.',
+            'Para peluquerías, restaurantes, consultorios y estudios que quieren una web completa con cada sección en su propia página.',
         precio: 'desde $450.000',
         precioNormal: '$650.000',
         precioDetalle: '+ $70.000/mes de cuidado',
         precioDetalleNormal: '(normal: $120.000/mes)',
         aclaracion: 'Exclusivo Quilmes, Bernal, Varela y Lomas',
         incluye: [
-            'Web completa con hasta 5 secciones',
+            'Web completa con hasta 5 páginas',
+            'Cada sección en su propia URL',
             'Te armamos la ficha de Google Maps',
             'Preparada para que te encuentren en tu zona',
             'Tu dominio propio, incluido',
@@ -77,8 +79,13 @@ const promos: Promo[] = [
             'Hasta 3 cambios de contenido por mes',
             'Estamos a un WhatsApp si algo falla',
         ],
+        noIncluye: [
+            'Blog ni panel de administración',
+            'Base de datos',
+            'Reservas o pedidos online',
+        ],
         nota: 'Solo para los primeros 5 clientes',
-        ctaTexto: 'Quiero el pack local',
+        ctaTexto: 'Quiero el sitio institucional',
         ctaHref: '/contact',
         destacado: true,
     },
@@ -86,17 +93,19 @@ const promos: Promo[] = [
         id: 'profesional',
         badge: 'Web Profesional',
         paraQuien: 'Para la PYME que quiere crecer',
-        titulo: 'Una web completa, con contenido y que crece',
+        titulo: 'Una web completa, con blog, panel y base de datos',
         subtitulo:
-            'Para estudios, consultoras y empresas que quieren una web seria, con blog, formularios avanzados y presencia digital de verdad.',
+            'Para estudios, consultoras y empresas que quieren una web dinámica, con blog, formularios avanzados y que ellos mismos puedan administrar.',
         precio: 'desde $750.000',
         precioNormal: '$1.100.000',
         precioDetalle: '+ $90.000/mes de cuidado',
         precioDetalleNormal: '(normal: $150.000/mes)',
         aclaracion: 'Precio preferencial para Quilmes y Zona Sur',
         incluye: [
-            'Web completa con hasta 10 secciones',
-            'Blog o sección de noticias',
+            'Web completa con hasta 10 páginas',
+            'Blog con artículos',
+            'Panel de administración (vos editás)',
+            'Base de datos incluida',
             'Formularios avanzados (cotizador, reservas)',
             'Integraciones (WhatsApp, pagos, email)',
             'Tu dominio propio, incluido',
@@ -135,14 +144,14 @@ export default function PromosSection() {
                     </p>
                 </div>
 
-                {/* Grid de promos */}
+                {/* Grid */}
                 <div className={styles.promosGrid}>
                     {promos.map((promo) => (
                         <div
                             key={promo.id}
                             className={`${styles.promoCard} ${promo.destacado
-                                ? styles.promoCardDestacado
-                                : ''
+                                    ? styles.promoCardDestacado
+                                    : ''
                                 }`}
                         >
                             {promo.destacado && (
@@ -155,7 +164,6 @@ export default function PromosSection() {
                                 {promo.badge}
                             </span>
 
-                            {/* Para quién es */}
                             <span className={styles.promoParaQuien}>
                                 {promo.paraQuien}
                             </span>
@@ -198,7 +206,6 @@ export default function PromosSection() {
                                 )}
                             </div>
 
-                            {/* Incluye */}
                             <ul className={styles.promoList}>
                                 {promo.incluye.map((item, i) => (
                                     <li
@@ -213,7 +220,6 @@ export default function PromosSection() {
                                 ))}
                             </ul>
 
-                            {/* No incluye (opcional) */}
                             {promo.noIncluye && (
                                 <div className={styles.promoNoIncluye}>
                                     <span
@@ -254,7 +260,8 @@ export default function PromosSection() {
                 {/* Nota al pie */}
                 <p className={styles.promosFootnote}>
                     Los precios son promocionales de lanzamiento. Válidos solo
-                    para los primeros 5 clientes de Zona Sur. Después de esa fecha o al agotar los
+                    para los primeros 5 clientes de Quilmes, Bernal, Varela o
+                    Lomas de Zamora. Después de esa fecha o al agotar los
                     cupos, los precios suben a los valores normales. El dominio
                     se registra a tu nombre (nosotros lo gestionamos y lo
                     pagamos) y está incluido en la cuota mensual.
