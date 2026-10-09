@@ -2,18 +2,27 @@
 'use client';
 
 import Link from 'next/link';
-import { FaCheck, FaRocket, FaGift, FaArrowRight, FaMapMarkerAlt } from 'react-icons/fa';
+import {
+    FaCheck,
+    FaGift,
+    FaArrowRight,
+    FaMapMarkerAlt,
+} from 'react-icons/fa';
 import styles from './PromosSection.module.css';
 
 type Promo = {
     id: string;
     badge: string;
+    paraQuien: string;
     titulo: string;
     subtitulo: string;
     precio: string;
+    precioNormal?: string;
     precioDetalle?: string;
+    precioDetalleNormal?: string;
     aclaracion?: string;
     incluye: string[];
+    noIncluye?: string[];
     nota: string;
     ctaTexto: string;
     ctaHref: string;
@@ -23,64 +32,81 @@ type Promo = {
 const promos: Promo[] = [
     {
         id: 'landing',
-        badge: 'Landing que vende',
-        titulo: 'Una página para que te encuentren y te llamen',
+        badge: 'Landing Express',
+        paraQuien: 'Para el que recién arranca',
+        titulo: 'Una página simple para estar en Google ya',
         subtitulo:
-            'Para el comercio, el profesional o el emprendedor que necesita estar en Google y recibir consultas. Sin vueltas.',
-        precio: 'desde $350.000',
-        precioDetalle: 'pago único',
+            'Si todavía no tenés web y querés algo rápido, profesional y sin pagar todos los meses. Lista en 2 semanas.',
+        precio: '$350.000',
+        precioDetalle: 'pago único, sin mensualidad',
         aclaracion: 'Precio preferencial para Quilmes y Zona Sur',
         incluye: [
-            'Diseño único, no una plantilla repetida',
-            'Preparada para que Google la encuentre',
-            'Carga rápida, anda bien en el celular',
-            'Botón de WhatsApp y formulario de contacto',
-            'Te mostramos cómo medir las visitas',
+            'Una página enfocada en que te contacten',
+            'Diseño único, no una plantilla',
+            'Preparada para aparecer en Google',
+            'Botón de WhatsApp y formulario',
+            'Te enseñamos a ver cuánta gente entra',
         ],
-        nota: 'Solo para vecinos de Quilmes y Zona Sur',
-        ctaTexto: 'Quiero mi página',
+        noIncluye: [
+            'Hosting y dominio mensual',
+            'Cambios de contenido',
+            'Soporte continuo',
+        ],
+        nota: 'Solo para los primeros 5 clientes',
+        ctaTexto: 'Quiero mi landing',
         ctaHref: '/contact',
     },
     {
-        id: 'sitio',
-        badge: 'Sitio + Cuidado mensual',
-        titulo: 'Tu web completa, y nosotros nos ocupamos del resto',
+        id: 'local',
+        badge: 'Negocio Local',
+        paraQuien: 'Para el comercio de barrio',
+        titulo: 'Que te encuentren los clientes de tu zona',
         subtitulo:
-            'Para PYMES que quieren una web seria y no quieren renegar con la parte técnica. Vos te enfocás en tu negocio, nosotros en que funcione.',
-        precio: 'desde $550.000',
-        precioDetalle: '+ $50.000 por mes de mantenimiento',
-        aclaracion: 'Precio preferencial para Quilmes y Zona Sur',
+            'Para peluquerías, restaurantes, consultorios y comercios que viven de clientes del barrio. Que te busquen en Google y te encuentren.',
+        precio: 'desde $450.000',
+        precioNormal: '$650.000',
+        precioDetalle: '+ $70.000/mes de cuidado',
+        precioDetalleNormal: '(normal: $120.000/mes)',
+        aclaracion: 'Exclusivo Quilmes, Bernal, Varela y Lomas',
         incluye: [
             'Web completa con hasta 5 secciones',
-            'Dominio, hosting y seguridad incluidos',
-            'Copias de seguridad todos los días',
+            'Te armamos la ficha de Google Maps',
+            'Preparada para que te encuentren en tu zona',
+            'Tu dominio propio, incluido',
+            'Servidor, seguridad y backups',
             'Hasta 3 cambios de contenido por mes',
-            'Te atendemos por WhatsApp si algo falla',
-            'El precio del mantenimiento no sube por 12 meses',
+            'Estamos a un WhatsApp si algo falla',
         ],
-        nota: 'Primer mes de cuidado bonificado para vecinos',
-        ctaTexto: 'Quiero el pack completo',
+        nota: 'Solo para los primeros 5 clientes',
+        ctaTexto: 'Quiero el pack local',
         ctaHref: '/contact',
         destacado: true,
     },
     {
-        id: 'pyme',
-        badge: 'Pack Vecino',
-        titulo: 'Tu negocio completo en internet, listo para vender',
+        id: 'profesional',
+        badge: 'Web Profesional',
+        paraQuien: 'Para la PYME que quiere crecer',
+        titulo: 'Una web completa, con contenido y que crece',
         subtitulo:
-            'Para el comercio de barrio que quiere aparecer en Google, tener su ficha en Maps y recibir clientes de la zona.',
-        precio: 'desde $450.000',
-        precioDetalle: '+ $50.000 por mes de mantenimiento',
-        aclaracion: 'Exclusivo para Quilmes, Bernal, Varela y Lomas',
+            'Para estudios, consultoras y empresas que quieren una web seria, con blog, formularios avanzados y presencia digital de verdad.',
+        precio: 'desde $750.000',
+        precioNormal: '$1.100.000',
+        precioDetalle: '+ $90.000/mes de cuidado',
+        precioDetalleNormal: '(normal: $150.000/mes)',
+        aclaracion: 'Precio preferencial para Quilmes y Zona Sur',
         incluye: [
-            'Página web o landing a tu medida',
-            'Te armamos la ficha de Google (Maps)',
-            'Preparada para que te encuentren en tu zona',
-            'Hosting, dominio y cuidado mensual',
-            'Te enseñamos a manejarla vos mismo',
+            'Web completa con hasta 10 secciones',
+            'Blog o sección de noticias',
+            'Formularios avanzados (cotizador, reservas)',
+            'Integraciones (WhatsApp, pagos, email)',
+            'Tu dominio propio, incluido',
+            'Servidor, seguridad y backups',
+            'Hasta 10 cambios de contenido por mes',
+            'Soporte prioritario por WhatsApp',
+            'Reporte mensual de visitas',
         ],
-        nota: 'Tomamos pocos vecinos por mes',
-        ctaTexto: 'Consultar disponibilidad',
+        nota: 'Cupos limitados — máximo 3 al mes',
+        ctaTexto: 'Quiero la web profesional',
         ctaHref: '/contact',
     },
 ];
@@ -93,19 +119,19 @@ export default function PromosSection() {
                 <div className={styles.promosHeader}>
                     <span className={styles.promosBadge}>
                         <FaMapMarkerAlt size={10} />
-                        ATENCIÓN QUILMES Y ZONA SUR
+                        PROMO FUNDADORES — SOLO PRIMEROS 5 CLIENTES
                     </span>
                     <h2 className={styles.promosTitle}>
-                        Precios de vecino,{' '}
+                        Tres formas de arrancar,{' '}
                         <span className={styles.textGradient}>
-                            no de agencia grande
+                            según lo que necesites
                         </span>
                     </h2>
                     <p className={styles.promosSubtitle}>
-                        Trabajamos con comercios y PYMES de Quilmes, Bernal, Varela
-                        y Lomas de Zamora. Como somos del barrio, te cobramos lo
-                        justo y te acompañamos de cerca. Estos son los precios para
-                        vos, no para una empresa de Buenos Aires.
+                        No todos los negocios necesitan lo mismo. Elegí el pack
+                        que mejor se adapta a tu momento. Los tres tienen precio
+                        preferencial para Quilmes y Zona Sur hasta agotar los
+                        primeros 5 cupos.
                     </p>
                 </div>
 
@@ -114,7 +140,9 @@ export default function PromosSection() {
                     {promos.map((promo) => (
                         <div
                             key={promo.id}
-                            className={`${styles.promoCard} ${promo.destacado ? styles.promoCardDestacado : ''
+                            className={`${styles.promoCard} ${promo.destacado
+                                ? styles.promoCardDestacado
+                                : ''
                                 }`}
                         >
                             {promo.destacado && (
@@ -123,19 +151,44 @@ export default function PromosSection() {
                                 </span>
                             )}
 
-                            <span className={styles.promoBadge}>{promo.badge}</span>
+                            <span className={styles.promoBadge}>
+                                {promo.badge}
+                            </span>
 
-                            <h3 className={styles.promoTitle}>{promo.titulo}</h3>
-                            <p className={styles.promoSubtitle}>{promo.subtitulo}</p>
+                            {/* Para quién es */}
+                            <span className={styles.promoParaQuien}>
+                                {promo.paraQuien}
+                            </span>
+
+                            <h3 className={styles.promoTitle}>
+                                {promo.titulo}
+                            </h3>
+                            <p className={styles.promoSubtitle}>
+                                {promo.subtitulo}
+                            </p>
 
                             {/* Precio */}
                             <div className={styles.promoPriceBlock}>
+                                {promo.precioNormal && (
+                                    <span className={styles.promoPriceNormal}>
+                                        {promo.precioNormal}
+                                    </span>
+                                )}
                                 <span className={styles.promoPrice}>
                                     {promo.precio}
                                 </span>
                                 {promo.precioDetalle && (
                                     <span className={styles.promoPriceDetail}>
                                         {promo.precioDetalle}
+                                    </span>
+                                )}
+                                {promo.precioDetalleNormal && (
+                                    <span
+                                        className={
+                                            styles.promoPriceDetailNormal
+                                        }
+                                    >
+                                        {promo.precioDetalleNormal}
                                     </span>
                                 )}
                                 {promo.aclaracion && (
@@ -145,9 +198,13 @@ export default function PromosSection() {
                                 )}
                             </div>
 
+                            {/* Incluye */}
                             <ul className={styles.promoList}>
                                 {promo.incluye.map((item, i) => (
-                                    <li key={i} className={styles.promoListItem}>
+                                    <li
+                                        key={i}
+                                        className={styles.promoListItem}
+                                    >
                                         <span className={styles.promoCheck}>
                                             <FaCheck size={9} />
                                         </span>
@@ -155,6 +212,24 @@ export default function PromosSection() {
                                     </li>
                                 ))}
                             </ul>
+
+                            {/* No incluye (opcional) */}
+                            {promo.noIncluye && (
+                                <div className={styles.promoNoIncluye}>
+                                    <span
+                                        className={styles.promoNoIncluyeLabel}
+                                    >
+                                        No incluye:
+                                    </span>
+                                    <span
+                                        className={
+                                            styles.promoNoIncluyeItems
+                                        }
+                                    >
+                                        {promo.noIncluye.join(' · ')}
+                                    </span>
+                                </div>
+                            )}
 
                             <div className={styles.promoFooter}>
                                 <div className={styles.promoNota}>
@@ -178,10 +253,11 @@ export default function PromosSection() {
 
                 {/* Nota al pie */}
                 <p className={styles.promosFootnote}>
-                    Los precios son en pesos y pueden variar según lo que necesites.
-                    Te damos un presupuesto claro, sin compromiso, en menos de 24
-                    horas. Si no sos de Quilmes ni Zona Sur, también podemos
-                    trabajar — pero el precio preferencial es para los vecinos.
+                    Los precios son promocionales de lanzamiento. Válidos solo
+                    para los primeros 5 clientes de Zona Sur. Después de esa fecha o al agotar los
+                    cupos, los precios suben a los valores normales. El dominio
+                    se registra a tu nombre (nosotros lo gestionamos y lo
+                    pagamos) y está incluido en la cuota mensual.
                 </p>
             </div>
         </section>
