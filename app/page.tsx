@@ -41,6 +41,7 @@ import {
 
 import styles from './page.module.css';
 import HeroWrapper from '../components/hero3d/HeroWrapper';
+import PromosSection from '../components/PromosSection/PromosSection';
 
 export default function HomePage() {
     // ===== STATE PARA DIAGNÓSTICO =====
@@ -549,6 +550,9 @@ export default function HomePage() {
                     </Row>
                 </Container>
             </section>
+
+            {/* --- 🎁 PROMOCIONES --- */}
+            <PromosSection />
 
             {/* --- 🎯 BANNER SEO: DESARROLLO WEB EN QUILMES --- */}
             <section className={styles.quilmesBannerSection} ref={refQuilmes}>

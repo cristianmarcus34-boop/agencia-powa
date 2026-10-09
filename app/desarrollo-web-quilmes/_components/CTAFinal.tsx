@@ -1,6 +1,6 @@
 // app/desarrollo-web-quilmes/_components/CTAFinal.tsx
 import Link from 'next/link'
-import { FaRocket } from 'react-icons/fa'
+import { FaRocket, FaGift, FaArrowRight } from 'react-icons/fa'
 
 export function CTAFinal() {
     return (
@@ -32,6 +32,29 @@ export function CTAFinal() {
                     Agendar consultoría gratis
                     <FaRocket className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
                 </Link>
+
+                {/* Mención sutil de la promo */}
+                <p className="mt-6 inline-flex items-center gap-2 text-sm text-cyan-400/90 font-medium">
+                    <FaGift size={12} />
+                    Contratando este mes: primer mes de mantenimiento bonificado
+                </p>
+
+                {/* Link a las promos del home */}
+                <div className="mt-8 pt-6 border-t border-white/[0.05] max-w-md mx-auto">
+                    <p className="text-sm text-slate-500 font-light">
+                        ¿Querés ver todos los planes y promociones?{' '}
+                        <Link
+                            href="/#promos"
+                            className="group inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 font-semibold transition-colors duration-300 underline-offset-4 hover:underline"
+                        >
+                            Ver promos
+                            <FaArrowRight
+                                size={10}
+                                className="group-hover:translate-x-0.5 transition-transform duration-300"
+                            />
+                        </Link>
+                    </p>
+                </div>
             </div>
         </section>
     )

@@ -10,7 +10,7 @@ import Providers from './providers';
 import LayoutWrapper from '@/components/LayoutWrapper';
 import PostHogPageView from '@/components/PostHogPageView';
 import WhatsAppFloat from '@/components/WhatsAppFloat'; // 👈 NUEVO
-
+import { GoogleAnalytics } from '@next/third-parties/google'
 const orbitron = Orbitron({
   subsets: ['latin'],
   variable: '--font-orbitron',
@@ -128,6 +128,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={orbitron.variable}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <GoogleAnalytics gaId="G-99LM39MSV0" />
         <Suspense fallback={null}>
           <PostHogPageView />
         </Suspense>
