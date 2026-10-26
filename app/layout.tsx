@@ -9,27 +9,43 @@ import './globals.css';
 import Providers from './providers';
 import LayoutWrapper from '@/components/LayoutWrapper';
 import PostHogPageView from '@/components/PostHogPageView';
-import WhatsAppFloat from '@/components/WhatsAppFloat'; // 👈 NUEVO
-import { GoogleAnalytics } from '@next/third-parties/google'
+import WhatsAppFloat from '@/components/WhatsAppFloat';
+import { GoogleAnalytics } from '@next/third-parties/google';
+
+// ============================================
+// 🔤 FUENTES (resilientes a fallos de Google Fonts en Vercel)
+// ============================================
 const orbitron = Orbitron({
   subsets: ['latin'],
   variable: '--font-orbitron',
   weight: ['700', '900'],
   display: 'swap',
+  fallback: ['system-ui', 'arial', 'sans-serif'],
+  adjustFontFallback: false,
+  preload: true,
 });
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
   display: 'swap',
+  fallback: ['system-ui', 'arial', 'sans-serif'],
+  adjustFontFallback: false,
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
   display: 'swap',
+  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+  adjustFontFallback: false,
+  preload: true,
 });
 
+// ============================================
+// 📋 METADATA
+// ============================================
 export const metadata: Metadata = {
   // ============================================
   // BÁSICO
@@ -38,7 +54,8 @@ export const metadata: Metadata = {
     default: 'Powa Digital | Agencia de Desarrollo Web en Quilmes',
     template: '%s | Powa Digital',
   },
-  description: 'Software Factory & Consultoría IT en Quilmes. Desarrollo web, apps móviles, automatización con IA y mantenimiento evolutivo para PYMES y empresas de Latinoamérica.',
+  description:
+    'Software Factory & Consultoría IT en Quilmes. Desarrollo web, apps móviles, automatización con IA y mantenimiento evolutivo para PYMES y empresas de Latinoamérica.',
   keywords: [
     'agencia digital',
     'desarrollo web',
@@ -73,7 +90,8 @@ export const metadata: Metadata = {
     url: 'https://www.agenciadigitalpowa.com.ar',
     siteName: 'Powa Digital',
     title: 'Powa Digital | Agencia de Desarrollo Web en Quilmes',
-    description: 'Software Factory & Consultoría IT. Desarrollo web, apps y automatización con IA para PYMES y empresas.',
+    description:
+      'Software Factory & Consultoría IT. Desarrollo web, apps y automatización con IA para PYMES y empresas.',
     images: [
       {
         url: 'https://www.agenciadigitalpowa.com.ar/logo-agenciadigitalpowa-redondo.png',
@@ -117,9 +135,11 @@ export const metadata: Metadata = {
     shortcut: '/favicon.ico',
     apple: '/favicon.ico',
   },
-
 };
 
+// ============================================
+// 🏗️ ROOT LAYOUT
+// ============================================
 export default function RootLayout({
   children,
 }: {
