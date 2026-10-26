@@ -18,28 +18,8 @@ import ShareButtons from '../components/ShareButtons';
 import ScrollToTop from '../components/ScrollToTop';
 import ReadingProgress from '../components/ReadingProgress';
 import PostContent from '../components/PostContent';
+import type { PostFromDB, RelatedPost } from './types';
 
-interface PostFromDB {
-    id: string;
-    titulo: string;
-    slug: string;
-    contenido: string;
-    extracto: string;
-    imagen_url: string | null;
-    imagen_alt: string | null;
-    created_at: string;
-    meta_keywords: string | null;
-    meta_descripcion: string | null;
-    emoji: string | null;
-    read_time: string | null;
-}
-
-interface RelatedPost {
-    id: string;
-    titulo: string;
-    slug: string;
-    emoji: string | null;
-}
 
 export default function PostPage() {
     const params = useParams();
