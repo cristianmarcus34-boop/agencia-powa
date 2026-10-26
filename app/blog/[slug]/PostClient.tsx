@@ -1,7 +1,7 @@
 // app/blog/[slug]/PostClient.tsx
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import {
     FaArrowLeft,
@@ -14,7 +14,6 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import Script from 'next/script';
-import DOMPurify from 'isomorphic-dompurify';
 
 import styles from '../blog.module.css';
 import ShareButtons from '../components/ShareButtons';
@@ -23,8 +22,7 @@ import ReadingProgress from '../components/ReadingProgress';
 import PostContent from '../components/PostContent';
 
 // ============================================
-// TIPOS (definidos acá para evitar import
-// desde page.tsx, que es Server Component)
+// TIPOS (inline para evitar import desde page.tsx)
 // ============================================
 interface PostFromDB {
     id: string;
@@ -53,14 +51,40 @@ interface PostClientProps {
     relatedPosts: RelatedPost[];
 }
 
+// ============================================
+// SANITIZADO EN CLIENTE (lazy, sin jsdom)
+// ============================================
+function useSanitizedHtml(html: string) {
+    const [sanitized, setSanitized] = useState<string>('');
+
+    useEffect(() => {
+        // Solo en el cliente, importamos DOMPurify dinámicamente.
+        // En el primer render (SSR), devolvemos el HTML crudo (no sanitizado)
+        // para que el HTML inicial del artículo esté presente (SEO).
+        // Después de hidratar, sanitizamos en el browser.
+        let cancelled = false;
+
+        (async () => {
+            const mod = await import('dompurify');
+            const DOMPurify = mod.default;
+            const clean = DOMPurify.sanitize(html, {
+                ADD_TAGS: ['iframe'],
+                ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'],
+            });
+            if (!cancelled) setSanitized(clean);
+        })();
+
+        return () => { cancelled = true; };
+    }, [html]);
+
+    return sanitized;
+}
+
 export default function PostClient({ post, relatedPosts }: PostClientProps) {
-    // ===== SANITIZAR HTML =====
-    const sanitizedContent = post.contenido
-        ? DOMPurify.sanitize(post.contenido, {
-            ADD_TAGS: ['iframe'],
-            ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'],
-        })
-        : '';
+    // 👇 HTML crudo para el primer render (SSR) — SEO ✅
+    // Luego se reemplaza por el sanitizado en el cliente.
+    const sanitizedContent = useSanitizedHtml(post.contenido || '');
+    const contentToRender = sanitizedContent || post.contenido || '';
 
     // ===== SCHEMA JSON-LD =====
     const postSchema = {
@@ -165,7 +189,8 @@ export default function PostClient({ post, relatedPosts }: PostClientProps) {
                                     </div>
                                 )}
 
-                                <PostContent html={sanitizedContent} />
+                                {/* 👇 HTML crudo en SSR, sanitizado después de hidratar */}
+                                <PostContent html={contentToRender} />
                             </article>
 
                             <ShareButtons title={post.titulo} slug={post.slug} />
