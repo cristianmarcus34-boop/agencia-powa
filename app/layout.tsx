@@ -1,6 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, Orbitron } from 'next/font/google';
+import localFont from 'next/font/local';
 import { Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,33 +13,53 @@ import WhatsAppFloat from '@/components/WhatsAppFloat';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 // ============================================
-// 🔤 FUENTES (resilientes a fallos de Google Fonts en Vercel)
+// 🔤 FUENTES LOCALES (sin dependencia de Google Fonts)
 // ============================================
-const orbitron = Orbitron({
-  subsets: ['latin'],
+
+const orbitron = localFont({
+  src: [
+    {
+      path: '../public/fonts/orbitron-700.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/orbitron-900.woff2',
+      weight: '900',
+      style: 'normal',
+    },
+  ],
   variable: '--font-orbitron',
-  weight: ['700', '900'],
   display: 'swap',
   fallback: ['system-ui', 'arial', 'sans-serif'],
-  adjustFontFallback: false,
   preload: true,
 });
 
-const geistSans = Geist({
+const geistSans = localFont({
+  src: [
+    {
+      path: '../public/fonts/geist-sans-400.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
   variable: '--font-geist-sans',
-  subsets: ['latin'],
   display: 'swap',
   fallback: ['system-ui', 'arial', 'sans-serif'],
-  adjustFontFallback: false,
   preload: true,
 });
 
-const geistMono = Geist_Mono({
+const geistMono = localFont({
+  src: [
+    {
+      path: '../public/fonts/geist-mono-400.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
   variable: '--font-geist-mono',
-  subsets: ['latin'],
   display: 'swap',
   fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
-  adjustFontFallback: false,
   preload: true,
 });
 
