@@ -14,6 +14,7 @@ import {
     FaTree,
     FaPaw,
     FaHeart,
+    FaMusic,
 } from 'react-icons/fa';
 import { FaScissors } from 'react-icons/fa6';
 import GimnasioDemo from '@/components/demos/GimnasioDemo';
@@ -44,6 +45,59 @@ export interface Project {
 // DATA DE PROYECTOS
 // ============================================================ //
 export const PROJECTS_DATA: Project[] = [
+    // 🎭 PROYECTO: REMOLINO FOLKLÓRICO (DESTACADO) 🆕
+    {
+        title: 'Remolino Folklórico — Sitio Web + Panel de Administración',
+        icon: <FaMusic className="text-primary-400" />,
+        image: '/proyectos/remolino-folklorico.jpeg',
+        description:
+            'Sitio web oficial del ballet  Remolino Folklórico (Quilmes). Incluye sitio público con hero 3D interactivo, historia del grupo, galería, eventos y contrataciones, más un panel de administración completo con CRUD de eventos, gestión de imágenes y mensajes.',
+        longDescription: `
+      🎭 Remolino Folklórico — Sitio web oficial + Panel de administración
+
+      Sitio web del ballet folclórico **Remolino Folklórico**, un grupo integrado por mujeres que lleva el folclor a cada escenario. Nacido el 8 de noviembre de 2025 del encuentro entre amigas que querían volver a bailar juntas, hoy es un ballet que crece al ritmo de sus raíces.
+
+      ## ✨ Características Principales
+
+      **Sitio público:**
+      • **Inicio** con hero 3D (remolino de partículas con Three.js que reacciona al mouse) y texto con entrada escalonada
+      • **Nosotros** con la historia completa del grupo (origen, iniciativa, primeros pasos, presente) y valores reales (Amistad, Iniciativa, Comunidad)
+      • **Galería** con imagen destacada + grilla de imágenes desde la base de datos
+      • **Eventos** con listado de próximas presentaciones ordenadas por fecha
+      • **Contrataciones** con servicios, formulario de contacto que guarda en base de datos y botón de WhatsApp
+      • **Sección "Sumate al grupo"** con horarios y lugar de ensayo (Lunes y miércoles · 19 hs, Soc. de Fomento Barrio General Belgrano)
+      • **Animaciones** con scroll reveal y entrada escalonada del hero
+      • **Accesibilidad**: respeta prefers-reduced-motion
+
+      **Panel de administración (protegido con auth):**
+      • **Eventos**: crear, editar y eliminar presentaciones
+      • **Galería**: subir imágenes a Vercel Blob, elegir sección, cambiar de sección y eliminar
+      • **Mensajes**: ver consultas del formulario, marcar como leído, borrar, responder por email o WhatsApp
+      • **Badge** con cantidad de no leídos en el navbar
+
+      ## 🏗️ Arquitectura Técnica
+      **Framework:** Astro 7 (modo híbrido: sitio público estático + panel SSR)
+      **UI interactiva:** React (solo para componentes del panel)
+      **Base de datos:** Neon (Postgres serverless)
+      **ORM:** Drizzle
+      **Autenticación:** Better Auth (email + contraseña)
+      **Almacenamiento de imágenes:** Vercel Blob
+      **3D:** Three.js (remolino de partículas en el hero)
+      **Despliegue:** Vercel
+      **Tipografías:** Fraunces (títulos) + Inter (cuerpo) vía next/font
+
+      ## 🔎 SEO y Open Graph
+      Open Graph + Twitter Card por página, canonical, favicons completos (apple-touch-icon, favicon-32x32, favicon-16x16, manifest) y tagline en el footer.
+    `,
+        link: 'https://remolino-folklorico.vercel.app/',
+        github: 'https://github.com/cristianmarcus34-boop/remolino-folklorico',
+        tag: '',
+        tech: ['Astro 7', 'React', 'TypeScript', 'Three.js', 'Neon', 'Drizzle', 'Better Auth', 'Vercel Blob', 'Vercel'],
+        featured: true,
+        year: '2026',
+        category: 'Institucional',
+        galleryImages: null, // opcional: subí capturas y armá el array
+    },
     // 🍲 PROYECTO: VIANDAS FLORIDA (DESTACADO)
     {
         title: 'Viandas Florida — Landing Page Gastronómica',
