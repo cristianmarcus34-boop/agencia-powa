@@ -1,5 +1,5 @@
 // app/layout.tsx
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
@@ -13,21 +13,13 @@ import WhatsAppFloat from '@/components/WhatsAppFloat';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 // ============================================
-// 🔤 FUENTES LOCALES (sin dependencia de Google Fonts)
+// 🔤 FUENTES LOCALES
 // ============================================
 
 const orbitron = localFont({
   src: [
-    {
-      path: '../public/fonts/orbitron-700.woff2',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: '../public/fonts/orbitron-900.woff2',
-      weight: '900',
-      style: 'normal',
-    },
+    { path: '../public/fonts/orbitron-700.woff2', weight: '700', style: 'normal' },
+    { path: '../public/fonts/orbitron-900.woff2', weight: '900', style: 'normal' },
   ],
   variable: '--font-orbitron',
   display: 'swap',
@@ -36,13 +28,7 @@ const orbitron = localFont({
 });
 
 const geistSans = localFont({
-  src: [
-    {
-      path: '../public/fonts/geist-sans-400.woff2',
-      weight: '400',
-      style: 'normal',
-    },
-  ],
+  src: [{ path: '../public/fonts/geist-sans-400.woff2', weight: '400', style: 'normal' }],
   variable: '--font-geist-sans',
   display: 'swap',
   fallback: ['system-ui', 'arial', 'sans-serif'],
@@ -50,13 +36,7 @@ const geistSans = localFont({
 });
 
 const geistMono = localFont({
-  src: [
-    {
-      path: '../public/fonts/geist-mono-400.woff2',
-      weight: '400',
-      style: 'normal',
-    },
-  ],
+  src: [{ path: '../public/fonts/geist-mono-400.woff2', weight: '400', style: 'normal' }],
   variable: '--font-geist-mono',
   display: 'swap',
   fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
@@ -67,43 +47,34 @@ const geistMono = localFont({
 // 📋 METADATA
 // ============================================
 export const metadata: Metadata = {
-  // ============================================
-  // BÁSICO
-  // ============================================
+  metadataBase: new URL('https://www.agenciadigitalpowa.com.ar'),
+
   title: {
-    default: 'Powa Digital | Agencia de Desarrollo Web en Quilmes',
+    default: 'Powa Digital | Agencia de Desarrollo Web en Quilmes para PYMES',
     template: '%s | Powa Digital',
   },
   description:
-    'Software Factory & Consultoría IT en Quilmes. Desarrollo web, apps móviles, automatización con IA y mantenimiento evolutivo para PYMES y empresas de Latinoamérica.',
+    'Agencia de desarrollo web en Quilmes. Sitios, plataformas, apps y automatización con IA para PYMES y empresas de Zona Sur y Latinoamérica. Presupuesto sin cargo.',
   keywords: [
-    'agencia digital',
-    'desarrollo web',
+    'agencia digital Quilmes',
+    'desarrollo web Quilmes',
     'software factory',
-    'Quilmes',
-    'Buenos Aires',
+    'agencia de desarrollo web',
     'Next.js',
     'React',
     'aplicaciones móviles',
-    'automatización',
-    'inteligencia artificial',
+    'automatización con IA',
     'consultoría IT',
+    'PYMES Zona Sur',
   ],
-  authors: [{ name: 'Agencia Digital Powa' }],
+  authors: [{ name: 'Agencia Digital Powa', url: 'https://www.agenciadigitalpowa.com.ar' }],
   creator: 'Powa Digital',
   publisher: 'Powa Digital',
 
-  // ============================================
-  // CANONICAL Y ALTERNATES
-  // ============================================
-  metadataBase: new URL('https://www.agenciadigitalpowa.com.ar'),
   alternates: {
     canonical: '/',
   },
 
-  // ============================================
-  // OPEN GRAPH (Facebook, WhatsApp, LinkedIn)
-  // ============================================
   openGraph: {
     type: 'website',
     locale: 'es_AR',
@@ -111,30 +82,26 @@ export const metadata: Metadata = {
     siteName: 'Powa Digital',
     title: 'Powa Digital | Agencia de Desarrollo Web en Quilmes',
     description:
-      'Software Factory & Consultoría IT. Desarrollo web, apps y automatización con IA para PYMES y empresas.',
+      'Software Factory & Consultoría IT. Desarrollo web, apps y automatización con IA para PYMES y empresas de Zona Sur.',
     images: [
       {
-        url: 'https://www.agenciadigitalpowa.com.ar/logo-agenciadigitalpowa-redondo.png',
+        url: 'https://www.agenciadigitalpowa.com.ar/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Agencia Digital Powa',
+        alt: 'Powa Digital - Agencia de Desarrollo Web en Quilmes',
+        type: 'image/png',
       },
     ],
   },
 
-  // ============================================
-  // TWITTER / X
-  // ============================================
   twitter: {
     card: 'summary_large_image',
     title: 'Powa Digital | Agencia de Desarrollo Web en Quilmes',
-    description: 'Software Factory & Consultoría IT en Quilmes.',
-    images: ['/logo-agenciadigitalpowa-redondo.png'],
+    description: 'Sitios, plataformas y automatización con IA para PYMES de Zona Sur.',
+    images: ['https://www.agenciadigitalpowa.com.ar/og-image.png'],
+    creator: '@Cristiandepowa',
   },
 
-  // ============================================
-  // ROBOTS
-  // ============================================
   robots: {
     index: true,
     follow: true,
@@ -147,14 +114,23 @@ export const metadata: Metadata = {
     },
   },
 
-  // ============================================
-  // ICONS
-  // ============================================
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
     apple: '/favicon.ico',
   },
+
+  category: 'technology',
+};
+
+// ============================================
+// 📱 VIEWPORT
+// ============================================
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#0f172a',
+  colorScheme: 'dark',
 };
 
 // ============================================
@@ -166,7 +142,88 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={orbitron.variable}>
+    <html lang="es-AR" className={orbitron.variable}>
+      <head>
+        {/* 🔗 Preconnect */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://api.web3forms.com" />
+        <link rel="dns-prefetch" href="https://wa.me" />
+        <link rel="dns-prefetch" href="https://www.instagram.com" />
+        <link rel="dns-prefetch" href="https://www.linkedin.com" />
+
+        {/* 🎨 Meta para mobile */}
+        <meta name="theme-color" content="#0f172a" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        {/* 🧭 JSON-LD: Organization + LocalBusiness + WebSite */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'Organization',
+                  '@id': 'https://www.agenciadigitalpowa.com.ar/#organization',
+                  name: 'Powa Digital',
+                  url: 'https://www.agenciadigitalpowa.com.ar',
+                  logo: 'https://www.agenciadigitalpowa.com.ar/logo-agenciadigitalpowa-redondo.png',
+                  description: 'Agencia de desarrollo web en Quilmes para PYMES y empresas.',
+                  email: 'agenciadigitalpowa@gmail.com',
+                  telephone: '+54-9-11-3830-5837',
+                  sameAs: [
+                    'https://www.linkedin.com/in/cristian-marcus2025/',
+                    'https://www.instagram.com/agencia.digital.powa',
+                    'https://x.com/Cristiandepowa',
+                  ],
+                },
+                {
+                  '@type': 'LocalBusiness',
+                  '@id': 'https://www.agenciadigitalpowa.com.ar/#localbusiness',
+                  name: 'Powa Digital',
+                  image: 'https://www.agenciadigitalpowa.com.ar/og-image.png',
+                  url: 'https://www.agenciadigitalpowa.com.ar',
+                  telephone: '+54-9-11-3830-5837',
+                  email: 'agenciadigitalpowa@gmail.com',
+                  priceRange: '$$',
+                  address: {
+                    '@type': 'PostalAddress',
+                    addressLocality: 'Quilmes',
+                    addressRegion: 'Buenos Aires',
+                    addressCountry: 'AR',
+                  },
+                  areaServed: [
+                    'Quilmes',
+                    'Bernal',
+                    'Avellaneda',
+                    'Lanús',
+                    'Berazategui',
+                    'Zona Sur',
+                    'Argentina',
+                  ],
+                  sameAs: [
+                    'https://www.linkedin.com/in/cristian-marcus2025/',
+                    'https://www.instagram.com/agencia.digital.powa',
+                    'https://x.com/Cristiandepowa',
+                  ],
+                },
+                {
+                  '@type': 'WebSite',
+                  '@id': 'https://www.agenciadigitalpowa.com.ar/#website',
+                  url: 'https://www.agenciadigitalpowa.com.ar',
+                  name: 'Powa Digital',
+                  publisher: {
+                    '@id': 'https://www.agenciadigitalpowa.com.ar/#organization',
+                  },
+                  inLanguage: 'es-AR',
+                },
+              ],
+            }),
+          }}
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <GoogleAnalytics gaId="G-99LM39MSV0" />
         <Suspense fallback={null}>
@@ -189,7 +246,6 @@ export default function RootLayout({
           <LayoutWrapper>{children}</LayoutWrapper>
         </Providers>
 
-        {/* 📱 WhatsApp flotante en todas las páginas */}
         <WhatsAppFloat />
       </body>
     </html>
