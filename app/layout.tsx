@@ -50,16 +50,16 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.agenciadigitalpowa.com.ar'),
 
   title: {
-    default: 'Powa Digital | Agencia de Desarrollo Web en Quilmes para PYMES',
+    default: 'Powa Digital | Agencia de Desarrollos en Quilmes para PYMES y Empresas',
     template: '%s | Powa Digital',
   },
   description:
-    'Agencia de desarrollo web en Quilmes. Sitios, plataformas, apps y automatización con IA para PYMES y empresas de Zona Sur y Latinoamérica. Presupuesto sin cargo.',
+    'Agencia de desarrollos en Quilmes. Sitios Web, plataformas, apps y automatización con IA para PYMES y Empresas de Zona Sur, Latinoamérica, Europa y el Mundo . Presupuesto sin cargo.',
   keywords: [
     'agencia digital Quilmes',
     'desarrollo web Quilmes',
     'software factory',
-    'agencia de desarrollo web',
+    'agencia de desarrollos',
     'Next.js',
     'React',
     'aplicaciones móviles',
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     'PYMES Zona Sur',
   ],
   authors: [{ name: 'Agencia Digital Powa', url: 'https://www.agenciadigitalpowa.com.ar' }],
-  creator: 'Powa Digital',
+  creator: 'Agencia Digital Powa',
   publisher: 'Powa Digital',
 
   alternates: {
@@ -79,8 +79,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'es_AR',
     url: 'https://www.agenciadigitalpowa.com.ar',
-    siteName: 'Powa Digital',
-    title: 'Powa Digital | Agencia de Desarrollo Web en Quilmes',
+    siteName: 'Agencia Digital Powa',
+    title: 'Agencia Digital Powa | Agencia de Desarrollos en Quilmes',
     description:
       'Software Factory & Consultoría IT. Desarrollo web, apps y automatización con IA para PYMES y empresas de Zona Sur.',
     images: [
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
         url: 'https://www.agenciadigitalpowa.com.ar/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Powa Digital - Agencia de Desarrollo Web en Quilmes',
+        alt: 'Agencia Digital Powa - Agencia de Desarrollos en Quilmes',
         type: 'image/jpg',
       },
     ],
@@ -96,8 +96,8 @@ export const metadata: Metadata = {
 
   twitter: {
     card: 'summary_large_image',
-    title: 'Powa Digital | Agencia de Desarrollo Web en Quilmes',
-    description: 'Sitios, plataformas y automatización con IA para PYMES de Zona Sur.',
+    title: 'Agencia Digital Powa | Agencia de Desarrollos en Quilmes',
+    description: 'Sitios, plataformas y automatización con IA para PYMES y Empresas.',
     images: ['https://www.agenciadigitalpowa.com.ar/og-image.jpg'],
     creator: '@Cristiandepowa',
   },
@@ -167,10 +167,10 @@ export default function RootLayout({
                 {
                   '@type': 'Organization',
                   '@id': 'https://www.agenciadigitalpowa.com.ar/#organization',
-                  name: 'Powa Digital',
+                  name: 'Agencia Digital Powa',
                   url: 'https://www.agenciadigitalpowa.com.ar',
                   logo: 'https://www.agenciadigitalpowa.com.ar/logo-agenciadigitalpowa-redondo.png',
-                  description: 'Agencia de desarrollo web en Quilmes para PYMES y empresas.',
+                  description: 'Agencia de desarrollos en Quilmes para PYMES y empresas.',
                   email: 'agenciadigitalpowa@gmail.com',
                   telephone: '+54-9-11-3830-5837',
                   sameAs: [
@@ -182,7 +182,7 @@ export default function RootLayout({
                 {
                   '@type': 'LocalBusiness',
                   '@id': 'https://www.agenciadigitalpowa.com.ar/#localbusiness',
-                  name: 'Powa Digital',
+                  name: 'Agencia Digital Powa',
                   image: 'https://www.agenciadigitalpowa.com.ar/og-image.jpg',
                   url: 'https://www.agenciadigitalpowa.com.ar',
                   telephone: '+54-9-11-3830-5837',
@@ -213,7 +213,7 @@ export default function RootLayout({
                   '@type': 'WebSite',
                   '@id': 'https://www.agenciadigitalpowa.com.ar/#website',
                   url: 'https://www.agenciadigitalpowa.com.ar',
-                  name: 'Powa Digital',
+                  name: 'Agencia Digital Powa',
                   publisher: {
                     '@id': 'https://www.agenciadigitalpowa.com.ar/#organization',
                   },
