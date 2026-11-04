@@ -50,16 +50,16 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.agenciadigitalpowa.com.ar'),
 
   title: {
-    default: 'Powa Digital | Agencia de Desarrollos en Quilmes para PYMES y Empresas',
+    default: 'Powa Digital | Agencia Digital en Quilmes para PYMES y Empresas',
     template: '%s | Powa Digital',
   },
   description:
-    'Agencia de desarrollos en Quilmes. Sitios Web, plataformas, apps y automatización con IA para PYMES y Empresas de Zona Sur, Latinoamérica, Europa y el Mundo . Presupuesto sin cargo.',
+    'Agencia digital en Quilmes. Desarrollo web, apps, automatización con IA y transformación digital para PYMES y Empresas de Zona Sur, Latinoamérica, Europa y el Mundo. Presupuesto sin cargo.',
   keywords: [
     'agencia digital Quilmes',
     'desarrollo web Quilmes',
     'software factory',
-    'agencia de desarrollos',
+    'agencia digital',
     'Next.js',
     'React',
     'aplicaciones móviles',
@@ -80,23 +80,23 @@ export const metadata: Metadata = {
     locale: 'es_AR',
     url: 'https://www.agenciadigitalpowa.com.ar',
     siteName: 'Agencia Digital Powa',
-    title: 'Agencia Digital Powa | Agencia de Desarrollos en Quilmes',
+    title: 'Powa Digital | Agencia Digital en Quilmes',
     description:
       'Software Factory & Consultoría IT. Desarrollo web, apps y automatización con IA para PYMES y empresas de Zona Sur.',
     images: [
       {
-        url: 'https://www.agenciadigitalpowa.com.ar/og-image.png',
+        url: 'https://www.agenciadigitalpowa.com.ar/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Agencia Digital Powa - Agencia de Desarrollos en Quilmes',
-        type: 'image/jpg',
+        alt: 'Powa Digital - Agencia Digital en Quilmes',
+        type: 'image/jpeg',
       },
     ],
   },
 
   twitter: {
     card: 'summary_large_image',
-    title: 'Agencia Digital Powa | Agencia de Desarrollos en Quilmes',
+    title: 'Powa Digital | Agencia Digital en Quilmes',
     description: 'Sitios, plataformas y automatización con IA para PYMES y Empresas.',
     images: ['https://www.agenciadigitalpowa.com.ar/og-image.jpg'],
     creator: '@Cristiandepowa',
@@ -170,7 +170,7 @@ export default function RootLayout({
                   name: 'Agencia Digital Powa',
                   url: 'https://www.agenciadigitalpowa.com.ar',
                   logo: 'https://www.agenciadigitalpowa.com.ar/logo-agenciadigitalpowa-redondo.png',
-                  description: 'Agencia de desarrollos en Quilmes para PYMES y empresas.',
+                  description: 'Agencia digital en Quilmes para PYMES y empresas.',
                   email: 'agenciadigitalpowa@gmail.com',
                   telephone: '+54-9-11-3830-5837',
                   sameAs: [
