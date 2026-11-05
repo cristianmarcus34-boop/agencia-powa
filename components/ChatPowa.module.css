@@ -1034,6 +1034,76 @@
 }
 
 /* ============================================
+   🎯 CAPA 3: BANNER DE CONVERSACIÓN RECUPERADA
+   ============================================ */
+.restoredBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  border-radius: 8px;
+  font-size: 11px;
+  color: #67e8f9;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 480px) {
+  .restoredBanner {
+    padding: 10px 14px;
+    font-size: 12px;
+    gap: 10px;
+  }
+}
+
+.resetButton {
+  background: rgba(34, 211, 238, 0.15);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  color: #22d3ee;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.resetButton:hover {
+  background: rgba(34, 211, 238, 0.25);
+  border-color: #22d3ee;
+}
+
+@media (min-width: 480px) {
+  .resetButton {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+}
+
+/* ============================================
+   🎯 CAPA 4: SUGERENCIAS DINÁMICAS
+   ============================================ */
+/* (Ya usa .suggestedQuestionsContainer, .suggestedLabel, .suggestedGrid y .suggestedButton existentes.
+   No hace falta agregar estilos nuevos, pero podés resaltarlas si querés) */
+
+.dynamicSuggestions {
+  border-top: 1px dashed rgba(34, 211, 238, 0.15);
+  padding-top: 6px;
+  margin-top: 6px;
+}
+
+@media (min-width: 480px) {
+  .dynamicSuggestions {
+    padding-top: 8px;
+    margin-top: 8px;
+  }
+}
+
+/* ============================================
    RESPONSIVE PARA PANTALLAS MUY PEQUEÑAS
    ============================================ */
 @media (max-width: 380px) {

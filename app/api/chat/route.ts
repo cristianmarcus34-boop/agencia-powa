@@ -11,7 +11,7 @@ import {
 
 export const runtime = 'edge';
 
-console.log('🔵 CARGANDO /api/chat/route.ts (Gemini Edition)');
+console.log('🔵 CARGANDO /api/chat/route.ts (Gemini Edition + Contexto Powa + Calificación)');
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const cache = ResponseCache.getInstance();
@@ -20,6 +20,36 @@ interface ChatMessageInput {
   role: "user" | "model" | string;
   text: string;
 }
+
+// ============================================
+// 📋 PRECIOS OFICIALES DE POWA (en ARS)
+// ============================================
+const PRECIOS_POWA = `
+PRECIOS OFICIALES DE POWA (en ARS, actualizados según dólar oficial del día):
+
+PLANES WEB:
+- Landing Express: $350.000 (pago único, sin mensualidad). 1 página, lista en 2 semanas.
+- Sitio Institucional: $650.000 (desde $450.000) + $70.000/mes de cuidado. Hasta 5 páginas, ficha de Google Maps incluida.
+- Web Profesional: $1.100.000 (desde $750.000) + $90.000/mes de cuidado. Hasta 10 páginas, blog, panel admin, base de datos.
+
+PLANES APP ANDROID (publicación en Google Play incluida con nuestra cuenta):
+- App Express: $2.200.000. 3 pantallas, sin login, sin base de datos. 2 semanas.
+- App Profesional: $5.500.000. Login + base de datos + panel admin + notificaciones push. 4-6 semanas.
+- App Premium: $12.000.000. Pagos, mapas, chat, integraciones externas. 6-10 semanas.
+
+SERVICIOS ADICIONALES:
+- Mantenimiento: 15% del valor inicial por año.
+- Transferencia de app a cuenta del cliente: $150.000 ARS (GRATIS si contratás mantenimiento anual).
+- Publicación en App Store (iOS): se cotiza aparte (cuenta Apple Developer USD 99/año).
+
+DIFERENCIALES DE POWA:
+- Código 100% tuyo (propiedad intelectual).
+- Entrega por etapas, con avances revisables.
+- NDA y confidencialidad.
+- Publicación en Google Play incluida (usamos nuestra cuenta de desarrollador verificada).
+- Respuesta en 24h.
+- Base en Quilmes, Zona Sur. Trabajo remoto con todo el país.
+`;
 
 // ============================================
 // 📋 FAQS - CONTEXTO OFICIAL DE POWA
@@ -70,7 +100,7 @@ R: Comunicación garantizada: Reunión semanal de 30 min para alinear prioridade
 ========================================
 
 P: ¿Qué tipo de soluciones digitales desarrollan?
-R: Diseñamos e implementamos ecosistemas digitales a la medida de los objetivos de tu empresa. Nos especializamos en landings de conversión optimizada y plataformas SaaS complexes. Al desarrollar con arquitectura pura sobre Next.js, eliminamos las restricciones estructurales de las plantillas genéricas: tu producto final será exactamente como lo proyectás, con un código limpio, seguro y arquitecturado para escalar verticalmente.
+R: Diseñamos e implementamos ecosistemas digitales a la medida de los objetivos de tu empresa. Nos especializamos en landings de conversión optimizada y plataformas SaaS complejas. Al desarrollar con arquitectura pura sobre Next.js, eliminamos las restricciones estructurales de las plantillas genéricas: tu producto final será exactamente como lo proyectás, con un código limpio, seguro y arquitecturado para escalar verticalmente.
 
 P: ¿Por qué priorizan arquitecturas en Next.js por sobre sistemas monolíticos como WordPress?
 R: Los CMS tradicionales como WordPress presentan serias deficiencias en seguridad, dependencia de plugins de terceros y sobrecarga de procesamiento en el cliente. Next.js nos permite compilar sitios estáticos e híbridos de velocidad ultra-instantánea. Al desacoplar el frontend, reducimos la superficie de ataque a niveles prácticamente nulos, entregando un activo robusto que Google posiciona prioritariamente.
@@ -125,6 +155,50 @@ P: ¿Proveen servicios de soporte y acuerdos de nivel de servicio (SLA)?
 R: Sí. El despliegue a producción es solo el inicio de la relación técnica. Ofrecemos planes avanzados de mantenimiento preventivo, monitoreo continuo de infraestructura, auditorías periódicas de seguridad y optimizaciones de rendimiento en tiempo real, garantizando la continuidad operativa de tu negocio 24/7.
 `;
 
+// ============================================
+// 🎯 DETECCIÓN DE INTENCIÓN (Capa 2)
+// ============================================
+function detectarIntencion(message: string): string {
+  const msg = message.toLowerCase();
+
+  if (/\b(precio|costo|cuanto|cuánto|sale|vale|tarifa|inversión|presupuesto|barato|caro)\b/.test(msg)) {
+    return 'pricing';
+  }
+  if (/\b(app|aplicación|aplicacion|android|play store|google play|movil|móvil|celular)\b/.test(msg)) {
+    return 'app';
+  }
+  if (/\b(web|página|pagina|sitio|landing|ecommerce|e-commerce|tienda online)\b/.test(msg)) {
+    return 'web';
+  }
+  if (/\b(hablar|contacto|whatsapp|llamar|reunión|reunion|agendar|especialista|humano|persona)\b/.test(msg)) {
+    return 'contact';
+  }
+  if (/\b(quienes|quiénes|powa|agencia|quilmes|zona sur|ubicación|ubicacion|donde|dónde)\b/.test(msg)) {
+    return 'info';
+  }
+  return 'other';
+}
+
+// ============================================
+// 🎯 CONTEXTO DINÁMICO SEGÚN INTENCIÓN
+// ============================================
+function getIntentContext(intent: string): string {
+  switch (intent) {
+    case 'pricing':
+      return `\n🎯 EL USUARIO PREGUNTÓ POR PRECIOS. Respondé con los valores exactos de PRECIOS_POWA (en ARS). Si el usuario no especificó qué quiere (web o app), preguntale primero. Derivá a /planes si quiere ver todas las opciones.`;
+    case 'app':
+      return `\n🎯 EL USUARIO PREGUNTÓ POR APPS. Derivá a /apps. Mencioná que publicamos en Google Play con nuestra cuenta verificada, sin costo extra para el cliente.`;
+    case 'web':
+      return `\n🎯 EL USUARIO PREGUNTÓ POR WEB. Derivá a /planes. Mencioná los 3 planes web disponibles.`;
+    case 'contact':
+      return `\n🎯 EL USUARIO QUIERE HABLAR CON ALGUIEN. Pasale el link de WhatsApp: https://wa.me/5491138305837?text=Hola%20Powa! y decile que te respondemos en 1 día hábil.`;
+    case 'info':
+      return `\n🎯 EL USUARIO PREGUNTÓ POR POWA. Contale que somos de Quilmes, Zona Sur, y trabajamos remoto con todo el país. Que hacemos web y apps.`;
+    default:
+      return '';
+  }
+}
+
 async function generarConReintentos(fn: () => Promise<any>, maxRetries = 3, delayMs = 1000) {
   for (let intento = 1; intento <= maxRetries; intento++) {
     try {
@@ -145,7 +219,7 @@ async function generarConReintentos(fn: () => Promise<any>, maxRetries = 3, dela
 }
 
 export async function POST(req: Request) {
-  console.log('🔵 POST /api/chat (Gemini) - INICIANDO');
+  console.log('🔵 POST /api/chat (Gemini + Contexto Powa + Calificación) - INICIANDO');
 
   try {
     const startTime = Date.now();
@@ -280,22 +354,43 @@ export async function POST(req: Request) {
       Assistant: "Migramos sistemas obsoletos a arquitecturas modernas con Next.js y Supabase garantizando propiedad absoluta del código. ¿En qué stack está tu desarrollo actual?"`;
     }
 
-    const systemInstruction = `Eres PowaBot, el asesor comercial estrella de 'Agencia Digital Powa' (de Zona Sur, Buenos Aires).
-Tu objetivo es actuar como un filtro inteligente y humano: charlar con el cliente, entender qué negocio tiene, qué le duele y explicarle las cosas de forma súper sencilla, sin tecnicismos raros.
+    // 🎯 DETECCIÓN DE INTENCIÓN (Capa 2)
+    const intencion = detectarIntencion(message);
+    const intentContext = getIntentContext(intencion);
+    console.log(`🎯 Intención detectada: ${intencion}`);
 
-FILOSOFÍA:
+    // 🎯 SYSTEM PROMPT CORREGIDO (calificación + precios solo si los pide + una pregunta por vez)
+    const systemInstruction = `Eres PowaBot, el asesor comercial estrella de 'Agencia Digital Powa' (de Zona Sur, Buenos Aires).
+
+TU OBJETIVO PRINCIPAL:
+- Calificar al cliente ANTES de ofrecer precios: entender qué negocio tiene, qué le duele y qué necesita.
+- Explicar de forma simple, criolla y directa, sin tecnicismos raros.
+- Hacer UNA SOLA PREGUNTA por mensaje (nunca dos juntas).
+
+FILOSOFÍA DE POWA:
 - No vendemos páginas web comunes; armamos herramientas digitales que funcionan de verdad.
 - Queremos que el negocio sea dueño de su plataforma y deje de regalar plata en comisiones.
 
-REGLAS DE CONVERSACIÓN:
-1. TONO CRIOLLO Y CERCANO: Hablá de forma amigable, natural y directa (argentino moderado, cálido, usando un "vos" bien llevado).
-2. NUNCA mandes a WhatsApp de entrada. Primero hay que charlar y calificar al cliente.
-3. PREGUNTAS CLAVE: Hacé de a una pregunta por vez para no abrumar.
-4. DERIVACIÓN A WHATSAPP: Solo pasale el link de WhatsApp ( https://wa.me/5491138305837?text=Hola%20Powa! ) cuando la charla esté avanzada.
-5. Idioma: Español.
+REGLAS DE CONVERSACIÓN (ORDEN DE PRIORIDAD):
+1. TONO CRIOLLO Y CERCANO: Hablá amigable, natural y directo (argentino moderado, cálido, usando "vos").
+2. PRIMERO CALIFICÁ: Si el usuario recién elige un perfil o dice "quiero una web/app", NO le tires todos los precios de golpe. Primero preguntá: ¿qué tipo de negocio tenés? ¿cuál es el principal problema que querés resolver? ¿ya tenés algo hecho?
+3. UNA PREGUNTA POR MENSAJE: Siempre terminá con UNA sola pregunta. Nunca dos. Eso abruma.
+4. PRECIOS SOLO SI LOS PIDE: Si el usuario NO preguntó por precios, NO los menciones. Solo mencionalos si:
+   - El usuario pregunta explícitamente "¿cuánto sale?", "¿precio?", "¿costo?", etc.
+   - O si ya calificaste (sabés qué necesita) y el usuario pide avanzar.
+   Cuando des precios, dá SOLO el plan que aplica (no los 6 de golpe).
+5. DERIVACIÓN A WHATSAPP: Solo pasale el link ( https://wa.me/5491138305837?text=Hola%20Powa! ) cuando la charla esté avanzada (ya sabés qué necesita y quiere hablar con alguien).
+6. DERIVACIÓN A PÁGINAS: Si pregunta por web, derivá a /planes. Si pregunta por apps, derivá a /apps.
+7. IDIOMA: Español.
+
+${intentContext}
 
 ${profileContext}
 ${fewShotExamples}
+
+PRECIOS DE REFERENCIA (usar SOLO si el usuario los pide):
+${PRECIOS_POWA}
+
 ${faqContext}`;
 
     let contents = [
@@ -314,7 +409,7 @@ ${faqContext}`;
         config: {
           systemInstruction: systemInstruction,
           temperature: 0.75,
-          maxOutputTokens: 3072, // 👈 Límite aumentado para evitar cortes cortos
+          maxOutputTokens: 3072,
           topP: 0.95,
         }
       });
@@ -366,7 +461,7 @@ ${faqContext}`;
         'Cache-Control': 'no-cache',
         'X-Cache': 'MISS',
         'X-Chat-Id': chatId,
-        'X-Finish-Reason': finishReason, // 👈 Cabecera enviada al cliente
+        'X-Finish-Reason': finishReason,
       },
     });
 

@@ -23,6 +23,48 @@ const suggestedQuestions = [
   { icon: '💰', text: '¿Cuánto ahorro con una app propia?', profile: 'gastronomia' }
 ];
 
+// 🎯 Capa 4: Sugerencias dinámicas según última respuesta del bot
+function getDynamicSuggestions(lastBotText: string): { icon: string; text: string }[] {
+  const text = lastBotText.toLowerCase();
+
+  if (text.includes('precio') || text.includes('cuanto') || text.includes('cuánto') || text.includes('costo') || text.includes('$')) {
+    return [
+      { icon: '💸', text: '¿Qué incluye el plan más barato?' },
+      { icon: '📅', text: '¿Cuánto tarda la entrega?' },
+      { icon: '💳', text: '¿Puedo pagar en cuotas?' },
+    ];
+  }
+
+  if (text.includes('app') || text.includes('android') || text.includes('play store')) {
+    return [
+      { icon: '📱', text: '¿Publican en Google Play?' },
+      { icon: '🔑', text: '¿Puedo transferir la app a mi cuenta?' },
+      { icon: '⏱️', text: '¿Cuánto tarda una app?' },
+    ];
+  }
+
+  if (text.includes('web') || text.includes('sitio') || text.includes('página') || text.includes('pagina')) {
+    return [
+      { icon: '🌐', text: '¿Incluye dominio y hosting?' },
+      { icon: '✏️', text: '¿Puedo editar el contenido yo?' },
+      { icon: '⚡', text: '¿Cuánto tarda una web?' },
+    ];
+  }
+
+  if (text.includes('whatsapp') || text.includes('contacto') || text.includes('hablar')) {
+    return [
+      { icon: '💬', text: '¿Cuál es el horario de atención?' },
+      { icon: '📞', text: '¿Me pueden llamar?' },
+    ];
+  }
+
+  return [
+    { icon: '💰', text: '¿Cuánto cuesta una web?' },
+    { icon: '📱', text: '¿Hacen apps nativas?' },
+    { icon: '🚀', text: '¿Cómo arranco mi proyecto?' },
+  ];
+}
+
 export default function ChatPowa() {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
@@ -32,10 +74,68 @@ export default function ChatPowa() {
   const [conversacionId, setConversacionId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
-  const [needsContinue, setNeedsContinue] = useState(false); // 👈 Controla si se cortó por tokens
+  const [needsContinue, setNeedsContinue] = useState(false);
+
+  // 🎯 Capa 4: Estado para sugerencias dinámicas
+  const [dynamicSuggestions, setDynamicSuggestions] = useState<{ icon: string; text: string }[]>([]);
+
+  // 🎯 Capa 3: Estado para "conversación recuperada"
+  const [isRestored, setIsRestored] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const streamingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 🎯 Capa 3: Cargar conversación desde localStorage al montar
+  useEffect(() => {
+    try {
+      const savedMessages = localStorage.getItem('powa-chat-messages');
+      const savedProfile = localStorage.getItem('powa-chat-profile');
+      const savedChatId = localStorage.getItem('powa-chat-id');
+
+      if (savedMessages) {
+        const parsed = JSON.parse(savedMessages);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setMessages(parsed);
+          setIsRestored(true);
+        }
+      }
+      if (savedProfile) {
+        setProfile(savedProfile as ClientProfile);
+      }
+      if (savedChatId) {
+        setConversacionId(savedChatId);
+      }
+    } catch (e) {
+      console.warn('No se pudo cargar la conversación previa:', e);
+    }
+  }, []);
+
+  // 🎯 Capa 3: Guardar en localStorage cuando cambia algo
+  useEffect(() => {
+    try {
+      if (messages.length > 0) {
+        localStorage.setItem('powa-chat-messages', JSON.stringify(messages));
+      }
+      if (profile) {
+        localStorage.setItem('powa-chat-profile', profile);
+      }
+      if (conversacionId) {
+        localStorage.setItem('powa-chat-id', conversacionId);
+      }
+    } catch (e) {
+      // localStorage puede fallar en modo incógnito o si está lleno
+    }
+  }, [messages, profile, conversacionId]);
+
+  // 🎯 Capa 4: Actualizar sugerencias dinámicas cuando cambia el último mensaje del bot
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastBotMsg = [...messages].reverse().find(m => m.role === 'bot');
+      if (lastBotMsg && lastBotMsg.text.length > 20) {
+        setDynamicSuggestions(getDynamicSuggestions(lastBotMsg.text));
+      }
+    }
+  }, [messages]);
 
   const getWhatsAppLink = useCallback(() => {
     const lastUserMsg = [...messages].reverse().find(m => m.role === 'user')?.text;
@@ -61,10 +161,10 @@ export default function ChatPowa() {
   }, [messages, loading, isOpen, isStreaming]);
 
   useEffect(() => {
-    if (isOpen && conversacionId) {
+    if (isOpen && conversacionId && !isRestored) {
       cargarHistorial(conversacionId);
     }
-  }, [isOpen, conversacionId]);
+  }, [isOpen, conversacionId, isRestored]);
 
   useEffect(() => {
     return () => {
@@ -241,9 +341,10 @@ export default function ChatPowa() {
     });
   };
 
-  const handleSuggestedQuestion = (question: string, questionProfile: string) => {
-    if (profile !== questionProfile) {
-      setProfile(questionProfile as ClientProfile);
+  const handleSuggestedQuestion = (question: string, questionProfile?: string) => {
+    const targetProfile = (questionProfile || profile) as ClientProfile;
+    if (questionProfile && profile !== questionProfile) {
+      setProfile(targetProfile);
       setTimeout(() => {
         setInput(question);
         setTimeout(() => sendMessage(), 100);
@@ -272,12 +373,25 @@ export default function ChatPowa() {
     } catch (e) { }
   };
 
+  // 🎯 Capa 3: Función para resetear la conversación
+  const resetConversation = () => {
+    setMessages([]);
+    setProfile(null);
+    setConversacionId(null);
+    setIsRestored(false);
+    setDynamicSuggestions([]);
+    try {
+      localStorage.removeItem('powa-chat-messages');
+      localStorage.removeItem('powa-chat-profile');
+      localStorage.removeItem('powa-chat-id');
+    } catch (e) { }
+  };
+
   return (
     <div className={styles.chatContainer}>
 
-
       {!isOpen && (
-        <button onClick={() => { playRobotSound(); setMessages([]); setConversacionId(null); setIsOpen(true); }} className={styles.chatToggleButton} aria-label="Abrir Chat de Ayuda">
+        <button onClick={() => { playRobotSound(); setIsOpen(true); }} className={styles.chatToggleButton} aria-label="Abrir Chat de Ayuda">
           <Image
             src="/iconoia.jpg"
             alt="Powa Bot Ayuda"
@@ -311,6 +425,16 @@ export default function ChatPowa() {
           </div>
 
           <div className={styles.messagesArea}>
+            {/* 🎯 Capa 3: Banner de "conversación recuperada" */}
+            {isRestored && messages.length > 0 && (
+              <div className={styles.restoredBanner}>
+                <span>🔄 Conversación recuperada</span>
+                <button onClick={resetConversation} className={styles.resetButton}>
+                  Empezar de nuevo
+                </button>
+              </div>
+            )}
+
             {messages.length === 0 && !loading && (
               <div className={styles.welcomeMessage}>
                 <p>¡Hola! Soy el estratega de Powa. 🚀</p>
@@ -318,7 +442,7 @@ export default function ChatPowa() {
               </div>
             )}
 
-            {!profile && !loading && (
+            {!profile && !loading && messages.length === 0 && (
               <div className={styles.profileOptionsContainer}>
                 <button onClick={() => handleSelectProfile('gastronomia', 'Gastronomía (Restaurantes/Delivery)')} className={styles.profileButton}>
                   🍔 Gastronomía (Restaurantes, Delivery, Apps)
@@ -341,7 +465,6 @@ export default function ChatPowa() {
                   )}
                 </div>
 
-                {/* 👈 Botón dinámico de continuar si se cortó por tokens */}
                 {m.role === 'bot' && i === messages.length - 1 && needsContinue && !isStreaming && !loading && (
                   <div style={{ margin: '8px 0', textAlign: 'left' }}>
                     <button
@@ -374,19 +497,6 @@ export default function ChatPowa() {
                   </div>
                 )}
 
-                {profile && i === 0 && !loading && !isStreaming && (
-                  <div className={styles.suggestedQuestionsContainer}>
-                    <span className={styles.suggestedLabel}>Preguntas frecuentes:</span>
-                    <div className={styles.suggestedGrid}>
-                      {suggestedQuestions.filter(q => q.profile === profile).slice(0, 4).map((q, idx) => (
-                        <button key={idx} onClick={() => handleSuggestedQuestion(q.text, q.profile)} className={styles.suggestedButton} disabled={loading || isStreaming}>
-                          {q.icon} {q.text}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
                 {m.role === 'bot' && (m.text.toLowerCase().includes('whatsapp') || m.text.toLowerCase().includes('contacto')) && (
                   <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" className={styles.whatsappButton}>
                     🟢 HABLAR CON UN ESPECIALISTA
@@ -394,6 +504,39 @@ export default function ChatPowa() {
                 )}
               </div>
             ))}
+
+            {/* 🎯 Capa 4: Sugerencias dinámicas según última respuesta del bot */}
+            {messages.length > 0 && dynamicSuggestions.length > 0 && !loading && !isStreaming && (
+              <div className={styles.suggestedQuestionsContainer}>
+                <span className={styles.suggestedLabel}>Preguntas relacionadas:</span>
+                <div className={styles.suggestedGrid}>
+                  {dynamicSuggestions.slice(0, 3).map((q, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleSuggestedQuestion(q.text)}
+                      className={styles.suggestedButton}
+                      disabled={loading || isStreaming}
+                    >
+                      {q.icon} {q.text}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Sugerencias estáticas del inicio (solo si no hay dinámicas) */}
+            {profile && messages.length === 1 && !loading && !isStreaming && dynamicSuggestions.length === 0 && (
+              <div className={styles.suggestedQuestionsContainer}>
+                <span className={styles.suggestedLabel}>Preguntas frecuentes:</span>
+                <div className={styles.suggestedGrid}>
+                  {suggestedQuestions.filter(q => q.profile === profile).slice(0, 4).map((q, idx) => (
+                    <button key={idx} onClick={() => handleSuggestedQuestion(q.text, q.profile)} className={styles.suggestedButton} disabled={loading || isStreaming}>
+                      {q.icon} {q.text}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {loading && !isStreaming && (
               <div className={styles.loadingDotsContainer}>
