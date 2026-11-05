@@ -3,80 +3,111 @@
 
 /* --- RESET Y COMPORTAMIENTO GLOBAL --- */
 html {
-  /* Desactivamos el smooth scroll global para evitar conflictos con el routing de Next.js */
   scroll-behavior: auto !important;
-  /* Evita saltos visuales de contenido al aparecer/desaparecer la scrollbar de forma nativa */
   scrollbar-gutter: stable;
-  /* 🔥 COMPENSAR EL NAVBAR FIJO */
   scroll-padding-top: 100px;
+  background-color: #0a0f1a;
 }
 
 :root {
+  /* Tokens base */
   --primary-glow: #007bff;
   --accent-powa: #00f2fe;
-  --dark-powa: #0f172a;
+  --dark-powa: #0a0f1a;
   --dark-card: rgba(30, 41, 59, 0.7);
   --glass-bg: rgba(255, 255, 255, 0.03);
   --glass-border: rgba(255, 255, 255, 0.1);
   --text-main: #f8fafc;
   --text-muted: #5ce2db;
-  /* 🔥 ALTURA DEL NAVBAR */
   --navbar-height: 80px;
+
+  /* Stripe tokens (globales) */
+  --stripe-cyan: #22d3ee;
+  --stripe-blue: #3b82f6;
+  --stripe-violet: #8b5cf6;
+  --stripe-border: rgba(255, 255, 255, 0.08);
+  --stripe-border-hover: rgba(255, 255, 255, 0.16);
+  --stripe-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --stripe-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --stripe-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2);
+  --stripe-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --stripe-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body {
-  /* Prioridad a las fuentes variables de Next.js (Geist) definidas en el layout */
   font-family: var(--font-geist-sans), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   color: #ffffff;
-  background-color: #06090f;
+  background-color: #0a0f1a;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  /* 🔥 COMPENSAR EL NAVBAR FIJO EN EL BODY */
   padding-top: 0;
-  /* Optimización de renderizado de texto */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* 🔥 QUITAR EL PADDING DEL BODY EN RUTAS SIN NAVBAR */
 body:has(main.min-h-screen) {
   padding-top: 0;
 }
 
-/* 🔥 COMPENSAR EL NAVBAR EN EL MAIN CONTENT */
 main:not(.min-h-screen) {
   padding-top: var(--navbar-height);
 }
 
-/* Scrollbar Global Estilizada (Webkit) */
+/* --- SCROLLBAR STRIPE --- */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--dark-powa);
+  background: #0a0f1a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: linear-gradient(180deg, #22d3ee, #3b82f6);
   border-radius: 10px;
-  border: 2px solid var(--dark-powa);
+  border: 2px solid #0a0f1a;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-glow);
+  background: linear-gradient(180deg, #67e8f9, #60a5fa);
+}
+
+/* --- SELECCIÓN Y FOCUS --- */
+::selection {
+  background: rgba(34, 211, 238, 0.3);
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.6);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* --- UTILIDADES COMPARTIDAS --- */
 
 .text-gradient {
-  background: linear-gradient(90deg, #ffffff 20%, var(--accent-powa) 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #22d3ee 50%, #8b5cf6 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  /* Asegura el renderizado correcto en motores Webkit */
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
   display: inline-block;
+}
+
+@keyframes gradientShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 .btn-powa-primary {
@@ -84,24 +115,48 @@ main:not(.min-h-screen) {
   align-items: center;
   justify-content: center;
   padding: 14px 32px;
-  background: linear-gradient(45deg, var(--primary-glow), var(--accent-powa));
-  color: var(--dark-powa) !important;
-  border-radius: 12px;
-  font-weight: 800;
+  background: linear-gradient(180deg, #22d3ee 0%, #0891b2 100%);
+  color: #0a0f1a !important;
+  border-radius: 10px;
+  font-weight: 600;
   text-decoration: none;
   border: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s var(--stripe-ease);
   cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  /* Efecto de profundidad sutil */
-  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+  letter-spacing: -0.01em;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(34, 211, 238, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btn-powa-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s var(--stripe-ease);
+  pointer-events: none;
+}
+
+.btn-powa-primary:hover::before {
+  left: 100%;
 }
 
 .btn-powa-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 242, 254, 0.3);
-  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 12px rgba(34, 211, 238, 0.3),
+    0 0 0 1px rgba(34, 211, 238, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  color: #0a0f1a !important;
 }
 
 .border-dashed {
@@ -161,7 +216,6 @@ img {
   height: auto;
 }
 
-/* Prevención de conflictos con el modal de Bootstrap y el scroll */
 body.modal-open {
   padding-right: 0 !important;
 }
@@ -170,13 +224,10 @@ body.modal-open {
    CHAT POWA - AJUSTE GLOBAL DE POSICIONAMIENTO
    ============================================ */
 
-/* Asegura que el chat flotante no se superponga con el footer */
 .chat-container {
   bottom: 120px !important;
-  /* Aumentado para dar espacio al footer */
 }
 
-/* En móviles, ajustamos dinámicamente */
 @media (max-width: 768px) {
   .chat-container {
     bottom: 100px !important;
@@ -193,23 +244,30 @@ body.modal-open {
    🔥 COMPENSACIÓN DEL NAVBAR EN PÁGINAS ESPECÍFICAS
    ============================================ */
 
-/* Para el panel de admin y cliente */
 .admin-page main,
 .cliente-page main {
   padding-top: calc(var(--navbar-height) + 20px) !important;
 }
 
-/* Para tablas con sticky headers */
 .table-container {
   margin-top: 0;
 }
 
-/* Para modales que pueden quedar tapados */
 .modal-content {
   margin-top: var(--navbar-height);
 }
 
-/* Para anchors internos (scroll suave) */
 .anchor-offset {
   scroll-margin-top: calc(var(--navbar-height) + 20px);
+}
+
+/* ============================================
+   🔥 OVERRIDE PARA MOBILE EN COLUMNAS BOOTSTRAP
+   (movido desde page.module.css porque usa selector de atributo)
+   ============================================ */
+@media (max-width: 575px) {
+  [class*="col-"] {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
 }
