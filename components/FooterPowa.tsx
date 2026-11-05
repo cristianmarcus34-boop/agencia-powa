@@ -128,7 +128,7 @@ export default function FooterPowa() {
           <div className={styles.footerLinksGroup}>
             <span className={styles.footerLinksLabel}>Servicios</span>
             <Link href="/planes/servicios/desarrollo">Desarrollo Web</Link>
-            <Link href="/planes/servicios/desarrollo">Apps Móviles</Link>
+            <Link href="/apps">Aplicaciones Nativas Android/IOS</Link>
             <Link href="/planes/servicios/desarrollo">Automatización</Link>
             <Link href="/planes/servicios/desarrollo">Integración IA</Link>
             <Link href="/planes">Mantenimiento</Link>

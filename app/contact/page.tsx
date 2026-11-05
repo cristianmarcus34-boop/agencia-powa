@@ -10,7 +10,8 @@ import {
     FaStar, FaRocket, FaAward, FaCheckCircle,
     FaCode, FaChartLine,
     FaCloudUploadAlt, FaArrowRight, FaInfoCircle,
-    FaRegSmile, FaRegClock, FaShieldVirus
+    FaRegSmile, FaRegClock, FaShieldVirus,
+    FaGooglePlay,
 } from 'react-icons/fa';
 import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -52,12 +53,12 @@ const AVAILABLE_SERVICES: FormServiceItem[] = [
         color: '#22d3ee'
     },
     {
-        id: 'mobile',
-        label: 'Apps Móviles',
-        icon: <FaRocket />,
-        description: 'Desarrollo nativo para iOS y Android con React Native',
+        id: 'app-android',
+        label: 'Apps Nativas Android',
+        icon: <FaGooglePlay />,
+        description: 'Apps publicadas en Google Play Store. Desde $2.200.000 ARS (precio actualizado según dólar oficial).',
         requiresBudget: true,
-        color: '#8b5cf6'
+        color: '#34d399'
     },
     {
         id: 'cloud',
@@ -149,7 +150,7 @@ export default function ContactPage() {
     const nameValue = watch('name', '');
     const emailValue = watch('email', '');
     const messageValue = watch('message', '');
-    const budgetValue = watch('budget', '') || ''; // ✅ Siempre string
+    const budgetValue = watch('budget', '') || '';
     const acceptTermsValue = watch('acceptTerms', false);
 
     // ===== PROGRESO DEL FORMULARIO =====
@@ -462,6 +463,10 @@ export default function ContactPage() {
                                     🔒 Tus datos están seguros. No compartimos tu información con terceros.
                                     <br />
                                     <span className={styles.formFooterSubtext}>Te respondemos dentro de 1 día hábil.</span>
+                                    <br />
+                                    <span className={styles.formFooterDisclaimer}>
+                                        💵 Los precios publicados se actualizan según el dólar oficial del día.
+                                    </span>
                                 </p>
                             </Form>
                         </div>

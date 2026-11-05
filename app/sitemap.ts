@@ -14,6 +14,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/portfolio`, lastModified: currentDate, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${baseUrl}/contact`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
 
+    // Páginas de servicios (prioridad alta)
+    { url: `${baseUrl}/apps`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.9 }, // 👈 NUEVO
+
     // Páginas secundarias
     { url: `${baseUrl}/planes`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/planes/servicios/desarrollo`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },

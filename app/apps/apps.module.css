@@ -1,0 +1,874 @@
+/* app/apps/apps.module.css */
+
+/* ============================================
+   VARIABLES
+   ============================================ */
+:root {
+    --dark-powa: #0a0f1a;
+    --cyan-powa: #22d3ee;
+    --blue-powa: #3b82f6;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --stripe-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   WRAPPER
+   ============================================ */
+.appsPage {
+    background-color: var(--dark-powa);
+    background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(37, 99, 235, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+    min-height: 100vh;
+    color: var(--slate-400);
+    padding-bottom: 80px;
+}
+
+/* ============================================
+   HERO
+   ============================================ */
+.heroSection {
+    padding: 120px 0 80px;
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .heroSection {
+        padding: 140px 0 100px;
+    }
+}
+
+.heroContent {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.heroBadge {
+    display: inline-block;
+    padding: 8px 16px;
+    background: rgba(34, 211, 238, 0.06);
+    color: var(--cyan-powa);
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid rgba(34, 211, 238, 0.15);
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(12px);
+    letter-spacing: 0.01em;
+}
+
+@media (min-width: 768px) {
+    .heroBadge {
+        font-size: 13px;
+        padding: 8px 20px;
+    }
+}
+
+.heroTitle {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+}
+
+.textGradient {
+    background: linear-gradient(135deg, #3b82f6 0%, #22d3ee 50%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.heroSubtitle {
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    color: var(--slate-400);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+}
+
+.heroSubtitle strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.heroTrustBadges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 2.5rem;
+}
+
+.trustBadge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--slate-400);
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.trustBadge svg {
+    color: var(--cyan-powa);
+    font-size: 0.75rem;
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+.btnPowaPrimary,
+.btnPowaOutline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.25s var(--stripe-ease);
+    text-decoration: none;
+    position: relative;
+    letter-spacing: -0.01em;
+    overflow: hidden;
+}
+
+.btnPowaPrimary {
+    background: linear-gradient(180deg, #22d3ee 0%, #0891b2 100%);
+    color: #0a0f1a !important;
+    border: none;
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(34, 211, 238, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btnPowaPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 4px 12px rgba(34, 211, 238, 0.3),
+        0 0 0 1px rgba(34, 211, 238, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    color: #0a0f1a !important;
+}
+
+.btnPowaOutline {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #ffffff !important;
+    backdrop-filter: blur(12px);
+}
+
+.btnPowaOutline:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   SECTION HEADER
+   ============================================ */
+.sectionHeader {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+    .sectionHeader {
+        margin-bottom: 4rem;
+    }
+}
+
+.sectionBadge {
+    display: inline-block;
+    padding: 5px 14px;
+    background: rgba(34, 211, 238, 0.06);
+    border: 1px solid rgba(34, 211, 238, 0.15);
+    border-radius: 100px;
+    color: var(--cyan-powa);
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .sectionBadge {
+        font-size: 0.68rem;
+        padding: 6px 16px;
+        margin-bottom: 1.2rem;
+    }
+}
+
+.sectionTitle {
+    color: #ffffff;
+    font-size: clamp(1.6rem, 3vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.8rem;
+    line-height: 1.15;
+}
+
+.sectionSubtitle {
+    color: var(--slate-400);
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+    .sectionSubtitle {
+        font-size: 1.05rem;
+    }
+}
+
+/* ============================================
+   PLANES
+   ============================================ */
+.plansSection {
+    padding: 64px 0;
+    position: relative;
+    z-index: 2;
+}
+
+@media (min-width: 768px) {
+    .plansSection {
+        padding: 96px 0;
+    }
+}
+
+.planCard {
+    position: relative;
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.35) 0%, rgba(15, 23, 42, 0.5) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 32px 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s var(--stripe-ease);
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.planCard:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-4px);
+    box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(34, 211, 238, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.planCardFeatured {
+    border-color: rgba(34, 211, 238, 0.3);
+    background: linear-gradient(180deg, rgba(34, 211, 238, 0.05) 0%, rgba(15, 23, 42, 0.5) 100%);
+}
+
+.planBadge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 16px;
+    background: linear-gradient(135deg, #22d3ee, #0891b2);
+    color: #0a0f1a;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.planName {
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+}
+
+.planForWho {
+    color: var(--slate-400);
+    font-size: 0.82rem;
+    margin-bottom: 1.5rem;
+}
+
+.planPriceBlock {
+    margin-bottom: 1.5rem;
+}
+
+.planPrice {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+}
+
+.planPriceDetail {
+    display: block;
+    color: var(--slate-400);
+    font-size: 0.78rem;
+    margin-top: 4px;
+}
+
+.planFeatures {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+    flex: 1;
+}
+
+.planFeatures li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: var(--slate-300);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.planCheck {
+    color: #34d399;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    margin-top: 3px;
+}
+
+.planNotIncludes {
+    background: rgba(239, 68, 68, 0.04);
+    border: 1px solid rgba(239, 68, 68, 0.1);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 1.5rem;
+    font-size: 0.72rem;
+    line-height: 1.5;
+}
+
+.planNotIncludesLabel {
+    color: #f87171;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.planNotIncludes span:last-child {
+    color: var(--slate-500);
+}
+
+.planCta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px 20px;
+    background: linear-gradient(180deg, #22d3ee 0%, #0891b2 100%);
+    color: #0a0f1a !important;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.25s var(--stripe-ease);
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(34, 211, 238, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.planCta:hover {
+    transform: translateY(-2px);
+    color: #0a0f1a !important;
+    box-shadow:
+        0 4px 12px rgba(34, 211, 238, 0.3),
+        0 0 0 1px rgba(34, 211, 238, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.plansFootnote {
+    text-align: center;
+    color: var(--slate-500);
+    font-size: 0.75rem;
+    margin-top: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+}
+
+/* ============================================
+   ACLARACIÓN DE PRECIOS (dólar)
+   ============================================ */
+.priceDisclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 700px;
+    margin: 2rem auto 0;
+    padding: 16px 20px;
+    background: rgba(34, 211, 238, 0.04);
+    border: 1px solid rgba(34, 211, 238, 0.15);
+    border-radius: 12px;
+    text-align: left;
+}
+
+.priceDisclaimerIcon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.priceDisclaimer strong {
+    display: block;
+    color: var(--cyan-powa);
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.priceDisclaimer p {
+    color: var(--slate-400);
+    font-size: 0.78rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .priceDisclaimer {
+        padding: 14px 16px;
+        gap: 10px;
+    }
+
+    .priceDisclaimerIcon {
+        font-size: 1.2rem;
+    }
+
+    .priceDisclaimer strong {
+        font-size: 0.8rem;
+    }
+
+    .priceDisclaimer p {
+        font-size: 0.72rem;
+    }
+}
+
+/* ============================================
+   QUÉ INCLUYE
+   ============================================ */
+.includesSection {
+    padding: 64px 0;
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+@media (min-width: 768px) {
+    .includesSection {
+        padding: 96px 0;
+    }
+}
+
+.includesList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.includesList li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--slate-300);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.includesCheck {
+    color: #34d399;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.notIncludesBox {
+    background: rgba(30, 41, 59, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.notIncludesTitle {
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.notIncludesList {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+}
+
+.notIncludesList li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--slate-400);
+    font-size: 0.82rem;
+    margin-bottom: 8px;
+}
+
+.notIncludesIcon {
+    color: #f87171;
+    font-size: 0.65rem;
+    flex-shrink: 0;
+}
+
+.optionalBox {
+    background: rgba(34, 211, 238, 0.03);
+    border: 1px solid rgba(34, 211, 238, 0.12);
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.optionalLabel {
+    display: block;
+    color: var(--cyan-powa);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+}
+
+.optionalList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.optionalList li {
+    color: var(--slate-300);
+    font-size: 0.78rem;
+    line-height: 1.5;
+    margin-bottom: 6px;
+}
+
+.optionalList strong {
+    color: #ffffff;
+}
+
+.optionalList em {
+    color: var(--cyan-powa);
+    font-style: normal;
+    font-size: 0.72rem;
+}
+
+/* ============================================
+   PROCESO
+   ============================================ */
+.processSection {
+    padding: 64px 0;
+    position: relative;
+    z-index: 2;
+}
+
+@media (min-width: 768px) {
+    .processSection {
+        padding: 96px 0;
+    }
+}
+
+.processCard {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.35) 0%, rgba(15, 23, 42, 0.5) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 28px 24px;
+    border-radius: 16px;
+    position: relative;
+    height: 100%;
+    transition: all 0.3s var(--stripe-ease);
+}
+
+.processCard:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-4px);
+}
+
+.stepNumber {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 2rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.04);
+    font-family: 'Geist Mono', monospace;
+}
+
+.processIcon {
+    font-size: 1.6rem;
+    color: var(--cyan-powa);
+    margin-bottom: 16px;
+}
+
+.processCard h3 {
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+}
+
+.processCard p {
+    color: var(--slate-400);
+    line-height: 1.6;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* ============================================
+   FAQ
+   ============================================ */
+.faqSection {
+    padding: 64px 0;
+    position: relative;
+    z-index: 2;
+    background: rgba(15, 23, 42, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+@media (min-width: 768px) {
+    .faqSection {
+        padding: 96px 0;
+    }
+}
+
+.faqItem {
+    background: rgba(30, 41, 59, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 20px;
+    height: 100%;
+    transition: all 0.25s var(--stripe-ease);
+}
+
+.faqItem:hover {
+    border-color: rgba(34, 211, 238, 0.15);
+}
+
+.faqQuestion {
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+}
+
+.faqAnswer {
+    color: var(--slate-400);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ============================================
+   CTA FINAL
+   ============================================ */
+.ctaSection {
+    padding: 64px 0;
+    position: relative;
+    z-index: 2;
+}
+
+@media (min-width: 768px) {
+    .ctaSection {
+        padding: 96px 0;
+    }
+}
+
+.ctaBox {
+    position: relative;
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, rgba(49, 46, 129, 0.3) 100%);
+    padding: 48px 28px;
+    border-radius: 24px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    overflow: hidden;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+@media (min-width: 768px) {
+    .ctaBox {
+        padding: 64px 48px;
+        border-radius: 32px;
+    }
+}
+
+.ctaIcon {
+    font-size: 2.5rem;
+    color: var(--cyan-powa);
+    margin-bottom: 1.2rem;
+    display: inline-block;
+    animation: floatRocket 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 16px rgba(34, 211, 238, 0.4));
+}
+
+@keyframes floatRocket {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.ctaTitle {
+    color: #ffffff;
+    font-size: clamp(1.4rem, 2.5vw, 2.6rem);
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.03em;
+}
+
+.ctaText {
+    color: var(--slate-400);
+    font-size: 0.95rem;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.65;
+}
+
+@media (min-width: 768px) {
+    .ctaText {
+        font-size: 1.05rem;
+        margin: 0 auto 2rem;
+    }
+}
+
+.ctaButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.btnPowaWhite {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    background: #ffffff;
+    color: #1e3a8a !important;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.25s var(--stripe-ease);
+}
+
+.btnPowaWhite:hover {
+    transform: translateY(-2px);
+    color: #1e3a8a !important;
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+}
+
+.ctaSecondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.25s var(--stripe-ease);
+}
+
+.ctaSecondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+.ctaTrustBadges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.ctaTrustBadges span {
+    color: var(--slate-400);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .heroSection {
+        padding: 100px 0 60px;
+    }
+
+    .planCard {
+        padding: 28px 20px;
+    }
+
+    .planPrice {
+        font-size: 1.7rem;
+    }
+
+    .includesSection,
+    .processSection,
+    .faqSection,
+    .ctaSection {
+        padding: 48px 0;
+    }
+
+    .notIncludesBox {
+        margin-top: 24px;
+        padding: 20px;
+    }
+}

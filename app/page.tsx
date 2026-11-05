@@ -14,7 +14,7 @@ import {
     FaCode, FaArrowRight, FaDatabase, FaMobileAlt, FaRocket,
     FaMapMarkerAlt, FaSearch, FaCogs, FaCheckCircle, FaShieldAlt,
     FaFileContract, FaLock, FaClock, FaCloudUploadAlt, FaBrain, FaSyncAlt,
-    FaAws,
+    FaAws, FaGooglePlay,
 } from 'react-icons/fa';
 import { HiOutlineArrowNarrowRight } from 'react-icons/hi';
 import {
@@ -61,7 +61,7 @@ const processItems = [
 
 const serviceItems = [
     { id: 'web', icon: <FaCode />, title: 'Sistemas Web Escalables', desc: 'Sitios, plataformas y paneles internos diseñados según tus procesos, tus usuarios y las integraciones que necesitás.', link: '/planes/servicios/desarrollo' },
-    { id: 'mobile', icon: <FaMobileAlt />, title: 'Desarrollo Mobile Nativo', desc: 'Aplicaciones para iOS y Android cuando tu operación necesita una experiencia móvil más completa que una web.', link: '/planes/servicios/desarrollo' },
+    { id: 'mobile', icon: <FaMobileAlt />, title: 'Apps Nativas Android', desc: 'Aplicaciones para Android publicadas en Google Play Store. Desde $2.200.000 ARS.', link: '/apps' },  // 👈 ACTUALIZADO
     { id: 'data', icon: <FaDatabase />, title: 'Gestión de Datos & Cloud', desc: 'Conectamos fuentes de datos y construimos paneles para que la información de tu operación sea más fácil de consultar.', link: '/planes/servicios/desarrollo' },
     { id: 'auto', icon: <FaCogs />, title: 'Automatización de Procesos', desc: 'Integramos herramientas y automatizamos tareas repetitivas para reducir trabajo manual y errores operativos.', link: '/planes/servicios/desarrollo' },
     { id: 'ai', icon: <FaBrain />, title: 'Integración de IA', desc: 'Evaluamos asistentes y flujos con IA para casos concretos, definiendo fuentes de datos, límites y revisión humana.', link: '/planes/servicios/desarrollo' },
@@ -114,6 +114,7 @@ export default function HomePage() {
                                     <span className={styles.trustBadge}><FaLock className={styles.trustBadgeIcon} /> NDA y confidencialidad</span>
                                     <span className={styles.trustBadge}><FaRocket className={styles.trustBadgeIcon} /> Respuesta en 24h</span>
                                     <Link href="/planes/servicios/desarrollo" className={styles.trustBadgeLink}><FaCode className={styles.trustBadgeIcon} /> Desarrollo Web</Link>
+                                    <Link href="/apps" className={styles.trustBadgeLink}><FaGooglePlay className={styles.trustBadgeIcon} /> Apps Android</Link>  {/* 👈 NUEVO */}
                                 </div>
                             </Col>
                             <Col lg={5} className="d-none d-lg-block">
@@ -264,8 +265,9 @@ export default function HomePage() {
                         <h2 className={styles.sectionTitle}>Explorá soluciones <span className={styles.textGradient}>en funcionamiento</span></h2>
                         <p className={styles.sectionSubtitle}>Estos proyectos muestran capacidades y conceptos funcionales; no son casos de resultados de clientes.</p>
                     </div>
-                    <div className="text-center">
+                    <div className="text-center d-flex flex-wrap justify-content-center gap-3">
                         <Link href="/portfolio" className={`${styles.btnPowaPrimary} text-decoration-none`}>Ver demos y proyectos <FaArrowRight className="ms-2" /></Link>
+                        <Link href="/apps" className={`${styles.btnPowaOutline} text-decoration-none`}>Ver apps nativas <FaGooglePlay className="ms-2" /></Link>  {/* 👈 NUEVO */}
                     </div>
                 </Container>
             </section>
@@ -311,7 +313,7 @@ export default function HomePage() {
                                 <Link href="/contact" className={styles.btnPowaWhite}>Agendar Consultoría Técnica</Link>
                                 <Link href="/faq" className={styles.ctaSecondary}>Ver Preguntas Frecuentes</Link>
                                 <Link href="/planes/servicios/desarrollo" className={styles.btnCtaSecondary}>Ver opciones de desarrollo</Link>
-                                <Link href="/planes" className={styles.btnCtaSecondary}>Ver Planes de Mantenimiento</Link>
+                                <Link href="/apps" className={styles.btnCtaSecondary}>Ver apps nativas</Link>  {/* 👈 NUEVO (reemplaza "Ver Planes de Mantenimiento") */}
                             </div>
                             <div className={styles.ctaTrustBadges}>
                                 <span>✅ Sin compromiso</span>

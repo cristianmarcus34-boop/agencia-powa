@@ -37,6 +37,7 @@ export default function NavbarPowa() {
   const navLinks: NavLinkItem[] = [
     { name: 'Inicio', path: '/' },
     { name: 'Servicios', path: '/servicios' },
+    { name: 'Apps', path: '/apps' },
     { name: 'Portafolio', path: '/portfolio' },
     { name: 'Blog', path: '/blog' },
     { name: 'FAQ', path: '/faq' },
