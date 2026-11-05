@@ -1,155 +1,409 @@
 /* components/FooterPowa.module.css */
 
 .mainFooter {
-    padding: 0.75rem 0;
+    padding: 64px 0 32px;
     background-color: #0a0f1a;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    margin-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    margin-top: 64px;
     width: 100%;
     overflow: hidden;
     flex-shrink: 0;
+    position: relative;
 }
+
+/* Línea superior con gradiente sutil */
+.mainFooter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(34, 211, 238, 0.3),
+            rgba(139, 92, 246, 0.3),
+            transparent);
+}
+
+/* ============================================
+   COPYRIGHT + UBICACIÓN
+   ============================================ */
 
 .copyright {
     color: #94a3b8;
-    font-size: 0.75rem;
-    margin: 0;
+    font-size: 0.85rem;
+    margin: 0 0 6px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
 }
 
 .locationInfo {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     color: #64748b;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    margin-top: 2px;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+    .locationInfo {
+        justify-content: flex-start;
+    }
 }
 
 .locationIcon {
-    font-size: 0.65rem;
-}
-
-/* ============================================
-   🔥 ENLACES DEL FOOTER
-   ============================================ */
-
-.footerLinks {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 6px 12px;
-    margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
     font-size: 0.7rem;
-}
-
-.footerLinks a {
-    color: #94a3b8;
-    text-decoration: none;
-    transition: color 0.2s ease;
-    padding: 2px 4px;
-    border-radius: 4px;
-}
-
-.footerLinks a:hover {
     color: #22d3ee;
 }
 
-.footerDot {
+.madeWith {
+    font-size: 0.7rem;
     color: #475569;
-    font-size: 0.4rem;
-}
-
-/* ============================================
-   SEO TAGLINE
-   ============================================ */
-
-.seoTagline {
-    margin-top: 8px;
-    padding-top: 6px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    font-size: 0.55rem;
-    line-height: 1.4;
-    color: #475569;
-    text-align: center;
-    max-width: 100%;
-}
-
-.seoTagline p {
     margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
 }
 
-.seoTagline br {
-    display: none;
+@media (min-width: 768px) {
+    .madeWith {
+        justify-content: flex-start;
+    }
+}
+
+.heartIcon {
+    color: #ef4444;
+    font-size: 0.65rem;
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
 }
 
 /* ============================================
    REDES SOCIALES
    ============================================ */
 
+.footerRight {
+    display: flex;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .footerRight {
+        justify-content: flex-end;
+    }
+}
+
 .socialWrapper {
     display: flex;
-    gap: 0.6rem;
+    gap: 10px;
     justify-content: center;
     align-items: center;
 }
 
 .socialLink {
     color: #94a3b8;
-    font-size: 0.95rem;
-    width: 34px;
-    height: 34px;
+    font-size: 1rem;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.socialLink::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(34, 211, 238, 0.2), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
 }
 
 .socialLink:hover {
     color: #fff;
-    transform: translateY(-3px) scale(1.1);
-    background: rgba(167, 139, 250, 0.15);
-    border-color: rgba(167, 139, 250, 0.3);
-    box-shadow: 0 0 12px rgba(167, 139, 250, 0.2);
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.socialLink:hover::before {
+    opacity: 1;
+}
+
+.socialLink svg {
+    position: relative;
+    z-index: 1;
 }
 
 /* LinkedIn - Azul de marca */
 .linkedin:hover {
-    color: #fff;
     background: #0a66c2;
     border-color: #0a66c2;
-    box-shadow: 0 0 12px rgba(10, 102, 194, 0.5);
+    box-shadow: 0 0 16px rgba(10, 102, 194, 0.4);
 }
 
 /* Instagram - Gradiente de marca */
 .instagram:hover {
-    color: #fff;
     background: linear-gradient(45deg, #feda75, #d62976, #4f5bd5);
     border-color: transparent;
-    box-shadow: 0 0 12px rgba(214, 41, 118, 0.5);
+    box-shadow: 0 0 16px rgba(214, 41, 118, 0.4);
 }
 
 /* X (Twitter) - Negro de marca */
 .twitter:hover {
-    color: #ffffff;
     background: #000000;
     border-color: #333333;
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
 }
 
-/* GitHub - Negro de marca (por si lo reactivás) */
-.github:hover {
-    color: #ffffff;
-    background: #24292e;
-    border-color: #24292e;
-    box-shadow: 0 0 12px rgba(36, 41, 46, 0.5);
+/* WhatsApp - Verde de marca */
+.whatsapp:hover {
+    background: #25d366;
+    border-color: #25d366;
+    box-shadow: 0 0 16px rgba(37, 211, 102, 0.4);
+}
+
+/* ============================================
+   LINKS DEL FOOTER (2 columnas)
+   ============================================ */
+
+.footerLinks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 32px 64px;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@media (min-width: 768px) {
+    .footerLinks {
+        justify-content: flex-start;
+    }
+}
+
+.footerLinksGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 140px;
+}
+
+.footerLinksLabel {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #22d3ee;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+}
+
+.footerLinks a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: all 0.2s ease;
+    padding: 2px 0;
+    position: relative;
+    width: fit-content;
+}
+
+.footerLinks a:hover {
+    color: #22d3ee;
+    transform: translateX(2px);
+}
+
+/* ============================================
+   SEO TAGLINE (sutil)
+   ============================================ */
+
+.seoTagline {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    font-size: 0.72rem;
+    line-height: 1.6;
+    color: #475569;
+    text-align: center;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.seoTagline p {
+    margin: 0;
+}
+
+.seoTagline strong {
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* ============================================
+   BADGE DE DISPONIBILIDAD
+   ============================================ */
+
+.availabilityBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 100px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #34d399;
+    margin-top: 12px;
+}
+
+.availabilityDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.1);
+    }
+}
+
+/* ============================================
+   CONTACTO VISIBLE
+   ============================================ */
+
+.footerContact {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.footerContactItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.2s ease;
+}
+
+.footerContactItem:hover {
+    color: #22d3ee;
+}
+
+.footerContactIcon {
+    color: #22d3ee;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+/* ============================================
+   CTA DEL FOOTER
+   ============================================ */
+
+.footerCta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    padding: 10px 20px;
+    background: linear-gradient(180deg, #22d3ee 0%, #0891b2 100%);
+    color: #0a0f1a !important;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.82rem;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(34, 211, 238, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.footerCta:hover {
+    transform: translateY(-2px);
+    color: #0a0f1a !important;
+    box-shadow:
+        0 4px 12px rgba(34, 211, 238, 0.3),
+        0 0 0 1px rgba(34, 211, 238, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.footerCtaArrow {
+    font-size: 0.75rem;
+    transition: transform 0.25s ease;
+}
+
+.footerCta:hover .footerCtaArrow {
+    transform: translateX(2px);
+}
+
+/* ============================================
+   RESPONSIVE: contacto + CTA
+   ============================================ */
+
+@media (max-width: 991px) {
+    .footerContact {
+        align-items: center;
+    }
+
+    .footerRight {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .availabilityBadge {
+        font-size: 0.62rem;
+        padding: 3px 10px;
+    }
+
+    .footerContactItem {
+        font-size: 0.75rem;
+    }
+
+    .footerCta {
+        font-size: 0.78rem;
+        padding: 9px 18px;
+    }
 }
 
 /* ============================================
@@ -158,91 +412,110 @@
 
 @media (max-width: 768px) {
     .mainFooter {
-        padding: 0.5rem 0;
-        margin-top: 12px;
+        padding: 48px 0 24px;
+        margin-top: 48px;
     }
 
     .copyright {
-        font-size: 0.65rem;
+        font-size: 0.8rem;
     }
 
     .locationInfo {
-        font-size: 0.55rem;
+        font-size: 0.7rem;
+    }
+
+    .madeWith {
+        font-size: 0.65rem;
     }
 
     .socialWrapper {
-        gap: 0.5rem;
+        gap: 8px;
     }
 
     .socialLink {
-        width: 30px;
-        height: 30px;
-        font-size: 0.85rem;
+        width: 38px;
+        height: 38px;
+        font-size: 0.95rem;
     }
 
     .footerLinks {
+        gap: 24px 40px;
+        margin-top: 32px;
+        padding-top: 24px;
+        justify-content: center;
+    }
+
+    .footerLinksGroup {
+        align-items: center;
+        min-width: 120px;
+    }
+
+    .footerLinksLabel {
         font-size: 0.6rem;
-        gap: 4px 10px;
-        margin-top: 10px;
-        padding-top: 8px;
+    }
+
+    .footerLinks a {
+        font-size: 0.78rem;
     }
 
     .seoTagline {
-        font-size: 0.5rem;
-        margin-top: 6px;
-        padding-top: 4px;
+        font-size: 0.68rem;
+        margin-top: 32px;
+        padding-top: 20px;
     }
 }
 
 @media (max-width: 480px) {
     .mainFooter {
-        padding: 0.4rem 0;
-        margin-top: 8px;
+        padding: 40px 0 20px;
+        margin-top: 40px;
     }
 
     .copyright {
-        font-size: 0.55rem;
+        font-size: 0.75rem;
     }
 
     .locationInfo {
-        font-size: 0.5rem;
+        font-size: 0.65rem;
+    }
+
+    .madeWith {
+        font-size: 0.6rem;
     }
 
     .socialWrapper {
-        gap: 0.4rem;
+        gap: 6px;
     }
 
     .socialLink {
-        width: 28px;
-        height: 28px;
-        font-size: 0.8rem;
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
     }
 
     .footerLinks {
-        font-size: 0.5rem;
-        gap: 3px 8px;
-        margin-top: 8px;
-        padding-top: 6px;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        margin-top: 28px;
+        padding-top: 20px;
     }
 
-    .footerDot {
-        font-size: 0.3rem;
+    .footerLinksGroup {
+        align-items: center;
+    }
+
+    .footerLinksLabel {
+        font-size: 0.58rem;
+    }
+
+    .footerLinks a {
+        font-size: 0.75rem;
     }
 
     .seoTagline {
-        font-size: 0.45rem;
-        margin-top: 4px;
-        padding-top: 3px;
-    }
-}
-
-@media (max-width: 380px) {
-    .footerLinks {
-        flex-direction: column;
-        gap: 3px;
-    }
-
-    .footerDot {
-        display: none;
+        font-size: 0.62rem;
+        margin-top: 24px;
+        padding-top: 16px;
     }
 }
