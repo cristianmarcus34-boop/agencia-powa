@@ -345,7 +345,7 @@
 }
 
 /* ============================================
-   TECH STACK (con fix de espaciado)
+   TECH STACK
    ============================================ */
 .techStackSection {
     padding: 48px 0;
@@ -1958,7 +1958,7 @@
 }
 
 /* ============================================
-   BUDGET MATCH SECTION
+   BUDGET MATCH SECTION (CON FIX DE PADDING MOBILE)
    ============================================ */
 .budgetMatchSection {
     padding: 64px 0;
@@ -2020,12 +2020,32 @@
 .budgetMatchContainer {
     position: relative;
     z-index: 1;
+    padding: 0 8px;
+}
+
+@media (min-width: 768px) {
+    .budgetMatchContainer {
+        padding: 0;
+    }
 }
 
 .budgetContent {
     max-width: 100%;
     position: relative;
     z-index: 1;
+    padding: 0 16px;
+}
+
+@media (min-width: 576px) {
+    .budgetContent {
+        padding: 0 24px;
+    }
+}
+
+@media (min-width: 768px) {
+    .budgetContent {
+        padding: 0;
+    }
 }
 
 @media (min-width: 992px) {
