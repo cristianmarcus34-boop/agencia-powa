@@ -36,6 +36,7 @@ export default function NavbarPowa() {
   // 🔥 ENLACES COMPACTOS PERO COMPLETOS
   const navLinks: NavLinkItem[] = [
     { name: 'Inicio', path: '/' },
+    { name: 'Nosotros', path: '/about' },
     { name: 'Servicios', path: '/servicios' },
     { name: 'Apps', path: '/apps' },
     { name: 'Portafolio', path: '/portfolio' },

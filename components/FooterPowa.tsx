@@ -138,7 +138,7 @@ export default function FooterPowa() {
             <Link href="/planes">Planes</Link>
             <Link href="/desarrollo-web-quilmes">Desarrollo Web Quilmes</Link>
             <Link href="/contact">Contacto</Link>
-            <Link href="/gracias">Gracias</Link>
+
           </div>
         </div>
 
