@@ -1,3 +1,4 @@
+// components/LayoutWrapper.tsx
 'use client';
 
 import { usePathname } from 'next/navigation';
@@ -24,7 +25,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
     const showNavbar = !hideNavbar;
 
-    // 🔥 Medir la altura del navbar
+    // 🔥 Medir la altura real del navbar dinámicamente
     useEffect(() => {
         setIsMounted(true);
 
@@ -32,16 +33,17 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
             const updateHeight = () => {
                 const navbar =
                     document.querySelector('.navbar-fixed-top') ||
-                    document.querySelector('nav.navbar');
+                    document.querySelector('nav.navbar') ||
+                    document.querySelector('[class*="navbarBase"]');
                 if (navbar) {
                     const height = navbar.getBoundingClientRect().height;
                     setNavbarHeight(height);
                 } else {
-                    setNavbarHeight(80);
+                    setNavbarHeight(72);
                 }
             };
 
-            const timeoutId = setTimeout(updateHeight, 100);
+            const timeoutId = setTimeout(updateHeight, 50);
             window.addEventListener('resize', updateHeight);
 
             return () => {
@@ -55,7 +57,8 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
         if (showNavbar && isMounted) {
             const navbar =
                 document.querySelector('.navbar-fixed-top') ||
-                document.querySelector('nav.navbar');
+                document.querySelector('nav.navbar') ||
+                document.querySelector('[class*="navbarBase"]');
             if (navbar) {
                 setNavbarHeight(navbar.getBoundingClientRect().height);
             }
@@ -72,7 +75,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                     __html: JSON.stringify({
                         '@context': 'https://schema.org',
                         '@type': 'WebSite',
-                        name: 'Powa Digital',
+                        name: 'Agencia Digital Powa',
                         url: 'https://www.agenciadigitalpowa.com.ar',
                     }),
                 }}

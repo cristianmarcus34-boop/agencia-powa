@@ -1,14 +1,15 @@
 /* components/FooterPowa.module.css */
 
 .mainFooter {
-    padding: 64px 0 32px;
-    background-color: #0a0f1a;
+    padding: 72px 0 36px;
+    background-color: #060913;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
-    margin-top: 64px;
+    margin-top: 80px;
     width: 100%;
     overflow: hidden;
     flex-shrink: 0;
     position: relative;
+    background-image: radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.04), transparent 60%);
 }
 
 /* Línea superior con gradiente sutil */
@@ -21,8 +22,8 @@
     height: 1px;
     background: linear-gradient(90deg,
             transparent,
-            rgba(34, 211, 238, 0.3),
-            rgba(139, 92, 246, 0.3),
+            rgba(34, 211, 238, 0.4),
+            rgba(139, 92, 246, 0.4),
             transparent);
 }
 
@@ -31,21 +32,21 @@
    ============================================ */
 
 .copyright {
-    color: #94a3b8;
-    font-size: 0.85rem;
-    margin: 0 0 6px;
-    font-weight: 500;
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    margin: 0 0 8px;
+    font-weight: 600;
     letter-spacing: -0.01em;
 }
 
 .locationInfo {
-    font-size: 0.75rem;
-    color: #64748b;
+    font-size: 0.78rem;
+    color: var(--slate-400, #94a3b8);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 @media (min-width: 768px) {
@@ -55,42 +56,8 @@
 }
 
 .locationIcon {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: #22d3ee;
-}
-
-.madeWith {
-    font-size: 0.7rem;
-    color: #475569;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-}
-
-@media (min-width: 768px) {
-    .madeWith {
-        justify-content: flex-start;
-    }
-}
-
-.heartIcon {
-    color: #ef4444;
-    font-size: 0.65rem;
-    animation: heartbeat 2s ease-in-out infinite;
-}
-
-@keyframes heartbeat {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.2);
-    }
 }
 
 /* ============================================
@@ -99,12 +66,14 @@
 
 .footerRight {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
     .footerRight {
-        justify-content: flex-end;
+        align-items: flex-end;
     }
 }
 
@@ -116,27 +85,28 @@
 }
 
 .socialLink {
-    color: #94a3b8;
-    font-size: 1rem;
-    width: 42px;
-    height: 42px;
+    color: #cbd5e1;
+    font-size: 1.05rem;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    background: rgba(15, 23, 42, 0.75);
     border: 1px solid rgba(255, 255, 255, 0.08);
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(12px);
 }
 
 .socialLink::before {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 50%;
+    border-radius: 12px;
     background: radial-gradient(circle, rgba(34, 211, 238, 0.2), transparent 70%);
     opacity: 0;
     transition: opacity 0.25s ease;
@@ -145,8 +115,8 @@
 .socialLink:hover {
     color: #fff;
     transform: translateY(-3px);
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    border-color: rgba(34, 211, 238, 0.35);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .socialLink:hover::before {
@@ -162,94 +132,99 @@
 .linkedin:hover {
     background: #0a66c2;
     border-color: #0a66c2;
-    box-shadow: 0 0 16px rgba(10, 102, 194, 0.4);
+    box-shadow: 0 0 20px rgba(10, 102, 194, 0.45);
 }
 
 /* Instagram - Gradiente de marca */
 .instagram:hover {
     background: linear-gradient(45deg, #feda75, #d62976, #4f5bd5);
     border-color: transparent;
-    box-shadow: 0 0 16px rgba(214, 41, 118, 0.4);
+    box-shadow: 0 0 20px rgba(214, 41, 118, 0.45);
 }
 
 /* X (Twitter) - Negro de marca */
 .twitter:hover {
     background: #000000;
     border-color: #333333;
-    box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
 }
 
 /* WhatsApp - Verde de marca */
 .whatsapp:hover {
     background: #25d366;
     border-color: #25d366;
-    box-shadow: 0 0 16px rgba(37, 211, 102, 0.4);
+    box-shadow: 0 0 20px rgba(37, 211, 102, 0.45);
 }
 
 /* ============================================
-   LINKS DEL FOOTER (2 columnas)
+   LINKS DEL FOOTER
    ============================================ */
 
 .footerLinks {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 32px 64px;
-    margin-top: 40px;
-    padding-top: 32px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-top: 48px;
+    padding-top: 36px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 @media (min-width: 768px) {
     .footerLinks {
-        justify-content: flex-start;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 992px) {
+    .footerLinks {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 64px;
     }
 }
 
 .footerLinksGroup {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    min-width: 140px;
+    gap: 12px;
 }
 
 .footerLinksLabel {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     font-weight: 700;
     color: #22d3ee;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     margin-bottom: 4px;
 }
 
 .footerLinks a {
     color: #94a3b8;
     text-decoration: none;
-    font-size: 0.82rem;
-    transition: all 0.2s ease;
+    font-size: 0.88rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 2px 0;
     position: relative;
     width: fit-content;
 }
 
 .footerLinks a:hover {
-    color: #22d3ee;
-    transform: translateX(2px);
+    color: #ffffff;
+    transform: translateX(4px);
 }
 
 /* ============================================
-   SEO TAGLINE (sutil)
+   SEO TAGLINE
    ============================================ */
 
 .seoTagline {
-    margin-top: 40px;
-    padding-top: 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-    font-size: 0.72rem;
-    line-height: 1.6;
-    color: #475569;
+    margin-top: 48px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: #64748b;
     text-align: center;
-    max-width: 720px;
+    max-width: 780px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -259,7 +234,7 @@
 }
 
 .seoTagline strong {
-    color: #64748b;
+    color: #94a3b8;
     font-weight: 600;
 }
 
@@ -270,23 +245,24 @@
 .availabilityBadge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 4px 12px;
+    gap: 8px;
+    padding: 6px 14px;
     background: rgba(16, 185, 129, 0.08);
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.25);
     border-radius: 100px;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: #34d399;
-    margin-top: 12px;
+    margin-top: 14px;
+    backdrop-filter: blur(8px);
 }
 
 .availabilityDot {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: #10b981;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    box-shadow: 0 0 10px #10b981;
     animation: pulseDot 2s ease-in-out infinite;
 }
 
@@ -294,11 +270,13 @@
 
     0%,
     100% {
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        transform: scale(1);
+        opacity: 1;
     }
 
     50% {
-        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.1);
+        transform: scale(1.35);
+        opacity: 0.65;
     }
 }
 
@@ -309,17 +287,17 @@
 .footerContact {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 8px;
+    gap: 12px;
+    margin-top: 4px;
 }
 
 .footerContactItem {
     display: flex;
     align-items: center;
-    gap: 8px;
-    color: #94a3b8;
+    gap: 10px;
+    color: #cbd5e1;
     text-decoration: none;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     transition: color 0.2s ease;
 }
 
@@ -329,7 +307,7 @@
 
 .footerContactIcon {
     color: #22d3ee;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     flex-shrink: 0;
 }
 
@@ -340,70 +318,32 @@
 .footerCta {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 16px;
-    padding: 10px 20px;
-    background: linear-gradient(180deg, #22d3ee 0%, #0891b2 100%);
-    color: #0a0f1a !important;
-    border-radius: 8px;
+    gap: 8px;
+    margin-top: 18px;
+    padding: 12px 24px;
+    background: linear-gradient(180deg, #22d3ee 0%, #06b6d4 100%);
+    color: #060913 !important;
+    border-radius: 12px;
     font-weight: 700;
-    font-size: 0.82rem;
+    font-size: 0.88rem;
     text-decoration: none;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(34, 211, 238, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 16px rgba(34, 211, 238, 0.25);
 }
 
 .footerCta:hover {
     transform: translateY(-2px);
-    color: #0a0f1a !important;
-    box-shadow:
-        0 4px 12px rgba(34, 211, 238, 0.3),
-        0 0 0 1px rgba(34, 211, 238, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 24px rgba(34, 211, 238, 0.4);
+    color: #060913 !important;
 }
 
 .footerCtaArrow {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     transition: transform 0.25s ease;
 }
 
 .footerCta:hover .footerCtaArrow {
-    transform: translateX(2px);
-}
-
-/* ============================================
-   RESPONSIVE: contacto + CTA
-   ============================================ */
-
-@media (max-width: 991px) {
-    .footerContact {
-        align-items: center;
-    }
-
-    .footerRight {
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-    }
-}
-
-@media (max-width: 768px) {
-    .availabilityBadge {
-        font-size: 0.62rem;
-        padding: 3px 10px;
-    }
-
-    .footerContactItem {
-        font-size: 0.75rem;
-    }
-
-    .footerCta {
-        font-size: 0.78rem;
-        padding: 9px 18px;
-    }
+    transform: translateX(3px);
 }
 
 /* ============================================
@@ -412,110 +352,13 @@
 
 @media (max-width: 768px) {
     .mainFooter {
-        padding: 48px 0 24px;
-        margin-top: 48px;
-    }
-
-    .copyright {
-        font-size: 0.8rem;
-    }
-
-    .locationInfo {
-        font-size: 0.7rem;
-    }
-
-    .madeWith {
-        font-size: 0.65rem;
-    }
-
-    .socialWrapper {
-        gap: 8px;
-    }
-
-    .socialLink {
-        width: 38px;
-        height: 38px;
-        font-size: 0.95rem;
+        padding: 56px 0 28px;
+        margin-top: 60px;
     }
 
     .footerLinks {
-        gap: 24px 40px;
-        margin-top: 32px;
-        padding-top: 24px;
-        justify-content: center;
-    }
-
-    .footerLinksGroup {
-        align-items: center;
-        min-width: 120px;
-    }
-
-    .footerLinksLabel {
-        font-size: 0.6rem;
-    }
-
-    .footerLinks a {
-        font-size: 0.78rem;
-    }
-
-    .seoTagline {
-        font-size: 0.68rem;
-        margin-top: 32px;
-        padding-top: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .mainFooter {
-        padding: 40px 0 20px;
-        margin-top: 40px;
-    }
-
-    .copyright {
-        font-size: 0.75rem;
-    }
-
-    .locationInfo {
-        font-size: 0.65rem;
-    }
-
-    .madeWith {
-        font-size: 0.6rem;
-    }
-
-    .socialWrapper {
-        gap: 6px;
-    }
-
-    .socialLink {
-        width: 36px;
-        height: 36px;
-        font-size: 0.9rem;
-    }
-
-    .footerLinks {
-        flex-direction: column;
-        align-items: center;
-        gap: 24px;
-        margin-top: 28px;
-        padding-top: 20px;
-    }
-
-    .footerLinksGroup {
-        align-items: center;
-    }
-
-    .footerLinksLabel {
-        font-size: 0.58rem;
-    }
-
-    .footerLinks a {
-        font-size: 0.75rem;
-    }
-
-    .seoTagline {
-        font-size: 0.62rem;
-        margin-top: 24px;
-        padding-top: 16px;
+        gap: 28px;
+        margin-top: 36px;
+        padding-top: 28px;
     }
 }

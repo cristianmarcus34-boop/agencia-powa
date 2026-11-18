@@ -5,9 +5,8 @@ import { FaWhatsapp } from 'react-icons/fa';
 import posthog from 'posthog-js';
 import styles from './WhatsAppFloat.module.css';
 
-// 📱 Configuración
-const WHATSAPP_NUMBER = '5491138305837'; // 👈 CAMBIAR por tu número real
-const WHATSAPP_MESSAGE = 'Hola Powa! Quiero consultar por un proyecto 👋';
+const WHATSAPP_NUMBER = '5491138305837';
+const WHATSAPP_MESSAGE = 'Hola Powa! Quiero consultar por un proyecto 🚀';
 
 export default function WhatsAppFloat() {
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
@@ -30,11 +29,7 @@ export default function WhatsAppFloat() {
             onClick={handleClick}
         >
             <FaWhatsapp className={styles.icon} />
-
-            {/* Tooltip que aparece al hover */}
-            <span className={styles.tooltip}>¿Hablamos? 👋</span>
-
-            {/* Pulso animado */}
+            <span className={styles.tooltip}>¿Hablamos? 💬</span>
             <span className={styles.pulse}></span>
         </a>
     );

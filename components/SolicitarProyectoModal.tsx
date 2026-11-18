@@ -1,3 +1,4 @@
+// components/SolicitarProyectoModal.tsx
 'use client';
 
 import { useState } from 'react';
@@ -44,17 +45,6 @@ export default function SolicitarProyectoModal({
         e.preventDefault();
         setLoading(true);
         setError('');
-
-        // 🔥 Log para ver qué se está enviando
-        console.log('📝 Enviando datos:', {
-            cliente_id: clienteId,
-            nombre: formData.nombre,
-            descripcion: formData.descripcion,
-            presupuesto: parseFloat(formData.presupuesto) || 0,
-            tipo: formData.tipo,
-            plazo: formData.plazo || null,
-            notas: formData.notas || null
-        });
 
         try {
             const response = await fetch('/api/cliente/solicitar-proyecto', {
@@ -110,15 +100,15 @@ export default function SolicitarProyectoModal({
                 onClick={onClose}
             >
                 <motion.div
-                    initial={{ scale: 0.9, y: 20 }}
+                    initial={{ scale: 0.92, y: 15 }}
                     animate={{ scale: 1, y: 0 }}
-                    exit={{ scale: 0.9, y: 20 }}
+                    exit={{ scale: 0.92, y: 15 }}
                     className={styles.modal}
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className={styles.header}>
                         <h2 className={styles.title}>🚀 Solicitar Nuevo Proyecto</h2>
-                        <button onClick={onClose} className={styles.closeBtn}>
+                        <button onClick={onClose} className={styles.closeBtn} aria-label="Cerrar modal">
                             <FaTimes />
                         </button>
                     </div>
@@ -129,12 +119,13 @@ export default function SolicitarProyectoModal({
 
                     {error && (
                         <div style={{
-                            background: 'rgba(239, 68, 68, 0.15)',
-                            color: '#ef4444',
+                            background: 'rgba(239, 68, 68, 0.12)',
+                            color: '#f87171',
                             padding: '12px 16px',
                             borderRadius: '10px',
                             marginBottom: '16px',
-                            border: '1px solid rgba(239, 68, 68, 0.2)'
+                            border: '1px solid rgba(239, 68, 68, 0.25)',
+                            fontSize: '0.9rem'
                         }}>
                             ❌ {error}
                         </div>
@@ -142,9 +133,9 @@ export default function SolicitarProyectoModal({
 
                     {success ? (
                         <div className={styles.successMessage}>
-                            <div className={styles.successIcon}>✅</div>
-                            <h3>¡Solicitud enviada!</h3>
-                            <p>Nos pondremos en contacto contigo pronto.</p>
+                            <div className={styles.successIcon}>✨</div>
+                            <h3>¡Solicitud enviada con éxito!</h3>
+                            <p>Nos pondremos en contacto contigo a la brevedad.</p>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit} className={styles.form}>
@@ -153,7 +144,7 @@ export default function SolicitarProyectoModal({
                                 <input
                                     type="text"
                                     required
-                                    placeholder="Ej: Landing Page Powa"
+                                    placeholder="Ej: Rediseño App Móvil"
                                     value={formData.nombre}
                                     onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
                                     className={styles.input}
@@ -181,7 +172,7 @@ export default function SolicitarProyectoModal({
                                 <textarea
                                     required
                                     rows={4}
-                                    placeholder="Describe qué necesitas que hagamos..."
+                                    placeholder="Describe brevemente el alcance o los objetivos..."
                                     value={formData.descripcion}
                                     onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
                                     className={styles.textarea}
@@ -190,10 +181,10 @@ export default function SolicitarProyectoModal({
 
                             <div className={styles.row}>
                                 <div className={styles.formGroup}>
-                                    <label className={styles.label}>Presupuesto estimado</label>
+                                    <label className={styles.label}>Presupuesto estimado (ARS)</label>
                                     <input
                                         type="number"
-                                        placeholder="0"
+                                        placeholder="Ej: 500000"
                                         value={formData.presupuesto}
                                         onChange={(e) => setFormData({ ...formData, presupuesto: e.target.value })}
                                         className={styles.input}
@@ -222,7 +213,7 @@ export default function SolicitarProyectoModal({
                                 <label className={styles.label}>Notas adicionales</label>
                                 <textarea
                                     rows={2}
-                                    placeholder="Información extra que quieras agregar..."
+                                    placeholder="Información extra o requerimientos técnicos..."
                                     value={formData.notas}
                                     onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
                                     className={styles.textarea}

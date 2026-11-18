@@ -4,13 +4,14 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Spinner from 'react-bootstrap/Spinner';
+import Link from 'next/link';
 import {
     FaEnvelope, FaMapMarkerAlt, FaPaperPlane, FaWhatsapp,
     FaBolt, FaUserCheck, FaShieldAlt,
     FaStar, FaRocket, FaAward, FaCheckCircle,
     FaCode, FaChartLine,
     FaCloudUploadAlt, FaArrowRight, FaInfoCircle,
-    FaRegSmile, FaRegClock, FaShieldVirus,
+    FaRegSmile, FaRegClock,
     FaGooglePlay,
 } from 'react-icons/fa';
 import { useForm, useWatch } from 'react-hook-form';
@@ -115,7 +116,6 @@ const RECENT_DEMOS = [
 export default function ContactPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formProgress, setFormProgress] = useState(0);
-    const [focusedField, setFocusedField] = useState<string | null>(null);
     const formRef = useRef<HTMLFormElement>(null);
 
     const {
@@ -289,8 +289,6 @@ export default function ContactPage() {
                                                 className={`${styles.powaInput} ${errors.name ? styles.inputError : ''}`}
                                                 {...register('name', { required: 'El nombre es obligatorio' })}
                                                 placeholder="Tu nombre completo"
-                                                onFocus={() => setFocusedField('name')}
-                                                onBlur={() => setFocusedField(null)}
                                             />
                                             {errors.name && <span className={styles.errorMessage}>{errors.name.message}</span>}
                                         </Form.Group>
@@ -311,8 +309,6 @@ export default function ContactPage() {
                                                     }
                                                 })}
                                                 placeholder="tu@email.com"
-                                                onFocus={() => setFocusedField('email')}
-                                                onBlur={() => setFocusedField(null)}
                                             />
                                             {errors.email && <span className={styles.errorMessage}>{errors.email.message}</span>}
                                         </Form.Group>
@@ -415,30 +411,27 @@ export default function ContactPage() {
                                         className={`${styles.powaInput} ${styles.textareaPowa} ${errors.message ? styles.inputError : ''}`}
                                         {...register('message', { required: 'Contanos un poco sobre tu idea' })}
                                         placeholder="¿Qué problema querés resolver? ¿Qué objetivo tenés? ¿Tenés algún plazo estimado?"
-                                        onFocus={() => setFocusedField('message')}
-                                        onBlur={() => setFocusedField(null)}
                                     />
                                     {errors.message && <span className={styles.errorMessage}>{errors.message.message}</span>}
                                 </Form.Group>
 
-                                {/* ===== TÉRMINOS ===== */}
+                                {/* ===== TÉRMINOS & PRIVACIDAD (REDISEÑADO) ===== */}
                                 <Form.Group className="mb-4">
-                                    <div className={styles.termsCheckbox}>
+                                    <label className={styles.privacyWrapper}>
                                         <input
                                             type="checkbox"
-                                            id="acceptTerms"
-                                            {...register('acceptTerms', { required: 'Aceptá los términos para continuar' })}
-                                            className={styles.checkboxInput}
+                                            {...register('acceptTerms', { required: 'Debes aceptar los términos de confidencialidad' })}
+                                            className={styles.privacyCheckbox}
                                         />
-                                        <label htmlFor="acceptTerms" className={styles.termsLabel}>
-                                            <FaShieldVirus className={styles.termsIcon} />
-                                            <span>
-                                                Acepto que mis datos serán tratados con confidencialidad.
-                                                <br />
-                                                <small>No compartimos tu información con terceros.</small>
-                                            </span>
-                                        </label>
-                                    </div>
+                                        <span className={styles.checkmark}></span>
+                                        <span className={styles.privacyText}>
+                                            Acepto que mis datos serán <strong>tratados con absoluta confidencialidad</strong> para gestionar esta consulta. No compartimos tu información con terceros.{' '}
+                                            <Link href="/privacy" className={styles.privacyLink} target="_blank">
+                                                Conocé más
+                                            </Link>
+                                            <span className={styles.privacySubtext}>🔒 Tus datos están protegidos bajo estricto secreto comercial.</span>
+                                        </span>
+                                    </label>
                                     {errors.acceptTerms && <span className={styles.errorMessage}>{errors.acceptTerms.message}</span>}
                                 </Form.Group>
 

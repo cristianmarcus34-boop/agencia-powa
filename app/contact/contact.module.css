@@ -407,68 +407,107 @@
     text-align: center;
 }
 
-/* ===== TERMS CHECKBOX ===== */
-.termsCheckbox {
+/* ============================================
+   TERMS CHECKBOX (REDISEÑADO & PREMIUM)
+   ============================================ */
+.privacyWrapper {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    padding: 12px 16px;
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    gap: 14px;
+    padding: 16px;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.termsCheckbox .checkboxInput {
+.privacyWrapper:hover {
+    border-color: rgba(34, 211, 238, 0.35);
+    background: rgba(15, 23, 42, 0.9);
+}
+
+.privacyCheckbox {
     position: absolute;
     opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.termsCheckbox .checkboxInput:checked+.termsLabel {
-    color: #ffffff;
-}
-
-.termsLabel {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
     cursor: pointer;
-    color: var(--slate-400);
-    font-size: 0.85rem;
-    transition: color 0.3s ease;
-    margin: 0;
-    padding: 0;
+    height: 0;
+    width: 0;
 }
 
-.termsLabel::before {
-    content: '';
+.checkmark {
+    position: relative;
+    top: 2px;
+    height: 22px;
+    width: 22px;
+    background-color: rgba(6, 9, 19, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 7px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.02);
-    transition: all 0.3s ease;
-    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.checkboxInput:checked+.termsLabel::before {
-    background: var(--cyan-powa);
-    border-color: var(--cyan-powa);
-    box-shadow: 0 0 20px rgba(34, 211, 238, 0.15);
+.privacyWrapper:hover .checkmark {
+    border-color: rgba(34, 211, 238, 0.5);
+    background-color: rgba(34, 211, 238, 0.08);
 }
 
-.termsIcon {
-    color: var(--cyan-powa);
-    font-size: 1rem;
-    flex-shrink: 0;
-    margin-top: 2px;
+.privacyCheckbox:checked~.checkmark {
+    background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+    border-color: #22d3ee;
+    box-shadow: 0 0 16px rgba(34, 211, 238, 0.4);
 }
 
-.termsLabel small {
+.checkmark::after {
+    content: "";
+    position: absolute;
+    display: none;
+    width: 6px;
+    height: 11px;
+    border: solid #0a0f1a;
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
+    top: 3px;
+}
+
+.privacyCheckbox:checked~.checkmark::after {
+    display: block;
+}
+
+.privacyText {
+    font-size: 0.88rem;
+    color: var(--slate-300);
+    line-height: 1.55;
+}
+
+.privacyText strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.privacySubtext {
+    display: block;
+    font-size: 0.75rem;
     color: var(--slate-500);
-    font-size: 0.7rem;
+    margin-top: 4px;
+}
+
+.privacyLink {
+    color: #22d3ee;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+    font-weight: 500;
+}
+
+.privacyLink:hover {
+    color: #67e8f9;
 }
 
 /* ===== INFO CARDS ===== */
@@ -654,21 +693,6 @@
     margin: 0;
 }
 
-.testimonialAuthor {
-    margin-top: 6px;
-}
-
-.testimonialAuthor strong {
-    color: #ffffff;
-    font-size: 0.8rem;
-    display: block;
-}
-
-.testimonialAuthor span {
-    color: var(--slate-500);
-    font-size: 0.7rem;
-}
-
 /* ===== TRUST BLOCK ===== */
 .trustBlock {
     background: rgba(30, 41, 59, 0.15);
@@ -759,48 +783,6 @@
    RESPONSIVE
    ============================================ */
 
-/* Tablets grandes y laptops chicas (992px - 1199px) */
-@media (min-width: 992px) and (max-width: 1199px) {
-    .servicesGrid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .powaCheckbox label {
-        min-height: 110px;
-    }
-}
-
-/* Desktop grande (1200px+) */
-@media (min-width: 1200px) {
-    .servicesGrid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-    }
-
-    .powaCheckbox label {
-        min-height: 120px;
-        padding: 14px 12px;
-    }
-
-    .serviceIcon {
-        font-size: 1.5rem;
-    }
-
-    .serviceLabel {
-        font-size: 0.75rem;
-    }
-
-    .serviceDesc {
-        font-size: 0.62rem;
-    }
-
-    .checkboxInput:checked+label .serviceDesc {
-        max-height: 70px;
-        font-size: 0.62rem;
-    }
-}
-
-/* Tablets (768px - 991px) */
 @media (max-width: 992px) {
     .contactFormGlass {
         padding: 2rem 1.5rem;
@@ -817,7 +799,6 @@
     }
 }
 
-/* Mobile grande (481px - 768px) */
 @media (max-width: 768px) {
     .contactWrapper {
         padding-top: 100px;
@@ -879,17 +860,12 @@
         padding: 8px 10px;
     }
 
-    .termsCheckbox {
-        padding: 10px 12px;
+    .privacyWrapper {
+        padding: 12px 14px;
     }
 
-    .termsLabel {
-        font-size: 0.8rem;
-    }
-
-    .termsLabel::before {
-        width: 18px;
-        height: 18px;
+    .privacyText {
+        font-size: 0.82rem;
     }
 
     .formFooterDisclaimer {
@@ -897,7 +873,6 @@
     }
 }
 
-/* Mobile chico (max 480px) */
 @media (max-width: 480px) {
     .contactWrapper {
         padding-top: 80px;
@@ -1034,17 +1009,12 @@
         font-size: 0.55rem;
     }
 
-    .termsCheckbox {
-        padding: 8px 10px;
+    .privacyWrapper {
+        padding: 10px 12px;
     }
 
-    .termsLabel {
-        font-size: 0.75rem;
-    }
-
-    .termsLabel::before {
-        width: 16px;
-        height: 16px;
+    .privacyText {
+        font-size: 0.78rem;
     }
 
     .formFooterSubtext {

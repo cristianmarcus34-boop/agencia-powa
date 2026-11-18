@@ -18,7 +18,7 @@ export default function FooterPowa() {
 
   return (
     <footer className={styles.mainFooter}>
-      <Container>
+      <Container className="px-3 px-sm-4">
         {/* ===== FILA PRINCIPAL ===== */}
         <Row className="align-items-start gy-4">
           {/* Lado Izquierdo: Marca + ubicación + disponibilidad */}
@@ -29,7 +29,7 @@ export default function FooterPowa() {
             </p>
             <div className={styles.locationInfo}>
               <FaMapMarkerAlt className={styles.locationIcon} />
-              <span>Quilmes, Argentina · Desde 2024</span>
+              <span>Quilmes, Buenos Aires · Desde 2024</span>
             </div>
 
             {/* Badge de disponibilidad */}
@@ -62,7 +62,7 @@ export default function FooterPowa() {
           </Col>
 
           {/* Derecha: Redes Sociales + CTA */}
-          <Col lg={4} md={12}>
+          <Col lg={4} md={12} className="text-center text-lg-end">
             <div className={styles.footerRight}>
               <div className={styles.socialWrapper}>
                 <a
@@ -108,46 +108,49 @@ export default function FooterPowa() {
               </div>
 
               {/* CTA */}
-              <Link href="/contact" className={styles.footerCta}>
-                Presupuesto sin cargo <FaArrowRight className={styles.footerCtaArrow} />
-              </Link>
+              <div>
+                <Link href="/contact" className={styles.footerCta}>
+                  Presupuesto sin cargo <FaArrowRight className={styles.footerCtaArrow} />
+                </Link>
+              </div>
             </div>
           </Col>
         </Row>
 
-        {/* ===== LINKS DEL FOOTER (3 columnas) ===== */}
+        {/* ===== LINKS DEL FOOTER ===== */}
         <div className={styles.footerLinks}>
           <div className={styles.footerLinksGroup}>
             <span className={styles.footerLinksLabel}>Navegación</span>
+            <Link href="/">Inicio</Link>
+            <Link href="/about">Nosotros</Link>
             <Link href="/servicios">Servicios</Link>
             <Link href="/portfolio">Portfolio</Link>
             <Link href="/blog">Blog</Link>
             <Link href="/faq">FAQ</Link>
-            <Link href="/about">Sobre nosotros</Link>
           </div>
           <div className={styles.footerLinksGroup}>
             <span className={styles.footerLinksLabel}>Servicios</span>
             <Link href="/planes/servicios/desarrollo">Desarrollo Web</Link>
-            <Link href="/apps">Aplicaciones Nativas Android/IOS</Link>
+            <Link href="/apps">Apps Nativas Android</Link>
             <Link href="/planes/servicios/desarrollo">Automatización</Link>
             <Link href="/planes/servicios/desarrollo">Integración IA</Link>
             <Link href="/planes">Mantenimiento</Link>
           </div>
           <div className={styles.footerLinksGroup}>
-            <span className={styles.footerLinksLabel}>Recursos</span>
+            <span className={styles.footerLinksLabel}>Recursos & Zona</span>
             <Link href="/planes">Planes</Link>
             <Link href="/desarrollo-web-quilmes">Desarrollo Web Quilmes</Link>
+            <Link href="/lab">Herramientas / Lab</Link>
             <Link href="/contact">Contacto</Link>
-
           </div>
         </div>
 
-        {/* ===== SEO TAGLINE (sutil) ===== */}
+        {/* ===== SEO TAGLINE ===== */}
         <div className={styles.seoTagline}>
           <p>
-            <strong>Software Factory &amp; Consultoría IT</strong> con base en Zona Sur.
+            <strong>Software Factory &amp; Consultoría IT</strong> con base en Quilmes, Zona Sur.
             Diseñamos, desarrollamos y escalamos productos digitales de alto impacto
-            para empresas y comercios de <strong>Latinoamérica y el mundo</strong>.
+            para empresas y comercios de <strong>Argentina y el mundo</strong>.
           </p>
         </div>
       </Container>

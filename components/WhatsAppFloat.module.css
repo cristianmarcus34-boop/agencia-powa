@@ -2,9 +2,8 @@
 
 .whatsappFloat {
     position: fixed;
-    bottom: 24px;
-    left: 24px;
-    /* 👈 AHORA A LA IZQUIERDA */
+    bottom: 28px;
+    left: 28px;
     z-index: 9999;
 
     width: 60px;
@@ -17,26 +16,23 @@
 
     background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
     color: #ffffff;
-    font-size: 32px;
+    font-size: 30px;
 
     box-shadow:
-        0 4px 12px rgba(37, 211, 102, 0.4),
-        0 0 0 0 rgba(37, 211, 102, 0.7);
+        0 8px 24px rgba(37, 211, 102, 0.45),
+        0 0 0 0 rgba(37, 211, 238, 0.2);
 
     cursor: pointer;
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-    /* Animación de pulso al entrar */
-    animation: whatsappPulse 2s infinite;
+    animation: whatsappPulse 2.5s infinite;
 }
 
 .whatsappFloat:hover {
-    transform: scale(1.1) rotate(5deg);
-    /* 👈 rotación positiva (hacia la derecha) */
+    transform: scale(1.1) rotate(6deg);
     box-shadow:
-        0 6px 20px rgba(37, 211, 102, 0.6),
-        0 0 0 12px rgba(37, 211, 102, 0.1);
+        0 12px 32px rgba(37, 211, 102, 0.65),
+        0 0 0 12px rgba(37, 211, 102, 0.12);
     animation: none;
 }
 
@@ -56,8 +52,8 @@
     inset: 0;
     border-radius: 50%;
     background: #25d366;
-    opacity: 0.6;
-    animation: whatsappRipple 2s infinite;
+    opacity: 0.5;
+    animation: whatsappRipple 2.5s infinite;
     z-index: 1;
 }
 
@@ -66,14 +62,14 @@
     0%,
     100% {
         box-shadow:
-            0 4px 12px rgba(37, 211, 102, 0.4),
-            0 0 0 0 rgba(37, 211, 102, 0.7);
+            0 8px 24px rgba(37, 211, 102, 0.45),
+            0 0 0 0 rgba(37, 211, 102, 0.6);
     }
 
     50% {
         box-shadow:
-            0 4px 12px rgba(37, 211, 102, 0.4),
-            0 0 0 14px rgba(37, 211, 102, 0);
+            0 8px 24px rgba(37, 211, 102, 0.45),
+            0 0 0 16px rgba(37, 211, 102, 0);
     }
 }
 
@@ -84,47 +80,44 @@
     }
 
     100% {
-        transform: scale(1.6);
+        transform: scale(1.65);
         opacity: 0;
     }
 }
 
-/* 💬 Tooltip al hover (ahora apunta hacia la derecha) */
+/* 💬 Tooltip al hover */
 .tooltip {
     position: absolute;
     left: 72px;
-    /* 👈 antes right: 72px */
     top: 50%;
     transform: translateY(-50%) translateX(-10px);
-    /* 👈 entra desde la izquierda */
 
-    background: #0a0f1a;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(12px);
     color: #fff;
     font-size: 0.85rem;
-    font-weight: 500;
-    padding: 8px 14px;
-    border-radius: 8px;
+    font-weight: 600;
+    padding: 9px 16px;
+    border-radius: 10px;
     white-space: nowrap;
 
     opacity: 0;
     pointer-events: none;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .tooltip::after {
     content: '';
     position: absolute;
     left: -6px;
-    /* 👈 antes right: -6px */
     top: 50%;
     transform: translateY(-50%);
     width: 0;
     height: 0;
-    border-right: 6px solid #0a0f1a;
-    /* 👈 flecha apuntando al botón desde la izquierda */
+    border-right: 6px solid rgba(15, 23, 42, 0.92);
     border-top: 6px solid transparent;
     border-bottom: 6px solid transparent;
 }
@@ -142,25 +135,12 @@
     .whatsappFloat {
         width: 54px;
         height: 54px;
-        font-size: 28px;
+        font-size: 26px;
         bottom: 20px;
         left: 20px;
-        /* 👈 antes right: 20px */
     }
 
     .tooltip {
         display: none;
-        /* En mobile no mostramos el tooltip */
-    }
-}
-
-@media (max-width: 480px) {
-    .whatsappFloat {
-        width: 50px;
-        height: 50px;
-        font-size: 26px;
-        bottom: 16px;
-        left: 16px;
-        /* 👈 antes right: 16px */
     }
 }

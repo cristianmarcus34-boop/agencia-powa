@@ -59,13 +59,56 @@ const processItems = [
     { id: 'delivery', step: '04', icon: <FaRocket />, title: 'Acta de Entrega Final', desc: 'Te transferimos el repositorio, credenciales limpias y toda la documentación técnica. El código es tuyo, sin vueltas.' },
 ];
 
+// 🔥 SERVICIOS SUPERIORMENTE PROFESIONALIZADOS Y PERSUASIVOS
 const serviceItems = [
-    { id: 'web', icon: <FaCode />, title: 'Sistemas Web Escalables', desc: 'Sitios, plataformas y paneles internos diseñados según tus procesos, tus usuarios y las integraciones que necesitás.', link: '/planes/servicios/desarrollo' },
-    { id: 'mobile', icon: <FaMobileAlt />, title: 'Apps Nativas Android', desc: 'Aplicaciones para Android publicadas en Google Play Store. Desde $2.200.000 ARS.', link: '/apps' },
-    { id: 'data', icon: <FaDatabase />, title: 'Gestión de Datos & Cloud', desc: 'Conectamos fuentes de datos y construimos paneles para que la información de tu operación sea más fácil de consultar.', link: '/planes/servicios/desarrollo' },
-    { id: 'auto', icon: <FaCogs />, title: 'Automatización de Procesos', desc: 'Integramos herramientas y automatizamos tareas repetitivas para reducir trabajo manual y errores operativos.', link: '/planes/servicios/desarrollo' },
-    { id: 'ai', icon: <FaBrain />, title: 'Integración de IA', desc: 'Evaluamos asistentes y flujos con IA para casos concretos, definiendo fuentes de datos, límites y revisión humana.', link: '/planes/servicios/desarrollo' },
-    { id: 'maint', icon: <FaCloudUploadAlt />, title: 'Mantenimiento Evolutivo', desc: 'Tu software no queda obsoleto. Monitoreo proactivo, actualizaciones de seguridad y optimizaciones de performance mes a mes.', link: '/planes' },
+    {
+        id: 'web',
+        icon: <FaCode />,
+        title: 'Sistemas Web Escalables',
+        desc: 'Plataformas a medida, E-commerce de alto rendimiento y paneles internos sincronizados con tus procesos reales de negocio.',
+        link: '/planes/servicios/desarrollo',
+        tag: 'Arquitectura Cloud'
+    },
+    {
+        id: 'mobile',
+        icon: <FaMobileAlt />,
+        title: 'Apps Nativas Android & iOS',
+        desc: 'Desarrollo mobile de alto rendimiento con Expo y React Native, listas para publicar y escalar en Google Play Store.',
+        link: '/apps',
+        tag: 'Play Store Ready'
+    },
+    {
+        id: 'data',
+        icon: <FaDatabase />,
+        title: 'Gestión de Datos & Supabase',
+        desc: 'Bases de datos relacionales robustas, políticas de seguridad RLS avanzadas y dashboards operativos en tiempo real.',
+        link: '/planes/servicios/desarrollo',
+        tag: 'Alta Seguridad'
+    },
+    {
+        id: 'auto',
+        icon: <FaCogs />,
+        title: 'Automatización de Procesos',
+        desc: 'Conectamos tus herramientas (CRM, APIs de pago, WhatsApp) para eliminar tareas manuales repetitivas y errores operativos.',
+        link: '/planes/servicios/desarrollo',
+        tag: 'Eficiencia Operativa'
+    },
+    {
+        id: 'ai',
+        icon: <FaBrain />,
+        title: 'Integración de IA & LLMs',
+        desc: 'Implementamos asistentes inteligentes, motores de recomendación y flujos automatizados con Groq y Gemini adaptados a tu operativa.',
+        link: '/planes/servicios/desarrollo',
+        tag: 'Inteligencia Aplicada'
+    },
+    {
+        id: 'maint',
+        icon: <FaCloudUploadAlt />,
+        title: 'Mantenimiento Evolutivo',
+        desc: 'Tu software siempre al día. Monitoreo proactivo de performance, parches de seguridad y optimización continua mes a mes.',
+        link: '/planes',
+        tag: 'Soporte 24/7'
+    },
 ];
 
 const securityItems = [
@@ -97,7 +140,7 @@ export default function HomePage() {
                                 <div className={styles.badgePowa}>
                                     <span className={styles.badgePulseDot} />
                                     <FaMapMarkerAlt className="me-1 flex-shrink-0" />
-                                    <span>Quilmes, Zona Sur · Trabajo remoto con todo el país</span>
+                                    <span>Quilmes, Buenos Aires · Software Factory & Consultoría IT</span>
                                 </div>
                                 <h1 className={styles.heroTitleMain}>
                                     Agencia de <span className={styles.textGradient}>Desarrollo Web en Quilmes</span> para PYMES y empresas
@@ -145,8 +188,8 @@ export default function HomePage() {
             {/* TECH STACK (server) */}
             <section className={styles.techStackSection}>
                 <Container>
-                    <h2 className={styles.techLabel}>Stack principal de Powa</h2>
-                    <p className={styles.sectionSubtitle}>Tecnologías que usamos con mayor frecuencia; las herramientas adicionales se eligen según el alcance de cada proyecto.</p>
+                    <h2 className={styles.techLabel}>Stack tecnológico de alto rendimiento</h2>
+                    <p className={styles.sectionSubtitle}>Trabajamos con arquitecturas modernas y escalables para garantizar velocidad, seguridad y cero costo de infraestructura inicial.</p>
                     <div className={styles.stackSlider}>
                         <div className={styles.stackTrack}>
                             {[...featuredTechStack, ...featuredTechStack].map((tech, idx) => (
@@ -213,20 +256,37 @@ export default function HomePage() {
                 </Container>
             </section>
 
-            {/* SERVICIOS (server) */}
+            {/* SERVICIOS (server) - 🔥 REDISEÑADO CON TAGS Y MÁS IMPACTO */}
             <section className={styles.homeServices}>
                 <Container>
                     <div className={styles.sectionHeader}>
                         <span className={styles.sectionBadge}>SERVICIOS</span>
                         <h2 className={styles.sectionTitle}>Un socio tecnológico, <span className={styles.textGradient}>distintas capacidades</span></h2>
-                        <p className={styles.sectionSubtitle}>Elegimos una solución proporcional a tu desafío: desde una mejora puntual hasta un producto digital a medida.</p>
+                        <p className={styles.sectionSubtitle}>Elegimos una solución proporcional a tu desafío: desde una mejora puntual hasta un producto digital a medida de alto impacto.</p>
                     </div>
                     <Row className="g-4">
                         {serviceItems.map((item) => (
                             <Col lg={4} md={6} key={item.id}>
                                 <div className={styles.powaServiceCard}>
-                                    <div className={styles.iconContainer}>
-                                        <div className={styles.iconBox}>{item.icon}</div>
+                                    <div className="d-flex justify-content-between align-items-center mb-3">
+                                        <div className={styles.iconContainer} style={{ marginBottom: 0 }}>
+                                            <div className={styles.iconBox}>{item.icon}</div>
+                                        </div>
+                                        {item.tag && (
+                                            <span style={{
+                                                fontSize: '0.68rem',
+                                                fontWeight: 700,
+                                                color: 'var(--cyan-powa)',
+                                                background: 'rgba(34, 211, 238, 0.08)',
+                                                border: '1px solid rgba(34, 211, 238, 0.2)',
+                                                padding: '4px 10px',
+                                                borderRadius: '100px',
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.06em'
+                                            }}>
+                                                {item.tag}
+                                            </span>
+                                        )}
                                     </div>
                                     <h3>{item.title}</h3>
                                     <p>{item.desc}</p>
@@ -240,7 +300,7 @@ export default function HomePage() {
                 </Container>
             </section>
 
-            {/* PROMOS (client, ya existente) */}
+            {/* PROMOS (client) */}
             <PromosSection />
 
             {/* BANNER QUILMES (server) */}
@@ -326,7 +386,7 @@ export default function HomePage() {
                         </Col>
                         <Col lg={6} className="text-center d-none d-lg-block">
                             <div className={styles.securityVisualBox}>
-                                <FaShieldAlt className={styles.shieldBigIcon} />
+                                <FaShieldAlt className="shieldBigIcon" />
                                 <div className={styles.shieldPulse}></div>
                                 <div className={styles.shieldPulseSecondary}></div>
                             </div>

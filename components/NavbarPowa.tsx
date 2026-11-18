@@ -1,3 +1,4 @@
+// components/Navbar/NavbarPowa.tsx
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -33,7 +34,6 @@ export default function NavbarPowa() {
 
   const closeMenu = () => setExpanded(false);
 
-  // 🔥 ENLACES COMPACTOS PERO COMPLETOS
   const navLinks: NavLinkItem[] = [
     { name: 'Inicio', path: '/' },
     { name: 'Nosotros', path: '/about' },
@@ -84,7 +84,7 @@ export default function NavbarPowa() {
         />
 
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="ms-auto align-items-center">
+          <Nav className="ms-auto align-items-lg-center mt-3 mt-lg-0">
             {navLinks.map((link) => (
               <Nav.Link
                 key={link.path}
@@ -97,7 +97,7 @@ export default function NavbarPowa() {
               </Nav.Link>
             ))}
 
-            <div className={styles.navDivider}></div>
+            <div className={`${styles.navDivider} d-none d-lg-block`}></div>
 
             <Nav.Link
               as={Link}
@@ -133,7 +133,7 @@ export default function NavbarPowa() {
                 <Nav.Link
                   as={Link}
                   href="/contact"
-                  className="ms-lg-1 p-0 text-decoration-none"
+                  className="ms-lg-2 p-0 text-decoration-none"
                   onClick={closeMenu}
                 >
                   <span className={styles.contactBtn} role="button">
@@ -154,7 +154,7 @@ export default function NavbarPowa() {
                 <Nav.Link
                   as={Link}
                   href="/contact"
-                  className="ms-lg-1 p-0 text-decoration-none"
+                  className="ms-lg-2 p-0 text-decoration-none"
                   onClick={closeMenu}
                 >
                   <span className={styles.contactBtn} role="button">
