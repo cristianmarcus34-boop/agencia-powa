@@ -91,12 +91,13 @@ export default function HomePage() {
             {/* HERO (server + client wrapper) */}
             <HeroWrapper>
                 <section className={styles.heroSectionModern}>
-                    <Container className="position-relative z-3 pt-5 pt-md-4">
-                        <Row className="align-items-center g-5">
+                    <Container className="position-relative z-3 px-3 px-sm-4 pt-3 pt-md-4">
+                        <Row className="align-items-center gy-4 gx-lg-5">
                             <Col lg={7}>
                                 <div className={styles.badgePowa}>
                                     <span className={styles.badgePulseDot} />
-                                    <FaMapMarkerAlt className="me-1" /> Quilmes, Zona Sur · Trabajo remoto con todo el país
+                                    <FaMapMarkerAlt className="me-1 flex-shrink-0" />
+                                    <span>Quilmes, Zona Sur · Trabajo remoto con todo el país</span>
                                 </div>
                                 <h1 className={styles.heroTitleMain}>
                                     Agencia de <span className={styles.textGradient}>Desarrollo Web en Quilmes</span> para PYMES y empresas
@@ -304,14 +305,14 @@ export default function HomePage() {
 
             {/* SECURITY (server) */}
             <section className={styles.securitySection}>
-                <Container>
-                    <Row className="align-items-center g-5">
+                <Container className="px-3 px-sm-4">
+                    <Row className="align-items-center gy-4 gx-lg-5">
                         <Col lg={6}>
                             <div className={styles.badgeSecurity}><FaShieldAlt className="me-2" /> Estándar de Seguridad Corporativa</div>
                             <h2 className={styles.sectionTitle} style={{ marginBottom: '1.5rem' }}>
                                 Tu propiedad intelectual, <br /><span className={styles.textGradient}>completamente blindada.</span>
                             </h2>
-                            <p className={styles.sectionSubtitle} style={{ marginBottom: '2rem', fontSize: '1.05rem', lineHeight: '1.7', marginLeft: 0 }}>
+                            <p className={styles.sectionSubtitle} style={{ marginBottom: '2rem', fontSize: '1.05rem', lineHeight: '1.7', marginLeft: 0, textAlign: 'left' }}>
                                 En la industria del software, la seriedad no se demuestra solo escribiendo código, sino protegiendo el negocio del cliente. En cada desarrollo metemos protocolos de nivel enterprise.
                             </p>
                             <ul className={styles.securityList}>
