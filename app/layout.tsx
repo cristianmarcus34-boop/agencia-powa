@@ -15,7 +15,6 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 // ============================================
 // 🔤 FUENTES LOCALES
 // ============================================
-
 const orbitron = localFont({
   src: [
     { path: '../public/fonts/orbitron-700.woff2', weight: '700', style: 'normal' },
@@ -50,11 +49,11 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.agenciadigitalpowa.com.ar'),
 
   title: {
-    default: 'Powa Digital | Agencia Digital en Quilmes para PYMES y Empresas',
+    default: 'Powa Digital | Agencia de Desarrollo Web y Software en Quilmes',
     template: '%s | Powa Digital',
   },
   description:
-    'Agencia digital en Quilmes. Desarrollo web, apps, automatización con IA y transformación digital para PYMES y Empresas de Zona Sur, Latinoamérica, Europa y el Mundo. Presupuesto sin cargo.',
+    'Agencia digital en Quilmes. Desarrollo web, apps nativas Android, automatización con IA y arquitectura escalable para PYMES y Empresas. Presupuesto sin cargo.',
   keywords: [
     'agencia digital Quilmes',
     'desarrollo web Quilmes',
@@ -62,7 +61,7 @@ export const metadata: Metadata = {
     'agencia digital',
     'Next.js',
     'React',
-    'aplicaciones móviles',
+    'aplicaciones móviles Android',
     'automatización con IA',
     'consultoría IT',
     'PYMES Zona Sur',
@@ -82,7 +81,7 @@ export const metadata: Metadata = {
     siteName: 'Agencia Digital Powa',
     title: 'Powa Digital | Agencia Digital en Quilmes',
     description:
-      'Software Factory & Consultoría IT. Desarrollo web, apps y automatización con IA para PYMES y empresas de Zona Sur.',
+      'Software Factory & Consultoría IT. Desarrollo web, apps y automatización con IA para PYMES y empresas de Zona Sur y todo el país.',
     images: [
       {
         url: 'https://www.agenciadigitalpowa.com.ar/og-image.jpg',
@@ -129,7 +128,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0f172a',
+  themeColor: '#0a0f1a',
   colorScheme: 'dark',
 };
 
@@ -152,9 +151,8 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.linkedin.com" />
 
         {/* 🎨 Meta para mobile */}
-        <meta name="theme-color" content="#0f172a" />
         <meta name="format-detection" content="telephone=no" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
         {/* 🧭 JSON-LD: Organization + LocalBusiness + WebSite */}

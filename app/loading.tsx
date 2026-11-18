@@ -11,7 +11,9 @@ export default function Loading() {
                 left: 0,
                 width: "100vw",
                 height: "100vh",
-                backgroundColor: "#0f172a",
+                backgroundColor: "#0a0f1a",
+                backgroundImage:
+                    "radial-gradient(circle at 50% 50%, rgba(34, 211, 238, 0.08) 0%, transparent 65%)",
                 zIndex: 999999,
                 display: "flex",
                 flexDirection: "column",
@@ -20,43 +22,57 @@ export default function Loading() {
             }}
         >
             <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
+                initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="text-center"
             >
-                <h1
+                <div
                     style={{
-                        color: "white",
-                        fontSize: "3rem",
+                        fontFamily: "var(--font-orbitron), sans-serif",
+                        color: "#ffffff",
+                        fontSize: "clamp(2rem, 5vw, 3rem)",
                         fontWeight: 900,
-                        letterSpacing: "-0.05em",
+                        letterSpacing: "0.04em",
                         margin: 0,
                     }}
                 >
-                    POWA<span style={{ color: "#00f2fe" }}>DIGITAL</span>
-                </h1>
+                    POWA<span style={{ color: "#22d3ee" }}>DIGITAL</span>
+                </div>
 
                 <div
                     style={{
-                        width: "180px",
-                        height: "2px",
-                        backgroundColor: "rgba(255,255,255,0.1)",
-                        margin: "20px auto",
+                        width: "200px",
+                        height: "3px",
+                        backgroundColor: "rgba(255, 255, 255, 0.08)",
+                        margin: "18px auto 12px",
                         overflow: "hidden",
-                        borderRadius: "10px",
+                        borderRadius: "100px",
                     }}
                 >
                     <motion.div
                         animate={{ x: ["-100%", "100%"] }}
-                        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                        transition={{ repeat: Infinity, duration: 1.3, ease: "easeInOut" }}
                         style={{
-                            width: "100%",
+                            width: "60%",
                             height: "100%",
-                            backgroundColor: "#00f2fe",
+                            background: "linear-gradient(90deg, #3b82f6, #22d3ee)",
+                            borderRadius: "100px",
                         }}
                     />
                 </div>
+
+                <span
+                    style={{
+                        fontSize: "0.72rem",
+                        letterSpacing: "0.2em",
+                        textTransform: "uppercase",
+                        color: "#64748b",
+                        fontWeight: 600,
+                    }}
+                >
+                    Inicializando entorno
+                </span>
             </motion.div>
         </div>
     );

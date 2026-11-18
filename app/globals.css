@@ -3,7 +3,7 @@
 
 /* --- RESET Y COMPORTAMIENTO GLOBAL --- */
 html {
-  scroll-behavior: auto !important;
+  scroll-behavior: smooth;
   scrollbar-gutter: stable;
   scroll-padding-top: 100px;
   background-color: #0a0f1a;
@@ -14,30 +14,31 @@ html {
   --primary-glow: #007bff;
   --accent-powa: #00f2fe;
   --dark-powa: #0a0f1a;
-  --dark-card: rgba(30, 41, 59, 0.7);
+  --dark-surface: #0f172a;
+  --dark-card: rgba(26, 35, 51, 0.75);
   --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.09);
   --text-main: #f8fafc;
-  --text-muted: #5ce2db;
+  --text-muted: #94a3b8;
   --navbar-height: 80px;
 
-  /* Stripe tokens (globales) */
+  /* Stripe / Linear tokens (globales) */
   --stripe-cyan: #22d3ee;
   --stripe-blue: #3b82f6;
   --stripe-violet: #8b5cf6;
   --stripe-border: rgba(255, 255, 255, 0.08);
-  --stripe-border-hover: rgba(255, 255, 255, 0.16);
-  --stripe-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
-  --stripe-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
-  --stripe-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2);
+  --stripe-border-hover: rgba(255, 255, 255, 0.18);
+  --stripe-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+  --stripe-shadow-md: 0 6px 16px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.25);
+  --stripe-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.45), 0 4px 12px rgba(0, 0, 0, 0.25);
   --stripe-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --stripe-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body {
   font-family: var(--font-geist-sans), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #ffffff;
-  background-color: #0a0f1a;
+  color: var(--text-main);
+  background-color: var(--dark-powa);
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -57,7 +58,7 @@ main:not(.min-h-screen) {
 
 /* --- SCROLLBAR STRIPE --- */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 9px;
 }
 
 ::-webkit-scrollbar-track {
@@ -76,18 +77,17 @@ main:not(.min-h-screen) {
 
 /* --- SELECCIÓN Y FOCUS --- */
 ::selection {
-  background: rgba(34, 211, 238, 0.3);
+  background: rgba(34, 211, 238, 0.28);
   color: #ffffff;
 }
 
 :focus-visible {
-  outline: 2px solid rgba(34, 211, 238, 0.6);
+  outline: 2px solid rgba(34, 211, 238, 0.65);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 /* --- UTILIDADES COMPARTIDAS --- */
-
 .text-gradient {
   background: linear-gradient(135deg, #3b82f6 0%, #22d3ee 50%, #8b5cf6 100%);
   -webkit-background-clip: text;
@@ -118,7 +118,7 @@ main:not(.min-h-screen) {
   background: linear-gradient(180deg, #22d3ee 0%, #0891b2 100%);
   color: #0a0f1a !important;
   border-radius: 10px;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   border: none;
   transition: all 0.25s var(--stripe-ease);
@@ -127,10 +127,10 @@ main:not(.min-h-screen) {
   position: relative;
   overflow: hidden;
   box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(34, 211, 238, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    0 2px 4px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(34, 211, 238, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.12);
 }
 
 .btn-powa-primary::before {
@@ -140,7 +140,7 @@ main:not(.min-h-screen) {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
   transition: left 0.6s var(--stripe-ease);
   pointer-events: none;
 }
@@ -152,10 +152,10 @@ main:not(.min-h-screen) {
 .btn-powa-primary:hover {
   transform: translateY(-2px);
   box-shadow:
-    0 4px 12px rgba(34, 211, 238, 0.3),
-    0 0 0 1px rgba(34, 211, 238, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    0 8px 20px rgba(34, 211, 238, 0.3),
+    0 0 0 1px rgba(34, 211, 238, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.12);
   color: #0a0f1a !important;
 }
 
@@ -168,7 +168,6 @@ main:not(.min-h-screen) {
 }
 
 /* --- ANIMACIONES --- */
-
 .animate-pulse {
   animation: pulse 2s infinite;
 }
@@ -204,7 +203,6 @@ main:not(.min-h-screen) {
 }
 
 /* --- FIXES DE ELEMENTOS --- */
-
 a {
   text-decoration: none !important;
   color: inherit;
@@ -223,7 +221,6 @@ body.modal-open {
 /* ============================================
    CHAT POWA - AJUSTE GLOBAL DE POSICIONAMIENTO
    ============================================ */
-
 .chat-container {
   bottom: 120px !important;
 }
@@ -241,9 +238,8 @@ body.modal-open {
 }
 
 /* ============================================
-   🔥 COMPENSACIÓN DEL NAVBAR EN PÁGINAS ESPECÍFICAS
+   COMPENSACIÓN DEL NAVBAR EN PÁGINAS ESPECÍFICAS
    ============================================ */
-
 .admin-page main,
 .cliente-page main {
   padding-top: calc(var(--navbar-height) + 20px) !important;
@@ -262,8 +258,7 @@ body.modal-open {
 }
 
 /* ============================================
-   🔥 OVERRIDE PARA MOBILE EN COLUMNAS BOOTSTRAP
-   (movido desde page.module.css porque usa selector de atributo)
+   OVERRIDE PARA MOBILE EN COLUMNAS BOOTSTRAP
    ============================================ */
 @media (max-width: 575px) {
   [class*="col-"] {

@@ -61,7 +61,7 @@ const processItems = [
 
 const serviceItems = [
     { id: 'web', icon: <FaCode />, title: 'Sistemas Web Escalables', desc: 'Sitios, plataformas y paneles internos diseñados según tus procesos, tus usuarios y las integraciones que necesitás.', link: '/planes/servicios/desarrollo' },
-    { id: 'mobile', icon: <FaMobileAlt />, title: 'Apps Nativas Android', desc: 'Aplicaciones para Android publicadas en Google Play Store. Desde $2.200.000 ARS.', link: '/apps' },  // 👈 ACTUALIZADO
+    { id: 'mobile', icon: <FaMobileAlt />, title: 'Apps Nativas Android', desc: 'Aplicaciones para Android publicadas en Google Play Store. Desde $2.200.000 ARS.', link: '/apps' },
     { id: 'data', icon: <FaDatabase />, title: 'Gestión de Datos & Cloud', desc: 'Conectamos fuentes de datos y construimos paneles para que la información de tu operación sea más fácil de consultar.', link: '/planes/servicios/desarrollo' },
     { id: 'auto', icon: <FaCogs />, title: 'Automatización de Procesos', desc: 'Integramos herramientas y automatizamos tareas repetitivas para reducir trabajo manual y errores operativos.', link: '/planes/servicios/desarrollo' },
     { id: 'ai', icon: <FaBrain />, title: 'Integración de IA', desc: 'Evaluamos asistentes y flujos con IA para casos concretos, definiendo fuentes de datos, límites y revisión humana.', link: '/planes/servicios/desarrollo' },
@@ -85,14 +85,18 @@ const stats = [
 export default function HomePage() {
     return (
         <div className={styles.homepageWrapper}>
+            {/* Grilla sutil arquitectónica de fondo */}
+            <div className={styles.architecturalGrid} aria-hidden="true" />
+
             {/* HERO (server + client wrapper) */}
             <HeroWrapper>
                 <section className={styles.heroSectionModern}>
                     <Container className="position-relative z-3 pt-5 pt-md-4">
-                        <Row className="align-items-center">
+                        <Row className="align-items-center g-5">
                             <Col lg={7}>
                                 <div className={styles.badgePowa}>
-                                    <FaMapMarkerAlt className="me-2" /> Quilmes, Zona Sur · Trabajo remoto con todo el país
+                                    <span className={styles.badgePulseDot} />
+                                    <FaMapMarkerAlt className="me-1" /> Quilmes, Zona Sur · Trabajo remoto con todo el país
                                 </div>
                                 <h1 className={styles.heroTitleMain}>
                                     Agencia de <span className={styles.textGradient}>Desarrollo Web en Quilmes</span> para PYMES y empresas
@@ -114,12 +118,22 @@ export default function HomePage() {
                                     <span className={styles.trustBadge}><FaLock className={styles.trustBadgeIcon} /> NDA y confidencialidad</span>
                                     <span className={styles.trustBadge}><FaRocket className={styles.trustBadgeIcon} /> Respuesta en 24h</span>
                                     <Link href="/planes/servicios/desarrollo" className={styles.trustBadgeLink}><FaCode className={styles.trustBadgeIcon} /> Desarrollo Web</Link>
-                                    <Link href="/apps" className={styles.trustBadgeLink}><FaGooglePlay className={styles.trustBadgeIcon} /> Apps Android</Link>  {/* 👈 NUEVO */}
+                                    <Link href="/apps" className={styles.trustBadgeLink}><FaGooglePlay className={styles.trustBadgeIcon} /> Apps Android</Link>
                                 </div>
                             </Col>
                             <Col lg={5} className="d-none d-lg-block">
-                                <div className={styles.heroImageContainer}>
-                                    <Image src="/logo-agenciadigitalpowa-redondo.png" alt="Agencia Digital Powa - Desarrollo Web en Quilmes" width={640} height={427} className="rounded-4 shadow-lg" priority />
+                                <div className={styles.heroVisualFrame}>
+                                    <div className={styles.heroVisualGlow} />
+                                    <div className={styles.heroImageContainer}>
+                                        <Image
+                                            src="/logo-agenciadigitalpowa-redondo.png"
+                                            alt="Agencia Digital Powa - Desarrollo Web en Quilmes"
+                                            width={640}
+                                            height={427}
+                                            className="rounded-4"
+                                            priority
+                                        />
+                                    </div>
                                 </div>
                             </Col>
                         </Row>
@@ -145,7 +159,7 @@ export default function HomePage() {
                 </Container>
             </section>
 
-            {/* STATS (server) - CON TÍTULO Y SUBTÍTULO */}
+            {/* STATS (server) */}
             <section className={styles.statsSection}>
                 <Container>
                     <div className={styles.sectionHeader}>
@@ -161,8 +175,10 @@ export default function HomePage() {
                         {stats.map((stat, index) => (
                             <Col key={index} md={3} sm={6}>
                                 <div className={styles.statCard}>
-                                    <div className={styles.statCardIcon}>{stat.icon}</div>
-                                    <div className={styles.statCardValue}>{stat.value}</div>
+                                    <div className={styles.statCardTop}>
+                                        <div className={styles.statCardIcon}>{stat.icon}</div>
+                                        <span className={styles.statCardValue}>{stat.value}</span>
+                                    </div>
                                     <div className={styles.statCardLabel}>{stat.label}</div>
                                 </div>
                             </Col>
@@ -184,7 +200,9 @@ export default function HomePage() {
                             <Col lg={3} md={6} key={item.id}>
                                 <div className={styles.processCard}>
                                     <div className={styles.stepNumber}>{item.step}</div>
-                                    <div className={styles.processIcon}>{item.icon}</div>
+                                    <div className={styles.iconContainer}>
+                                        <div className={styles.processIcon}>{item.icon}</div>
+                                    </div>
                                     <h3>{item.title}</h3>
                                     <p>{item.desc}</p>
                                 </div>
@@ -206,10 +224,14 @@ export default function HomePage() {
                         {serviceItems.map((item) => (
                             <Col lg={4} md={6} key={item.id}>
                                 <div className={styles.powaServiceCard}>
-                                    <div className={styles.iconBox}>{item.icon}</div>
+                                    <div className={styles.iconContainer}>
+                                        <div className={styles.iconBox}>{item.icon}</div>
+                                    </div>
                                     <h3>{item.title}</h3>
                                     <p>{item.desc}</p>
-                                    <Link href={item.link} className={styles.cardLink}>Saber más <FaArrowRight className="ms-2" /></Link>
+                                    <Link href={item.link} className={styles.cardLink}>
+                                        Saber más <FaArrowRight className="ms-2" />
+                                    </Link>
                                 </div>
                             </Col>
                         ))}
@@ -241,7 +263,9 @@ export default function HomePage() {
                                 </div>
                             </Col>
                             <Col lg={4} className="text-lg-end text-center">
-                                <Link href="/desarrollo-web-quilmes" className={styles.quilmesBannerButton}>Ver más sobre Quilmes <FaArrowRight className="ms-2" /></Link>
+                                <Link href="/desarrollo-web-quilmes" className={styles.quilmesBannerButton}>
+                                    Ver más sobre Quilmes <FaArrowRight className="ms-2" />
+                                </Link>
                             </Col>
                         </Row>
                     </div>
@@ -260,14 +284,20 @@ export default function HomePage() {
             {/* DEMOS (server) */}
             <section className={styles.testimonialsSection}>
                 <Container>
-                    <div className={styles.sectionHeader}>
-                        <span className={styles.sectionBadge}>DEMOS DE PRODUCTO</span>
-                        <h2 className={styles.sectionTitle}>Explorá soluciones <span className={styles.textGradient}>en funcionamiento</span></h2>
-                        <p className={styles.sectionSubtitle}>Estos proyectos muestran capacidades y conceptos funcionales; no son casos de resultados de clientes.</p>
-                    </div>
-                    <div className="text-center d-flex flex-wrap justify-content-center gap-3">
-                        <Link href="/portfolio" className={`${styles.btnPowaPrimary} text-decoration-none`}>Ver demos y proyectos <FaArrowRight className="ms-2" /></Link>
-                        <Link href="/apps" className={`${styles.btnPowaOutline} text-decoration-none`}>Ver apps nativas <FaGooglePlay className="ms-2" /></Link>  {/* 👈 NUEVO */}
+                    <div className={styles.demosBox}>
+                        <div className={styles.sectionHeader} style={{ marginBottom: '2rem' }}>
+                            <span className={styles.sectionBadge}>DEMOS DE PRODUCTO</span>
+                            <h2 className={styles.sectionTitle}>Explorá soluciones <span className={styles.textGradient}>en funcionamiento</span></h2>
+                            <p className={styles.sectionSubtitle}>Estos proyectos muestran capacidades y conceptos funcionales; no son casos de resultados de clientes.</p>
+                        </div>
+                        <div className="text-center d-flex flex-wrap justify-content-center gap-3">
+                            <Link href="/portfolio" className={`${styles.btnPowaPrimary} text-decoration-none`}>
+                                Ver demos y proyectos <FaArrowRight className="ms-2" />
+                            </Link>
+                            <Link href="/apps" className={`${styles.btnPowaOutline} text-decoration-none`}>
+                                Ver apps nativas <FaGooglePlay className="ms-2" />
+                            </Link>
+                        </div>
                     </div>
                 </Container>
             </section>
@@ -275,16 +305,20 @@ export default function HomePage() {
             {/* SECURITY (server) */}
             <section className={styles.securitySection}>
                 <Container>
-                    <Row className="align-items-center">
+                    <Row className="align-items-center g-5">
                         <Col lg={6}>
                             <div className={styles.badgeSecurity}><FaShieldAlt className="me-2" /> Estándar de Seguridad Corporativa</div>
-                            <h2 className={styles.sectionTitle} style={{ marginBottom: '1.5rem' }}>Tu propiedad intelectual, <br /><span className={styles.textGradient}>completamente blindada.</span></h2>
-                            <p className={styles.sectionSubtitle} style={{ marginBottom: '2rem', fontSize: '1.1rem', lineHeight: '1.7' }}>En la industria del software, la seriedad no se demuestra solo escribiendo código, sino protegiendo el negocio del cliente. En cada desarrollo metemos protocolos de nivel enterprise.</p>
+                            <h2 className={styles.sectionTitle} style={{ marginBottom: '1.5rem' }}>
+                                Tu propiedad intelectual, <br /><span className={styles.textGradient}>completamente blindada.</span>
+                            </h2>
+                            <p className={styles.sectionSubtitle} style={{ marginBottom: '2rem', fontSize: '1.05rem', lineHeight: '1.7', marginLeft: 0 }}>
+                                En la industria del software, la seriedad no se demuestra solo escribiendo código, sino protegiendo el negocio del cliente. En cada desarrollo metemos protocolos de nivel enterprise.
+                            </p>
                             <ul className={styles.securityList}>
                                 {securityItems.map((item) => (
-                                    <li key={item.id} className="d-flex align-items-start mb-3">
+                                    <li key={item.id} className={styles.securityListItem}>
                                         <span className={styles.securityIconWrapper}>{item.icon}</span>
-                                        <span className="ms-2"><strong>{item.boldText}</strong>{item.text}</span>
+                                        <span><strong>{item.boldText}</strong>{item.text}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -306,14 +340,18 @@ export default function HomePage() {
                     <div className={styles.ctaMinimalBox}>
                         <div className={styles.ctaGlow}></div>
                         <div className={styles.ctaContent}>
-                            <FaRocket className={styles.ctaRocketIcon} />
+                            <div className={styles.ctaIconBadge}>
+                                <FaRocket className={styles.ctaRocketIcon} />
+                            </div>
                             <h2 className={styles.ctaTitle}>¿Listo para profesionalizar tu empresa?</h2>
-                            <p className={styles.ctaText}>Hablemos sobre cómo la tecnología puede resolver tus cuellos de botella actuales y potenciar tu crecimiento.</p>
+                            <p className={styles.ctaText}>
+                                Hablemos sobre cómo la tecnología puede resolver tus cuellos de botella actuales y potenciar tu crecimiento.
+                            </p>
                             <div className={styles.ctaButtons}>
                                 <Link href="/contact" className={styles.btnPowaWhite}>Agendar Consultoría Técnica</Link>
                                 <Link href="/faq" className={styles.ctaSecondary}>Ver Preguntas Frecuentes</Link>
                                 <Link href="/planes/servicios/desarrollo" className={styles.btnCtaSecondary}>Ver opciones de desarrollo</Link>
-                                <Link href="/apps" className={styles.btnCtaSecondary}>Ver apps nativas</Link>  {/* 👈 NUEVO (reemplaza "Ver Planes de Mantenimiento") */}
+                                <Link href="/apps" className={styles.btnCtaSecondary}>Ver apps nativas</Link>
                             </div>
                             <div className={styles.ctaTrustBadges}>
                                 <span>✅ Sin compromiso</span>
