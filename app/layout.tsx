@@ -11,7 +11,7 @@ import LayoutWrapper from '@/components/LayoutWrapper';
 import PostHogPageView from '@/components/PostHogPageView';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import { GoogleAnalytics } from '@next/third-parties/google';
-
+import AvisoDisponibilidad from '@/components/AvisoDisponibilidad/AvisoDisponibilidad';
 // ============================================
 // 🔤 FUENTES LOCALES
 // ============================================
@@ -245,6 +245,7 @@ export default function RootLayout({
         </Providers>
 
         <WhatsAppFloat />
+        <AvisoDisponibilidad />
       </body>
     </html>
   );

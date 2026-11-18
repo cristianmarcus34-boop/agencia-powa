@@ -1,0 +1,140 @@
+/* components/AvisoDisponibilidad/AvisoDisponibilidad.module.css */
+
+.contenedorAviso {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 9990;
+    max-width: 360px;
+    width: calc(100vw - 48px);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    border-radius: 18px;
+    padding: 16px 18px;
+    box-shadow:
+        0 20px 40px -15px rgba(0, 0, 0, 0.7),
+        0 0 20px rgba(34, 211, 238, 0.08);
+    animation: deslizarArriba 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.contenedorAviso:hover {
+    border-color: rgba(34, 211, 238, 0.5);
+    transform: translateY(-2px);
+}
+
+.encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.etiquetaEstado {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #22d3ee;
+}
+
+.puntoPulso {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: brilloPulso 2s infinite;
+}
+
+.botonCerrar {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.botonCerrar:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.textoCuerpo {
+    color: #cbd5e1;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.textoCuerpo strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.enlaceAccion {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #0a0f1a !important;
+    background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+    padding: 8px 14px;
+    border-radius: 10px;
+    text-decoration: none !important;
+    transition: all 0.25s ease;
+}
+
+.enlaceAccion:hover {
+    transform: translateX(2px);
+    box-shadow: 0 4px 15px rgba(34, 211, 238, 0.35);
+}
+
+@keyframes deslizarArriba {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes brilloPulso {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+/* Ajuste para no pisar el botón flotante de WhatsApp en pantallas chicas */
+@media (max-width: 768px) {
+    .contenedorAviso {
+        bottom: 84px;
+        left: 16px;
+        width: calc(100vw - 32px);
+        max-width: none;
+        padding: 14px 16px;
+    }
+}
