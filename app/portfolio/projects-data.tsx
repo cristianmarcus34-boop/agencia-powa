@@ -45,6 +45,55 @@ export interface Project {
 // DATA DE PROYECTOS
 // ============================================================ //
 export const PROJECTS_DATA: Project[] = [
+    // 📱 PROYECTO: KRUSTY BURGER ANDROID NATIVA (DESTACADO) 🆕
+    {
+        title: 'Krusty Burger Android — App Nativa en Google Play',
+        icon: <FaMobileAlt className="text-primary-400" />,
+        image: '/proyectos/krustyburger.webp', // Cambiar por captura oficial de la app nativa cuando la subas
+        description:
+            'Aplicación móvil 100% nativa para Android publicada en Google Play Store. Desarrollada con Expo SDK 58, React Native 0.88 y TypeScript, sincronizada en tiempo real con la base de datos de la plataforma web mediante Supabase.',
+        longDescription: `
+      📱 Krusty Burger Android — App Nativa Publicada en Google Play
+
+      Aplicación móvil nativa para Android (\`com.agenciapowa.KrustyBurger\`) disponible en Google Play Store. Diseñada desde cero como un producto independiente que comparte la misma base de datos en tiempo real con la plataforma web de Krusty Burger.
+
+      ## ✨ Características Principales
+
+      • **Seguimiento de pedidos en vivo** con mapas nativos (\`react-native-maps\`), geolocalización y tareas en segundo plano (\`expo-location\` + \`expo-task-manager\`)
+      • **Sistema de fidelización y cupones QR** con generación y escaneo nativo mediante cámara (\`expo-camera\` + \`react-native-qrcode-svg\`)
+      • **Notificaciones push nativas** y actualizaciones OTA instantáneas sin pasar por tienda (\`expo-notifications\` + \`expo-updates\`)
+      • **Seguridad y rendimiento nativo** con almacenamiento ultrarrápido en MMKV, credenciales cifradas con SecureStore/Keychain y autenticación biométrica
+      • **Interfaz fluida a 60/120 FPS** con gestos nativos, bottom sheets interactivos, feedback háptico y efectos de sonido personalizados
+
+      ## 🏗️ Arquitectura Técnica
+
+      **Core & Framework:** Expo SDK 58, React Native 0.88.1, React 19.3, TypeScript 5.9, Expo Router
+      **Estado & Datos:** Zustand 5, TanStack React Query 5, MMKV, Supabase (PostgreSQL + Realtime + Auth)
+      **Formularios & Validación:** React Hook Form + Zod 4
+      **UI & Animaciones:** React Native Reanimated 4, Bottom Sheet, Gesture Handler, Nitro Image, Linear Gradient
+      **Hardware & Nativo:** Maps, Location, Camera, Notifications, Biometrics, Haptics, Quick Actions, View Shot
+      **Distribución:** Google Play Store + EAS Updates (OTA)
+    `,
+        link: 'https://play.google.com/store/apps/details?id=com.agenciapowa.KrustyBurger&pcampaignid=web_share',
+        github: 'https://github.com/cristianmarcus34-boop/krusty-burger',
+        tag: 'GOOGLE PLAY',
+        tech: [
+            'React Native 0.88',
+            'Expo SDK 58',
+            'TypeScript',
+            'Supabase',
+            'Zustand',
+            'React Query',
+            'Reanimated 4',
+            'Google Maps',
+            'Google Play',
+        ],
+        featured: true,
+        year: '2026',
+        category: 'Mobile',
+        galleryImages: null, // Opcional: agregá las capturas de pantalla cuando las tengas en /public/proyectos/
+    },
+
     // 🎭 PROYECTO: REMOLINO FOLKLÓRICO (DESTACADO) 🆕
     {
         title: 'Remolino Folklórico — Sitio Web + Panel de Administración',
